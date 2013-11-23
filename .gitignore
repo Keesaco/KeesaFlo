@@ -1,3 +1,9 @@
+# Compiled #
+############
+.pyc
+.exe
+.out
+
 # Doxygen output #
 ##################
 Doxygen/
