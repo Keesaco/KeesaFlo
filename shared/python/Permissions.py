@@ -1,5 +1,3 @@
-
-# This is a comment
 class Permissions:
 	read = False
 	write = False
