@@ -8,5 +8,11 @@ class PermissionsObject:
 	users = []
 	groups = []
 	
-	def __init__(self):
-		pass
+	def __init__(self, authedUser = None):
+		self.authedUser = authedUser
+
+	def addUser(self, newUser):
+		self.users.append(newUser)
+
+	def addGroup(self, newGroup):
+		self.groups.append(newGroup)
