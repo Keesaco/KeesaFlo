@@ -19,7 +19,7 @@ class APIAnalysis:
 	# \param plugin_ref - reference to the plugin to be used for analysis
 	# \param user_id - the id of the user starting the analysis
 	# \param priority - a value determining the priority of the specific analysis
-	# \On fail, return false. On success, returns the analysis_id for the specific analysis request
+	# \return On fail, return false. On success, returns the analysis_id for the specific analysis request
 	# \author swhitehouse@keesaco.com of Keesaco
 	# \author rmurley@keesaco.com of Keesaco
 	def queue_analysis(	data_ref,
