@@ -53,7 +53,7 @@ class APIAnalysis:
 									user_id,
 									priority	):
 		pass
-	
+
 	## \brief Change_user_analysis changes the owner of the current analysis instantiation
 	# \param analysis_id - the id of the analysis that is being passed on
 	# \param user_id - the id of the user requesting the change
@@ -66,6 +66,4 @@ class APIAnalysis:
 								user_id,
 								new_user_id	):
 		pass
-		
-	
 
