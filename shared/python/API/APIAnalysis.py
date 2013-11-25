@@ -54,7 +54,7 @@ class APIAnalysis:
 									priority	):
 		pass
 
-	## check_analysis requests that the current state of the analysis is checked
+	## \brief check_analysis requests that the current state of the analysis is checked
 	# \param analysis_id - the id of the analysis that is being checked
 	# \param user_id - the id of the user checking the analysis
 	# \returns If failed, return false. Else if the user is in the allowed checking list, then information on the current state of the analysis will be returned.
