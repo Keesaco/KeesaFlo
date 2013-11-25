@@ -13,7 +13,7 @@ class APIAnalysis:
 	# \author swhitehouse@keesaco.com of Keesaco
 	def __init__(self):
 		pass
-		
+
 	## add_file creates a new file and optionally opens it in a given mode
 	# \param data_ref - reference to the data to be analysis
 	# \param plugin_ref - reference to the plugin to be used for analysis
@@ -27,3 +27,21 @@ class APIAnalysis:
 						user_id,
 						priority	):
 		pass
+		
+	def start_analysis(	analysis_id,
+						user_id	):
+		pass
+
+	def pause_analysis(	analysis_id,
+						user_id	):
+		pass
+		
+	def cancel_analysis(	analysis_id,
+							user_id	):
+		pass
+		
+	def change_priority_analysis(	analysis_id,
+									user_id,
+									priority	):
+		pass
+
