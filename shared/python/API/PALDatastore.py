@@ -2,10 +2,13 @@
 # \brief Containts the PALDatastore class: Platform Abstraction Layer for data access
 # \author jmccrea@keesaco.com of Keesaco
 # \author cwike@keesaco.com of Keesaco
-## API layer for 'low level' datastore access
+
+## \brief Platoform Abstraction Layer API for 'low level' datastore access
 class PALDatastore:
 	
-	## Constructor
+	## \brief Constructs a PALDatastore object
+	# \param self - instance reference
+	# \return PALDatastore instance
 	# \author jmccrea@keesaco.com of Keesao
 	def __init__(self):
 		pass

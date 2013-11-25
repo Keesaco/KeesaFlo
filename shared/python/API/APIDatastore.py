@@ -5,11 +5,12 @@
 
 from PALDatastore import *
 
-## APIDatastore
-# second tier API for data access - utilises PAL for low level file access
+## \brief second tier API for data access - utilises PAL for low level file access
 class APIDatastore:
 
-	## constructor
+	## \brief Constructs an APIDatastore instance
+	# \param self - instance reference
+	# \return APIDatastore instanace
 	# \author jmccrea@keesaco.com of Keesaco
 	def __init__(self):
 		pass
