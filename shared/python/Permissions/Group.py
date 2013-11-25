@@ -8,7 +8,7 @@ class Group:
 	## name of the use group
 	group_name = ""
 	
-	## constructor - creates a Group instance with a given groupname
+	## \brief constructor - creates a Group instance with a given groupname
 	# \param self - instance reference
 	# \param name - (= None) [String] name of user group
 	# \return Group instance
