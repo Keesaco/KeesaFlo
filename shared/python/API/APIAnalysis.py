@@ -5,16 +5,17 @@
 
 from PALAnalysis import *
 
-## APIAnalysis
-# Second tier API for analysis - utilises PAL for platform specific analysis
+## \brief Second tier API for analysis - utilises PAL for platform specific analysis
 class APIAnalysis:
 
-	## constructor
+	## \brief Constructor for API
+	# \param self - instance reference
+	# \return APIAnalysis instance
 	# \author swhitehouse@keesaco.com of Keesaco
 	def __init__(	self	):
 		pass
 
-	## queue_analysis requests that a new analysis be instantiated using a specified plugin and data-set
+	## \brief Queue_analysis requests that a new analysis be instantiated using a specified plugin and data-set
 	# \param data_ref - reference to the data to be analysis
 	# \param plugin_ref - reference to the plugin to be used for analysis
 	# \param user_id - the id of the user starting the analysis
@@ -29,7 +30,7 @@ class APIAnalysis:
 						priority	):
 		pass
 
-	## cancel_analysis requests that the specific analysis instantiation is ended prematurely 
+	## \brief Cancel_analysis requests that the specific analysis instantiation is ended prematurely 
 	# \param analysis_id - the id of the analysis that needs to be ended
 	# \param user_id - the id of the user ending the analysis
 	# \return If failed, return false. Else if analysis termination is successful, return True.
@@ -40,7 +41,7 @@ class APIAnalysis:
 							user_id	):
 		pass
 
-	## change_priority_analysis requests that the priority of a currently running analysis instantiation is changed
+	## \brief Change_priority_analysis requests that the priority of a currently running analysis instantiation is changed
 	# \param analysis_id - the id of the analysis that is having its priority changed
 	# \param user_id - the id of the user changing the priority
 	# \param priority - a value determining the priority that the analysis needs to be changed to
