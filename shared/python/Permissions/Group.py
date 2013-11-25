@@ -1,3 +1,4 @@
+
 class Group:
 	groupName = ""
 	
