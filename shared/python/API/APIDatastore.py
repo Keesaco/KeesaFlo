@@ -1,3 +1,8 @@
+## \file shared/python/API/APIDatastore.py
+# \brief defines the datastore API for data access. Built upon PALDatastore for cross-platform support.
+# \author jmccrea@keesaco.com of Keesaco
+# \author cwike@keesaco.com of Keesaco
+
 from PALDatastore import *
 
 ## APIDatastore
