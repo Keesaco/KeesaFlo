@@ -1,10 +1,12 @@
 ## \file shared/python/permissions/Group.py
-# contains the group class
+# \brief contains the group class
+# \author jmccrea@keesaco.com of Keesaco
 
-## \class Group
-# \brief Group class for holding information about a usergroup
+## \brief Group class for holding information about a usergroup
 class Group:
-	group_name = "" ## Name of the user group
+	
+	## name of the use group
+	group_name = ""
 	
 	## constructor - creates a Group instance with a given groupname
 	# \param self - instance reference
