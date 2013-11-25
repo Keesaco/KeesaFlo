@@ -11,7 +11,7 @@ class APIAnalysis:
 
 	## constructor
 	# \author swhitehouse@keesaco.com of Keesaco
-	def __init__(self):
+	def __init__(	self	):
 		pass
 
 	## queue_analysis requests that a new analysis be instantiated using a specified plugin and data-set
@@ -51,5 +51,16 @@ class APIAnalysis:
 	def change_priority_analysis(	analysis_id,
 									user_id,
 									priority	):
+		pass
+
+	## check_analysis requests that the current state of the analysis is checked
+	# \param analysis_id - the id of the analysis that is being checked
+	# \param user_id - the id of the user checking the analysis
+	# \returns If failed, return false. Else if the user is in the allowed checking list, then information on the current state of the analysis will be returned.
+	# \note Unknown contents of the information at this time.
+	# \author swhitehouse@keesaco.com of Keesaco
+	# \author rmurley@keesaco.com of Keesaco
+	def check_analysis(	analysis_id,
+						user_id	):
 		pass
 
