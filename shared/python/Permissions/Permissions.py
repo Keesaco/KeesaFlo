@@ -20,7 +20,7 @@ class Permissions:
 	# \note if full_control is true, read and write will also be forced true
 	# \author jmccrea@keesaco.com of Keesaco
 	def __init__(self, read = False, write = False, full_control = False):
-		self.setPermissions(read, write, fullControl)
+		self.setPermissions(read, write, full_control)
 
 	## \brief sets the permissions to a given set of permissions
 	# \param self - intance reference

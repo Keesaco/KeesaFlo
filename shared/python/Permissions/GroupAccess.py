@@ -1,11 +1,11 @@
 ## \file shared/python/permissions/GroupAccess.py
-# \brief contains the GroupAccess class for group/permissions pairs
+# \brief Contains the GroupAccess class for group/permissions pairs
 # \author jmccrea@keesaco.com of Keesaco
 
 from Group import *
 from Permissions import *
 
-## \brief a group and permission pairing to represent the permissions a group has for a resource
+## \brief A group and permission pairing to represent the permissions a group has for a resource
 class GroupAccess:
 	
 	## Group instance - the group the permissions belong to
@@ -13,7 +13,7 @@ class GroupAccess:
 	## Permissions instance - the permissions the group have
 	permissions = None
 	
-	## \brief constructs a GroupAccess instance for a given Group and Permissions instance
+	## \brief Constructs a GroupAccess instance for a given Group and Permissions instance
 	# \param self - instance reference
 	# \param group - (= None) [Group] the group the permissions belong to
 	# \param permissions - (= None) [Permissions] the permissions the group have
