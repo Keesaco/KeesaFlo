@@ -2,6 +2,7 @@
 # \brief Contains the Permissions class for storing a set of permissions one entity has to a resource
 # \author jmccrea@keesaco.com of Keesaco
 
+## \brief defines a set of permissions which an entity has to a resource
 class Permissions:
 	## read access
 	read = False
