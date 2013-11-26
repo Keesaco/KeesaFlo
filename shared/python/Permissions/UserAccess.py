@@ -5,7 +5,7 @@
 from User import *
 from Permissions import *
 
-## \brief A user and permissinos pair to represent the access permissions a user has for a resource
+## \brief A user and permissions pair to represent the access permissions a user has for a resource
 class UserAccess:
 	## User instance - the user to define permissions for
 	user = User()
