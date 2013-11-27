@@ -7,9 +7,6 @@ from PALAnalysis import *
 ## \brief Analysis Manager responsible for instantiating plugins and providing them with data.
 class AnalysisManager:
 
-	## Variable containing the current number of instantiated plugins
-	noOfInstantiations = 0
-	
 	## \brief Constructor for AnalysisManager.
 	# \param self - instance reference
 	# \return Returns the AnalysisManager instance.
