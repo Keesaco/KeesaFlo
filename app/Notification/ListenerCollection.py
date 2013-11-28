@@ -1,5 +1,5 @@
 ###########################################################################
-## \file shared/python/ListenerCollection/ListenerCollection.py
+## \file app/Notification/ListenerCollection.py
 ## \brief A package for creating callback lists
 ## \author jmccrea@keesaco.com of Keesaco
 ###########################################################################
@@ -71,6 +71,7 @@ class ListenerCollection:
 	## \author jmccrea@keesaco.com of Keesaco
 	###########################################################################
 	def __init__(self):
+		## List of listeners
 		self.listeners = []					#Initialise listeners with empty list
 
 	###########################################################################
@@ -97,7 +98,7 @@ class ListenerCollection:
 		for l in self.listeners:				#For each listener
 			l.call(*args, **kwargs)				#Call with given arguments
 
-# \brief A more versatile listener collection for multiple events and listeners
+## \brief A more versatile listener collection for multiple events and listeners
 class SubscriptionCollection:
 
 	###########################################################################
