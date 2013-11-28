@@ -13,5 +13,6 @@ class plugin_ref:
 	# \warning Does not check that the path for the plugin exists.
 	# \author swhitehouse@keesaco.com of Keesaco
 	def __init__(self, path):
+		## The path at which the plugin can be found.
 		self.path = path
 
