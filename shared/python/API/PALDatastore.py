@@ -3,7 +3,7 @@
 # \author jmccrea@keesaco.com of Keesaco
 # \author cwike@keesaco.com of Keesaco
 
-from cloudstorage as gcs 
+import cloudstorage as gcs 
 
 ## \brief Platoform Abstraction Layer API for 'low level' datastore access
 class PALDatastore:
