@@ -2,6 +2,11 @@ SPE
 ===
 Software Product Engineering - Flow Cytometry Project
 
+Discussion:
+-----------
+For discussions see the [Keesaco mailing list](https://groups.google.com/forum/#!forum/keesaco). (For access [contact Jack McCrea](mailto:jmccrea@keesaco.com))  
+Issues should be raised on the repository's [issue list](https://github.com/JackMcCrea/Keesaco/issues).
+
 Documentation:
 --------------
 This project is prepared for [Doxygen](http://www.doxygen.org/) automatic documentation generation.
