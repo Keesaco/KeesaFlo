@@ -33,8 +33,14 @@ class PALDatastore:
 			 	options = None,
 			 	read_buff_size = None, #storage_api.ReadBuffer.DEFAULT_BUFFER_SIZE,
 			 	retry_params = None	):
-		return gcs.open( filename, mode, MIME_type, options, read_buffSize, retry_params)
-
+		try:
+			file_handle = gcs.open( filename, mode, MIME_type, options, read_buffSize, retry_params)
+		except ValueError:
+			return None
+		else:
+			return file_handle
+		
+		
 	## delete - deletes a resource
 	# \param cls - class reference
 	# \param file_name - name of resource to delete
@@ -45,20 +51,34 @@ class PALDatastore:
 	def delete(	cls,
 			   	file_name,
 			   	retry_params = None	):
-		gcs.delete(file_name, retry_params)
+		try:
+			gcs.delete(file_name, retry_params)
+		except NotFoundError:
+			return false
+		else:
+			return true
+			
 
 	## stat - gets information about a specified resource
 	# \param cls - class reference
 	# \param file_name - name of resource to get information about
 	# \param retry_params - (= None)
-	# \return FileStat object - object containing information about specified resource
+	# \return FileStat object - object containing information about specified resource, None on failure
 	# \author jmccrea@keesaco.com of Keesaco
 	# \author cwike@keesaco.com of Keesaco
 	def stat(	cls,
 			 	file_name,
 			 	retry_params = None	):
-		pass
-	
+		try:
+			file_stat = gcs.stat( file_name )
+		except NotFoundError:
+			return None
+		except AuthorizationError:
+			return None
+		else:
+			return file_stat
+		
+		
 	## list_bucket - lists the contents of a storage bucket
 	# \param cls - class reference
 	# \param path - path of bucket to list (string)
@@ -77,4 +97,15 @@ class PALDatastore:
 						max_keys = None,
 						delimiter = None,
 						retry_params = None	):
-		pass
+		file_stat_list =[]
+		file_stat_iterator = gcs.list_bucket( path, marker, prefix, max_keys, delimiter, retry_params)
+		
+		for file_stat in file_stat_iterator:
+			file_stat_list.append(file_stat)
+			
+		return file_stat_list
+		
+		
+		
+		
+		
