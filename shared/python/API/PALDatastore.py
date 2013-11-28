@@ -3,6 +3,8 @@
 # \author jmccrea@keesaco.com of Keesaco
 # \author cwike@keesaco.com of Keesaco
 
+from cloudstorage as gcs 
+
 ## \brief Platoform Abstraction Layer API for 'low level' datastore access
 class PALDatastore:
 	
@@ -31,7 +33,7 @@ class PALDatastore:
 			 	options = None,
 			 	read_buff_size = None, #storage_api.ReadBuffer.DEFAULT_BUFFER_SIZE,
 			 	retry_params = None	):
-		pass
+		return gcs.open( filename, mode, MIME_type, options, read_buffSize, retry_params)
 
 	## delete - deletes a resource
 	# \param cls - class reference
@@ -43,7 +45,7 @@ class PALDatastore:
 	def delete(	cls,
 			   	file_name,
 			   	retry_params = None	):
-		pass
+		gcs.delete(file_name, retry_params)
 
 	## stat - gets information about a specified resource
 	# \param cls - class reference
