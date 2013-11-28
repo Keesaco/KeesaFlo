@@ -1,9 +1,9 @@
 ## \file shared/python/structures/data_ref.py
-# \brief Contains the data reference class
+# \brief Contains the data reference class.
 # \author swhitehouse@keesaco.com of Keesaco
 
 ## \brief Data reference class for holding information about a portion of a data set.
-class Group:
+class data_ref:
 	
 	## \brief Constructor for the data_ref object.
 	# \param self - instance reference
