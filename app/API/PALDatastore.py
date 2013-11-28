@@ -33,12 +33,13 @@ def open(	#cls,
 			options = None,
 			read_buff_size = None, #storage_api.ReadBuffer.DEFAULT_BUFFER_SIZE,
 			retry_params = None	):
-	#try:
-	file_handle = gcs.open( file_name, mode, MIME_type, options, read_buff_size, retry_params)
-	#except ValueError:
-	#	return None
-	#else:
-	return file_handle
+	try:
+		file_handle = gcs.open( file_name, mode, MIME_type, options, read_buff_size, retry_params)
+	
+	except ValueError:
+		return None
+	else:
+		return file_handle
 	
 	
 ## delete - deletes a resource
