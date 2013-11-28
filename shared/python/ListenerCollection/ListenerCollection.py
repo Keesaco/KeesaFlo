@@ -18,13 +18,14 @@ class Listener:
 
 	## \brief Calls the callback method so long as the listener is not muted or otherwise prevented from being alerted
 	# \param self - instance reference
-	# \param arg - (= None) argument to call the callback with
+	# \param *args - arguments to call the callback with
+	# \param **kwargs - named arguments to call the callback with
 	# \return none
 	# \author jmccrea@keesaco.com of Keesaco
-	def call(self, arg = None):
+	def call(self, *args, **kwargs):
 		if ( self.callback != None): 		#check a callback has been set
 			if (not self.__muted):			#do not call if this listener has been muted
-				self.callback(arg)			#call the listener's callback method
+				self.callback(*args, **kwargs)			#call the listener's callback method
 
 	## \brief Mutes or unmutes the listener
 	# \param self - instance reference
@@ -64,18 +65,19 @@ class ListenerCollection:
 	# \return position at which the new listener was added
 	# \author jmccrea@keesaco.com of Keesaco
 	def add_listener(self, listener):
-		new_position = len(self.listeners)	#get position of next inserted element (current length)
-		self.listeners.append(listener)		#add the new listener to the list
+		new_position = len(self.listeners)			#get position of next inserted element (current length)
+		self.listeners.append(listener)				#add the new listener to the list
 		return new_position					#return previously stored position
 
 	## \brief alerts all callbacks (as long as they have not been muted)
 	# \param self - instance reference
-	# \param arg - argument to pass to callbacks
+	# \param *args - arguments to pass to callbacks
+	# \param **kwargs - named arguments to pass to callbacks
 	# \return none
 	# \author jmccrea@keesaco.com of Keesaco
-	def broadcast(self, arg):
-		for l in self.listeners:			#For each listener
-			l.call(arg)						#Call with given argument
+	def broadcast(self, *args, **kwargs):
+		for l in self.listeners:				#For each listener
+			l.call(*args, **kwargs)				#Call with given arguments
 
 # \brief A more versatile listener collection for multiple events and listeners
 class SubscriptionCollection:
