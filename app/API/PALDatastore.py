@@ -31,7 +31,7 @@ def open(	#cls,
 			mode = 'r',
 			MIME_type = None,
 			options = None,
-			read_buff_size = None, #storage_api.ReadBuffer.DEFAULT_BUFFER_SIZE,
+			read_buff_size = gcs.storage_api.ReadBuffer.DEFAULT_BUFFER_SIZE,
 			retry_params = None	):
 	try:
 		file_handle = gcs.open( file_name, mode, MIME_type, options, read_buff_size, retry_params)
