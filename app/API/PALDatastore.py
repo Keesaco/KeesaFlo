@@ -88,7 +88,7 @@ def stat(	#cls,
 # \param max_keys - (= None) limits the number of resources listed (None = no limit)
 # \param delimiter - (= None) used to turn on directory mode (string of one or multiple characters used as a directory seperator)
 # \param retry_params - (= None)
-# \return list of FileState objects
+# \return list of FileStat objects
 # \author jmccrea@keesaco.com of Keesaco
 # \author cwike@keesaco.com of Keesaco
 def list_bucket(	#cls,
