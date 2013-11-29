@@ -1,4 +1,4 @@
-## \file app/permissions/GroupAccess.py
+## \file app/Permissions/GroupAccess.py
 # \brief Contains the GroupAccess class for group/permissions pairs
 # \author jmccrea@keesaco.com of Keesaco
 
