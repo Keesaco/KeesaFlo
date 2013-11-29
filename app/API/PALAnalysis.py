@@ -1,4 +1,4 @@
-## \file shared/python/API/PALAnalysis.py
+## \file app/API/PALAnalysis.py
 # \brief Contains the PALAnalysis class: Platform Abstraction Layer for plugin instantiation
 # \author swhitehouse@keesaco.com of Keesaco
 # \author rmurley@keesaco.com of Keesaco

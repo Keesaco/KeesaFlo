@@ -1,4 +1,4 @@
-## \file analysis/manager/AnalysisManager.py
+## \file app/Analysis/Manager/AnalysisManager.py
 # \brief Defines the Analysis Manager which is responsible for instantiating plugins and providing information to the instantiations.
 # \author swhitehouse@keesaco.com of Keesaco
 
