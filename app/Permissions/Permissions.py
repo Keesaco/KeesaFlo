@@ -1,4 +1,4 @@
-## \file app/permissions/Permissions.py
+## \file app/Permissions/Permissions.py
 # \brief Contains the Permissions class for storing a set of permissions one entity has to a resource
 # \author jmccrea@keesaco.com of Keesaco
 
