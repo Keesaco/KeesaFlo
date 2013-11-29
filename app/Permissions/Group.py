@@ -1,4 +1,4 @@
-## \file app/permissions/Group.py
+## \file app/Permissions/Group.py
 # \brief contains the group class
 # \author jmccrea@keesaco.com of Keesaco
 

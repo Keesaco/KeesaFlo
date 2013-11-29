@@ -1,4 +1,4 @@
-## \file app/permissions/User.py
+## \file app/Permissions/User.py
 # \brief Contains the User class
 # \author jmccrea@keesaco.com of Keesaco
 
