@@ -1,4 +1,4 @@
-## \file shared/python/permissions/UserAccess.py
+## \file app/permissions/UserAccess.py
 # \brief Contains the UserAccess class for user/permissions pairs
 # \author jmccrea@keesaco.com of Keesaco
 

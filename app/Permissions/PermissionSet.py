@@ -1,4 +1,4 @@
-## \file shared/python/permissions/PermissionSet.py
+## \file app/permissions/PermissionSet.py
 ## \brief Contains the PermissionSet class
 ## \author jmccrea@keesaco.com of Keesaco
 

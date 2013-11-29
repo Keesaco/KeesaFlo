@@ -1,4 +1,4 @@
-## \file shared/python/API/PALDatastore.py
+## \file app/API/PALDatastore.py
 # \brief Containts the PALDatastore class: Platform Abstraction Layer for data access
 # \author jmccrea@keesaco.com of Keesaco
 # \author cwike@keesaco.com of Keesaco
