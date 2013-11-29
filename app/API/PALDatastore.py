@@ -26,8 +26,7 @@ import cloudstorage as gcs
 # \return file handle for opened file or None on failure
 # \author jmccrea@keesaco.com of Keesaco
 # \author cwike@keesaco.com of Keesaco
-def open(	#cls,
-			file_name,
+def open(	file_name,
 			mode = 'r',
 			MIME_type = None,
 			options = None,
@@ -49,8 +48,7 @@ def open(	#cls,
 # \return boolean (true = success, false otherwise)
 # \author jmccrea@keesaco.com of Keesaco
 # \author cwike@keesaco.com of Keesaco
-def delete(	#cls,
-			file_name,
+def delete(	file_name,
 			retry_params = None	):
 	try:
 		gcs.delete(file_name, retry_params)
@@ -67,8 +65,7 @@ def delete(	#cls,
 # \return FileStat object - object containing information about specified resource, None on failure
 # \author jmccrea@keesaco.com of Keesaco
 # \author cwike@keesaco.com of Keesaco
-def stat(	#cls,
-			file_name,
+def stat(	file_name,
 			retry_params = None	):
 	try:
 		file_stat = gcs.stat( file_name )
@@ -91,8 +88,7 @@ def stat(	#cls,
 # \return list of FileStat objects
 # \author jmccrea@keesaco.com of Keesaco
 # \author cwike@keesaco.com of Keesaco
-def list_bucket(	#cls,
-					path,
+def list_bucket(	path,
 					marker = None,
 					prefix = None, ##deprecated
 					max_keys = None,
@@ -105,8 +101,3 @@ def list_bucket(	#cls,
 		file_stat_list.append(file_stat)
 		
 	return file_stat_list
-		
-		
-		
-		
-		
