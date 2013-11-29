@@ -63,7 +63,7 @@ def delete(	file_name,
 ## \return FileStat object - the genericised FileStat object
 ## \author cwike@keesaco.com of Keesaco
 ###########################################################################
-def __gcs_file_stat_conversion__( gcs_file_stat )
+def __gcs_file_stat_conversion__( gcs_file_stat ):
 	file_stat = FileStat(	gcs_file_stat.filename,
 							gcs_file_stat.st_size,
 							gcs_file_stat.etag,
