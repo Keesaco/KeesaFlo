@@ -5,6 +5,7 @@
 ## \author cwike@keesaco.com of Keesaco
 ###########################################################################
 import cloudstorage as gcs 
+from FileStat import FileStat
 
 ## \brief Platoform Abstraction Layer API for 'low level' datastore access
 
@@ -53,7 +54,25 @@ def delete(	file_name,
 		return False
 	else:
 		return True
+
 		
+		
+###########################################################################
+## __gcs_file_stat_conversion__ - transfers the data of a google provided GCSFileStat object into a FileStat object
+## \param gcs_file_stat - the GCSFileStat object to transfer data from
+## \return FileStat object - the genericised FileStat object
+## \author cwike@keesaco.com of Keesaco
+###########################################################################
+def __gcs_file_stat_conversion__( gcs_file_stat )
+	file_stat = FileStat(	gcs_file_stat.filename,
+							gcs_file_stat.st_size,
+							gcs_file_stat.etag,
+							gcs_file_stat.st_ctime,
+							gcs_file_stat.content_type,
+							gcs_file_stat.metadata,
+							gcs_file_stat.is_dir)
+	return file_stat
+	
 ###########################################################################
 ## stat - gets information about a specified resource
 ## \param cls - class reference
@@ -66,12 +85,14 @@ def delete(	file_name,
 def stat(	file_name,
 			retry_params = None	):
 	try:
-		file_stat = gcs.stat( file_name )
+		gcs_stat = gcs.stat( file_name )
+		
 	except NotFoundError:
 		return None
 	except AuthorizationError:
 		return None
 	else:
+		file_stat = __gcs_file_stat_conversion__( gcs_stat )
 		return file_stat
 	
 ###########################################################################
@@ -94,9 +115,9 @@ def list_bucket(	path,
 					delimiter = None,
 					retry_params = None	):
 	file_stat_list =[]
-	file_stat_iterator = gcs.listbucket( path, marker, prefix, max_keys, delimiter, retry_params)
+	gcs_stat_iterator = gcs.listbucket( path, marker, prefix, max_keys, delimiter, retry_params)
 	
-	for file_stat in file_stat_iterator:
-		file_stat_list.append(file_stat)
+	for gcs_stat in gcs_stat_iterator:
+		file_stat_list.append(__gcs_file_stat_conversion__( gcs_stat ))
 		
 	return file_stat_list
