@@ -192,9 +192,9 @@ class SubscriptionCollection:
 	###########################################################################
 	def broadcast_event(self, event_id, *args, **kwargs):
 		if event_id < len(self.__events):			#if the event ID exists
-			print self.__subscriptions[:][:]
-			for x in range(len(self.__subscriptions)):	#For each listener
+			for x in range(len(self.__listeners)):	#For each listener
 				if (self.__subscriptions[event_id][x]):	#if it is subscribed to the given event
+					print "one"
 					self.__listeners[x].call(*args, **kwargs) #call its callback with th given arguments
 		else:
 			pass 						#event doesn't exist
