@@ -25,4 +25,13 @@ class queue_ref:
 		## The priority garnered through aging by this object.
 		self.add_priority = 0
 		return self
+	
+	## \brief Ages the reference allowing for even the lowest priority references to have a chance at being processed.
+	# \param self - instance reference
+	# \return Returns True.
+	# \author swhitehouse@keesaco.com of Keesaco
+	def age_reference(self):
+		self.add_priority += sum(self.priority)
+		return True
+	
 
