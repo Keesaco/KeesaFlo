@@ -5,25 +5,42 @@
 ## \author cwike@keesaco.com of Keesaco
 ###########################################################################
 
-from PALDatastore import *
+import PALDatastore
 
 ## \brief second tier API for data access - utilises PAL for low level file access
 
 ###########################################################################
-## __check_authentication__ - checks the authentication of the user against the file
-## \param file - filepath of data to check
+## __check_authentication - checks the authentication of the user against the file
+## \param path - filepath of data to check
 ## \param action - intended action on data
 ## \param user - user attempting to perform access
-## \todo Stub: returns true, needs implementing
+## \return returns True if authourised else False
+## \todo Stub: returns True, needs implementing
 ## \author cwike@keesaco.com of Keesaco
 ###########################################################################
-
-def __check_authentication__ (	file,
+def __check_authentication (	path,
 								action ='r',
 								user = None):
 	return True
 
-
+###########################################################################
+## check_exists - checks the existance of file or directory being searched
+## \param path - path of file to check
+## \param authed_user - the user to check authed
+## \return if exists, as far as the user is aware,return True, else False
+## \todo test functionality
+## \author cwike@keesaco.com of Keesaco
+###########################################################################	
+def check_exists (	path,
+					authed_user):
+	if __check_authentication ( path, 'r' , authed_user ):
+		if PALDatastore.stat( path ) == None :
+			return False
+		else:
+			return True
+	else:
+		return False
+		
 ###########################################################################
 ## add_file - creates a new file and optionally opens it in a given mode
 ## \param path - path of file to create
@@ -32,14 +49,28 @@ def __check_authentication__ (	file,
 ## \param permssions - (= None) permissions object for current user and permissions to apply to file
 ## \return on success returns file handle for created file or True if mode = None, on failure returns False
 ## \note this method will fail if the directory does not already exist
+## \todo test functionality
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
 ###########################################################################
 def add_file(	path,
-				blob,
+				blob = None,
 				mode = None,
 				permissions = None ):
-	pass
+	if check_exists( path, permissions.authed_user):
+		return False
+	else:
+		file_handle = PALDatastore.open(path,'w')
+		if file_handle == None
+			return False
+		if blob != None:
+			file_handle.write(blob)
+		file_handle.close()
+		add_permissions( path, permissions, True)
+		if mode == None:
+			return False
+		else:
+			return PALDatastore.open(path, mode)
 
 ###########################################################################	
 ## generate_path - generates a path
@@ -70,9 +101,13 @@ def generate_path(	inner_path,
 def append(	path,
 			blob,
 			permissions = None	):
-	if __check_authentication__( path, 'a', permissions.authed_user):
-		file_handle = PALDatastore.open( path, 'a')
-		file_handle.write(blob)
+	if __check_authentication( path, 'a', permissions.authed_user):
+		if check_exists( path, permissions.authed_user ):
+			file_handle = PALDatastore.open( path, 'a')
+			file_handle.write(blob)
+			return True
+		else:
+			return False
 	else:
 		return False
 
@@ -89,8 +124,11 @@ def append(	path,
 def open(	path,
 			mode = 'r',
 			permissions = None):
-	if __check_authentication__( path, mode, permissions.authed_user):
-		return PALDatastore.open( path, mode )
+	if __check_authentication( path, mode, permissions.authed_user):
+		if check_exists( path, permissions.authed_user):
+			return PALDatastore.open( path, mode )
+		else:
+			return False
 	else:
 		return False
 
