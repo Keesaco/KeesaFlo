@@ -17,10 +17,13 @@ class data_ref:
 	# \warning Does not check that the path for the data exists.
 	# \author swhitehouse@keesaco.com of Keesaco
 	def __init__(self, path, start = 0, end = 0):
+		if start > end || start == end != 0:
+			return False
 		## The path at which the data can be found.
 		self.path = path
 		## The start of the data set to be used (in bytes).
 		self.start_set = start
 		## The end of the data set to be used (in bytes).
 		self.end_set = end
+		return self
 
