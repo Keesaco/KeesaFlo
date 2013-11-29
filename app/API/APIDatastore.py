@@ -63,13 +63,18 @@ def generate_path(	inner_path,
 ## \param blob - binary object to append to specified file
 ## \param permssions - (= None) permissions object for current user
 ## \return True on success, false otherwise
+## \todo test operation
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
 ###########################################################################
 def append(	path,
 			blob,
 			permissions = None	):
-	pass
+	if __check_authentication__( path, 'a', permissions.authed_user):
+		file_handle = PALDatastore.open( path, 'a')
+		file_handle.write(blob)
+	else:
+		return False
 
 ###########################################################################
 ## open - opens a file for reading/editing
@@ -77,23 +82,28 @@ def append(	path,
 ## \param mode - (= 'r') mode to open file in
 ## \param permssions - (= None) permissions object for current user
 ## \return returns file handle on success or False on failure
+## \todo test operation
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
 ###########################################################################
 def open(	path,
 			mode = 'r',
 			permissions = None):
-	pass
+	if __check_authentication__( path, mode, permissions.authed_user):
+		return PALDatastore.open( path, mode )
+	else:
+		return False
 
 ###########################################################################
 ## close - closes an open file
 ## \param file_handle - handle for file to close
 ## \return True on success, False otherwie
+## \todo test operation
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
 ###########################################################################
 def close(	file_handle	):
-	pass
+	file_handle.close()
 
 ###########################################################################
 ## add_directory - creates a new directory
