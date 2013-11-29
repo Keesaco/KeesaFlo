@@ -17,10 +17,22 @@ class analysis_id:
 		## The unique id number used for referencing this analysis object.
 		self.analysis_id_number = analysis_id_number
 		## The list of users associated with this object.
-		self.user_id = [user_id]
+		self.users = [user_id]
 		## The data_ref object for this analysis.
 		self.data_ref = data_ref
 		## The plugin_ref object for this analysis.
 		self.plugin_ref = plugin_ref
 		return self
+	
+	## \brief Adds an additional user to the analysis id object
+	# \param self - instance reference
+	# \param user_id - the new user to be added to the object
+	# \return Returns True on success, False is fails.
+	# \note Will fail if the user already exists in the list of users.
+	# \author swhitehouse@keesaco.com of Keesaco
+	def add_user(self, user_id):
+		if user_id in self.users:
+			return False
+		self.users.append(user_id)
+		return True
 
