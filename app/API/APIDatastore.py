@@ -10,8 +10,22 @@ from PALDatastore import *
 ## \brief second tier API for data access - utilises PAL for low level file access
 
 ###########################################################################
-## add_file creates a new file and optionally opens it in a given mode
-## \param cls - class reference
+## __check_authentication__ - checks the authentication of the user against the file
+## \param file - filepath of data to check
+## \param action - intended action on data
+## \param user - user attempting to perform access
+## \todo Stub: returns true, needs implementing
+## \author cwike@keesaco.com of Keesaco
+###########################################################################
+
+def __check_authentication__ (	file,
+								action ='r',
+								user = None):
+	return True
+
+
+###########################################################################
+## add_file - creates a new file and optionally opens it in a given mode
 ## \param path - path of file to create
 ## \param blob - binary object to write into file on creation
 ## \param mode - (= None) mode to open file in (None = file not opened)
@@ -29,7 +43,6 @@ def add_file(	path,
 
 ###########################################################################	
 ## generate_path - generates a path
-## \param cls - class reference
 ## \param inner_path - path within directory to access
 ## \param data_type - type of data to access (directory depends on this)
 ## \param file_name - (= "") name of file within directory to access
@@ -46,7 +59,6 @@ def generate_path(	inner_path,
 
 ###########################################################################	
 ## append - appends a blob to an existing file
-## \param cls - class reference
 ## \param path - path to file to append to
 ## \param blob - binary object to append to specified file
 ## \param permssions - (= None) permissions object for current user
@@ -61,7 +73,6 @@ def append(	path,
 
 ###########################################################################
 ## open - opens a file for reading/editing
-## \param cls - class reference
 ## \param path - path of file to open
 ## \param mode - (= 'r') mode to open file in
 ## \param permssions - (= None) permissions object for current user
@@ -76,7 +87,6 @@ def open(	path,
 
 ###########################################################################
 ## close - closes an open file
-## \param cls - class reference
 ## \param file_handle - handle for file to close
 ## \return True on success, False otherwie
 ## \author jmccrea@keesaco.com of Keesaco
@@ -87,7 +97,6 @@ def close(	file_handle	):
 
 ###########################################################################
 ## add_directory - creates a new directory
-## \param cls - class reference
 ## \param path - path of directory to create
 ## \param permssions - (= None) permissions object for current user and permissions to apply to new directory
 ## \return True on success, False otherwise
@@ -100,7 +109,6 @@ def add_directory(	path,
 
 ###########################################################################
 ## list - lists the contents of a directory
-## \param cls - class reference
 ## \param path - path of directory to list
 ## \param permssions - (= None) permissions object for current use
 ## \return list of FileInfo objects for files/directories in the specified directory, False on failure
@@ -113,7 +121,6 @@ def list(	path,
 
 ###########################################################################
 ## delete - deletes a specified file or directory
-## \param cls - class reference
 ## \param path - path to file/directory to remove
 ## \param permissions - (= None) permissions object for current user
 ## \param allow_dir - (= False) if false, the method will fail if the specified path refers to a directory
@@ -128,7 +135,6 @@ def delete( path,
 
 ###########################################################################
 ## move - moves a specified file/directory to a different location
-## \param cls - class reference
 ## \param source - path to file/directory to move
 ## \param destination - path of directory to move file/directory into
 ## \param permissions - (= None) permissions object for current user
@@ -145,7 +151,6 @@ def move(	source,
 
 ###########################################################################
 ## copy - makes a copy of a file or a directory in a different location, optionally with different permissions
-## \param cls - class reference
 ## \param source - path to file/directory to copy
 ## \param destination - destination directory for copy to be made in
 ## \param permissions - (= None) permissions object for current user
@@ -165,7 +170,6 @@ def copy(	source,
 
 ###########################################################################
 ## add_permissions - adds new groups/users to a file/directory with specified permissions
-## \param cls - class reference
 ## \param path - path of file/directory to change permissions of
 ## \param permissions - (= None) permissions object for current user and permissions for new users/groups to be added
 ## \param allow_dir - (= False) if false, the method will fail if the specified path refers to a directory
@@ -181,7 +185,6 @@ def	add_permissions(	path,
 
 ###########################################################################
 ## edit_permissions - edits the permissions on a file or directory
-## \param cls - class reference
 ## \param path - path to file/directory to update permissions of
 ## \param permissions - (= None) permissions object for current user and users/groups to update
 ## \param allow_dir - (= False) if false, the method will fail if the specified path refers to a directory
@@ -198,7 +201,6 @@ def edit_permissions(	path,
 
 ###########################################################################
 ## delete_permissions - removes users'/groups' permissions from a specified file/directory
-## \param cls - class reference
 ## \param path - path to file/directory to delete permissions from
 ## \param permissions - (= None) permissions object for current user and lists of users/groups whose permissions are to be removed
 ## \param allow_dir - (= False) if false, the method will fail if the specified path refers to a directory
@@ -214,7 +216,6 @@ def delete_permissions(	path,
 
 ###########################################################################
 ## get_permissions - gets a permissions object representing a file's permissions
-## \param cls - class reference
 ## \param path - path to list permissions for
 ## \param permissions - (= None) permissions object for current user
 ## \param allow_dir - (= False) if false, the method will fail if the specified path refers to a directory
