@@ -1,4 +1,4 @@
-## \file shared/python/API/APIAnalysis.py
+## \file app/API/APIAnalysis.py
 # \brief Defines the analysis API for analysing data.
 # \author swhitehouse@keesaco.com of Keesaco
 # \author rmurley@keesaco.com of Keesaco

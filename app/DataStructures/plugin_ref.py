@@ -1,4 +1,4 @@
-## \file shared/python/structures/plugin_ref.py
+## \file app/DataStructures/plugin_ref.py
 # \brief Contains the plugin reference class.
 # \author swhitehouse@keesaco.com of Keesaco
 
