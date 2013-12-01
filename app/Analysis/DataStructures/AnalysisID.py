@@ -1,10 +1,10 @@
 ###########################################################################
 ## \file app/Analysis/DataStructures/AnalysisID.py
-## \brief Contains the analysis id class
+## \brief Contains the analysis id class.
 ## \author swhitehouse@keesaco.com of Keesaco
 ###########################################################################
 ## \package app.Analysis.DataStructures.AnalysisID
-## \brief Provides a class for storing information about an analysis task
+## \brief Provides information about a specific analysis task.
 ###########################################################################
 
 

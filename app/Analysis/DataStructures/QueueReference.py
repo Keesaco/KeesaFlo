@@ -4,7 +4,7 @@
 ## \author swhitehouse@keesaco.com of Keesaco
 ###########################################################################
 ## \package app.Analysis.DataStructures.QueueReference
-## \brief Provides a queue reference class
+## \brief Provides a reference to a specific analysis id which can be stored in a priority queue.
 ###########################################################################
 
 ## \brief Queue reference class holding a priority and an analysis id.
@@ -13,7 +13,7 @@ class QueueReference:
 	###########################################################################
 	## \brief Constructor for the QueueReference object.
 	## \param self - instance reference
-	## \param analysis_id_number - the id number for the specific analysis
+	## \param id_number - the id number for the specific analysis
 	## \param user_id - the id number for the original user
 	## \param priority - (= 0) the user priority for the object
 	## \return Returns QueueReference object.
