@@ -1,9 +1,9 @@
 ###########################################################################
-## \file app/DataStructures/PluginReference.py
+## \file app/Types/PluginReference.py
 ## \brief Contains the plugin reference class.
 ## \author swhitehouse@keesaco.com of Keesaco
 ###########################################################################
-## \package app.DataStructures.PluginReference
+## \package app.Types.PluginReference
 ## \brief Provides a reference to a specific plugin.
 ###########################################################################
 

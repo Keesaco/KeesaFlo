@@ -1,9 +1,9 @@
 ###########################################################################
-## \file app/DataStructures/DataReference.py
+## \file app/Types/DataReference.py
 ## \brief Contains the data reference class.
 ## \author swhitehouse@keesaco.com of Keesaco
 ###########################################################################
-## \package app.DataStructures.DataReference
+## \package app.Types.DataReference
 ## \brief Provides a reference to a specific set of data.
 ###########################################################################
 
