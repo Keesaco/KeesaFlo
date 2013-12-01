@@ -26,14 +26,14 @@ class AnalysisID:
 		self.id_number = id_number
 		## The list of users associated with this object.
 		self.users = [user_id]
-		## The data_ref object for this analysis.
+		## The DataReference object for this analysis.
 		self.data_ref = data_ref
-		## The plugin_ref object for this analysis.
+		## The PluginReference object for this analysis.
 		self.plugin_ref = plugin_ref
 		return self
 	
 	###########################################################################
-	## \brief Adds an additional user to the analysis id object
+	## \brief Adds an additional user to the AnalysisID object
 	## \param self - instance reference
 	## \param user_id - the new user to be added to the object
 	## \return Returns True on success, False if fails.
@@ -47,7 +47,7 @@ class AnalysisID:
 		return True
 	
 	###########################################################################
-	## \brief Removes a user from the analysis id object
+	## \brief Removes a user from the AnalysisID object
 	## \param self - instance reference
 	## \param user_id - the user to be removed from the object
 	## \return Returns True on success, False if fails.
@@ -61,10 +61,10 @@ class AnalysisID:
 		return False
 	
 	###########################################################################
-	## \brief Checks for the number of occurrences of a specific user in the analysis object.
+	## \brief Checks for the number of occurrences of a specific user in the AnalysisID object.
 	## \param self - instance reference
 	## \param user_id - the user id to be checked for
-	## \return Returns the number of occurrences of the chosen user in the analysis object.
+	## \return Returns the number of occurrences of the chosen user in the AnalysisID object.
 	## \note Due to error checking, this should only return 0 or 1.
 	## \note Because of the above functionality, this can be user for error checking.
 	## \author swhitehouse@keesaco.com of Keesaco

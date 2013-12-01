@@ -20,7 +20,8 @@ class PluginReference:
 	## \warning Does not check that the path for the plugin exists.
 	## \author swhitehouse@keesaco.com of Keesaco
 	###########################################################################
-	def __init__(self, path):
+	def __init__(	self,
+					path	):
 		if path == None:
 			return False
 		## The path at which the plugin can be found.
