@@ -3,6 +3,9 @@
 ## \brief contains the FileStat class
 ## \author cwike@keesaco.com of Keesaco
 ###########################################################################
+## \package app.API.FileStat
+## \brief Defines classes for holding information about file resources
+###########################################################################
 
 ## \brief contains statistics about a file in the datastore
 class FileStat:

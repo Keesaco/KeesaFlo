@@ -1,8 +1,11 @@
 ###########################################################################
 ## \file app/API/APIDatastore.py
-## \brief defines the datastore API for data access. Built upon PALDatastore for cross-platform support.
+## \brief Defines the datastore API for data access. Built upon PALDatastore for cross-platform support.
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
+###########################################################################
+## \package app.API.APIDatastore
+## \brief Provides methods for data access, using PALDatastore for platform independence
 ###########################################################################
 
 import PALDatastore
@@ -10,7 +13,7 @@ import PALDatastore
 ## \brief second tier API for data access - utilises PAL for low level file access
 
 ###########################################################################
-## __check_authentication - checks the authentication of the user against the file
+## \brief Checks the authentication of the user against the file
 ## \param path - filepath of data to check
 ## \param action - intended action on data
 ## \param user - user attempting to perform access
@@ -24,7 +27,7 @@ def __check_authentication (	path,
 	return True
 
 ###########################################################################
-## check_exists - checks the existance of file or directory being searched
+## \brief Checks the existance of file or directory being searched
 ## \param path - path of file to check
 ## \param authed_user - the user to check authed
 ## \return if exists, as far as the user is aware,return True, else False
@@ -42,7 +45,7 @@ def check_exists (	path,
 		return False
 		
 ###########################################################################
-## add_file - creates a new file and optionally opens it in a given mode
+## \brief Creates a new file and optionally opens it in a given mode
 ## \param path - path of file to create
 ## \param blob - binary object to write into file on creation
 ## \param mode - (= None) mode to open file in (None = file not opened)
@@ -73,7 +76,7 @@ def add_file(	path,
 			return PALDatastore.open(path, mode)
 
 ###########################################################################	
-## generate_path - generates a path
+## \brief Generates a path from information about a file
 ## \param inner_path - path within directory to access
 ## \param data_type - type of data to access (directory depends on this)
 ## \param file_name - (= "") name of file within directory to access
@@ -88,8 +91,8 @@ def generate_path(	inner_path,
 					file_name = ""	):
 	pass
 
-###########################################################################	
-## append - appends a blob to an existing file
+###########################################################################
+## \brief Appends a blob to an existing file
 ## \param path - path to file to append to
 ## \param blob - binary object to append to specified file
 ## \param permssions - (= None) permissions object for current user
@@ -112,7 +115,7 @@ def append(	path,
 		return False
 
 ###########################################################################
-## open - opens a file for reading/editing
+## \brief Opens a file for reading/editing
 ## \param path - path of file to open
 ## \param mode - (= 'r') mode to open file in
 ## \param permssions - (= None) permissions object for current user
@@ -133,7 +136,7 @@ def open(	path,
 		return False
 
 ###########################################################################
-## close - closes an open file
+## \brief Closes an open file
 ## \param file_handle - handle for file to close
 ## \return True on success, False otherwie
 ## \todo test operation
@@ -144,7 +147,7 @@ def close(	file_handle	):
 	file_handle.close()
 
 ###########################################################################
-## add_directory - creates a new directory
+## \brief Creates a new directory
 ## \param path - path of directory to create
 ## \param permssions - (= None) permissions object for current user and permissions to apply to new directory
 ## \return True on success, False otherwise
@@ -156,7 +159,7 @@ def add_directory(	path,
 	pass
 
 ###########################################################################
-## list - lists the contents of a directory
+## \brief Lists the contents of a directory
 ## \param path - path of directory to list
 ## \param permssions - (= None) permissions object for current use
 ## \return list of FileInfo objects for files/directories in the specified directory, False on failure
@@ -168,7 +171,7 @@ def list(	path,
 	pass
 
 ###########################################################################
-## delete - deletes a specified file or directory
+## \brief Deletes a specified file or directory
 ## \param path - path to file/directory to remove
 ## \param permissions - (= None) permissions object for current user
 ## \param allow_dir - (= False) if false, the method will fail if the specified path refers to a directory
@@ -182,7 +185,7 @@ def delete( path,
 	pass
 
 ###########################################################################
-## move - moves a specified file/directory to a different location
+## \brief Moves a specified file/directory to a different location
 ## \param source - path to file/directory to move
 ## \param destination - path of directory to move file/directory into
 ## \param permissions - (= None) permissions object for current user
@@ -198,7 +201,7 @@ def move(	source,
 	pass
 
 ###########################################################################
-## copy - makes a copy of a file or a directory in a different location, optionally with different permissions
+## \brief Makes a copy of a file or a directory in a different location, optionally with different permissions
 ## \param source - path to file/directory to copy
 ## \param destination - destination directory for copy to be made in
 ## \param permissions - (= None) permissions object for current user
@@ -217,7 +220,7 @@ def copy(	source,
 	pass
 
 ###########################################################################
-## add_permissions - adds new groups/users to a file/directory with specified permissions
+## \brief Adds new groups/users to a file/directory with specified permissions
 ## \param path - path of file/directory to change permissions of
 ## \param permissions - (= None) permissions object for current user and permissions for new users/groups to be added
 ## \param allow_dir - (= False) if false, the method will fail if the specified path refers to a directory
@@ -232,7 +235,7 @@ def	add_permissions(	path,
 	pass
 
 ###########################################################################
-## edit_permissions - edits the permissions on a file or directory
+## \brief Edits the permissions on a file or directory
 ## \param path - path to file/directory to update permissions of
 ## \param permissions - (= None) permissions object for current user and users/groups to update
 ## \param allow_dir - (= False) if false, the method will fail if the specified path refers to a directory
@@ -248,7 +251,7 @@ def edit_permissions(	path,
 	pass
 
 ###########################################################################
-## delete_permissions - removes users'/groups' permissions from a specified file/directory
+## \brief Removes users'/groups' permissions from a specified file/directory
 ## \param path - path to file/directory to delete permissions from
 ## \param permissions - (= None) permissions object for current user and lists of users/groups whose permissions are to be removed
 ## \param allow_dir - (= False) if false, the method will fail if the specified path refers to a directory
@@ -263,7 +266,7 @@ def delete_permissions(	path,
 	pass
 
 ###########################################################################
-## get_permissions - gets a permissions object representing a file's permissions
+## \brief Gets a permissions object representing a file's permissions
 ## \param path - path to list permissions for
 ## \param permissions - (= None) permissions object for current user
 ## \param allow_dir - (= False) if false, the method will fail if the specified path refers to a directory
