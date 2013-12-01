@@ -4,13 +4,16 @@
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
 ###########################################################################
+## \package app.API.PALDatastore
+## \brief Contains abstraction layer functions for 'low level' data access - returns results in a platform independent form
+###########################################################################
 import cloudstorage as gcs 
 from FileStat import FileStat
 
 ## \brief Platoform Abstraction Layer API for 'low level' datastore access
 
 ###########################################################################
-## open - opens a resource for write/read/edit etc.
+## \brief Opens a resource for write/read/edit etc.
 ## \param cls - class reference
 ## \param file_name - name of file to open
 ## \param mode - (= 'r') mode to open file in
@@ -38,7 +41,7 @@ def open(	file_name,
 	
 	
 ###########################################################################
-## delete - deletes a resource
+## \brief Deletes a resource
 ## \param cls - class reference
 ## \param file_name - name of resource to delete
 ## \param retry_params - (= None)
@@ -58,7 +61,7 @@ def delete(	file_name,
 		
 		
 ###########################################################################
-## __gcs_file_stat_conversion__ - transfers the data of a google provided GCSFileStat object into a FileStat object
+## \brief Transfers the data of a google provided GCSFileStat object into a FileStat object
 ## \param gcs_file_stat - the GCSFileStat object to transfer data from
 ## \return FileStat object - the genericised FileStat object
 ## \author cwike@keesaco.com of Keesaco
@@ -74,7 +77,7 @@ def __gcs_file_stat_conversion__( gcs_file_stat ):
 	return file_stat
 	
 ###########################################################################
-## stat - gets information about a specified resource
+## \brief Gets information about a specified resource
 ## \param cls - class reference
 ## \param file_name - name of resource to get information about
 ## \param retry_params - (= None)
@@ -96,7 +99,7 @@ def stat(	file_name,
 		return file_stat
 	
 ###########################################################################
-## list_bucket - lists the contents of a storage bucket
+## \brief Lists the contents of a storage bucket
 ## \param cls - class reference
 ## \param path - path of bucket to list (string)
 ## \param marker - (= None) further path, only resources following this marker will be listed
