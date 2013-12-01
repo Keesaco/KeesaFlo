@@ -1,9 +1,9 @@
 ###########################################################################
-## \file app/Analysis/DataStructures/QueueReference.py
+## \file app/Analysis/Types/QueueReference.py
 ## \brief Contains the queue reference class.
 ## \author swhitehouse@keesaco.com of Keesaco
 ###########################################################################
-## \package app.Analysis.DataStructures.QueueReference
+## \package app.Analysis.Types.QueueReference
 ## \brief Provides a reference to a specific analysis id which can be stored in a priority queue.
 ###########################################################################
 
