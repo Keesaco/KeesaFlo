@@ -1,22 +1,21 @@
 ###########################################################################
-## \file app/DataStructures/data_ref.py
+## \file app/DataStructures/DataReference.py
 ## \brief Contains the data reference class.
 ## \author swhitehouse@keesaco.com of Keesaco
 ###########################################################################
-## \package app.DataStructures.data_ref
+## \package app.DataStructures.DataReference
 ## \brief Provides a class for storing a reference to a dataset
-## \todo The name of this package/file violates our naming convention, should be fixed
 ###########################################################################
 
 ## \brief Data reference class for holding information about a portion of a data set.
-class data_ref:
+class DataReference:
 	###########################################################################
-	## \brief Constructor for the data_ref object.
+	## \brief Constructor for the DataReference object.
 	## \param self - instance reference
 	## \param path - path through which the data can be located in the data store
 	## \param start - (= 0) the start point of the data to be included in analysis
 	## \param end - (= 0) the end point of the data to be included in analysis
-	## \return Returns data_ref object on success. Returns false on fail.
+	## \return Returns DataReference object on success. Returns false on fail.
 	## \note Will fail if no path is given.
 	## \note Will fail if end is less than start.
 	## \note Setting both start and end to 0 (as is default) will include all of the available data in analysis.
