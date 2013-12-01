@@ -3,7 +3,7 @@
 ## \brief contains classes for permissions, users, groups and for grouping these classes to form permission sets
 ## \author jmccrea@keesaco.com of Keesaco
 ###########################################################################
-## \package Permissions.Types
+## \package app.Permissions.Types
 ## \brief Defines classes for storing users, groups and for grouping these classes to form permission sets
 ###########################################################################
 
