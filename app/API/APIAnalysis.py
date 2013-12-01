@@ -5,10 +5,10 @@
 ## \author rmurley@keesaco.com of Keesaco
 ###########################################################################
 ## \package app.API.APIAnalysis
-## \brief Provides an API for acessing the analysis plugin management
+## \brief Provides an API for accessing the analysis plugin management.
 ###########################################################################
 
-## \brief API for analysis - Manages requests to the Analysis API.
+## \brief API for analysis managing requests to the Analysis API.
 class APIAnalysis:
 
 	###########################################################################

@@ -4,7 +4,7 @@
 ## \author swhitehouse@keesaco.com of Keesaco
 ###########################################################################
 ## \package app.DataStructures.PluginReference
-## \brief Provides a plugin reference
+## \brief Provides a reference to a specific plugin.
 ###########################################################################
 
 

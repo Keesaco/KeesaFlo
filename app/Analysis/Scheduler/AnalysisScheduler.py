@@ -24,7 +24,7 @@ class AnalysisScheduler:
 	## \param analysis_id - the id of the task being queued
 	## \param priority - a value determining the priority of the specific analysis
 	## \return On fail, return False. On success, return True.
-	## \note If an analysis_id already exists in the queue, then it will be given the higher priority out of the new priority and its existing priority.
+	## \note If an analysis_id already exists in the queue, then it will be merged.
 	## \author swhitehouse@keesaco.com of Keesaco
 	###########################################################################
 	def schedule_task( 	analysis_id,
@@ -60,7 +60,7 @@ class AnalysisScheduler:
 
 	###########################################################################
 	## \brief Is called to return how many tasks are currently in the schedule.
-	## \return Returns the number of tasks currently in the schedule. Return False on fail.
+	## \return Returns the number of tasks currently in the schedule.
 	## \author swhitehouse@keesaco.com of Keesaco
 	###########################################################################
 	def number_task(	):

@@ -4,7 +4,7 @@
 ## \author swhitehouse@keesaco.com of Keesaco
 ###########################################################################
 ## \package app.DataStructures.DataReference
-## \brief Provides a class for storing a reference to a dataset
+## \brief Provides a reference to a specific set of data.
 ###########################################################################
 
 ## \brief Data reference class for holding information about a portion of a data set.
