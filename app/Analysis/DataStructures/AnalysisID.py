@@ -1,30 +1,29 @@
 ###########################################################################
-## \file app/DataStructures/analysis_id.py
+## \file app/Analysis/DataStructures/AnalysisID.py
 ## \brief Contains the analysis id class
 ## \author swhitehouse@keesaco.com of Keesaco
 ###########################################################################
-## \package app.DataStructures.analysis_id
+## \package app.Analysis.DataStructures.AnalysisID
 ## \brief Provides a class for storing information about an analysis task
-## \todo The name of this package/file violates our naming convention, should be fixed
 ###########################################################################
 
 
 ## \brief Analysis id, responsible for holding information on a specific analysis and its users
-class analysis_id:
+class AnalysisID:
 	
 	###########################################################################
-	## \brief Constructor for the analysis_id object.
+	## \brief Constructor for the AnalysisID object.
 	## \param self - instance reference
-	## \param analysis_id_number - the randomly assigned and unique identifier for this object
+	## \param id_number - the randomly assigned and unique identifier for this object
 	## \param user_id - the id of the user associated with this analysis
-	## \param data_ref - the data_ref object associated with this analysis
-	## \param plugin_ref - the plugin_ref object associated with this analysis
-	## \return Returns analysis_id object.
+	## \param data_ref - the DataReference object associated with this analysis
+	## \param plugin_ref - the PluginReference object associated with this analysis
+	## \return Returns AnalysisID object.
 	## \author swhitehouse@keesaco.com of Keesaco
 	###########################################################################
-	def __init__(self, analysis_id_number, user_id, data_ref, plugin_ref):
+	def __init__(self, id_number, user_id, data_ref, plugin_ref):
 		## The unique id number used for referencing this analysis object.
-		self.analysis_id_number = analysis_id_number
+		self.id_number = id_number
 		## The list of users associated with this object.
 		self.users = [user_id]
 		## The data_ref object for this analysis.

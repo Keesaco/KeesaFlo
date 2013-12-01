@@ -1,29 +1,28 @@
 ###########################################################################
-## \file app/DataStructures/queue_ref.py
+## \file app/Analysis/DataStructures/QueueReference.py
 ## \brief Contains the queue reference class.
 ## \author swhitehouse@keesaco.com of Keesaco
 ###########################################################################
-## \package app.DataStructures.queue_ref
+## \package app.Analysis.DataStructures.QueueReference
 ## \brief Provides a queue reference class
-## \todo The name of this package/file violates our naming convention, should be fixed
 ###########################################################################
 
 ## \brief Queue reference class holding a priority and an analysis id.
-class queue_ref:
+class QueueReference:
 
 	###########################################################################
-	## \brief Constructor for the queue_ref object.
+	## \brief Constructor for the QueueReference object.
 	## \param self - instance reference
 	## \param analysis_id_number - the id number for the specific analysis
 	## \param user_id - the id number for the original user
 	## \param priority - (= 0) the user priority for the object
-	## \return Returns queue_ref object.
+	## \return Returns QueueReference object.
 	## \warning Does not check that the analysis_id_number references anything.
 	## \author swhitehouse@keesaco.com of Keesaco
 	###########################################################################
-	def __init__(self, analysis_id_number, user_id, priority = 0):
+	def __init__(self, id_number, user_id, priority = 0):
 		## The id number for the specific analysis.
-		self.analysis_id_number = analysis_id_number
+		self.id_number = id_number
 		## The user_id list for the users performing this analysis.
 		self.users = [user_id]
 		if priority < 0:
@@ -41,7 +40,7 @@ class queue_ref:
 	## \author swhitehouse@keesaco.com of Keesaco
 	###########################################################################
 	def age_reference(self):
-		self.total_priority += sum(self.prioritys)
+		self.total_priority += sum(self.priorities)
 		return True
 	
 	###########################################################################
