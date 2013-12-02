@@ -1,9 +1,9 @@
 ###########################################################################
-## \file app/Analysis/Types.py
+## \file app/Analysis/Types/Types.py
 ## \brief Contains all analysis types.
 ## \author swhitehouse@keesaco.com of Keesaco
 ###########################################################################
-## \package app.Analysis.Types
+## \package app.Analysis.Types.Types
 ## \brief Provides all type classes associated with analysis.
 ###########################################################################
 
