@@ -140,13 +140,13 @@ class QueueReference:
 	def __init__(	self,
 					id_number,
 					user_id,
-					priority = 0	):
+					priority = 1	):
 		## The id number for the specific analysis.
 		self.id_number = id_number
 		## The user_id list for the users performing this analysis.
 		self.users = [user_id]
-		if priority < 0:
-			priority = 0
+		if priority < 1:
+			priority = 1
 		## The priority list for this item in the queue.
 		self.priorities = [priority]
 		## The priority garnered through ageing by this object.
