@@ -7,6 +7,7 @@
 ## \brief Provides an Analysis Manager class which is responsible for instantiating plugins and providing information to the instantiations.
 ###########################################################################
 
+
 ## \brief Analysis Manager responsible for instantiating plugins and providing them with data.
 class AnalysisManager:
 
