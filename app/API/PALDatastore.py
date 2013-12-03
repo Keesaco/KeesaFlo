@@ -113,7 +113,7 @@ def stat(	file_name,
 ###########################################################################
 def list_bucket(	path,
 					marker = None,
-					prefix = None, ##deprecated
+					prefix = None, #deprecated
 					max_keys = None,
 					delimiter = None,
 					retry_params = None	):

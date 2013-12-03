@@ -163,12 +163,17 @@ def add_directory(	path,
 ## \param path - path of directory to list
 ## \param permssions - (= None) permissions object for current use
 ## \return list of FileInfo objects for files/directories in the specified directory, False on failure
+## \todo test operation
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
 ###########################################################################
 def list(	path,
 			permissions = None ):
-	pass
+	
+	if __check_authentication(path, 'r', permissions): #check permissions to read directory
+		return PALDatastore.list_bucket(path) #call into PAL to list bucket
+
+	return False #return false on failure
 
 ###########################################################################
 ## \brief Deletes a specified file or directory
