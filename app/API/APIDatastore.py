@@ -130,10 +130,8 @@ def open(	path,
 	if __check_authentication( path, mode, permissions.authed_user):
 		if check_exists( path, permissions.authed_user):
 			return PALDatastore.open( path, mode )
-		else:
-			return False
-	else:
-		return False
+
+	return False
 
 ###########################################################################
 ## \brief Closes an open file
