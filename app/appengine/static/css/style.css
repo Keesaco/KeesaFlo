@@ -1,0 +1,25 @@
+@media screen and (min-width: 768px) {
+  .jumbotron h1 {
+    font-size: 48px;
+    color: #000000;
+  }
+  .jumbotron {
+    margin-left: 14%;
+    margin-right: 14%;
+    text-align: center;
+    margin-top: 16%; /*problem when minimising screen jumbotron jumps to top as nav bar changes*/
+    background: rgba(238,238,238, 0.7);
+    -webkit-box-shadow: 5px 5px 7px rgba(0,0,0,.2), -5px -5px 7px rgba(0,0,0,.2); /*need equivalent for other browsers*/
+  }
+}
+.container {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+body {
+    background:url('../images/cells.jpg') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+}
