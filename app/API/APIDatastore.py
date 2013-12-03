@@ -226,13 +226,14 @@ def copy(	source,
 ## \param allow_dir - (= False) if false, the method will fail if the specified path refers to a directory
 ## \return True on success, False otherwise
 ## \note	permissions will only be added, not updated or removed - if a user already has permissions and the permissions object specifies different permissions, that user's permissions will not be updated. Additionally, if a user has permissions and that user is not listed within the permissions object, that user's permissions will not be removed.
+## \todo Stub: this should be implemented once the permissionsntable has been implemented/specified
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
 ###########################################################################
 def	add_permissions(	path,
 						permissions,
 						allow_dir = False	):
-	pass
+	return True
 
 ###########################################################################
 ## \brief Edits the permissions on a file or directory
@@ -241,6 +242,7 @@ def	add_permissions(	path,
 ## \param allow_dir - (= False) if false, the method will fail if the specified path refers to a directory
 ## \note	edit_permissions will only update permissions, i.e. it will not remove a user/groups's permissions if they already have access but are not listed in the permissions object. It will also not add a user/group if they appear in the permissions object but do not have existing permissions for the file/directory
 ## \return True on success, False otherwise
+## \todo Stub: this should be implemented once the permissionsntable has been implemented/specified
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
 ###########################################################################
@@ -248,7 +250,7 @@ def edit_permissions(	path,
 						permissions,
 						overwrite = False,
 						allow_dir = False	):
-	pass
+	return True
 
 ###########################################################################
 ## \brief Removes users'/groups' permissions from a specified file/directory
@@ -257,13 +259,14 @@ def edit_permissions(	path,
 ## \param allow_dir - (= False) if false, the method will fail if the specified path refers to a directory
 ## \note delete_permissions will always delete a user's/group's permissions if they are listed in the permissions object, even if the permissions specified in the permissions object differ from their current permissions on the file itself.
 ## \return True on success, False otherwise
+## \todo Stub: this should be implemented once the permissionsntable has been implemented/specified
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
 ###########################################################################
 def delete_permissions(	path,
 						permissions = None,
 						allow_dir = False	 ):
-	pass
+	return True
 
 ###########################################################################
 ## \brief Overwrites users'/groups' permissions for a specified file/directory
@@ -271,23 +274,25 @@ def delete_permissions(	path,
 ## \param permissions - these permissions will replace the existing permissions on the specified file/directory
 ## \param allow_dir - (= False) if false, the method will fail if the specified path refers to a directory
 ## \return True on success, False otherwise
+## \todo Stub: this should be implemented once the permissionsntable has been implemented/specified
 ## \author jmccrea@keesaco.com of Keesaco
 ###########################################################################
 def overwrite_permissions(	path,
 						  	permissions,
 						  	allow_dir = False	):
-	pass
+	return True
 
 ###########################################################################
 ## \brief Gets a permissions object representing a file's permissions
 ## \param path - path to list permissions for
 ## \param permissions - (= None) permissions object for current user
 ## \param allow_dir - (= False) if false, the method will fail if the specified path refers to a directory
-## \return True on success, False otherwise
+## \return Permissions objects representing users and groups and their respective permissions
+## \todo Stub: this should be implemented once the permissionsntable has been implemented/specified
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
 ###########################################################################
 def get_permissions(	path,
 						permissions = None,
 						allow_dir = False	):
-	pass
+	return None
