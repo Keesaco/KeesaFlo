@@ -266,6 +266,19 @@ def delete_permissions(	path,
 	pass
 
 ###########################################################################
+## \brief Overwrites users'/groups' permissions for a specified file/directory
+## \param path - path to file/directory to overwrite permissions for
+## \param permissions - these permissions will replace the existing permissions on the specified file/directory
+## \param allow_dir - (= False) if false, the method will fail if the specified path refers to a directory
+## \return True on success, False otherwise
+## \author jmccrea@keesaco.com of Keesaco
+###########################################################################
+def overwrite_permissions(	path,
+						  	permissions,
+						  	allow_dir = False	):
+	pass
+
+###########################################################################
 ## \brief Gets a permissions object representing a file's permissions
 ## \param path - path to list permissions for
 ## \param permissions - (= None) permissions object for current user
