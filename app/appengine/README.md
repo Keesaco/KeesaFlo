@@ -13,5 +13,6 @@ This is a skeleton implementation of the Django framework for Google App Engine.
 2. Run "appcfg.py update" from the command line taking this directory as an argument: "appcfg.py update Keesaco/app/appengine".
 
 ## Download from App Engine
+Important: not possible if you are not the owner of the app or the uploader of the version
 1. Download the Google App Engine Python SDK.
-2. Run "appcfg.py download" from the command line taking a target directory as an argument: "appcfg.py download <target_directory>". The files on the App Engine will be downloaded to <target_directory>.
+2. Run "appcfg.py download" from the command line taking a target directory as an argument: "appcfg.py download_app keesaco-spe <target_directory>". The files on the App Engine will be downloaded to <target_directory>.
