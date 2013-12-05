@@ -1,0 +1,74 @@
+<!-- This file define the basic layout of the web application 
+    each webpage of the webapp will extends this file and chang
+    some of the block as needed -->
+
+<!-- TODO:  - Handle the active tab
+            - narrow the container
+            - remove background image on other than index -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}Default Title{% endblock title %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    {% load staticfiles %}
+    <link href="{% static "css/bootstrap.css" %}" rel="stylesheet">
+    {% block cssimport %}{% endblock cssimport %}
+    
+    {% block customstyle %}
+        <style>
+            body {
+                padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+            }
+        </style>
+    {% endblock customstyle %}
+    
+    
+  </head>
+
+  <body>
+    
+    {% block navbar %}
+    <!-- navigation bar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <ul class="nav navbar-nav">
+                <li><a href="{% url index %}">Logo goes here</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="{% url about %}">About</a></li>
+                <li><a href="{% url faq %}">FAQ</a></li>
+                <li><a href="#">Login</a></li>
+                </ul>
+            </ul>
+        </div>
+    </nav>
+    {% endblock navbar %}
+        
+    {% block content %}{% endblock content %}
+
+    {% block javascriptimport %}
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster but lot of these might not be useful to load
+    <script src="../assets/js/jquery.js"></script>
+    <script src="../assets/js/bootstrap-transition.js"></script>
+    <script src="../assets/js/bootstrap-alert.js"></script>
+    <script src="../assets/js/bootstrap-modal.js"></script>
+    <script src="../assets/js/bootstrap-dropdown.js"></script>
+    <script src="../assets/js/bootstrap-scrollspy.js"></script>
+    <script src="../assets/js/bootstrap-tab.js"></script>
+    <script src="../assets/js/bootstrap-tooltip.js"></script>
+    <script src="../assets/js/bootstrap-popover.js"></script>
+    <script src="../assets/js/bootstrap-button.js"></script>
+    <script src="../assets/js/bootstrap-collapse.js"></script>
+    <script src="../assets/js/bootstrap-carousel.js"></script>
+    <script src="../assets/js/bootstrap-typeahead.js"></script> -->
+    {% endblock javascriptimport %}
+  </body>
+</html>

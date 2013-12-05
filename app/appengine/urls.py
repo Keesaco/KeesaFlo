@@ -1,5 +1,6 @@
 from django.conf.urls.defaults import *
 from django.contrib import admin
+import views #TODO may need to be moved, to be decided later
 import dbindexer
 
 handler500 = 'djangotoolbox.errorviews.server_error'
@@ -12,6 +13,10 @@ dbindexer.autodiscover()
 
 urlpatterns = patterns('',
     ('^_ah/warmup$', 'djangoappengine.views.warmup'),
-    ('^$', 'django.views.generic.simple.direct_to_template', {'template': 'index.html'}),
-    ('^admin/', include(admin.site.urls)),
+    #('^$', 'django.views.generic.simple.direct_to_template', {'template': 'index.html'}),
+    url(r'^$', 'views.index', name='index'),
+    url(r'^about/$', 'views.about', name='about'),
+    url(r'^faq/$', 'views.faq', name='faq'),
+    url(r'^app/$', 'views.app', name='app'),
+    ('^admin/', include(admin.site.urls))
 )
