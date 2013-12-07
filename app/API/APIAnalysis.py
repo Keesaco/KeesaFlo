@@ -26,13 +26,13 @@ class APIAnalysis:
 	## \param plugin_ref - reference to the plugin to be used for analysis
 	## \param user_id - the id of the user starting the analysis
 	## \param priority - a value determining the priority of the specific analysis
-	## \return On fail, return false. On success, returns the analysis_id for the specific analysis request.
+	## \return On fail, return false. On success, returns the analysis_id_number for the specific analysis request.
 	## \note user_id is used primarily to make sure that other users cannot mess with the original user's analysis.
 	## \warning This function does not check that the user has permissions to perform the specified analysis. Nor does it check whether the analysis has already been performed.
 	## \author swhitehouse@keesaco.com of Keesaco
 	## \author rmurley@keesaco.com of Keesaco
 	###########################################################################
-	def queue_analysis(	data_ref,
+	def add_analysis(	data_ref,
 						plugin_ref,
 						user_id,
 						priority	):
@@ -49,7 +49,7 @@ class APIAnalysis:
 	## \author swhitehouse@keesaco.com of Keesaco
 	## \author rmurley@keesaco.com of Keesaco
 	###########################################################################
-	def cancel_analysis(	analysis_id,
+	def remove_analysis(	analysis_id,
 							user_id	):
 		pass
 
@@ -66,5 +66,8 @@ class APIAnalysis:
 	###########################################################################
 	def check_analysis(	analysis_id,
 						user_id	):
+		pass
+	
+	def change_priority_analysis():
 		pass
 
