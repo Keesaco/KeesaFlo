@@ -1,9 +1,9 @@
 ###########################################################################
-## \file app/Analysis/ExtTypes.py
+## \file app/Analysis/Types/ExtTypes.py
 ## \brief Contains all analysis types.
 ## \author swhitehouse@keesaco.com of Keesaco
 ###########################################################################
-## \package app.Analysis.ExtTypes
+## \package app.Analysis.Types.ExtTypes
 ## \brief Provides all external type classes associated with analysis.
 ###########################################################################
 
@@ -18,8 +18,8 @@ class DataReference:
 	## \param set - (= [(0, 0)]) a list of the start and end points (in bytes) of the subsets of data to be analysed
 	## \return Returns DataReference object on success. Returns false on fail.
 	## \note Will fail if no path is given.
-	## \note Will fail if end is less than start.
-	## \note Leving set as default will include all of the available data in analysis.
+	## \note Will fail if first value in the tuple is greater than the second.
+	## \note Leaving set as default will include all of the available data in analysis.
 	## \warning Does not check that the path for the data exists.
 	## \author swhitehouse@keesaco.com of Keesaco
 	###########################################################################
@@ -33,10 +33,8 @@ class DataReference:
 				return False
 		## The path at which the data can be found.
 		self.path = path
-		## The start of the data set to be used (in bytes).
-		self.start_set = start
-		## The end of the data set to be used (in bytes).
-		self.end_set = end
+		## The subset of data being referenced.
+		self.subset = set
 		return self
 
 
