@@ -1,15 +1,15 @@
 ###########################################################################
-## \file app/Analysis/Admin/AdminVariables.py
+## \file app/Analysis/ExtAdminConfig.py
 ## \brief Contains 'administration' variables which changes the functioning of the analysis package.
 ## \author swhitehouse@keesaco.com of Keesaco
 ###########################################################################
-## \package app.Analysis.Admin.AdminVariables
+## \package app.Analysis.ExtAdminConfig
 ## \brief Provides administrative variables to control the functioning of the package.
 ###########################################################################
 
 
 ## \brief Contains variable to control the analysis system.
-class AdminVariables:
+class ExtAdminConfig:
 
 	###########################################################################
 	## \brief Constructor for AdminVariables.
@@ -39,3 +39,6 @@ class AdminVariables:
 		## Defines the maximum priority of any user.
 		self.max_priority = max_priority
 		pass
+
+	
+
