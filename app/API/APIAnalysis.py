@@ -24,7 +24,7 @@ class APIAnalysis:
 	## \brief Is called to request that a new analysis using a specific plugin and data set be added to the scheduler.
 	## \param data_ref - reference to the data to be analysis
 	## \param plugin_ref - reference to the plugin to be used for analysis
-	## \param user_id - the id of the user starting the analysis
+	## \param user_id_number - the id of the user starting the analysis
 	## \param priority - a value determining the priority of the specific analysis
 	## \return On fail, return false. On success, returns the analysis_id_number for the specific analysis request.
 	## \note user_id is used primarily to make sure that other users cannot mess with the original user's analysis.
@@ -34,7 +34,7 @@ class APIAnalysis:
 	###########################################################################
 	def add_analysis(	data_ref,
 						plugin_ref,
-						user_id,
+						user_id_number,
 						priority	):
 		pass
 
@@ -50,7 +50,7 @@ class APIAnalysis:
 	## \author rmurley@keesaco.com of Keesaco
 	###########################################################################
 	def remove_analysis(	analysis_id,
-							user_id	):
+							user_id_number	):
 		pass
 
 	###########################################################################
@@ -65,7 +65,7 @@ class APIAnalysis:
 	## \author rmurley@keesaco.com of Keesaco
 	###########################################################################
 	def check_analysis(	analysis_id,
-						user_id	):
+						user_id_number	):
 		pass
 	
 	def change_priority_analysis():
