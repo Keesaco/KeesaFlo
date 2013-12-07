@@ -8,6 +8,7 @@
 ## \brief Provides an API for accessing the analysis plugin management.
 ###########################################################################
 
+
 ## \brief API for analysis managing requests to the Analysis API.
 class APIAnalysis:
 
@@ -49,7 +50,7 @@ class APIAnalysis:
 	## \author swhitehouse@keesaco.com of Keesaco
 	## \author rmurley@keesaco.com of Keesaco
 	###########################################################################
-	def remove_analysis(	analysis_id,
+	def remove_analysis(	analysis_id_number,
 							user_id_number	):
 		pass
 
@@ -64,10 +65,7 @@ class APIAnalysis:
 	## \author swhitehouse@keesaco.com of Keesaco
 	## \author rmurley@keesaco.com of Keesaco
 	###########################################################################
-	def check_analysis(	analysis_id,
+	def check_analysis(	analysis_id_number,
 						user_id_number	):
-		pass
-	
-	def change_priority_analysis():
 		pass
 
