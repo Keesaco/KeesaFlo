@@ -10,5 +10,12 @@
 
 class PALAnalysisManager:
 
-	pass
+	def instantiate_plugin():
+		pass
+	
+	def kill_instance():
+		pass
+	
+	def communicate_instance():
+		pass
 
