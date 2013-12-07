@@ -15,21 +15,22 @@ class DataReference:
 	## \brief Constructor for the DataReference object.
 	## \param self - instance reference
 	## \param path - path through which the data can be located in the data store
-	## \param start - (= 0) the start point of the data to be included in analysis
-	## \param end - (= 0) the end point of the data to be included in analysis
+	## \param set - (= [(0, 0)]) a list of the start and end points (in bytes) of the subsets of data to be analysed
 	## \return Returns DataReference object on success. Returns false on fail.
 	## \note Will fail if no path is given.
 	## \note Will fail if end is less than start.
-	## \note Setting both start and end to 0 (as is default) will include all of the available data in analysis.
+	## \note Leving set as default will include all of the available data in analysis.
 	## \warning Does not check that the path for the data exists.
 	## \author swhitehouse@keesaco.com of Keesaco
 	###########################################################################
 	def __init__(	self,
 					path,
-					start = 0,
-					end = 0	):
-		if start > end || start == end != 0 || path == None:
+					set = [(0, 0)]	):
+		if path == None:
 			return False
+		for (x, y) in set:
+			if x > y:
+				return False
 		## The path at which the data can be found.
 		self.path = path
 		## The start of the data set to be used (in bytes).
