@@ -12,3 +12,6 @@ def faq(request):
 
 def app(request):
 	return render(request, 'app.html')
+
+def settings(request):
+	return render(request, 'settings.html')
