@@ -2,40 +2,13 @@
 	padding: 0 15px;
 }
 
-
-
-
-/* used to push a div at the bottom, 
-see http://ryanfait.com/resources/footer-stick-to-bottom-of-page/ */
-html, body
-{ 
-    height: 100%;
-} 
-.sidepanel
-{
-	position: fixed;
-}
-.wrapper
-{
-    min-height: 100%; 
-    height: auto !important; /*Cause footer to stick to bottom in IE 6*/
-    height: 100%; 
-    margin: 0 auto -100px; /*Allow for footer height*/
-    vertical-align:bottom;
-}
-.footer, .push
-{
-    height: 4em; /*Push must be same height as Footer */
-    clear: both;
-}
-
-
-/* delete the gap between bootstrap rows */
+/* delete the gap between bootstrap rows and navbar */
 .col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12
 { /* I'm not sure if this is the best practice */
 	padding-right: 0;
 	padding-left: 0;
 }
+
 .navbar
 {
 	margin-bottom: 0;
@@ -45,6 +18,11 @@ html, body
 .apppanel
 {
 	overflow: auto;
+}
+
+.sidepanel
+{
+	padding-left: 15px;
 }
 
 .appcontent
