@@ -43,12 +43,12 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a href="#" class="navbar-brand">Logo goes here</a>
+                <a href="{% url index %}" class="navbar-brand">Logo goes here</a>
             </div>
             <div class="nav-collapse navbar-collapse collapse">
                 <ul class="nav navbar-nav pull-right">
-                    <li><a href="About.html">About</a></li>
-                    <li><a href="FAQ.html">FAQ</a></li>
+                    <li><a href="{% url about %}">About</a></li>
+                    <li><a href="{% url faq %}">FAQ</a></li>
                     <li><a href="#">Login</a></li>
                 </ul>
             </div>
