@@ -172,8 +172,6 @@ def close(	file_handle	):
 ###########################################################################
 def add_directory(	path,
 					permissions = None	):
-<<<<<<< HEAD
-					
 	if check_exists(path, permissions.authed_user):
 		return False
 	else:
@@ -186,12 +184,6 @@ def add_directory(	path,
 				return True
 		else:
 			return False
-		
-		
-		
-=======
-	passs
->>>>>>> c9e93fa16efaad2c42f994d91b9c2f5382475f7f
 
 ###########################################################################
 ## \brief Lists the contents of a directory
