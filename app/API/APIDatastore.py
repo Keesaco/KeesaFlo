@@ -176,7 +176,7 @@ def add_directory(	path,
 	if check_exists(path, permissions):
 		return False
 	else:
-		if check_exists(get_container(path,permissions):
+		if check_exists(get_container(path,permissions)):
 			file_handle = PALDatastore.open(path, 'w')
 			if file_handle is None:
 				return False
