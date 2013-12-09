@@ -83,13 +83,15 @@ def add_file(	path,
 ## \return returns a path within the correct directory for the specified data type
 ## \warning This method only returns a path, it does not check that the path exists or check the permissions on that path
 ## \note generate_path( "somepath/", someType, "somefile.ext" ) is functionally identical to generate_path( "somepath/somefile.ext", someType )
+## \todo stub - needs implementing
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
 ###########################################################################
 def generate_path(	inner_path,
 					data_type,
 					file_name = ""	):
-	pass
+	
+	return inner_path + file_name #Simply return the path and filename for now
 
 ###########################################################################
 ## \brief Appends a blob to an existing file
