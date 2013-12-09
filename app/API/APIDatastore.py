@@ -16,27 +16,27 @@ import PALDatastore
 ## \brief Checks the authentication of the user against the file
 ## \param path - filepath of data to check
 ## \param action - intended action on data
-## \param user - user attempting to perform access
+## \param permissions - user attempting to perform access
 ## \return returns True if authourised else False
 ## \todo Stub: returns True, needs implementing
 ## \author cwike@keesaco.com of Keesaco
 ###########################################################################
 def __check_authentication (	path,
 							action ='r', #d = delete
-								user = None):
+								permissions = None):
 	return True
 
 ###########################################################################
 ## \brief Checks the existance of file or directory being searched
 ## \param path - path of file to check
-## \param authed_user - the user to check authed
+## \param permissions - the user to check authed
 ## \return if exists, as far as the user is aware,return True, else False
 ## \todo test functionality
 ## \author cwike@keesaco.com of Keesaco
 ###########################################################################	
 def check_exists (	path,
-					authed_user):
-	if __check_authentication ( path, 'r' , authed_user ):
+					permissions):
+	if __check_authentication ( path, 'r' , permissions ):
 		if PALDatastore.stat( path ) is None :
 			return False
 		else:
@@ -74,7 +74,7 @@ def add_file(	path,
 				blob = None,
 				mode = None,
 				permissions = None ):
-	if check_exists( path, permissions.authed_user):
+	if check_exists( path, permissions ):
 		return False
 	else:
 		file_handle = PALDatastore.open(path,'w')
