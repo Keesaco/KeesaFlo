@@ -37,7 +37,7 @@ def __check_authentication (	path,
 def check_exists (	path,
 					authed_user):
 	if __check_authentication ( path, 'r' , authed_user ):
-		if PALDatastore.stat( path ) == None :
+		if PALDatastore.stat( path ) is None :
 			return False
 		else:
 			return True
@@ -64,13 +64,13 @@ def add_file(	path,
 		return False
 	else:
 		file_handle = PALDatastore.open(path,'w')
-		if file_handle == None
+		if file_handle is None:
 			return False
-		if blob != None:
+		if blob is not None:
 			file_handle.write(blob)
 		file_handle.close()
 		add_permissions( path, permissions, True)
-		if mode == None:
+		if mode is None:
 			return False
 		else:
 			return PALDatastore.open(path, mode)
