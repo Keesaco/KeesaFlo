@@ -69,6 +69,10 @@ handlers:
   static_dir: django/contrib/admin/static/admin
   expiration: '0'
 
+- url: /favicon.ico
+  static_files: static/images/favicon.ico
+  upload: static/images/favicon.ico
+
 # This handler catches all requests that don't match a previous handler.
 - url: /.*
   script: djangoappengine.main.application
