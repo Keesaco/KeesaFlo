@@ -53,9 +53,9 @@ def check_exists (	path,
 ## \author jmccrea@keesaco.com of Keesaco
 ###########################################################################
 def get_container(	path	):
-	rpart = path.rpartition(PALDatastore.DIRETORY_SEPARATOR)
+	rpart = path.rpartition(PALDatastore.DIRECTORY_SEPARATOR)
 	if len(rpart[2]) == 0: #directory
-		rpart = rpart[0].rpartition(PALDatastore.DIRETORY_SEPARATOR)
+		rpart = rpart[0].rpartition(PALDatastore.DIRECTORY_SEPARATOR)
 	return rpart[0]+rpart[1]
 							 
 ###########################################################################
