@@ -31,7 +31,6 @@ def __check_authentication (	path,
 ## \param path - path of file to check
 ## \param permissions - the user to check authed
 ## \return if exists, as far as the user is aware,return True, else False
-## \todo test functionality
 ## \author cwike@keesaco.com of Keesaco
 ###########################################################################	
 def check_exists (	path,
@@ -48,7 +47,6 @@ def check_exists (	path,
 ## \brief Gets the path of the containing directory of the passed file/directory
 ## \param path - [String] path of file/directory to find parent of
 ## \return path to containing directory
-## \todo test functionality
 ## \warning This method does not check that the file/directory passed in exists or that the current user has permissions to access it. It merely performs string manipulations.
 ## \author jmccrea@keesaco.com of Keesaco
 ###########################################################################
@@ -67,7 +65,6 @@ def get_container(	path	):
 ## \param permssions - (= None) permissions object for current user and permissions to apply to file
 ## \return on success returns file handle for created file or True if mode = None, on failure returns False
 ## \note this method will fail if the directory does not already exist
-## \todo test functionality
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
 ###########################################################################
@@ -114,7 +111,7 @@ def generate_path(	inner_path,
 ## \param blob - binary object to append to specified file
 ## \param permssions - (= None) permissions object for current user
 ## \return True on success, false otherwise
-## \todo test operation
+## \todo Make it work
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
 ###########################################################################
@@ -137,7 +134,6 @@ def append(	path,
 ## \param mode - (= 'r') mode to open file in
 ## \param permssions - (= None) permissions object for current user
 ## \return returns file handle on success or False on failure
-## \todo test operation
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
 ###########################################################################
@@ -154,7 +150,6 @@ def open(	path,
 ## \brief Closes an open file
 ## \param file_handle - handle for file to close
 ## \return True on success, False otherwie
-## \todo test operation
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
 ###########################################################################
@@ -167,7 +162,7 @@ def close(	file_handle	):
 ## \warning path requires a trailing slash currently.
 ## \param permssions - (= None) permissions object for current user and permissions to apply to new directory
 ## \return True on success, False otherwise
-## \todo Testing needed
+## \todo Make it work in root
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
 ###########################################################################
@@ -192,7 +187,6 @@ def add_directory(	path,
 ## \param path - path of directory to list
 ## \param permssions - (= None) permissions object for current use
 ## \return list of FileInfo objects for files/directories in the specified directory, False on failure
-## \todo test operation
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
 ###########################################################################
