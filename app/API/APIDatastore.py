@@ -53,10 +53,11 @@ def check_exists (	path,
 ## \author jmccrea@keesaco.com of Keesaco
 ###########################################################################
 def get_container(	path	):
-	rpart = path.rpartition(PALDatastore.DIRECTORY_SEPARATOR)
+	bucket = path.partition(PALDatastore.DIRECTORY_SEPARATOR) #gets bucket name
+	rpart = bucket[2].rpartition(PALDatastore.DIRECTORY_SEPARATOR)
 	if len(rpart[2]) == 0: #directory
 		rpart = rpart[0].rpartition(PALDatastore.DIRECTORY_SEPARATOR)
-	return rpart[0]+rpart[1]
+	return bucket[0]+bucket[1]+rpart[0]+rpart[1]
 							 
 ###########################################################################
 ## \brief Creates a new file and optionally opens it in a given mode
@@ -175,8 +176,8 @@ def add_directory(	path,
 	if check_exists(path, permissions):
 		return False
 	else:
-		if check_exists(get_container(path),permissions):
-			file_handle = PALDatastore(open, 'w')
+		if check_exists(get_container(path,permissions):
+			file_handle = PALDatastore.open(path, 'w')
 			if file_handle is None:
 				return False
 			else:
