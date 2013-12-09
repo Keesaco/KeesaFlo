@@ -87,13 +87,13 @@ class PermissionSet:
 	###########################################################################
 	## \brief Constructs a PermissionSet instance for a given authenticated user
 	## \param self - instance reference
-	## \param authedUser - (= None) [User] the currently authenticated user, usually this user's permissions will be checked when attempting to access resources
+	## \param authed_user - (= None) [User] the currently authenticated user, usually this user's permissions will be checked when attempting to access resources
 	## \return PermissionSet object
 	## \author jmccrea@keesaco.com of Keesaco
 	###########################################################################
-	def __init__(self, authedUser = None):
+	def __init__(self, authed_user = None):
 		## The currently authenticated user
-		self.authedUser = authedUser
+		self.authed_user = authed_user
 		## List of UserAccess objects to define permissions belonging to users
 		self.users = []
 		## List of GroupAccess objects to define permissions belonging to groups
@@ -102,22 +102,22 @@ class PermissionSet:
 	###########################################################################
 	## \brief Adds a user/permissions pair to the list of users/permissions
 	## \param self - instance reference
-	## \param newUser - [UserAccess] UserAccess object representing the user and permissions pairing to be added to the user list
+	## \param new_user - [UserAccess] UserAccess object representing the user and permissions pairing to be added to the user list
 	## \return none
 	## \author jmccrea@keesaco.com of Keesaco
 	###########################################################################
-	def addUser(self, newUser):
-		self.users.append(newUser)
+	def addUser(self, new_user):
+		self.users.append(new_user)
 	
 	###########################################################################
 	## \brief Adds a group/permissions pair to the list of groups/permissions
 	## \param self - instance reference
-	## \param newUser - [GroupAccess] GroupAccess object representing the group and permissions pairing to be added to the group list
+	## \param new_group - [GroupAccess] GroupAccess object representing the group and permissions pairing to be added to the group list
 	## \return none
 	## \author jmccrea@keesaco.com of Keesaco
 	###########################################################################
-	def addGroup(self, newGroup):
-		self.groups.append(newGroup)
+	def addGroup(self, new_group):
+		self.groups.append(new_group)
 
 ## \brief Contains information about a user
 class User:
