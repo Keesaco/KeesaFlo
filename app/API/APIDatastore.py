@@ -22,7 +22,7 @@ import PALDatastore
 ## \author cwike@keesaco.com of Keesaco
 ###########################################################################
 def __check_authentication (	path,
-								action ='r',
+							action ='r', #d = delete
 								user = None):
 	return True
 
@@ -170,7 +170,7 @@ def close(	file_handle	):
 ###########################################################################
 def add_directory(	path,
 					permissions = None	):
-	passs
+	pass
 
 ###########################################################################
 ## \brief Lists the contents of a directory
@@ -195,6 +195,7 @@ def list(	path,
 ## \param permissions - (= None) permissions object for current user
 ## \param allow_dir - (= False) if false, the method will fail if the specified path refers to a directory
 ## \return True on success, False otherwise
+## \todo implement directory deletion
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
 ###########################################################################
@@ -202,7 +203,13 @@ def delete( path,
 			permissions = None,
 			allow_dir = False ):
 			
-	pass
+	if allow_dir:
+		return False
+	else:
+		if __check_authentication(path, 'd'):
+			return PALDatastore.delete(path)
+
+	return False
 
 ###########################################################################
 ## \brief Moves a specified file/directory to a different location
