@@ -185,6 +185,7 @@ def list(	path,
 def delete( path,
 			permissions = None,
 			allow_dir = False ):
+			
 	pass
 
 ###########################################################################
@@ -194,6 +195,7 @@ def delete( path,
 ## \param permissions - (= None) permissions object for current user
 ## \param allow_dir - (= False) if false, the method will fail if the specified source path refers to a directory
 ## \return True on success, False otherwise
+## \todo Stub: not yet implemented
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
 ###########################################################################
@@ -211,6 +213,7 @@ def move(	source,
 ## \param allow_dir - (= False) if false, the method will fail if the specified path refers to a directory
 ## \param alter_permissions - (= False) if a permissions object is passed, the contained permissions will be applied to the copy
 ## \return True on success, False otherwise
+## \todo Stub: not yet implemented
 ## \note using alter_permissions will cause the given permissions object to overwrite the old permissions on the copy, but will leave the source file's permissions intact
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
