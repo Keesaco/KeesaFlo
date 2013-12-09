@@ -179,7 +179,7 @@ def add_directory(	path,
 			file_handle = PALDatastore(open, 'w')
 			if file_handle is None:
 				return False
-			else
+			else:
 				file_handle.close();
 				return True
 		else:
