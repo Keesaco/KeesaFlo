@@ -33,7 +33,7 @@ def open(	file_name,
 	try:
 		file_handle = gcs.open( file_name, mode, MIME_type, options, read_buff_size, retry_params)
 	
-	except ValueError:
+	except gcs.ValueError:
 		return None
 	else:
 		return file_handle
@@ -51,7 +51,7 @@ def delete(	file_name,
 			retry_params = None	):
 	try:
 		gcs.delete(file_name, retry_params)
-	except NotFoundError:
+	except gcs.NotFoundError:
 		return False
 	else:
 		return True
@@ -87,9 +87,9 @@ def stat(	file_name,
 	try:
 		gcs_stat = gcs.stat( file_name )
 		
-	except NotFoundError:
+	except gcs.NotFoundError:
 		return None
-	except AuthorizationError:
+	except gcs.AuthorizationError:
 		return None
 	else:
 		file_stat = __gcs_file_stat_conversion__( gcs_stat )
