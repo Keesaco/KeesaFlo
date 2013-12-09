@@ -143,7 +143,7 @@ def append(	path,
 def open(	path,
 			mode = 'r',
 			permissions = None):
-	if __check_authentication( path, mode, permissions.authed_user):
+	if __check_authentication( path, mode, permissions):
 		if check_exists( path, permissions.authed_user):
 			return PALDatastore.open( path, mode )
 
@@ -172,7 +172,7 @@ def close(	file_handle	):
 ###########################################################################
 def add_directory(	path,
 					permissions = None	):
-	if check_exists(path, permissions.authed_user):
+	if check_exists(path, permissions):
 		return False
 	else:
 		if check_exists(get_container(path),permissions.authed_user):
