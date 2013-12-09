@@ -14,7 +14,6 @@ from FileStat import FileStat
 
 ###########################################################################
 ## \brief Opens a resource for write/read/edit etc.
-## \param cls - class reference
 ## \param file_name - name of file to open
 ## \param mode - (= 'r') mode to open file in
 ## \param MIME_type - (= None) MIME type of data to access
@@ -42,7 +41,6 @@ def open(	file_name,
 	
 ###########################################################################
 ## \brief Deletes a resource
-## \param cls - class reference
 ## \param file_name - name of resource to delete
 ## \param retry_params - (= None)
 ## \return boolean (true = success, false otherwise)
@@ -78,7 +76,6 @@ def __gcs_file_stat_conversion__( gcs_file_stat ):
 	
 ###########################################################################
 ## \brief Gets information about a specified resource
-## \param cls - class reference
 ## \param file_name - name of resource to get information about
 ## \param retry_params - (= None)
 ## \return FileStat object - object containing information about specified resource, None on failure
@@ -100,7 +97,6 @@ def stat(	file_name,
 	
 ###########################################################################
 ## \brief Lists the contents of a storage bucket
-## \param cls - class reference
 ## \param path - path of bucket to list (string)
 ## \param marker - (= None) further path, only resources following this marker will be listed
 ## \param prefix - (= None) DEPRECATED (Use path prefix)
