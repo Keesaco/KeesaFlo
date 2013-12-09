@@ -163,14 +163,28 @@ def close(	file_handle	):
 ###########################################################################
 ## \brief Creates a new directory
 ## \param path - path of directory to create
+## \warning path requires a trailing slash currently.
 ## \param permssions - (= None) permissions object for current user and permissions to apply to new directory
 ## \return True on success, False otherwise
+## \todo Testing needed
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
 ###########################################################################
 def add_directory(	path,
 					permissions = None	):
-	pass
+	if check_exists(path, permissions.authed_user):
+		return False
+	else:
+		if check_exists(get_container(path),permissions.authed_user):
+			file_handle = PALDatastore(open, 'w')
+			if file_handle is None:
+				return False
+			else
+				file_handle.close();
+				return True
+		else:
+			return False
+
 
 ###########################################################################
 ## \brief Lists the contents of a directory
