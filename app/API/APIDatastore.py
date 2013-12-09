@@ -43,7 +43,21 @@ def check_exists (	path,
 			return True
 	else:
 		return False
-		
+
+###########################################################################
+## \brief Gets the path of the containing directory of the passed file/directory
+## \param path - [String] path of file/directory to find parent of
+## \return path to containing directory
+## \todo test functionality
+## \warning This method does not check that the file/directory passed in exists or that the current user has permissions to access it. It merely performs string manipulations.
+## \author jmccrea@keesaco.com of Keesaco
+###########################################################################
+def get_container(	path	):
+	rpart = path.rpartition(PALDatastore.DIRETORY_SEPARATOR)
+	if len(rpart[2]) == 0: #directory
+		rpart = rpart[0].rpartition(PALDatastore.DIRETORY_SEPARATOR)
+	return rpart[0]+rpart[1]
+							 
 ###########################################################################
 ## \brief Creates a new file and optionally opens it in a given mode
 ## \param path - path of file to create
@@ -156,7 +170,7 @@ def close(	file_handle	):
 ###########################################################################
 def add_directory(	path,
 					permissions = None	):
-	pass
+	passs
 
 ###########################################################################
 ## \brief Lists the contents of a directory

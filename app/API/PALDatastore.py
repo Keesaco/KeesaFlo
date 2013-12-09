@@ -10,7 +10,8 @@
 import cloudstorage as gcs 
 from FileStat import FileStat
 
-## \brief Platoform Abstraction Layer API for 'low level' datastore access
+##directory seperator
+DIRECTORY_SEPARATOR = '/'
 
 ###########################################################################
 ## \brief Opens a resource for write/read/edit etc.
