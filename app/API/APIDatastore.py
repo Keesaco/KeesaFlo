@@ -120,8 +120,8 @@ def generate_path(	inner_path,
 def append(	path,
 			blob,
 			permissions = None	):
-	if __check_authentication( path, 'a', permissions.authed_user):
-		if check_exists( path, permissions.authed_user ):
+	if __check_authentication( path, 'a', permissions):
+		if check_exists( path, permissions ):
 			file_handle = PALDatastore.open( path, 'a')
 			file_handle.write(blob)
 			return True
@@ -144,7 +144,7 @@ def open(	path,
 			mode = 'r',
 			permissions = None):
 	if __check_authentication( path, mode, permissions):
-		if check_exists( path, permissions.authed_user):
+		if check_exists( path, permissions):
 			return PALDatastore.open( path, mode )
 
 	return False
@@ -175,7 +175,7 @@ def add_directory(	path,
 	if check_exists(path, permissions):
 		return False
 	else:
-		if check_exists(get_container(path),permissions.authed_user):
+		if check_exists(get_container(path),permissions):
 			file_handle = PALDatastore(open, 'w')
 			if file_handle is None:
 				return False
