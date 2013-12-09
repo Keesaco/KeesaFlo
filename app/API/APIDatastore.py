@@ -43,7 +43,21 @@ def check_exists (	path,
 			return True
 	else:
 		return False
-		
+
+###########################################################################
+## \brief Gets the path of the containing directory of the passed file/directory
+## \param path - [String] path of file/directory to find parent of
+## \return path to containing directory
+## \todo test functionality
+## \warning This method does not check that the file/directory passed in exists or that the current user has permissions to access it. It merely performs string manipulations.
+## \author jmccrea@keesaco.com of Keesaco
+###########################################################################
+def get_container(	path	):
+	rpart = path.rpartition(PALDatastore.DIRETORY_SEPARATOR)
+	if len(rpart[2]) == 0: #directory
+		rpart = rpart[0].rpartition(PALDatastore.DIRETORY_SEPARATOR)
+	return rpart[0]+rpart[1]
+							 
 ###########################################################################
 ## \brief Creates a new file and optionally opens it in a given mode
 ## \param path - path of file to create
@@ -83,13 +97,15 @@ def add_file(	path,
 ## \return returns a path within the correct directory for the specified data type
 ## \warning This method only returns a path, it does not check that the path exists or check the permissions on that path
 ## \note generate_path( "somepath/", someType, "somefile.ext" ) is functionally identical to generate_path( "somepath/somefile.ext", someType )
+## \todo stub - needs implementing
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
 ###########################################################################
 def generate_path(	inner_path,
 					data_type,
 					file_name = ""	):
-	pass
+	
+	return inner_path + file_name #Simply return the path and filename for now
 
 ###########################################################################
 ## \brief Appends a blob to an existing file
@@ -156,6 +172,7 @@ def close(	file_handle	):
 ###########################################################################
 def add_directory(	path,
 					permissions = None	):
+<<<<<<< HEAD
 					
 	if check_exists(path, permissions.authed_user):
 		return False
@@ -172,6 +189,9 @@ def add_directory(	path,
 		
 		
 		
+=======
+	passs
+>>>>>>> c9e93fa16efaad2c42f994d91b9c2f5382475f7f
 
 ###########################################################################
 ## \brief Lists the contents of a directory
