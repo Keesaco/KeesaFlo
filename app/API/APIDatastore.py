@@ -54,10 +54,10 @@ def check_exists (	path,
 ###########################################################################
 def get_container(	path	):
 	bucket = path.partition(PALDatastore.DIRECTORY_SEPARATOR) #gets bucket name
-	rpart = bucket[2].rpartition(PALDatastore.DIRECTORY_SEPARATOR)
+	rpart = bucket[2].lstrip('/').rpartition(PALDatastore.DIRECTORY_SEPARATOR)
 	if len(rpart[2]) == 0: #directory
 		rpart = rpart[0].rpartition(PALDatastore.DIRECTORY_SEPARATOR)
-	return bucket[0]+bucket[1]+rpart[0]+rpart[1]
+	return "/"+bucket[0]+bucket[1]+rpart[0]+rpart[1]
 							 
 ###########################################################################
 ## \brief Creates a new file and optionally opens it in a given mode
