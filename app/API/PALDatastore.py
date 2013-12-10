@@ -34,7 +34,7 @@ def open(	file_name,
 	try:
 		file_handle = gcs.open( file_name, mode, MIME_type, options, read_buff_size, retry_params)
 	
-	except gcs.ValueError:
+	except gcs.NotFoundError:
 		return None
 	else:
 		return file_handle
