@@ -1,0 +1,14 @@
+{% extends "baselayout.html" %}
+
+{% block cssimport %}
+{% load staticfiles %}
+<link href="{% static "css/stickyfooter.css" %}" rel="stylesheet">
+{% endblock cssimport %}
+
+{% block footer %}
+<div id="footer">
+    <div class="container">
+        <p class="text-muted">Place sticky footer content here.</p>
+    </div>
+</div>
+{% endblock footer %}

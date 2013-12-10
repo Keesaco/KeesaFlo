@@ -18,7 +18,6 @@
     <!-- Le styles -->
     {% load staticfiles %}
     <link href="{% static "css/bootstrap.css" %}" rel="stylesheet">
-    <link href="{% static "css/stickyfooter.css" %}" rel="stylesheet">
     <link rel="shortcut icon" href="{% static "images/favicon.ico" %}">
     {% block cssimport %}{% endblock cssimport %}
     
@@ -58,16 +57,9 @@
     </nav>
     {% endblock navbar %}
     
-    <div id="wrap"> <!-- for sticky footer -->
     {% block content %}{% endblock content %}
-    </div>
-    {% block footer %}
-    <div id="footer">
-      <div class="container">
-        <p class="text-muted">Place sticky footer content here.</p>
-      </div>
-    </div>
-    {% endblock footer %}
+    
+    {% block footer %}{% endblock footer %}
 
     {% block javascriptimport %}
     <!-- Le javascript
