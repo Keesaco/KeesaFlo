@@ -35,7 +35,7 @@ class DataReference:
 		self.path = path
 		## The subset of data being referenced.
 		self.subset = set
-		return self
+		pass
 
 
 ## \brief Plugin reference class for holding information about the location of a plugin.
@@ -56,7 +56,7 @@ class PluginReference:
 			return False
 		## The path at which the plugin can be found.
 		self.path = path
-		return self
+		pass
 
 
 ## \brief Analysis id, responsible for holding information on a specific analysis and its users
@@ -85,7 +85,7 @@ class AnalysisID:
 		self.data_ref = data_ref
 		## The PluginReference object for this analysis.
 		self.plugin_ref = plugin_ref
-		return self
+		pass
 	
 	###########################################################################
 	## \brief Adds an additional user to the AnalysisID object
@@ -93,7 +93,7 @@ class AnalysisID:
 	## \param user_id_number - the new user to be added to the object
 	## \return Returns True on success, False if fails.
 	## \note Will fail if the user already exists in the list of users.
-	## \author swhitehouse@keesaco.com of Keesaco
+	## \author swhitehouse@keesaco.com of Keesaco	
 	###########################################################################
 	def add_user(	self,
 					user_id_number	):
@@ -158,33 +158,35 @@ class QueueReference:
 		self.priorities = [priority]
 		## The priority garnered through ageing by this object.
 		self.total_priority = 0
-		return self
+		pass
 	
 	###########################################################################
 	## \brief Ages the reference allowing for low priority references to be processed.
 	## \param self - instance reference
-	## \return Returns True.
+	## \return Does not return anything, pass.
 	## \author swhitehouse@keesaco.com of Keesaco
 	###########################################################################
 	def age_reference(	self	):
 		self.total_priority += sum(self.priorities)
-		return True
+		pass
 	
 	###########################################################################
 	## \brief Adds an additional user to the QueueReference object along with their priority.
 	## \param self - instance reference
 	## \param user_id - the new user to be added to the object
-	## \param priority - the priority associated with the new user
+	## \param priority - (= 1) the priority associated with the new user
 	## \return Returns True on success, False if fails.
 	## \note Will fail if the user already exists in the list of users.
 	## \author swhitehouse@keesaco.com of Keesaco
 	###########################################################################
 	def add_user(	self,
 					user_id,
-					priority	):
+					priority = 1	):
 		if user_id in self.users:
 			return False
 		self.users.append(user_id)
+		if priority < 1:
+			priority = 1
 		self.priorities.append(priority)
 		return True
 	
@@ -200,7 +202,7 @@ class QueueReference:
 	def remove_user(	self,
 						user_id	):
 		if user_id in self.users:
-			self.priorities.remove(self.users.index(user_id))
+			del self.priorities[self.users.index(user_id)]
 			self.users.remove(user_id)
 			return True
 		return False
@@ -226,9 +228,72 @@ class QueueReference:
 	## \note Because of the above functionality, this can be used for error checking.
 	## \author swhitehouse@keesaco.com of Keesaco
 	###########################################################################		
-	def check_user_amount(	self	):
-		i = self.users.length()
-		if i == self.priorities.length()
+	def check_number_users(	self	):
+		i = len(self.users)
+		if i == len(self.priorities):
 			return i
 		return False
+
+
+## Schedule Queue class holding the priority queue of queue references for the schedule.
+class ScheduleQueue:
+
+	from Analysis.Types import QueueReference
+	
+	###########################################################################
+	## \brief Constructor for the ScheduleQueue object.
+	## \param self - instance reference
+	## \return Returns ScheduleQueue object.
+	## \author swhitehouse@keesaco.com of Keesaco
+	###########################################################################
+	def __init__(	self	):
+		## A list which will form the queue itself.
+		self.references = []
+		pass
+
+	###########################################################################
+	## \brief Adds a user to a queue reference if it exists, and makes a new one if it doesn't.
+	## \param self - instance reference
+	## \return Returns True on success, False if fails.
+	## \note Will fail if the user already exists in the specific reference.
+	## \author swhitehouse@keesaco.com of Keesaco
+	###########################################################################
+	def add_user_reference(	self,
+							analysis_id_number,
+							user_id,
+							priority = 1	):
+		for ref in self.references:
+			if ref.id_number == analysis_id_number:
+				return ref.add_user(user_id, priority)
+		self.references.append(QueueReference(analysis_id_number, user_id, priority))
+		return True
+
+	###########################################################################
+	## \brief Removes a user from a queue reference if it exists, removes the reference if they were the last user.
+	## \param self - instance reference
+	## \return Returns True on success, False if fails.
+	## \note Will fail if the user does not exist in the reference, or if the reference itself doesn't exist.
+	## \author swhitehouse@keesaco.com of Keesaco
+	###########################################################################
+	def remove_user_reference(	self,
+								analysis_id_number,
+								user_id	):
+		for ref in self.references:
+			if ref.id_number == analysis_id_number:
+				if ref.remove_user(user_id):
+					if ref.check_number_users() == 0:
+						self.references.remove(ref)
+					return True
+		return False
+
+	###########################################################################
+	## \brief Ages each reference in the queue.
+	## \param self - instance reference
+	## \return Does not return anything, pass.
+	## \author swhitehouse@keesaco.com of Keesaco
+	###########################################################################
+	def age_queue(	self	):
+		for ref in self.references:
+			ref.age_reference()
+		pass		
 
