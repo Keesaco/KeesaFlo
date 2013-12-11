@@ -44,11 +44,17 @@
 				</button>
 				<a class="navbar-brand" href="#">WebApp</a>
 			</div>
-			<button type="button" class="btn btn-default navbar-btn btn-primary">tool1</button>
-			<button type="button" class="btn btn-default navbar-btn btn-primary">tool2</button>
-			<button type="button" class="btn btn-default navbar-btn btn-primary">tool3</button>
-			<button type="button" class="btn btn-default navbar-btn btn-primary">tool4</button>
-			<button type="button" class="btn btn-default navbar-btn btn-primary">tool5</button>
+			<ul class="nav navbar-nav navbar-right">
+		      <li><a href="#">Tool 1</a></li>
+		      <li class="dropdown">
+		        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> Guest User <b class="caret"></b></a>
+		        <ul class="dropdown-menu">
+		          <li><a href="{% url settings %}">Settings</a></li>
+		          <li class="divider"></li>
+		          <li><a href="{% url index %}">Logout</a></li>
+		        </ul>
+		      </li>
+		    </ul>
 		</nav>
 		<div class="apppanel">
 			<h1>THIS IS THE MAIN VIEW, CONTAINING THE APP</h1>
