@@ -14,6 +14,8 @@
 .apppanel
 {
 	bottom: 0;
+	padding: 20px 20px 20px 35px;
+	border-left: 1px solid #dddddd;
 }
 
 .navpanel
@@ -26,7 +28,7 @@
 	position: absolute;
 	top: 50px; /* height of the navbar */
 	overflow: auto;
-	padding: 20px 20px 20px 35px;
+	width: 100%;
 }
 
 .bottom-nav
@@ -40,10 +42,36 @@
 	margin-left: 0;
 	width: 33.33333333333334%;
 	text-align: center;
+	border: 1px solid #dddddd;
+	border-right: 0;
+}
+
+.nav-pills > li > a {
+border-radius: 0;
 }
 
 .bottom-nav > li + li { /* used to overlap bootstrap style */
 	margin-left: 0;
+}
+
+.list-group 
+{
+	width: 100%;
+}
+
+.list-group-item:last-child {
+	border-bottom-right-radius: 0;
+	border-bottom-left-radius: 0;
+}
+
+.list-group-item:first-child {
+	border-top-right-radius: 0;
+	border-top-left-radius: 0;
+}
+
+.list-group-item
+{
+	border-right: 0;
 }
 
 .row
