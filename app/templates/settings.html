@@ -3,12 +3,12 @@
 {% block title %}Settings - Flow cytometry upload tool{% endblock title %}
 
 {% block cssimport %}
+{{ block.super }} {% comment %} this line will load the content of this block in baselayout {% endcomment %}
 {% load staticfiles %}
 <link href="{% static "css/settings.css" %}" rel="stylesheet">
-<link href="{% static "css/stickyfooter.css" %}" rel="stylesheet">
 {% endblock cssimport %}
 
-{% block customstyle %}<!-- need more top padding here  (in css)-->{% endblock customstyle %}
+{% block customstyle %} {% comment %}need more top padding here  (in css){% endcomment %}{% endblock customstyle %}
     
 {% block content %}
 <div id="wrap"> <!-- for sticky footer -->
