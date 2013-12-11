@@ -18,5 +18,6 @@ urlpatterns = patterns('',
     url(r'^about/$', 'views.about', name='about'),
     url(r'^faq/$', 'views.faq', name='faq'),
     url(r'^app/$', 'views.app', name='app'),
+    url(r'^settings/$', 'views.settings', name='settings'),
     ('^admin/', include(admin.site.urls))
 )

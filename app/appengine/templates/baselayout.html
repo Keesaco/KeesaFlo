@@ -18,6 +18,7 @@
     <!-- Le styles -->
     {% load staticfiles %}
     <link href="{% static "css/bootstrap.css" %}" rel="stylesheet">
+    <link rel="shortcut icon" href="{% static "images/favicon.ico" %}">
     {% block cssimport %}{% endblock cssimport %}
     
     {% block customstyle %}
@@ -43,27 +44,29 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a href="#" class="navbar-brand">Logo goes here</a>
+                <a href="{% url index %}" class="navbar-brand"><img src="{% static "images/logo.png" %}" />FlowCloud</a>
             </div>
             <div class="nav-collapse navbar-collapse collapse">
                 <ul class="nav navbar-nav pull-right">
-                    <li><a href="About.html">About</a></li>
-                    <li><a href="FAQ.html">FAQ</a></li>
+                    <li><a href="{% url about %}">About</a></li>
+                    <li><a href="{% url faq %}">FAQ</a></li>
                     <li><a href="#">Login</a></li>
                 </ul>
             </div>
         </div>
     </nav>
     {% endblock navbar %}
-        
+    
     {% block content %}{% endblock content %}
+    
+    {% block footer %}{% endblock footer %}
 
     {% block javascriptimport %}
     <!-- Le javascript
     ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster but lot of these might not be useful to load
-    <script src="js/jquery.js"></script>
-    <script src="js/bootstrap.js"></script>-->
+    <!--Placed at the end of the document so the pages load faster but lot of these might not be useful to load-->
+    <script src="{% static "js/jquery.js" %}"></script>
+    <script src="{% static "js/bootstrap.js" %}"></script>
     {% endblock javascriptimport %}
   </body>
 </html>
