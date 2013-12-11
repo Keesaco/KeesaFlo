@@ -28,3 +28,7 @@ class fcsUploadHandler(FileUploadHandler):
     def file_complete(self, file_size):
         print 'File upload complete!'
         return None
+
+    # Change chunk size experiment.
+    def chunk_size():
+        return 2**31
