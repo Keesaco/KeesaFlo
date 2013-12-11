@@ -11,14 +11,39 @@
 	margin-bottom: 0;
 }
 
+.apppanel
+{
+	bottom: 0;
+}
 
-.apppanel, .navpanel /* */
+.navpanel
+{
+	bottom: 40px;
+}
+
+.apppanel, .navpanel
 {
 	position: absolute;
 	top: 50px; /* height of the navbar */
-	bottom: 0;
 	overflow: auto;
 	padding: 20px 20px 20px 35px;
+}
+
+.bottom-nav
+{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+.bottom-nav li {
+	margin-left: 0;
+	width: 33.33333333333334%;
+	text-align: center;
+}
+
+.bottom-nav > li + li { /* used to overlap bootstrap style */
+	margin-left: 0;
 }
 
 .row
