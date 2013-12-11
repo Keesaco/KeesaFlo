@@ -10,17 +10,23 @@
 {
 	margin-bottom: 0;
 }
+.navbar-inverse
+{
+	border-color: #3D3D3D;
+}
 
 .apppanel
 {
 	bottom: 0;
 	padding: 20px 20px 20px 35px;
-	border-left: 1px solid #dddddd;
+	border-left: 1px solid #3D3D3D;
+	background-color: #E6E6E6;
 }
 
 .navpanel
 {
-	bottom: 40px;
+	bottom: 41px;
+	background-color: #222222;
 }
 
 .apppanel, .navpanel
@@ -42,16 +48,22 @@
 	margin-left: 0;
 	width: 33.33333333333334%;
 	text-align: center;
-	border: 1px solid #dddddd;
-	border-right: 0;
+	border-top: 1px solid #3D3D3D;
 }
 
 .nav-pills > li > a {
-border-radius: 0;
+	border-radius: 0;
+	background-color: #222222;
+	color: #AAAAAA;
+}
+
+.nav-pills > li > a:hover {
+	background-color: #333333;
 }
 
 .bottom-nav > li + li { /* used to overlap bootstrap style */
 	margin-left: 0;
+	border-left: 1px solid #3D3D3D;
 }
 
 .list-group 
@@ -71,7 +83,19 @@ border-radius: 0;
 
 .list-group-item
 {
+	background-color: #222222;
+	border: 1px solid #3D3D3D;
 	border-right: 0;
+	border-left: 0;
+}
+
+a.list-group-item
+{
+	color: #AAAAAA;
+}
+
+a.list-group-item:hover {
+background-color: #333333;
 }
 
 .row
