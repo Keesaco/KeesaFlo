@@ -44,13 +44,13 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a href="{% url index %}" class="navbar-brand"><img src="{% static "images/logo.png" %}" />FlowCloud</a>
+                <a href="{% url app %}" class="navbar-brand"><img src="{% static "images/logo.png" %}" />FlowCloud</a>
             </div>
             <div class="nav-collapse navbar-collapse collapse">
                 <ul class="nav navbar-nav pull-right">
                     <li><a href="{% url about %}">About</a></li>
                     <li><a href="{% url faq %}">FAQ</a></li>
-                    <li><a href="#">Login</a></li>
+                    <li><a href="{% url app %}">Login</a></li>
                 </ul>
             </div>
         </div>
