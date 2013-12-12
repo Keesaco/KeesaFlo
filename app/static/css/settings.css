@@ -2,6 +2,10 @@ body{
     padding-top: 100px;
 }
 
-.tab-content {
-    padding-top: 2%;
+.col-md-3 {
+    padding-top: 50px;
+}
+
+.col-md-9 {
+    padding-right: 30px;
 }
