@@ -25,6 +25,10 @@
     box-shadow: 0px 0px 30px rgba(0,0,0,.4);/*need equivalent for other browsers*/
 }
 
+.white {
+    color: #fff
+}
+
 body {
     background:url('../images/cells.jpg') no-repeat center center fixed;
     -webkit-background-size: cover;
