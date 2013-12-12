@@ -7,6 +7,7 @@
 ## \package app.API.APIDatastore
 ## \brief Provides methods for data access, using PALDatastore for platform independence
 ## \note Depends on PALDatastore
+## \sa app.API.PALDatastore
 ###########################################################################
 
 import PALDatastore
