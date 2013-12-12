@@ -9,13 +9,14 @@ class fcsUploadHandler(FileUploadHandler):
 
     # Called when a new file upload is starting, before upload handlers get any data.
     def new_file(self, field_name, file_name, content_type, content_length, charset):
-        self.path = ds.generate_path('/fc-raw-data/', 'raw_data', file_name)
+        self.path = ds.generate_path('/fc-raw-data/', None, file_name)
+        self.file_handle = ds.add_file(self.path, 'raw_data', 'w')
         print 'New file upload starting: %s (%s) [%s]' % (file_name, content_type, content_length)
         return None
 
     # Receives a "chunk" of data from file upload.
     def receive_data_chunk(self, raw_data, start):
-        ds.add_file(self.path, raw_data, 'w')
+        self.file_handle.write(raw_data)
         print 'Chunk get!'
         return None
 
@@ -23,9 +24,6 @@ class fcsUploadHandler(FileUploadHandler):
     # Should return an UploadedFile object that will be stored in request.FILES.
     # Tricky one so currently just returning NONE.
     def file_complete(self, file_size):
+        self.file_handle.close()
         print 'File upload complete!'
         return None
-
-    # Change the size of chunks buffered in memory.
-    def chunk_size():
-        return 2**31
