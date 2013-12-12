@@ -26,6 +26,10 @@
             body {
                 padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
             }
+            
+            .white {
+                color: #fff;
+            }
         </style>
     {% endblock customstyle %}
     
@@ -40,9 +44,7 @@
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
+                    <span class="glyphicon glyphicon-th-list white"></span>
                 </button>
                 <a href="{% url app %}" class="navbar-brand"><img src="{% static "images/logo.png" %}" />FlowCloud</a>
             </div>
