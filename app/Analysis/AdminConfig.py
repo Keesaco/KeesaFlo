@@ -1,9 +1,9 @@
 ###########################################################################
-## \file app/Analysis/ExtAdminConfig.py
+## \file app/Analysis/AdminConfig.py
 ## \brief Contains 'administration' variables which changes the functioning of the analysis package.
 ## \author swhitehouse@keesaco.com of Keesaco
 ###########################################################################
-## \package app.Analysis.ExtAdminConfig
+## \package app.Analysis.AdminConfig
 ## \brief Provides administrative variables to control the functioning of the package.
 ###########################################################################
 
