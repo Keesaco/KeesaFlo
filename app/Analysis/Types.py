@@ -323,6 +323,21 @@ class ScheduleQueue:
 		if analysis_id in self.elements:
 			return True
 		return False
+	
+	###########################################################################
+	## \brief Checks to see how many times a user is listed next to a queue element
+	## \param self - instance reference
+	## \param user_id - the user to be checked for
+	## \return Returns the number of times the user is listed under an element
+	## \author swhitehouse@keesaco.com of Keesaco
+	###########################################################################
+	def check_user(	self,
+					user_id	):
+		occurances = 0
+		for key in self.elements:
+			if user_id in self.elements[key].users:
+				occurances += 1
+		return occurances
 
 	###########################################################################
 	## \brief A useful function for debugging which will print out the queue information
