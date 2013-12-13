@@ -5,6 +5,7 @@
 ###########################################################################
 ## \package app.Analysis.AdminConfig
 ## \brief Provides administrative variables to control the functioning of the package.
+## \warning Any changes to these variables will not update the entire system, just any new additions.
 ###########################################################################
 
 ## Defines the maximum number of analysis tasks a user can have running at any one time.
