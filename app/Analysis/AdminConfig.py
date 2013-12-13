@@ -9,7 +9,7 @@
 
 
 ## \brief Contains variable to control the analysis system.
-class ExtAdminConfig:
+class AdminConfig:
 
 	###########################################################################
 	## \brief Constructor for AdminVariables.

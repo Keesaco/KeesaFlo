@@ -196,20 +196,7 @@ class QueueElement:
 			self.users.remove(user_id)
 			return True
 		return False
-
-	###########################################################################
-	## \brief Checks for a user from the QueueElement object.
-	## \param self - instance reference
-	## \param user_id - the user to be checked for in the object
-	## \return Returns the number of occurrences of the user.
-	## \note Due to error checking, this should only return 0 or 1.
-	## \note Because of the above functionality, this can be used for error checking.
-	## \author swhitehouse@keesaco.com of Keesaco
-	###########################################################################		
-	def check_for_user(	self,
-						user_id	):
-		return self.users.count(user_id)
-
+	
 	###########################################################################
 	## \brief Checks how many users there are in a QueueElement object.
 	## \param self - instance reference
@@ -217,12 +204,26 @@ class QueueElement:
 	## \note The function will fail if the number of users is not equal to the number of priorities.
 	## \note Because of the above functionality, this can be used for error checking.
 	## \author swhitehouse@keesaco.com of Keesaco
-	###########################################################################		
+	###########################################################################			
 	def check_number_users(	self	):
 		i = len(self.users)
 		if i == len(self.priorities):
 			return i
 		return False
+
+	###########################################################################
+	## \brief A useful function for debugging which will print out the element information
+	## \param self - instance reference
+	## \param prefix - (= "")a string to be placed before each string printed by the function.
+	## \return Returns nothing.
+	## \note Due to the problems with printing to a console in multi-element programs, this function should only be user for debugging.
+	## \author swhitehouse@keesaco.com of Keesaco
+	###########################################################################		
+	def print_element(	self,
+						prefix = ""	):
+		print (prefix + "Users: " + str(self.users))
+		print (prefix + "Priorities: " + str(self.priorities))
+		print (prefix + "Total Priority: " + str(self.total_priority))
 
 
 ## Schedule Queue class holding the dictionary of queue elements for the schedule.
@@ -322,4 +323,18 @@ class ScheduleQueue:
 		if analysis_id in self.elements:
 			return True
 		return False
+
+	###########################################################################
+	## \brief A useful function for debugging which will print out the queue information
+	## \param self - instance reference
+	## \param prefix - (= "")a string to be placed before each string printed by the function.
+	## \return Returns nothing.
+	## \note Due to the problems with printing to a console in multi-element programs, this function should only be user for debugging.
+	## \author swhitehouse@keesaco.com of Keesaco
+	###########################################################################				
+	def print_queue(	self,
+						prefix = ""	):
+		for key in self.elements:
+			print (prefix + "Key: " + str(key))
+			self.elements[key].print_element(prefix + "--> ")
 
