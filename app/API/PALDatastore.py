@@ -8,7 +8,9 @@
 ## \brief Contains abstraction layer functions for 'low level' data access - returns results in a platform independent form
 ## \note Depends on FileStat and cloudstorage (google)
 ###########################################################################
-import cloudstorage as gcs 
+#import sys
+#sys.path.append("/home/rogan/Coursework/SPE/Keesaco/app/googleAPI/cloudstorageAPI/src/cloudstorage")
+import cloudstorage as gcs
 from FileStat import FileStat
 
 ##directory seperator
