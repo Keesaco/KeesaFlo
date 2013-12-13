@@ -10,15 +10,92 @@
 {
 	margin-bottom: 0;
 }
+.navbar-inverse
+{
+	border-color: #3D3D3D;
+}
 
+.apppanel
+{
+	bottom: 0;
+	padding: 20px 20px 20px 35px;
+	border-left: 1px solid #3D3D3D;
+	background-color: #E6E6E6;
+}
 
-.apppanel, .navpanel /* */
+.navpanel
+{
+	bottom: 41px;
+	background-color: #222222;
+}
+
+.apppanel, .navpanel
 {
 	position: absolute;
 	top: 50px; /* height of the navbar */
-	bottom: 0;
 	overflow: auto;
-	padding: 20px 20px 20px 35px;
+	width: 100%;
+}
+
+.bottom-nav
+{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+.bottom-nav li {
+	margin-left: 0;
+	width: 33.33333333333334%;
+	text-align: center;
+	border-top: 1px solid #3D3D3D;
+}
+
+.nav-pills > li > a {
+	border-radius: 0;
+	background-color: #222222;
+	color: #AAAAAA;
+}
+
+.nav-pills > li > a:hover {
+	background-color: #333333;
+}
+
+.bottom-nav > li + li { /* used to overlap bootstrap style */
+	margin-left: 0;
+	border-left: 1px solid #3D3D3D;
+}
+
+.list-group 
+{
+	width: 100%;
+}
+
+.list-group-item:last-child {
+	border-bottom-right-radius: 0;
+	border-bottom-left-radius: 0;
+}
+
+.list-group-item:first-child {
+	border-top-right-radius: 0;
+	border-top-left-radius: 0;
+}
+
+.list-group-item
+{
+	background-color: #222222;
+	border: 1px solid #3D3D3D;
+	border-right: 0;
+	border-left: 0;
+}
+
+a.list-group-item
+{
+	color: #AAAAAA;
+}
+
+a.list-group-item:hover {
+background-color: #333333;
 }
 
 .row
@@ -30,4 +107,37 @@
 html, body, .row
 {
 	height: 100%;
+}
+
+@media screen and (max-width: 767px) {
+  .row-offcanvas {
+    position: relative;
+    -webkit-transition: all 0.25s ease-out;
+    -moz-transition: all 0.25s ease-out;
+    transition: all 0.25s ease-out;
+  }
+
+  .row-offcanvas-right
+  .sidebar-offcanvas {
+    right: -50%; /* 6 columns */
+  }
+
+  .row-offcanvas-left
+  .sidebar-offcanvas {
+    left: -50%; /* 6 columns */
+  }
+
+  .row-offcanvas-right.active {
+    right: 50%; /* 6 columns */
+  }
+
+  .row-offcanvas-left.active {
+    left: 50%; /* 6 columns */
+  }
+
+  .sidebar-offcanvas {
+    position: absolute;
+    top: 0;
+    width: 50%; /* 6 columns */
+  }
 }
