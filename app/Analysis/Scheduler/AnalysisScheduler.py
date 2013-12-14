@@ -8,7 +8,6 @@
 ###########################################################################
 	
 from app.Analysis.Types import ScheduleQueue
-from app.Analysis import AdminConfig
 
 ## The schedule queue variable which holds the actual queue object.
 schedule_queue = ScheduleQueue()
@@ -24,10 +23,6 @@ schedule_queue = ScheduleQueue()
 def add_user_task( 	analysis_id,
 					user_id,
 					priority = 1	):
-	if priority > AdminConfig.max_priority:
-		priority = AdminConfig.max_priority
-	if schedule_queue.check_user(user_id) >= AdminConfig.max_tasks_per_user:
-		return False
 	if schedule_queue.add_user_to_element(analysis_id, user_id, priority):
 		schedule_queue.age_queue()
 		return True
