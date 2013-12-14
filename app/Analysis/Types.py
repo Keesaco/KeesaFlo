@@ -7,6 +7,7 @@
 ## \brief Provides all type classes associated with analysis.
 ###########################################################################
 
+import random
 
 ## \brief Data location class for holding information about a portion of a data set.
 class DataLocation:
@@ -34,7 +35,7 @@ class DataLocation:
 		## The path at which the data can be found.
 		self.path = path
 		## The subset of data being referenced.
-		self.subset = subsets
+		self.subsets = subsets
 
 	###########################################################################
 	## \brief Comparison for DataLocation objects.
@@ -42,13 +43,26 @@ class DataLocation:
 	## \param data_location - the DataLocation object to be compared
 	## \return Returns True if the objects match, False if not.
 	## \author swhitehouse@keesaco.com of Keesaco
-	###########################################################################			
+	###########################################################################
 	def compare_data(	self,
 						data_location	):
 		if self.path == data_location.path:
 			if self.subsets == data_location.subsets:
 				return True
 		return False
+	
+	###########################################################################
+	## \brief A useful function for debugging which will print out the data information.
+	## \param self - instance reference
+	## \param prefix - (= "")a string to be placed before each string printed by the function.
+	## \return Returns nothing.
+	## \note Due to the problems with printing to a console in multi-element programs, this function should only be user for debugging.
+	## \author swhitehouse@keesaco.com of Keesaco
+	###########################################################################		
+	def print_data(	self,
+					prefix = ""	):
+		print (prefix + "Path: " + self.path)
+		print (prefix + "Subsets: " + str(self.subsets))
 
 
 ## \brief Plugin reference class for holding information about the location of a plugin.
@@ -82,6 +96,18 @@ class PluginLocation:
 		if self.path == plugin_location.path:
 			return True
 		return False
+	
+	###########################################################################
+	## \brief A useful function for debugging which will print out the plugin information.
+	## \param self - instance reference
+	## \param prefix - (= "")a string to be placed before each string printed by the function.
+	## \return Returns nothing.
+	## \note Due to the problems with printing to a console in multi-element programs, this function should only be user for debugging.
+	## \author swhitehouse@keesaco.com of Keesaco
+	###########################################################################	
+	def print_plugin(	self,
+						prefix = ""	):
+		print (prefix + "Path: " + self.path)
 
 
 ## \brief Analysis request, responsible for holding information on a specific analysis and its users
@@ -115,7 +141,7 @@ class AnalysisRequest:
 	## \brief Adds an additional user to the AnalysisRequest object
 	## \param self - instance reference
 	## \param user_id - the new user to be added to the object
-	## \return Returns True on success, False if fails.
+	## \return Returns the number of users on success, False if fails.
 	## \note Will fail if the user already exists in the list of users.
 	## \author swhitehouse@keesaco.com of Keesaco	
 	###########################################################################
@@ -130,7 +156,7 @@ class AnalysisRequest:
 	## \brief Removes a user from the AnalysisRequest object
 	## \param self - instance reference
 	## \param user_id - the user to be removed from the object
-	## \return Returns True on success, False if fails.
+	## \return Returns the number of users on success, False if fails.
 	## \note Will fail if the user does not exist in the list of users.
 	## \author swhitehouse@keesaco.com of Keesaco
 	###########################################################################
@@ -140,6 +166,15 @@ class AnalysisRequest:
 			self.users.remove(user_id)
 			return True
 		return False
+	
+	###########################################################################
+	## \brief Checks how many users there are in a AnalysisRequest object.
+	## \param self - instance reference
+	## \return Returns the number of users.
+	## \author swhitehouse@keesaco.com of Keesaco
+	###########################################################################			
+	def check_number_users(	self	):
+		return len(self.users)
 	
 	###########################################################################
 	## \brief Changes the state of the AnalysisRequest object.
@@ -174,6 +209,25 @@ class AnalysisRequest:
 			if self.data_location.compare_data(data_location):
 				return True
 		return False
+	
+	###########################################################################
+	## \brief A useful function for debugging which will print out the request information.
+	## \param self - instance reference
+	## \param prefix - (= "")a string to be placed before each string printed by the function.
+	## \return Returns nothing.
+	## \note Due to the problems with printing to a console in multi-element programs, this function should only be user for debugging.
+	## \author swhitehouse@keesaco.com of Keesaco
+	###########################################################################	
+	def print_request(	self,
+						prefix = ""	):
+		print (prefix + "Users: " + str(self.users))
+		print (prefix + "In Queue?: " + str(self.in_queue))
+		print (prefix + "Being Analysed?: " + str(self.being_analysed))
+		print (prefix + "Data:")
+		self.data_location.print_data(prefix + "> ")
+		print (prefix + "Plugin:")
+		self.plugin_location.print_plugin(prefix + "> ")
+			
 
 ## \brief Dictionary for all current Analysis requests.
 class RequestList:
@@ -187,6 +241,74 @@ class RequestList:
 	def __init__(	self	):
 		## A dictionary will will make up the list itself.
 		self.requests = {}
+	
+	###########################################################################
+	## \brief Subscribes a user to an analysis request using the specified data and plugin.
+	## \param self - instance reference
+	## \param user_id - the user to be subscribed
+	## \param data_location - the DataLocation object to be used
+	## \param plugin_location - the PluginLocation object to be used
+	## \return Returns the analysis_id of the object created or added to, else False if fails.
+	## \note Will fail if the user is already subscribed to the analysis object.
+	## \author swhitehouse@keesaco.com of Keesaco
+	###########################################################################
+	def subscribe_user(	self,
+						user_id,
+						data_location,
+						plugin_location	):
+		for analysis_id in self.requests:
+			if self.requests[analysis_id].compare_request(data_location, plugin_location):
+				if not self.requests[analysis_id].add_user(user_id) == False:
+					return analysis_id
+				return False
+		analysis_id = random.randint(10000000, 99999999)
+		while analysis_id in self.requests:
+			analysis_id = random.randint(10000000, 99999999)
+		self.requests[analysis_id] = AnalysisRequest(user_id, data_location, plugin_location)
+		return analysis_id
+		
+	###########################################################################
+	## \brief Unsubscribes a user from an analysis request using the analysis id.
+	## \param self - instance reference
+	## \param user_id - the user to be unsubscribed
+	## \param analysis_id - the identifier of the object for the user to be removed from.
+	## \return Returns True on success, else False if fails.
+	## \note Will fail if the user is not subscribed to the object, or the object does not exist.
+	## \author swhitehouse@keesaco.com of Keesaco
+	###########################################################################
+	def unsubscribe_user(	self,
+							user_id,
+							analysis_id	):
+		if analysis_id in self.requests:
+			if self.requests[analysis_id].remove_user(user_id):
+				if self.requests[analysis_id].check_number_users() == 0:
+					del self.requests[analysis_id]
+				return True
+		return False
+	
+	###########################################################################
+	## \brief Checks how many requests there are in the queue.
+	## \param self - instance reference
+	## \return Returns the number of requests there are in the list.
+	## \author swhitehouse@keesaco.com of Keesaco
+	###########################################################################
+	def check_number_requests(	self	):
+		return len(self.requests)
+	
+	###########################################################################
+	## \brief A useful function for debugging which will print out the list information for all requests.
+	## \param self - instance reference
+	## \param prefix - (= "")a string to be placed before each string printed by the function.
+	## \return Returns nothing.
+	## \note Due to the problems with printing to a console in multi-element programs, this function should only be user for debugging.
+	## \author swhitehouse@keesaco.com of Keesaco
+	###########################################################################	
+	def print_list(	self,
+					prefix = ""	):
+		for analysis_id in self.requests:
+			print (prefix + "Request: " + str(analysis_id))
+			self.requests[analysis_id].print_request(prefix + "-> ")
+			print (prefix + "--------------------")
 	
 
 ## \brief Queue reference class holding a priority and an analysis id.
@@ -289,8 +411,6 @@ class QueueElement:
 
 ## Schedule Queue class holding the dictionary of queue elements for the schedule.
 class ScheduleQueue:
-
-	from app.Analysis.Types import QueueElement
 	
 	###########################################################################
 	## \brief Constructor for the ScheduleQueue object.
@@ -315,7 +435,7 @@ class ScheduleQueue:
 	###########################################################################
 	## \brief Checks how many elements there are in the queue.
 	## \param self - instance reference
-	## \return Does not return anything.
+	## \return Returns the number of elements in the queue.
 	## \author swhitehouse@keesaco.com of Keesaco
 	###########################################################################
 	def check_number_elements(	self	):
@@ -395,22 +515,22 @@ class ScheduleQueue:
 	def check_user(	self,
 					user_id	):
 		occurances = 0
-		for key in self.elements:
-			if user_id in self.elements[key].users:
+		for analysis_id in self.elements:
+			if user_id in self.elements[analysis_id].users:
 				occurances += 1
 		return occurances
 
 	###########################################################################
 	## \brief A useful function for debugging which will print out the queue information
 	## \param self - instance reference
-	## \param prefix - (= "")a string to be placed before each string printed by the function.
+	## \param prefix - (= "") a string to be placed before each string printed by the function.
 	## \return Returns nothing.
 	## \note Due to the problems with printing to a console in multi-element programs, this function should only be user for debugging.
 	## \author swhitehouse@keesaco.com of Keesaco
 	###########################################################################				
 	def print_queue(	self,
 						prefix = ""	):
-		for key in self.elements:
-			print (prefix + "Key: " + str(key))
-			self.elements[key].print_element(prefix + "--> ")
+		for analysis_id in self.elements:
+			print (prefix + "Element: " + str(analysis_id))
+			self.elements[analysis_id].print_element(prefix + "--> ")
 
