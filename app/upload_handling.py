@@ -7,6 +7,7 @@
 ## \brief Custom upload handler that uses our Datastore API. Subclasses Django's FileUploadHandler.
 ###########################################################################
 from django.core.files.uploadhandler import FileUploadHandler
+from django.core.files import File
 import API.APIDatastore as ds
 
 # Custom upload handler class.
@@ -48,4 +49,4 @@ class fcsUploadHandler(FileUploadHandler):
     def file_complete(self, file_size):
         self.file_handle.close()
         print 'File upload complete!'
-        return None
+        return File(ds.open(self.path))
