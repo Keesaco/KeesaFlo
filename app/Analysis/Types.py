@@ -8,15 +8,15 @@
 ###########################################################################
 
 
-## \brief Data reference class for holding information about a portion of a data set.
-class DataReference:
+## \brief Data location class for holding information about a portion of a data set.
+class DataLocation:
 
 	###########################################################################
-	## \brief Constructor for the DataReference object.
+	## \brief Constructor for the DataLocation object.
 	## \param self - instance reference
 	## \param path - path through which the data can be located in the data store
 	## \param subsets - (= [(0, 0)]) a list of the start and end points (in bytes) of the subsets of data to be analysed
-	## \return Returns DataReference object on success. Returns false on fail.
+	## \return Returns DataLocation object on success. Returns false on fail.
 	## \note Will fail if no path is given.
 	## \note Will fail if first value in the tuple is greater than the second.
 	## \note Leaving set as default will include all of the available data in analysis.
@@ -36,15 +36,29 @@ class DataReference:
 		## The subset of data being referenced.
 		self.subset = subsets
 
+	###########################################################################
+	## \brief Comparison for DataLocation objects.
+	## \param self - instance reference
+	## \param data_location - the DataLocation object to be compared
+	## \return Returns True if the objects match, False if not.
+	## \author swhitehouse@keesaco.com of Keesaco
+	###########################################################################			
+	def compare_data(	self,
+						data_location	):
+		if self.path == data_location.path:
+			if self.subsets == data_location.subsets:
+				return True
+		return False
+
 
 ## \brief Plugin reference class for holding information about the location of a plugin.
-class PluginReference:
+class PluginLocation:
 	
 	###########################################################################
-	## \brief Constructor for the PluginReference object.
+	## \brief Constructor for the PluginLocation object.
 	## \param self - instance reference
 	## \param path - path through which the plugin can be located in the data store
-	## \return Returns PluginReference object on success. Returns false on fail.
+	## \return Returns PluginLocation object on success. Returns false on fail.
 	## \note Will fail if no path is given.
 	## \warning Does not check that the path for the plugin exists.
 	## \author swhitehouse@keesaco.com of Keesaco
@@ -55,78 +69,125 @@ class PluginReference:
 			return False
 		## The path at which the plugin can be found.
 		self.path = path
-
-
-## \brief Analysis id, responsible for holding information on a specific analysis and its users
-class AnalysisID:
 	
 	###########################################################################
-	## \brief Constructor for the AnalysisID object.
+	## \brief Comparison for PluginLocation objects.
 	## \param self - instance reference
-	## \param analysis_id_number - the randomly assigned and unique identifier for this object
-	## \param user_id_number - the id of the user associated with this analysis
-	## \param data_ref - the DataReference object associated with this analysis
-	## \param plugin_ref - the PluginReference object associated with this analysis
-	## \return Returns AnalysisID object.
+	## \param plugin_location - the PluginLocation object to be compared
+	## \return Returns True if the objects match, False if not.
+	## \author swhitehouse@keesaco.com of Keesaco
+	###########################################################################	
+	def compare_plugin(	self,
+						plugin_location	):
+		if self.path == plugin_location.path:
+			return True
+		return False
+
+
+## \brief Analysis request, responsible for holding information on a specific analysis and its users
+class AnalysisRequest:
+	
+	###########################################################################
+	## \brief Constructor for the AnalysisRequest object.
+	## \param self - instance reference
+	## \param user_id - the id of the user associated with this analysis
+	## \param data_location - the DataLocation object associated with this analysis
+	## \param plugin_location - the PluginLocation object associated with this analysis
+	## \return Returns AnalysisRequest object.
 	## \author swhitehouse@keesaco.com of Keesaco
 	###########################################################################
 	def __init__(	self,
-					analysis_id_number,
-					user_id_number,
-					data_ref,
-					plugin_ref	):
-		## The unique id number used for referencing this analysis object.
-		self.id_number = analysis_id_number
+					user_id,
+					data_location,
+					plugin_location	):
 		## The list of users associated with this object. Initially only one user.
-		self.users = [user_id_number]
-		## The DataReference object for this analysis.
-		self.data_ref = data_ref
-		## The PluginReference object for this analysis.
-		self.plugin_ref = plugin_ref
+		self.users = [user_id]
+		## The DataLocation object for this analysis.
+		self.data_location = data_location
+		## The PluginLocation object for this analysis.
+		self.plugin_location = plugin_location
+		## A bool showing whether the object is in the queue.
+		self.in_queue = False
+		## A bool showing whether the object is being analysed.
+		self.being_analysed = False
 	
 	###########################################################################
-	## \brief Adds an additional user to the AnalysisID object
+	## \brief Adds an additional user to the AnalysisRequest object
 	## \param self - instance reference
-	## \param user_id_number - the new user to be added to the object
+	## \param user_id - the new user to be added to the object
 	## \return Returns True on success, False if fails.
 	## \note Will fail if the user already exists in the list of users.
 	## \author swhitehouse@keesaco.com of Keesaco	
 	###########################################################################
 	def add_user(	self,
-					user_id_number	):
-		if user_id_number in self.users:
+					user_id	):
+		if user_id in self.users:
 			return False
-		self.users.append(user_id_number)
+		self.users.append(user_id)
 		return True
 	
 	###########################################################################
-	## \brief Removes a user from the AnalysisID object
+	## \brief Removes a user from the AnalysisRequest object
 	## \param self - instance reference
-	## \param user_id_number - the user to be removed from the object
+	## \param user_id - the user to be removed from the object
 	## \return Returns True on success, False if fails.
 	## \note Will fail if the user does not exist in the list of users.
 	## \author swhitehouse@keesaco.com of Keesaco
 	###########################################################################
 	def remove_user(	self,
-						user_id_number	):
-		if user_id_number in self.users:
-			self.users.remove(user_id_number)
+						user_id	):
+		if user_id in self.users:
+			self.users.remove(user_id)
 			return True
 		return False
 	
 	###########################################################################
-	## \brief Checks for the number of occurrences of a specific user in the AnalysisID object.
+	## \brief Changes the state of the AnalysisRequest object.
 	## \param self - instance reference
-	## \param user_id_number - the user id to be checked for
-	## \return Returns the number of occurrences of the chosen user in the AnalysisID object.
-	## \note Due to error checking, this should only return 0 or 1.
-	## \note Because of the above functionality, this can be user for error checking.
+	## \param in_queue - whether the object is in the queue or not
+	## \param being_analysed - whether the object is being analysed or not
+	## \return Returns True on successful change of state, False on fail.
+	## \note This function will fail if both in_queue and being_analysed are True.
 	## \author swhitehouse@keesaco.com of Keesaco
 	###########################################################################
-	def check_for_user(	self,
-						user_id_number	):
-		return self.users.count(user_id_number)
+	def change_state(	self,
+						in_queue = False,
+						being_analysed = False	):
+		if in_queue and being_analysed:
+			return False
+		self.in_queue = in_queue
+		self.being_analysed = being_analysed
+		return True
+	
+	###########################################################################
+	## \brief Comparison for AnalysisRequest objects.
+	## \param self - instance reference
+	## \param data_location - the DataLocation object to be compared
+	## \param plugin_location - the PluginLocation object to be compared
+	## \return Returns True if the objects match, False if not.
+	## \author swhitehouse@keesaco.com of Keesaco
+	###########################################################################		
+	def compare_request(	self,
+							data_location,
+							plugin_location	):
+		if self.plugin_location.compare_plugin(plugin_location):
+			if self.data_location.compare_data(data_location):
+				return True
+		return False
 
+## \brief Dictionary for all current Analysis requests.
+class RequestList:
+	
+	###########################################################################
+	## \brief Constructor for the RequestList object.
+	## \param self - instance reference
+	## \return Returns RequestList object.
+	## \author swhitehouse@keesaco.com of Keesaco
+	###########################################################################
+	def __init__(	self	):
+		## A dictionary will will make up the list itself.
+		self.requests = {}
+	
 
 ## \brief Queue reference class holding a priority and an analysis id.
 class QueueElement:
