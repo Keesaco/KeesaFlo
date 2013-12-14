@@ -10,9 +10,20 @@
 {
 	margin-bottom: 0;
 }
+
 .navbar-inverse
 {
 	border-color: #3D3D3D;
+}
+
+.navbar-brand img {
+	height: 30px;
+	margin-right: 10px; 
+}
+
+.logo {
+    padding: 10px 15px;
+
 }
 
 .apppanel
