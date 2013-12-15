@@ -7,6 +7,7 @@
 ## \brief Custom upload handler that uses our Datastore API. Subclasses Django's FileUploadHandler.
 ###########################################################################
 from django.core.files.uploadhandler import FileUploadHandler
+from django.core.files.uploadedfile import UploadedFile
 import API.APIDatastore as ds
 
 # Custom upload handler class.
@@ -24,9 +25,15 @@ class fcsUploadHandler(FileUploadHandler):
     ## \author rmurley@keesaco.com of Keesaco
     ###########################################################################
     def new_file(self, field_name, file_name, content_type, content_length, charset):
-        self.path = ds.generate_path('/fc-raw-data/', None, file_name)
+        base_path = ds.generate_path('/fc-raw-data/', None, file_name)
+        self.path = base_path
+        i = 1
+        while ds.check_exists(self.path, None):
+            self.path = base_path + '(' + str(i) + ')'
+            i += 1
         self.file_handle = ds.add_file(self.path, 'raw_data', 'w')
         print 'New file upload starting: %s (%s) [%s]' % (file_name, content_type, content_length)
+        self.upload = fcsUploadedFile(self.path, file_name)
         return None
 
     ###########################################################################
@@ -47,5 +54,23 @@ class fcsUploadHandler(FileUploadHandler):
     ###########################################################################
     def file_complete(self, file_size):
         self.file_handle.close()
-        print 'File upload complete!'
-        return None
+        self.upload.size = file_size
+        return self.upload
+
+# Custom uploaded file class.
+class fcsUploadedFile(UploadedFile):
+    def __init__(self, path, file_name):
+        UploadedFile.__init__(self)
+        self.name = file_name
+        self.path = path
+        self.file_handle = None
+        self.file = self.open()
+
+    def open(self, mode = None):
+        self.file_handle = ds.open(self.path, mode)
+
+    def close(self):
+        ds.close(self.file_handle)
+
+    def chunks(self):
+        pass
