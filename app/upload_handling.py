@@ -68,7 +68,7 @@ class fcsUploadedFile(UploadedFile):
 
     ###########################################################################
     ## \brief Open a datastore file.
-    ## \param mode - mode to open file in.
+    ## \param mode - mode to open file in. If mode is none, opens in last used mode.
     ## \author rmurley@keesaco.com of Keesaco
     ###########################################################################
     def open(self, mode = None):
