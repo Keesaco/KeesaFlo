@@ -18,15 +18,17 @@
     <div class="container">
         <div class="row row-offcanvas row-offcanvas-left">
             <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
-                <div class="list-group">
-                    <a href="#setting1" class="list-group-item" data-toggle="tab">Setting 1</a>
-                    <a href="#setting2" class="list-group-item" data-toggle="tab">Setting 2</a>
-                    <a href="#setting3" class="list-group-item" data-toggle="tab">Setting 3</a>
-                </div>  
+                <ul class="nav nav-pills nav-stacked">
+                    <li class="active"><a href="#setting1" data-toggle="tab">Setting 1</a></li>
+                    <li><a href="#setting2" data-toggle="tab">Setting 2</a></li>
+                    <li><a href="#setting3" data-toggle="tab">Setting 3</a></li>
+                </ul>  
             </div>
             <div class="col-xs-12 col-sm-9">
                 <p class="pull-left visible-xs">
-                    <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+                    <button type="button" class="navbar-toggle " data-toggle="offcanvas">
+                        <span class="glyphicon glyphicon-chevron-left"></span>
+                    </button>
                 </p>
                 <div class="tab-content">
                     <div class="tab-pane fade in active" id="setting1">
