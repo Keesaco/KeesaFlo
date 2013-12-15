@@ -1,10 +1,10 @@
 ###########################################################################
 ## \file app/upload_handling.py
-## \brief Custom upload handler that uses our Datastore API. Subclasses Django's FileUploadHandler.
+## \brief Custom upload handling using our Datastore API. Subclasses Django's FileUploadHandler and UploadedFile.
 ## \author rmurley@keesaco.com of Keesaco
 ###########################################################################
 ## \package app.upload_handling
-## \brief Custom upload handler that uses our Datastore API. Subclasses Django's FileUploadHandler.
+## \brief Custom upload handling using our Datastore API. Subclasses Django's FileUploadHandler and UploadedFile.
 ###########################################################################
 from django.core.files.uploadhandler import FileUploadHandler
 from django.core.files.uploadedfile import UploadedFile
@@ -32,8 +32,7 @@ class fcsUploadHandler(FileUploadHandler):
             self.path = base_path + '(' + str(i) + ')'
             i += 1
         self.file_handle = ds.add_file(self.path, 'raw_data', 'w')
-        print 'New file upload starting: %s (%s) [%s]' % (file_name, content_type, content_length)
-        self.upload = fcsUploadedFile(self.path, file_name)
+        self.upload = fcsUploadedFile(self.path, file_name, content_type, charset)
         return None
 
     ###########################################################################
@@ -43,7 +42,6 @@ class fcsUploadHandler(FileUploadHandler):
     ## \author rmurley@keesaco.com of Keesaco
     ###########################################################################
     def receive_data_chunk(self, raw_data, start):
-        print 'Chunk get!'
         self.file_handle.write(raw_data)
         return None
 
@@ -59,18 +57,45 @@ class fcsUploadHandler(FileUploadHandler):
 
 # Custom uploaded file class.
 class fcsUploadedFile(UploadedFile):
-    def __init__(self, path, file_name):
+    def __init__(self, path, file_name, content_type, charset):
         UploadedFile.__init__(self)
-        self.name = file_name
         self.path = path
+        self.name = file_name
+        self.content_type = content_type
+        self.charset = charset
         self.file_handle = None
-        self.file = self.open()
+        self.mode = None
 
+    ###########################################################################
+    ## \brief Open a datastore file.
+    ## \param mode - mode to open file in.
+    ## \author rmurley@keesaco.com of Keesaco
+    ###########################################################################
     def open(self, mode = None):
         self.file_handle = ds.open(self.path, mode)
+        return self.file_handle
 
+    ###########################################################################
+    ## \brief Read from a datastore file.
+    ## \param num_bytes - number of bytes to read, if None read whole file
+    ## \todo Stub: needs implementing
+    ## \author rmurley@keesaco.com of Keesaco
+    ###########################################################################
+    def read(self, num_bytes = None):
+        pass
+
+    ###########################################################################
+    ## \brief Write to a datastore file.
+    ## \param content - content to write to datastore file
+    ## \todo Stub: needs implementing
+    ## \author rmurley@keesaco.com of Keesaco
+    ###########################################################################
+    def write(self, content):
+        pass
+
+    ###########################################################################
+    ## \brief Closes a datastore file.
+    ## \author rmurley@keesaco.com of Keesaco
+    ###########################################################################
     def close(self):
         ds.close(self.file_handle)
-
-    def chunks(self):
-        pass
