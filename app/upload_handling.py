@@ -72,7 +72,9 @@ class fcsUploadedFile(UploadedFile):
     ## \author rmurley@keesaco.com of Keesaco
     ###########################################################################
     def open(self, mode = None):
-        self.file_handle = ds.open(self.path, mode)
+        if mode != None:
+            self.mode = mode
+        self.file_handle = ds.open(self.path, self.mode)
         return self.file_handle
 
     ###########################################################################
