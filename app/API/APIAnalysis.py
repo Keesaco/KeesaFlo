@@ -16,7 +16,7 @@ from app.Analysis.Manager import AnalysisManager
 ## \param priority - a value determining the priority of the user
 ## \param data_location - the DataLocation object to be used in analysis
 ## \param plugin_location - the PluginLocation object to be used in analysis
-## \return On fail, return false. On success, returns the analysis_id_number for the specific analysis request.
+## \return On fail, return false. On success, returns the analysis_id for the specific analysis request.
 ## \note user_id is used primarily to make sure that other users cannot mess with the original user's analysis.
 ## \warning This function does not check that the user has permissions to perform the specified analysis. Nor does it check whether the analysis has already been performed.
 ## \author swhitehouse@keesaco.com of Keesaco
@@ -27,7 +27,6 @@ def add_user_analysis(	user_id,
 						data_location,
 						plugin_location	):
 	return AnalysisManager.subscribe_user_analysis(user_id, priority, data_location, plugin_location)
-	
 
 ###########################################################################
 ## \brief Requests that a user is removed from an analysis request.
