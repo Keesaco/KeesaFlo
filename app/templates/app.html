@@ -94,24 +94,23 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-       	<h4 class="modal-title" id="myModalLabel"> File Upload </h4>
-      </div>
-      <div class="modal-body">
-	    <form action="" method="post" enctype="multipart/form-data" target="_self">
-	    {% csrf_token %}
-	    {% for field in form %}
-	        <div class="fieldWrapper">
-	            {{ field.label_tag }} {{ field }}
-	            {{ field.errors }}
-	        </div>
-	    {% endfor %}
-	    <input type="submit" value="Upload">
+       	<h4 class="modal-title" id="myModalLabel"> Upload a file </h4>
+	      </div>
+		    <form action="" method="post" enctype="multipart/form-data" target="_self">
+	      <div class="modal-body">
+		    {% csrf_token %}
+		    {% for field in form %}
+		        <div class="fieldWrapper">
+		            {{ field.label_tag }} {{ field }}
+		            {{ field.errors }}
+		        </div>
+		    {% endfor %}
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Dismiss</button>
+	        <button type="submit" value="Upload" class="btn btn-primary">Upload</button>
+	      </div>
 	    </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
