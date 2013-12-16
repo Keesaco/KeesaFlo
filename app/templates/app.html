@@ -23,15 +23,9 @@
 		</nav>
 		<div class="navpanel">
 			<div class="list-group">
-				<a href="#" class="list-group-item">FIRST FILE</a>
-				<a href="#" class="list-group-item">SECOND FILE</a>
-				<a href="#" class="list-group-item">THIRD FILE</a>
-				<a href="#" class="list-group-item">FORTH FILE</a>
-				<a href="#" class="list-group-item">FIFTH FILE</a>
-				<a href="#" class="list-group-item">SIXTH FILE</a>
-				<a href="#" class="list-group-item">SEVENTH FILE</a>
-				<a href="#" class="list-group-item">EIGHT FILE</a>
-				<a href="#" class="list-group-item">LAST FILE</a>
+				{% for file in files %}
+				<a href="#" class="list-group-item">{{ file.filename }} ({{ file.st_size }}b)</a>
+				{% endfor %}
 			</div>
 		</div>
 		<ul class="nav nav-pills bottom-nav">
