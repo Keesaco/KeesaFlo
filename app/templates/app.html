@@ -1,0 +1,101 @@
+{% extends "baselayout.html" %}
+
+{% block title %}APP - Flow cytometry upload tool{% endblock title %}
+
+{% block cssimport %}
+{% load staticfiles %}
+<link href="{% static "css/app.css" %}" rel="stylesheet">
+{% endblock cssimport %}
+
+{% block customstyle %}<!-- no need of a top padding here -->{% endblock customstyle %}
+
+{% block navbar %}<!-- no navbar in this view -->{% endblock navbar %}
+
+{% block content %}
+
+<div class="row row-offcanvas row-offcanvas-left">
+	<!-- left panel -->
+	<div class="col-sm-2 sidebar-offcanvas" id="sidebar" role="navigation">
+		<nav class="navbar navbar-inverse navbar-default navbar-static-top" role="navigation">
+			<div class="navbar-header">
+				<a class="navbar-brand">Your Files</a>
+			</div>
+		</nav>
+		<div class="navpanel">
+			<div class="list-group">
+				{% if files %}
+					{% for file in files %}
+					<a href="{% url app %}{{file.filename}}" class="list-group-item {% if file.filename == current_file.filename %}active{% endif %}">{{ file.filename }} <span class="badge">{{ file.st_size|filesizeformat }}</span></a>
+					{% endfor %}
+				{% else %}
+					<a href="{% url upload %}" class="list-group-item">No files - Click here to upload one</a>
+				{% endif %}
+			</div>
+		</div>
+		<ul class="nav nav-pills bottom-nav">
+			<li><a href="{% url faq %}" title="F.A.Q"><span class="glyphicon glyphicon-question-sign" title="Upload"></span></a></li>
+			<li><a href="{% url about %}" title="About"><span class="glyphicon glyphicon-info-sign"></span></a></li>
+			<li><a href="{% url upload %}" title="Upload"><span class="glyphicon glyphicon-cloud-upload"></span></a></li>
+		</ul>
+	</div>
+	<!-- main panel -->
+	<div class="col-sm-10">
+		<nav class="navbar navbar-inverse navbar-default navbar-static-top" role="navigation">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+                <div class="pull-left visible-xs">
+                    <button type="button" class="navbar-toggle" data-toggle="offcanvas">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+				<a class="navbar-brand logo" href="{% url app %}"><img src="/static/images/logo.png"> FlowCloud</a>
+			</div>
+			<div class="nav-collapse navbar-collapse collapse">
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="{% url app %}">Tool 1</a></li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> Guest User <b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="{% url settings %}">Settings</a></li>
+							<li class="divider"></li>
+							<li><a href="{% url index %}">Logout</a></li>
+						</ul>
+					</li>
+				</ul>
+            </div>
+			
+		</nav>
+		<div class="apppanel">
+			<div class="jumbotron">
+				<h1>Hello Guest!</h1>
+				{% if current_file %}
+					<p>You are trying to access the current_file: {{ current_file.filename }} </p>
+					<p>Size: {{ current_file.st_size|filesizeformat }} </p>
+					<p>MD5: {{ current_file.etag }} </p>
+					<p>Time: {{ current_file.st_ctime }} </p>
+				{% else %}
+					Select a file in the sidebar.
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</div>
+
+
+{% endblock content %}
+
+{% block javascriptimport %}
+    <!-- Le javascript
+    ================================================== -->
+    <!--Placed at the end of the document so the pages load faster but lot of these might not be useful to load-->
+    {{ block.super }}
+    {% load staticfiles %}
+    <script src="{% static "js/offcanvas.js" %}"></script>
+{% endblock javascriptimport %}
