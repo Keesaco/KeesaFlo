@@ -44,14 +44,14 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-                <p class="pull-left visible-xs">
+                <div class="pull-left visible-xs">
                     <button type="button" class="navbar-toggle" data-toggle="offcanvas">
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                </p>
-				<a class="navbar-brand" href="#">WebApp</a>
+                </div>
+				<a class="navbar-brand logo" href="#"><img src="/static/images/logo.png"> FlowCloud</a>
 			</div>
 			<div class="nav-collapse navbar-collapse collapse">
 				<ul class="nav navbar-nav navbar-right">
@@ -95,7 +95,7 @@
     <!-- Le javascript
     ================================================== -->
     <!--Placed at the end of the document so the pages load faster but lot of these might not be useful to load-->
-    <script src="{% static "js/jquery.js" %}"></script>
-    <script src="{% static "js/bootstrap.js" %}"></script>
+    {{ block.super }}
+    {% load staticfiles %}
     <script src="{% static "js/offcanvas.js" %}"></script>
 {% endblock javascriptimport %}
