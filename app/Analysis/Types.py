@@ -277,8 +277,8 @@ class RequestList:
 	## \author swhitehouse@keesaco.com of Keesaco
 	###########################################################################
 	def unsubscribe_user(	self,
-							user_id,
-							analysis_id	):
+							analysis_id,
+							user_id	):
 		if analysis_id in self.requests:
 			if self.requests[analysis_id].remove_user(user_id):
 				if self.requests[analysis_id].check_number_users() == 0:
@@ -295,6 +295,25 @@ class RequestList:
 	def check_number_requests(	self	):
 		return len(self.requests)
 	
+	###########################################################################
+	## \brief Changes the state of an AnalysisRequest object.
+	## \param self - instance reference
+	## \param analysis_id - the id of the request to be changed
+	## \param in_queue - whether the object is in the queue or not
+	## \param being_analysed - whether the object is being analysed or not
+	## \return Returns True on successful change of state, False on fail.
+	## \note This function will fail if both in_queue and being_analysed are True.
+	## \note This function will also fail if the analysis_id does not exist in requests.
+	## \author swhitehouse@keesaco.com of Keesaco
+	###########################################################################	
+	def change_state_request(	self,
+								analysis_id,
+								in_queue,
+								being_analysed	):
+		if analysis_id in self.requests:
+			return self.requests[analysis_id].change_state(in_queue, being_analysed)
+		return False
+
 	###########################################################################
 	## \brief A useful function for debugging which will print out the list information for all requests.
 	## \param self - instance reference
@@ -397,7 +416,7 @@ class QueueElement:
 	###########################################################################
 	## \brief A useful function for debugging which will print out the element information
 	## \param self - instance reference
-	## \param prefix - (= "")a string to be placed before each string printed by the function.
+	## \param prefix - (= "") a string to be placed before each string printed by the function.
 	## \return Returns nothing.
 	## \note Due to the problems with printing to a console in multi-element programs, this function should only be user for debugging.
 	## \author swhitehouse@keesaco.com of Keesaco
