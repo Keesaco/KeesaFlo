@@ -25,17 +25,17 @@
 			<div class="list-group">
 				{% if files %}
 					{% for file in files %}
-					<a href="{% url app %}{{file.filename}}" class="list-group-item {% if file.filename == current_file.filename %}active{% endif %}">{{ file.filename }} <span class="badge">{{ file.st_size|filesizeformat }}</span></a>
+					<a href="{% url app %}{{file.filename}}" class="list-group-item {% if file.filename == current_file.filename %}active{% endif %}"><span class="badge">{{ file.st_size|filesizeformat }}</span>{{ file.filename }}</a>
 					{% endfor %}
 				{% else %}
-					<a href="{% url upload %}" class="list-group-item">No files - Click here to upload one</a>
+					<a data-toggle="modal" data-target="#uploadModal" class="list-group-item">No files - Click here to upload one</a>
 				{% endif %}
 			</div>
 		</div>
 		<ul class="nav nav-pills bottom-nav">
 			<li><a href="{% url faq %}" title="F.A.Q"><span class="glyphicon glyphicon-question-sign" title="Upload"></span></a></li>
 			<li><a href="{% url about %}" title="About"><span class="glyphicon glyphicon-info-sign"></span></a></li>
-			<li><a href="{% url upload %}" title="Upload"><span class="glyphicon glyphicon-cloud-upload"></span></a></li>
+			<li><a title="Upload"  data-toggle="modal" data-target="#uploadModal"><span class="glyphicon glyphicon-cloud-upload"></span></a></li>
 		</ul>
 	</div>
 	<!-- main panel -->
@@ -88,6 +88,33 @@
 	</div>
 </div>
 
+<!-- Modal popup that shows when someone try to upload a file -->
+<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+       	<h4 class="modal-title" id="uploadModalLabel"> Upload a file </h4>
+	      </div>
+		    <form action="" method="post" enctype="multipart/form-data" target="_self">
+	      <div class="modal-body">
+		    {% csrf_token %}
+		    {% for field in form %}
+		        <div class="fieldWrapper">
+		            {{ field.label_tag }} {{ field }}
+		            {{ field.errors }}
+		        </div>
+		    {% endfor %}
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Dismiss</button>
+	        <button type="submit" value="Upload" class="btn btn-primary">Upload</button>
+	      </div>
+	    </form>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 
 {% endblock content %}
 
@@ -98,4 +125,5 @@
     {{ block.super }}
     {% load staticfiles %}
     <script src="{% static "js/offcanvas.js" %}"></script>
+    <script src="{% static "js/modal.js" %}"></script>
 {% endblock javascriptimport %}
