@@ -36,10 +36,7 @@ def add_user_task( 	analysis_id,
 ###########################################################################
 def remove_user_task(	analysis_id,
 						user_id	):
-	if schedule_queue.remove_user_from_element(analysis_id, user_id):
-		schedule_queue.age_queue()
-		return True
-	return False
+	return schedule_queue.remove_user_from_element(analysis_id, user_id)
 		
 ###########################################################################
 ## \brief Checks to see whether the analysis_id exists in the queue and if so where.
@@ -69,14 +66,11 @@ def number_task(	):
 
 ###########################################################################
 ## \brief A useful function for debugging which will print out the queue information
-## \param self - instance reference
-## \param prefix - (= "")a string to be placed before each string printed by the function.
+## \param prefix - (= "") a string to be placed before each string printed by the function.
 ## \return Returns nothing.
 ## \note Due to the problems with printing to a console in multi-element programs, this function should only be user for debugging.
 ## \author swhitehouse@keesaco.com of Keesaco
 ###########################################################################	
-def print_queue(	):
-	print ("%%%%%%%%%%%%%%%%%%%%%%%%%")
-	schedule_queue.print_queue("%% ")
-	print ("%%%%%%%%%%%%%%%%%%%%%%%%%")
+def print_queue(	prefix = ""	):
+	schedule_queue.print_queue(prefix)
 
