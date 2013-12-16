@@ -65,6 +65,15 @@ def number_task(	):
 	return schedule_queue.check_number_elements()
 
 ###########################################################################
+## \brief Checks to see how many times a user is listed next to a queue element
+## \param user_id - the user to be checked for
+## \return Returns the number of times the user is listed under an element
+## \author swhitehouse@keesaco.com of Keesaco
+###########################################################################
+def check_user(	user_id	):
+	return schedule_queue.check_user(user_id)
+
+###########################################################################
 ## \brief A useful function for debugging which will print out the queue information
 ## \param prefix - (= "") a string to be placed before each string printed by the function.
 ## \return Returns nothing.
