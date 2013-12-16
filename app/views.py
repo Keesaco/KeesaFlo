@@ -27,10 +27,11 @@ def settings(request):
 def upload(request):
     request.upload_handlers = [upload_handling.fcsUploadHandler()]
     if request.method == 'POST':
-        form = forms.UploadFile(request.POST)
+        form = forms.UploadFile(request.POST, request.FILES)
+        #print request.FILES
         if form.is_valid():
             cd = form.cleaned_data
-            return HttpResponse('This file is called %s' % cd['title'])
+            return HttpResponse('File uploaded to %s' % request.FILES['file'].path)
         else:
             return render(request, 'upload.html', {'form': form})
     else:
