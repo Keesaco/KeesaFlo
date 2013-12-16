@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.shortcuts import redirect
 from django import forms
 import forms
 from django.core.files.uploadhandler import FileUploadHandler
@@ -34,7 +35,7 @@ def upload(request):
         #print request.FILES
         if form.is_valid():
             cd = form.cleaned_data
-            return HttpResponse('File uploaded to %s' % request.FILES['file'].path)
+            return redirect('app')
         else:
             return render(request, 'upload.html', {'form': form})
     else:
