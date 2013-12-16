@@ -18,14 +18,18 @@
 	<div class="col-sm-2 sidebar-offcanvas" id="sidebar" role="navigation">
 		<nav class="navbar navbar-inverse navbar-default navbar-static-top" role="navigation">
 			<div class="navbar-header">
-				<a class="navbar-brand">Available Files</a>
+				<a class="navbar-brand">Your Files</a>
 			</div>
 		</nav>
 		<div class="navpanel">
 			<div class="list-group">
-				{% for file in files %}
-				<a href="{% url app %}{{file.filename}}" class="list-group-item">{{ file.filename }} ({{ file.st_size }}b)</a>
-				{% endfor %}
+				{% if files %}
+					{% for file in files %}
+					<a href="{% url app %}{{file.filename}}" class="list-group-item {% if file.filename == current_file.filename %}active{% endif %}">{{ file.filename }} <span class="badge">{{ file.st_size|filesizeformat }}</span></a>
+					{% endfor %}
+				{% else %}
+					<a href="{% url upload %}" class="list-group-item">No files - Click here to upload one</a>
+				{% endif %}
 			</div>
 		</div>
 		<ul class="nav nav-pills bottom-nav">
@@ -51,11 +55,11 @@
                         <span class="icon-bar"></span>
                     </button>
                 </div>
-				<a class="navbar-brand logo" href="#"><img src="/static/images/logo.png"> FlowCloud</a>
+				<a class="navbar-brand logo" href="{% url app %}"><img src="/static/images/logo.png"> FlowCloud</a>
 			</div>
 			<div class="nav-collapse navbar-collapse collapse">
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="#">Tool 1</a></li>
+					<li><a href="{% url app %}">Tool 1</a></li>
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> Guest User <b class="caret"></b></a>
 						<ul class="dropdown-menu">
@@ -70,11 +74,15 @@
 		</nav>
 		<div class="apppanel">
 			<div class="jumbotron">
-			  <h1>Hello, world!</h1>
-			  <p>You are trying to access the file: {{ file.filename }} </p>
-			  <p>Size: {{ file.st_size }} </p>
-			  <p>MD5: {{ file.etag }} </p>
-			  <p>Time: {{ file.st_ctime }} </p>
+				<h1>Hello Guest!</h1>
+				{% if current_file %}
+					<p>You are trying to access the current_file: {{ current_file.filename }} </p>
+					<p>Size: {{ current_file.st_size|filesizeformat }} </p>
+					<p>MD5: {{ current_file.etag }} </p>
+					<p>Time: {{ current_file.st_ctime }} </p>
+				{% else %}
+					Select a file in the sidebar.
+				{% endif %}
 			</div>
 		</div>
 	</div>
