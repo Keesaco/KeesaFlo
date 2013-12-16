@@ -3,6 +3,9 @@
 ## \brief A package for creating callback lists
 ## \author jmccrea@keesaco.com of Keesaco
 ###########################################################################
+## \package app.Notification.ListenerCollection
+## \brief Provides classes for listeners and listener/subscription collections and alerting
+###########################################################################
 
 ## \brief Defines a listener type with a callback
 class Listener:
