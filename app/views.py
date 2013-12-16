@@ -22,7 +22,7 @@ def app(request, file=None):
     for temp_file in lst: 
         temp_file.filename = temp_file.filename.rpartition('/')[2]
         if temp_file.filename == file :  file_info = temp_file
-    return render(request, 'app.html', { 'files' : lst , 'current_file' : file_info})#{'files' : [{'filename' : 'hello', 'st_size' : '12' }]})#ds.list('/') })
+    return render(request, 'app.html', { 'files' : lst , 'current_file' : file_info})
 
 def settings(request):
 	return render(request, 'settings.html')
@@ -32,7 +32,6 @@ def upload(request):
     request.upload_handlers = [upload_handling.fcsUploadHandler()]
     if request.method == 'POST':
         form = forms.UploadFile(request.POST, request.FILES)
-        #print request.FILES
         if form.is_valid():
             cd = form.cleaned_data
             return redirect('app')
