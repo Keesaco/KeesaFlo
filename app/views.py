@@ -21,7 +21,7 @@ def app(request, file=None):
     for temp_file in lst: 
         temp_file.filename = temp_file.filename.rpartition('/')[2]
         if temp_file.filename == file :  file_info = temp_file
-    return render(request, 'app.html', { 'files' : lst , 'file' : file_info})#{'files' : [{'filename' : 'hello', 'st_size' : '12' }]})#ds.list('/') })
+    return render(request, 'app.html', { 'files' : lst , 'current_file' : file_info})#{'files' : [{'filename' : 'hello', 'st_size' : '12' }]})#ds.list('/') })
 
 def settings(request):
 	return render(request, 'settings.html')
