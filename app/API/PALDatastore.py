@@ -6,6 +6,7 @@
 ###########################################################################
 ## \package app.API.PALDatastore
 ## \brief Contains abstraction layer functions for 'low level' data access - returns results in a platform independent form
+## \note Depends on FileStat and cloudstorage (google)
 ###########################################################################
 import cloudstorage as gcs
 from FileStat import FileStat

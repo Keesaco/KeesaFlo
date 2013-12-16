@@ -4,7 +4,7 @@ from django import forms
 import forms
 from django.core.files.uploadhandler import FileUploadHandler
 import upload_handling
-
+import API.APIDatastore as ds;
 
 def index(request):
 	return render(request, 'index.html')
@@ -15,8 +15,13 @@ def about(request):
 def faq(request):
 	return render(request, 'faq.html')
 
-def app(request):
-	return render(request, 'app.html')
+def app(request, file=None):
+    lst = ds.list('/fc-raw-data')
+    file_info = None
+    for temp_file in lst: 
+        temp_file.filename = temp_file.filename.rpartition('/')[2]
+        if temp_file.filename == file :  file_info = temp_file
+    return render(request, 'app.html', { 'files' : lst , 'current_file' : file_info})#{'files' : [{'filename' : 'hello', 'st_size' : '12' }]})#ds.list('/') })
 
 def settings(request):
 	return render(request, 'settings.html')
