@@ -14,7 +14,7 @@ Running Doxygen on Doxyfile.doxyfile (in the root directory of the repository) w
 for the project into the Doxygen directory in HTML and LaTeX.  
 
 For convenience, an HTML copy of the documentation is accessible from keesaco.com using the following link:  
-[Doxygen output](http://keesaco.com/1c314fc722274b40e8600aec4610edf1/Doxygen/html/) (Last updated 29 Nov 13)  
+[Doxygen output](http://keesaco.com/1c314fc722274b40e8600aec4610edf1/Doxygen/html/) (Last updated 1 Dec 13)  
 Please note that this may not reflect all of the latest changes to the project and only shows documentation for
 code on the development branch.
 
