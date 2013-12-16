@@ -10,6 +10,9 @@ from django.core.files.uploadhandler import FileUploadHandler
 from django.core.files.uploadedfile import UploadedFile
 import API.APIDatastore as ds
 
+## default upload bucket
+DEFAULT_BUCKET = '/fc-raw-data/'
+
 # Custom upload handler class.
 class fcsUploadHandler(FileUploadHandler):
     def __init__(self):
@@ -25,7 +28,7 @@ class fcsUploadHandler(FileUploadHandler):
     ## \author rmurley@keesaco.com of Keesaco
     ###########################################################################
     def new_file(self, field_name, file_name, content_type, content_length, charset):
-        base_path = ds.generate_path('/fc-raw-data/', None, file_name)
+        base_path = ds.generate_path(DEFAULT_BUCKET, None, file_name)
         self.path = base_path
         i = 1
         while ds.check_exists(self.path, None):
