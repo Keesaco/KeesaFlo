@@ -63,7 +63,7 @@
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> Guest User <b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li><a href="{% url settings %}">Settings</a></li>
+							<li><a title="Settings" data-toggle="modal" data-target="#settingsModal">Settings</a></li>
 							<li class="divider"></li>
 							<li><a href="{% url index %}">Logout</a></li>
 						</ul>
@@ -109,6 +109,27 @@
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Dismiss</button>
 	        <button type="submit" value="Upload" class="btn btn-primary">Upload</button>
+	      </div>
+	    </form>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- Modal popup that shows settings -->
+<div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-labelledby="settingsModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+       	<h4 class="modal-title" id="settingsModalLabel"> Settings </h4>
+	      </div>
+		    <form action="" method="post" enctype="multipart/form-data" target="_self">
+	      <div class="modal-body">
+		    
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+	        <button type="submit" value="Upload" class="btn btn-primary">OK</button>
 	      </div>
 	    </form>
     </div><!-- /.modal-content -->
