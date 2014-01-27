@@ -39,7 +39,7 @@
 		</ul>
 	</div>
 	<!-- main panel -->
-	<div class="col-sm-10">
+	<div class="col-sm-8">
 		<nav class="navbar navbar-inverse navbar-default navbar-static-top" role="navigation">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
@@ -86,6 +86,17 @@
 			</div>
 		</div>
 	</div>
+    <!--toolbar-->
+    <div class="col-sm-2 sidebar-offcanvas" id="sidebar2" role="navigation">
+		<nav class="navbar navbar-inverse navbar-default navbar-static-top" role="navigation">
+			<div class="navbar-header">
+				<a class="navbar-brand">Tools</a>
+			</div>
+		</nav>
+		<div class="navpanel">
+			<div class="tool"><a href="{% url app %}"><img src="/static/images/scatter.png"><p>Graph</p></a></div>
+		</div>
+    </div>
 </div>
 
 <!-- Modal popup that shows when someone try to upload a file -->

@@ -6,6 +6,25 @@
 	height: 100%;
 }
 
+.tool  a {
+    color: #AAAAAA;
+    display: block;
+    font-weight: bold;
+}
+
+.tool a p {
+    padding-left: 20px;
+}
+
+.tool a:hover {
+    color: #E6E6E6;
+    text-decoration: none;
+}
+
+.tool a:hover img {
+    -webkit-filter: brightness(1.3);
+}
+
 .navbar
 {
 	margin-bottom: 0;
@@ -35,7 +54,7 @@
 
 .navpanel
 {
-	bottom: 41px;
+	bottom: 0px;
 	background-color: #222222;
 }
 
@@ -118,6 +137,16 @@ a.list-group-item:hover {
 html, body, .row
 {
 	height: 100%;
+}
+
+.tool
+{
+    color: #333333;
+}
+
+.tool img {
+    height: 110px;
+    padding: 20px;
 }
 
 @media screen and (max-width: 767px) {
