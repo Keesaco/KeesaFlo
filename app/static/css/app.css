@@ -14,6 +14,7 @@
 
 .tool a p {
     padding-left: 20px;
+    font-size: 100%;
 }
 
 .tool a:hover {
@@ -145,37 +146,62 @@ html, body, .row
 }
 
 .tool img {
-    height: 110px;
+    width: 50%;
     padding: 20px;
 }
 
-@media screen and (max-width: 767px) {
+  .sidebar-offcanvas {
+    position: absolute;
+    top: 0;
+    width: 50%; /* 6 columns */
+  }
+  
+    .row-offcanvas-right
+  .sidebar-offcanvas {
+    left: -50%; /* 6 columns */
+  }
+  
+    .row-offcanvas-right.active {
+    left: 50%; /* 6 columns */
+  }
+  
   .row-offcanvas {
     position: relative;
     -webkit-transition: all 0.25s ease-out;
     -moz-transition: all 0.25s ease-out;
     transition: all 0.25s ease-out;
   }
+  
+  .navbar-togglel {
+  position: relative;
+  float: right;
+  padding: 9px 10px;
+  margin-top: 8px;
+  margin-right: 15px;
+  margin-bottom: 8px;
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
 
-  .row-offcanvas-right
+@media screen and (max-width: 767px) {
+  
+
+  .row-offcanvas-left
   .sidebar-offcanvas {
     right: -50%; /* 6 columns */
   }
 
-  .row-offcanvas-left
-  .sidebar-offcanvas {
-    left: -50%; /* 6 columns */
-  }
-
-  .row-offcanvas-right.active {
+  .row-offcanvas-left.active {
     right: 50%; /* 6 columns */
   }
-
-  .row-offcanvas-left.active {
-    left: 50%; /* 6 columns */
+  
+  .row-offcanvas
+  .toolbar-offcanvas{
+    left: -50%;
   }
 
-  .sidebar-offcanvas {
+  .toolbar-offcanvas {
     position: absolute;
     top: 0;
     width: 50%; /* 6 columns */

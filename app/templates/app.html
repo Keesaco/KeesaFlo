@@ -13,8 +13,66 @@
 
 {% block content %}
 
-<div class="row row-offcanvas row-offcanvas-left">
-	<!-- left panel -->
+<div class="row row-offcanvas row-offcanvas-right">
+    <!--toolbar-->
+    <div class="col-sm-2 toolbar-offcanvas" id="sidebar2" role="navigation">
+		<nav class="navbar navbar-inverse navbar-default navbar-static-top" role="navigation">
+			<div class="navbar-header">
+				<a class="navbar-brand">Tools</a>
+			</div>
+		</nav>
+		<div class="navpanel">
+			<div class="tool"><a href="{% url app %}"><img src="/static/images/scatter.png"><p>Graph</p></a></div>
+		</div>
+    </div>
+	<!-- main panel -->
+	<div class="col-sm-10">
+		<nav class="navbar navbar-inverse navbar-default navbar-static-top" role="navigation">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+
+				<a class="navbar-brand logo" href="{% url app %}"><img src="/static/images/logo.png">FlowCloud</a>
+			</div>
+			<div class="nav-collapse navbar-collapse collapse">
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="{% url app %}">Tool 1</a></li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> Guest User <b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a title="Settings" data-toggle="modal" data-target="#settingsModal">Settings</a></li>
+							<li class="divider"></li>
+							<li><a href="{% url index %}">Logout</a></li>
+						</ul>
+					</li>
+				</ul>
+            </div>
+			<button type="button" class="navbar-togglel pull-right" data-toggle="offcanvas">
+                <span class="sr-only">Toggle files</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+		</nav>
+		<div class="apppanel">
+			<div class="jumbotron">
+				<h1>Hello Guest!</h1>
+				{% if current_file %}
+					<p>You are trying to access the current_file: {{ current_file.filename }} </p>
+					<p>Size: {{ current_file.st_size|filesizeformat }} </p>
+					<p>MD5: {{ current_file.etag }} </p>
+					<p>Time: {{ current_file.st_ctime }} </p>
+				{% else %}
+					Select a file in the sidebar.
+				{% endif %}
+			</div>
+		</div>
+	</div>
+    <!-- left panel -->
 	<div class="col-sm-2 sidebar-offcanvas" id="sidebar" role="navigation">
 		<nav class="navbar navbar-inverse navbar-default navbar-static-top" role="navigation">
 			<div class="navbar-header">
@@ -38,65 +96,6 @@
 			<li><a title="Upload"  data-toggle="modal" data-target="#uploadModal"><span class="glyphicon glyphicon-cloud-upload"></span></a></li>
 		</ul>
 	</div>
-	<!-- main panel -->
-	<div class="col-sm-8">
-		<nav class="navbar navbar-inverse navbar-default navbar-static-top" role="navigation">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-                <div class="pull-left visible-xs">
-                    <button type="button" class="navbar-toggle" data-toggle="offcanvas">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                </div>
-				<a class="navbar-brand logo" href="{% url app %}"><img src="/static/images/logo.png"> FlowCloud</a>
-			</div>
-			<div class="nav-collapse navbar-collapse collapse">
-				<ul class="nav navbar-nav navbar-right">
-					<li><a href="{% url app %}">Tool 1</a></li>
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> Guest User <b class="caret"></b></a>
-						<ul class="dropdown-menu">
-							<li><a title="Settings" data-toggle="modal" data-target="#settingsModal">Settings</a></li>
-							<li class="divider"></li>
-							<li><a href="{% url index %}">Logout</a></li>
-						</ul>
-					</li>
-				</ul>
-            </div>
-			
-		</nav>
-		<div class="apppanel">
-			<div class="jumbotron">
-				<h1>Hello Guest!</h1>
-				{% if current_file %}
-					<p>You are trying to access the current_file: {{ current_file.filename }} </p>
-					<p>Size: {{ current_file.st_size|filesizeformat }} </p>
-					<p>MD5: {{ current_file.etag }} </p>
-					<p>Time: {{ current_file.st_ctime }} </p>
-				{% else %}
-					Select a file in the sidebar.
-				{% endif %}
-			</div>
-		</div>
-	</div>
-    <!--toolbar-->
-    <div class="col-sm-2 sidebar-offcanvas" id="sidebar2" role="navigation">
-		<nav class="navbar navbar-inverse navbar-default navbar-static-top" role="navigation">
-			<div class="navbar-header">
-				<a class="navbar-brand">Tools</a>
-			</div>
-		</nav>
-		<div class="navpanel">
-			<div class="tool"><a href="{% url app %}"><img src="/static/images/scatter.png"><p>Graph</p></a></div>
-		</div>
-    </div>
 </div>
 
 <!-- Modal popup that shows when someone try to upload a file -->
