@@ -1,8 +1,8 @@
 ###########################################################################
-## \file app/static/js/processing.js
-## \brief JavaScript library for the client-side processing layer
+## \file app/static/js/data.js
+## \brief JavaScript library for the client-side data layer.
 ## \author jmccrea@keesaco.com of Keesaco
 ###########################################################################
-## \package app.static.js.processing
-## \brief Provides methods for modifying data from the data layer for use by the front-end UI
+## \package app.static.js.data
+## \brief Provides methods for data transformation/intermediate processsing before it is passed to the processing layer
 ###########################################################################
