@@ -3,6 +3,7 @@ from django.contrib import admin
 import views #TODO may need to be moved, to be decided later
 import dbindexer
 
+
 handler500 = 'djangotoolbox.errorviews.server_error'
 
 # django admin
@@ -20,5 +21,6 @@ urlpatterns = patterns('',
     url(r'^app/$', 'views.app', name='app'),
     url(r'^app/(?P<file>.+)$', 'views.app', name='app'),
     url(r'^settings/$', 'views.settings', name='settings'),
+	url(r'^login/$', 'views.login', name='login'),
     ('^admin/', include(admin.site.urls))
 )
