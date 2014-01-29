@@ -5,7 +5,13 @@ from django import forms
 import forms
 from django.core.files.uploadhandler import FileUploadHandler
 import upload_handling
-import API.APIDatastore as ds;
+import API.APIDatastore as ds
+import API.PALUsers as auth
+
+
+def login(request):
+	link = auth.create_login_url('app.html')
+	return render(request, link)
 
 def index(request):
 	return render(request, 'index.html')
