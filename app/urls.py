@@ -2,7 +2,7 @@ from django.conf.urls.defaults import *
 from django.contrib import admin
 import views #TODO may need to be moved, to be decided later
 import dbindexer
-
+import API.PALUsers as auth
 
 handler500 = 'djangotoolbox.errorviews.server_error'
 

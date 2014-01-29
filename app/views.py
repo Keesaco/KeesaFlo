@@ -11,8 +11,8 @@ import API.PALUsers as auth
 
 def login(request):
 	link = auth.create_login_url('app.html')
-	return render(request, link)
-
+	return redirect(link)
+	
 def index(request):
 	return render(request, 'index.html')
 
