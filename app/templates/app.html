@@ -15,7 +15,7 @@
 
 <div class="row row-offcanvas row-offcanvas-right">
     <!--toolbar-->
-    <div class="col-sm-2 toolbar-offcanvas" id="sidebar2" role="navigation">
+    <div class="col-sm-2" id="sidebar2" role="navigation">
 		<nav class="navbar navbar-inverse navbar-default navbar-static-top" role="navigation">
 			<div class="navbar-header">
 				<a class="navbar-brand">Tools</a>
@@ -40,7 +40,7 @@
 			</div>
 			<div class="nav-collapse navbar-collapse collapse">
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="{% url app %}">Tool 1</a></li>
+					<li><a href="#sidebar">Files</a></li>
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> Guest User <b class="caret"></b></a>
 						<ul class="dropdown-menu">
@@ -51,12 +51,7 @@
 					</li>
 				</ul>
             </div>
-			<button type="button" class="navbar-togglel pull-right" data-toggle="offcanvas">
-                <span class="sr-only">Toggle files</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
+			
 		</nav>
 		<div class="apppanel">
 			<div class="jumbotron">
@@ -72,7 +67,7 @@
 			</div>
 		</div>
 	</div>
-    <!-- left panel -->
+    <!-- file panel -->
 	<div class="col-sm-2 sidebar-offcanvas" id="sidebar" role="navigation">
 		<nav class="navbar navbar-inverse navbar-default navbar-static-top" role="navigation">
 			<div class="navbar-header">
