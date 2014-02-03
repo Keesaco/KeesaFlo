@@ -175,7 +175,7 @@ html, body, .row
   }
   
   #sidebar:target {
-     width: 20%;
+     width: 16.7%;
   }
   
   @media screen and (max-width: 767px) {
