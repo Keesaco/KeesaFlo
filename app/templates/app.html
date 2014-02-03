@@ -13,9 +13,9 @@
 
 {% block content %}
 
-<div class="row row-offcanvas row-offcanvas-right">
+<div class="row row-offcanvas row-offcanvas-left">
     <!--toolbar-->
-    <div class="col-sm-2" id="sidebar2" role="navigation">
+    <div class="col-sm-2 toolbar-offcanvas" id="sidebar2" role="navigation">
 		<nav class="navbar navbar-inverse navbar-default navbar-static-top" role="navigation">
 			<div class="navbar-header">
 				<a class="navbar-brand">Tools</a>
@@ -35,7 +35,11 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-
+                <button type="button" class="navbar-toggle pull-left visible-xs" data-toggle="offcanvas">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
 				<a class="navbar-brand logo" href="{% url app %}"><img src="/static/images/logo.png">FlowCloud</a>
 			</div>
 			<div class="nav-collapse navbar-collapse collapse">
