@@ -165,7 +165,7 @@ html, body, .row
 }
 
   .sidebar-offcanvas {
-    width: 0;
+    display: none;
     overflow: hidden;
     position: fixed;
     top: 0;

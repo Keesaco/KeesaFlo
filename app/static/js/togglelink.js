@@ -1,5 +1,5 @@
 $(function() {
-    $('.togglefiles').click(function() {
-        $(this).attr('href', $(this).attr('href') == '#' ? '#sidebar' : '#');
+    $('#togglefiles').click(function() {
+        $('#sidebar').animate({width: 'toggle'},350);
     });
 });
