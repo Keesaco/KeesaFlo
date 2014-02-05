@@ -165,13 +165,12 @@ html, body, .row
 }
 
   .sidebar-offcanvas {
-    display: none;
+    margin-right: -16.7%;
     overflow: hidden;
     position: fixed;
     top: 0;
     right: 0;
     height: 100%;
-    transition: width 0.3s ease;
   }
   
   #sidebar:target {
@@ -199,5 +198,6 @@ html, body, .row
         position: absolute;
         top: 0;
         width: 50%;
+        transition: width 0.3s ease;
     }
   }
