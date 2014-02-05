@@ -200,4 +200,8 @@ html, body, .row
         width: 50%;
         transition: width 0.3s ease;
     }
+    
+    .sidebar-offcanvas {
+        margin-right: -50%;
+    }
   }
