@@ -24,6 +24,8 @@ def app(request, file=None):
         if temp_file.filename == file :  file_info = temp_file
 
     request.upload_handlers = [upload_handling.fcsUploadHandler()]
+    if request.GET.has_key('xhr'):
+        return HttpResponse("<h1>It worked for " + request.GET.__getitem__('xhr') + "</h1>", mimetype="text/html")
     if request.method == 'POST':
         form = forms.UploadFile(request.POST, request.FILES)
         if form.is_valid():
