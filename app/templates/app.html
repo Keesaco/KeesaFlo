@@ -25,7 +25,7 @@
 			<div class="list-group">
 				{% if files %}
 					{% for file in files %}
-					<a href="{% url app %}{{file.filename}}" class="list-group-item {% if file.filename == current_file.filename %}active{% endif %}"><span class="badge">{{ file.st_size|filesizeformat }}</span>{{ file.filename }}</a>
+					<a href="#{{file.filename}}" class="list-group-item{% if file.filename == current_file.filename %} active{% endif %}" onclick="fetchNewFile('{{ file.filename }}');" id="file:{{file.filename}}"><span class="badge">{{ file.st_size|filesizeformat }}</span>{{ file.filename }}</a>
 					{% endfor %}
 				{% else %}
 					<a data-toggle="modal" data-target="#uploadModal" class="list-group-item">No files - Click here to upload one</a>
@@ -72,7 +72,7 @@
             </div>
 			
 		</nav>
-		<div class="apppanel">
+		<div class="apppanel" id="apppanel">
 			<div class="jumbotron">
 				<h1>Hello Guest!</h1>
 				{% if current_file %}
@@ -126,4 +126,5 @@
     {% load staticfiles %}
     <script src="{% static "js/offcanvas.js" %}"></script>
     <script src="{% static "js/modal.js" %}"></script>
+    <script src="{% static "js/ajaxExperiment.js" %}"></script>
 {% endblock javascriptimport %}
