@@ -19,6 +19,9 @@ app/djangoappengine
 app/djangotoolbox
 app/googleAPI
 app/static/css/bootstrap.css
+app/static/js/bootstrap.js
+app/static/js/jquery.js
+app/static/js/offcanvas.js
 app/manage.py
 app/settings.py
 ```
