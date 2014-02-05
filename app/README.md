@@ -11,17 +11,17 @@ This is a skeleton implementation of the Django framework for Google App Engine.
 
 ## Dependences
 So far, the dependencies to be added are:
-´´´no-highlight
-*app/autoload
-*app/cloudstorage
-*app/dbindexer
-*app/djangoappengine
-*app/djangotoolbox
-*app/googleAPI
-*app/static/css/bootstrap.css
-*app/manage.py
-*app/settings.py
-´´´
+```no-highlight
+app/autoload
+app/cloudstorage
+app/dbindexer
+app/djangoappengine
+app/djangotoolbox
+app/googleAPI
+app/static/css/bootstrap.css
+app/manage.py
+app/settings.py
+```
 They can be retreived from a version of the repository previous to the alpha release.
 
 ## Upload to App Engine
