@@ -11,6 +11,7 @@
 from google.appengine.api import users
 from User import User
 
+import logging
 ###########################################################################
 ## \brief Creates a url that points to a login page
 ## \param dest_url - url to redirect to after login
@@ -41,7 +42,21 @@ def create_logout_url(dest_url):
 ## \author cwike@keesaco.com of Keesaco
 ###########################################################################
 def get_current_user():
-	return users.get_current_user()
+
+	google_user_object = users.get_current_user()
+	#return google_user_object
+	user_object = User()
+	
+	if google_user_object is None:
+		return None
+	else:
+		user_object._nickname = google_user_object.nickname()
+		user_object._user_id = google_user_object.user_id()
+		user_object._email = google_user_object.email()
+		user_object._federated_provider = google_user_object.federated_provider()		
+		user_object._federated_ident = google_user_object.federated_identity()
+	
+		return user_object
 
 ###########################################################################
 ## \brief determines if current user is on admins list
