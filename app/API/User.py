@@ -9,36 +9,39 @@
 
 from google.appengine.api import users
 
+
 ## \brief contains User class hold information about a user
 class User:
 
 	###########################################################################
 	## \brief constructor for a User object
 	## \param self - instance reference
-	## \param email - email address of user, or None for current user
+	## \param email_addr - email address of user, or None for current user
 	## \param federated_identity - openId identifier, or None
 	## \return returns a User object
 	## \author cwike@keesaco.com of keesaco
 	###########################################################################
 	def __init__(self,
-				 email = None,
+				 email_addr = None,
 				 federated_identity = None
 				):
+				
+		self._federated_ident = None
+		self._nickname = None
+		self._user_id = None
+		self._federated_provider = None
+		self._email = None
+		
 		try:
-			user = users.User(email,federated_identity)
+			google_user = users.User(email_addr,federated_identity)
 		except users.UserNotFoundError:
-			self.email = None
-			self.nickname = None
-			self.user_id = None
-			self.federated_provider = None
-			self.email = None
-			
+			pass
 		else:
-			self.federated_identity = user.federated_identity()
-			self.nickname = user.nickname()
-			self.user_id = user.user_id()
-			self.federated_provider = user.federated_provider()
-			self.email = user.email()	
+			self._federated_ident = google_user.federated_identity()
+			self._nickname = google_user.nickname()
+			self._user_id = google_user.user_id()
+			self._federated_provider = google_user.federated_provider()
+			self._email = google_user.email()	
 
 	###########################################################################
 	## \brief getter for nickname
@@ -46,7 +49,7 @@ class User:
 	## \author cwike@keesaco.com of keesaco
 	###########################################################################
 	def nickname(self):
-		return self.nickname
+		return self._nickname
 	
 	
 	###########################################################################
@@ -55,7 +58,7 @@ class User:
 	## \author cwike@keesaco.com of keesaco
 	###########################################################################
 	def email(self):
-		return self.email
+		return self._email
 	
 	
 	###########################################################################
@@ -64,7 +67,7 @@ class User:
 	## \author cwike@keesaco.com of keesaco
 	###########################################################################
 	def user_id(self):
-		return self.user_id
+		return self._user_id
 	
 	
 	###########################################################################
@@ -73,7 +76,7 @@ class User:
 	## \author cwike@keesaco.com of keesaco
 	###########################################################################
 	def federated_identity(self):
-		return self.federated_identity
+		return self._federated_ident
 	
 	
 	###########################################################################
@@ -82,7 +85,7 @@ class User:
 	## \author cwike@keesaco.com of keesaco
 	###########################################################################
 	def federated_provider(self):
-		return self.federated_provider
+		return self._federated_provider
 		
 		
 		
