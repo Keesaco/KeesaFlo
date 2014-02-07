@@ -26,9 +26,9 @@ function ksfProc()
 ***************************************************************************/
 function ksfProc.copyPageletInto(URI, targetID)
 {
-	///get data and do stuff
 	ksfData.fetch( 	URI,
 					function(response) {
-						ksfData.pageletBody(response)
+				  		var pagelet = ksfData.pagelet(response)
+				  $(targetID).html(pagelet.body);
 					} );
 }
