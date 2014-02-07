@@ -18,8 +18,8 @@ urlpatterns = patterns('',
     url(r'^about/$', 'views.about', name='about'),
     url(r'^faq/$', 'views.faq', name='faq'),
     url(r'^app/$', 'views.app', name='app'),
-    url(r'^app/(?P<file>.+)$', 'views.file_page', name='pagelet_file'),
-    url(r'^app/file_list$', 'views.file_list', name='pagelet_list'),
+    url(r'^app/file=(?P<file>.+)$', 'views.file_page', name='pagelet_file'),
+    url(r'^app/file_list/$', 'views.file_list', name='pagelet_list'),
     url(r'^settings/$', 'views.settings', name='settings'),
     ('^admin/', include(admin.site.urls))
 )

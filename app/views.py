@@ -24,10 +24,10 @@ def app(request):
             cd = form.cleaned_data
             return redirect('app')
         else:
-            return render(request, 'app.html', {'form': form, 'files' : lst , 'current_file' : file_info})
+            return render(request, 'app.html', {'form': form})
     else:
         form = forms.UploadFile()
-        return render(request, 'app.html', {'form': form, 'files' : lst , 'current_file' : file_info})
+        return render(request, 'app.html', {'form': form})
 
 def file_list(request):
     lst = ds.list('/fc-raw-data')
