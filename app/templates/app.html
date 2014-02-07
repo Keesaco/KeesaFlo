@@ -65,7 +65,7 @@
 						<ul class="dropdown-menu">
 							<li><a href="{% url settings %}">Settings</a></li>
 							<li class="divider"></li>
-							<li><a href="{% url index %}">Logout</a></li>
+							<li><a href="{% url logout %}">Logout</a></li>
 						</ul>
 					</li>
 				</ul>
@@ -74,7 +74,7 @@
 		</nav>
 		<div class="apppanel">
 			<div class="jumbotron">
-				<h1>Hello Guest!</h1>
+				<h1>Hello {{ authed_user_nick }}!</h1>
 				{% if current_file %}
 					<p>You are trying to access the current_file: {{ current_file.filename }} </p>
 					<p>Size: {{ current_file.st_size|filesizeformat }} </p>
