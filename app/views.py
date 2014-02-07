@@ -27,7 +27,7 @@ def app(request, file=None):
     file_info = None
 	
 	
-	## \brief authed bit test for account nicknames
+	## brief authed bit test for account nicknames
 	authed_user = auth.get_current_user()
 	if authed_user is None:
 		authed_user_nick = "Guest"
