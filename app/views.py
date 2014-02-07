@@ -25,15 +25,12 @@ def faq(request):
 def app(request, file=None):
     lst = ds.list('/fc-raw-data')
     file_info = None
+    authed_user = auth.get_current_user()
 	
-	
-	## brief authed bit test for account nicknames
-	authed_user = auth.get_current_user()
-	if authed_user is None:
-		authed_user_nick = "Guest"
-	else
-		authed_user_nick = authed_user.nickname()
-	##############################################
+    if authed_user is None:
+        authed_user_nick = "Guest"
+    else:
+        authed_user_nick = authed_user.nickname()
 	
     for temp_file in lst: 
         temp_file.filename = temp_file.filename.rpartition('/')[2]
