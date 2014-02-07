@@ -16,13 +16,7 @@ def about(request):
 def faq(request):
 	return render(request, 'faq.html')
 
-def app(request, file=None):
-    lst = ds.list('/fc-raw-data')
-    file_info = None
-    for temp_file in lst: 
-        temp_file.filename = temp_file.filename.rpartition('/')[2]
-        if temp_file.filename == file :  file_info = temp_file
-
+def app(request):
     request.upload_handlers = [upload_handling.fcsUploadHandler()]
     if request.method == 'POST':
         form = forms.UploadFile(request.POST, request.FILES)
@@ -30,10 +24,25 @@ def app(request, file=None):
             cd = form.cleaned_data
             return redirect('app')
         else:
-            return render(request, 'app.html', {'form': form, 'files' : lst , 'current_file' : file_info})
+            return render(request, 'app.html', {'form': form})
     else:
         form = forms.UploadFile()
-        return render(request, 'app.html', {'form': form, 'files' : lst , 'current_file' : file_info})
+        return render(request, 'app.html', {'form': form})
+
+def file_list(request):
+    lst = ds.list('/fc-raw-data')
+    for temp_file in lst: 
+        temp_file.filename = temp_file.filename.rpartition('/')[2]
+    return render(request, 'file_list.html', {'files' : lst})
+
+def file_page(request, file=None):
+    lst = ds.list('/fc-raw-data')
+    file_info = None
+    for temp_file in lst: 
+        temp_file.filename = temp_file.filename.rpartition('/')[2]
+        if temp_file.filename == file:
+            file_info = temp_file;
+    return render(request, 'file_page.html', {'current_file' : file_info})
 
 def settings(request):
 	return render(request, 'settings.html')
