@@ -22,5 +22,6 @@ urlpatterns = patterns('',
     url(r'^app/(?P<file>.+)$', 'views.app', name='app'),
     url(r'^settings/$', 'views.settings', name='settings'),
 	url(r'^login/$', 'views.login', name='login'),
+	url(r'^logout/$', 'veiws.logout', name='logout'),
     ('^admin/', include(admin.site.urls))
 )

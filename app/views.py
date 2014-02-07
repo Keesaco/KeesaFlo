@@ -13,6 +13,10 @@ def login(request):
 	link = auth.create_login_url('app/')
 	return redirect(link)
 	
+def logout(request):
+	link = auth.create_logout_url('/')
+	return redirect(link)
+	
 def index(request):
 	return render(request, 'index.html')
 
@@ -28,7 +32,7 @@ def app(request, file=None):
     authed_user = auth.get_current_user()
 	
     if authed_user is None:
-        authed_user_nick = "Guest"
+        return redirect('/')
     else:
         authed_user_nick = authed_user.nickname()
 	
