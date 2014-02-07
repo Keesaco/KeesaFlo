@@ -23,13 +23,7 @@
 		</nav>
 		<div class="navpanel">
 			<div class="list-group">
-				{% if files %}
-					{% for file in files %}
-					<a href="#{{file.filename}}" class="list-group-item{% if file.filename == current_file.filename %} active{% endif %}" onclick="fetchNewFile('{{ file.filename }}');" id="file:{{file.filename}}"><span class="badge">{{ file.st_size|filesizeformat }}</span>{{ file.filename }}</a>
-					{% endfor %}
-				{% else %}
-					<a data-toggle="modal" data-target="#uploadModal" class="list-group-item">No files - Click here to upload one</a>
-				{% endif %}
+				<!-- To be filled with the list fetched from the server -->
 			</div>
 		</div>
 		<ul class="nav nav-pills bottom-nav">
@@ -72,18 +66,8 @@
             </div>
 			
 		</nav>
-		<div class="apppanel" id="apppanel">
-			<div class="jumbotron">
-				<h1>Hello Guest!</h1>
-				{% if current_file %}
-					<p>You are trying to access the current_file: {{ current_file.filename }} </p>
-					<p>Size: {{ current_file.st_size|filesizeformat }} </p>
-					<p>MD5: {{ current_file.etag }} </p>
-					<p>Time: {{ current_file.st_ctime }} </p>
-				{% else %}
-					Select a file in the sidebar.
-				{% endif %}
-			</div>
+		<div class="apppanel">
+			<!-- To be filled by the app panel fetched from the server -->
 		</div>
 	</div>
 </div>
