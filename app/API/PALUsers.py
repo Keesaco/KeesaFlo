@@ -11,7 +11,7 @@
 from google.appengine.api import users
 from User import User
 
-import logging
+
 ###########################################################################
 ## \brief Creates a url that points to a login page
 ## \param dest_url - url to redirect to after login
