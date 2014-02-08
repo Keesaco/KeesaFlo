@@ -84,7 +84,7 @@
 	      <div class="modal-body">
 		    {% csrf_token %}
 		    {% for field in form %}
-		        <div class="fieldWrapper">
+		        <div class="fieldWrapper" id="appmain">
 		            {{ field.label_tag }} {{ field }}
 		            {{ field.errors }}
 		        </div>
