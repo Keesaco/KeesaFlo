@@ -25,9 +25,26 @@ function ksfData()
  ** \param data - downloaded pagelet to be read
  ** \author jmccrea@keesaco.com of Keesaco
  ***************************************************************************/
-function ksfProc.copyPageletInto(URI, targetID)
+ksfData.copyPageletInto = function(URI, targetID)
 {
 	var res;
 	res.body = data;
 	return res;
+}
+
+/*!************************************************************************
+ ** \fn ksfData.copyPageletInto(URI, targetID)
+ ** \brief gets a pagelet and displays its contents in the target container
+ ** \param URI - [string] pagelet URI
+ ** \param targetID - [string] (Should include '#' prefix) ID of the element to show the pagelet in
+ ** \author jmccrea@keesaco.com of Keesaco
+ ***************************************************************************/
+ksfData.copyPageletInto = function(URI, targetID)
+{
+	ksfData.fetch( 	URI,
+					function(response)
+				  	{
+						var pagelet = ksfData.pagelet(response)
+				 	 	$(targetID).html(pagelet.body);
+				  	} );
 }
