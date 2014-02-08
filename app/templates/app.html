@@ -14,24 +14,17 @@
 {% block content %}
 
 <div class="row row-offcanvas row-offcanvas-left">
-	<!-- left panel -->
-	<div class="col-sm-2 sidebar-offcanvas" id="sidebar" role="navigation">
+    <!--toolbar-->
+    <div class="col-sm-2 col-xs-5 toolbar-offcanvas" id="sidebar2" role="navigation">
 		<nav class="navbar navbar-inverse navbar-default navbar-static-top" role="navigation">
 			<div class="navbar-header">
-				<a class="navbar-brand">Your Files</a>
+				<a class="navbar-brand">Tools</a>
 			</div>
 		</nav>
 		<div class="navpanel">
-			<div class="list-group">
-				<!-- To be filled with the list fetched from the server -->
-			</div>
+			<div class="tool"><a href="{% url app %}"><img src="/static/images/scatter.png"><p>Graph</p></a></div>
 		</div>
-		<ul class="nav nav-pills bottom-nav">
-			<li><a href="{% url faq %}" title="F.A.Q"><span class="glyphicon glyphicon-question-sign" title="Upload"></span></a></li>
-			<li><a href="{% url about %}" title="About"><span class="glyphicon glyphicon-info-sign"></span></a></li>
-			<li><a title="Upload"  data-toggle="modal" data-target="#uploadModal"><span class="glyphicon glyphicon-cloud-upload"></span></a></li>
-		</ul>
-	</div>
+    </div>
 	<!-- main panel -->
 	<div class="col-sm-10">
 		<nav class="navbar navbar-inverse navbar-default navbar-static-top" role="navigation">
@@ -42,22 +35,20 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-                <div class="pull-left visible-xs">
-                    <button type="button" class="navbar-toggle" data-toggle="offcanvas">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                </div>
-				<a class="navbar-brand logo" href="{% url app %}"><img src="/static/images/logo.png"> FlowCloud</a>
+                <button type="button" class="navbar-toggle pull-left visible-xs" data-toggle="offcanvas">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand logo" href="{% url app %}"><img src="/static/images/logo.png">FlowCloud</a>
 			</div>
 			<div class="nav-collapse navbar-collapse collapse">
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="{% url app %}">Tool 1</a></li>
+					<li><a id="togglefiles" href="#">Files</a></li>
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> Guest User <b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li><a href="{% url settings %}">Settings</a></li>
+							<li><a title="Settings" data-toggle="modal" data-target="#settingsModal">Settings</a></li>
 							<li class="divider"></li>
 							<li><a href="{% url index %}">Logout</a></li>
 						</ul>
@@ -67,8 +58,42 @@
 			
 		</nav>
 		<div class="apppanel">
-			<!-- To be filled by the app panel fetched from the server -->
+			<div class="jumbotron">
+				<h1>Hello Guest!</h1>
+				{% if current_file %}
+					<p>You are trying to access the current_file: {{ current_file.filename }} </p>
+					<p>Size: {{ current_file.st_size|filesizeformat }} </p>
+					<p>MD5: {{ current_file.etag }} </p>
+					<p>Time: {{ current_file.st_ctime }} </p>
+				{% else %}
+					Select a file in the sidebar.
+				{% endif %}
+			</div>
 		</div>
+	</div>
+    <!-- file panel -->
+	<div class="col-sm-2 col-xs-5 sidebar-offcanvas" id="sidebar" role="navigation">
+		<nav class="navbar navbar-inverse navbar-default navbar-static-top" role="navigation">
+			<div class="navbar-header">
+				<a class="navbar-brand">Files</a>
+			</div>
+		</nav>
+		<div class="navpanel">
+			<div class="list-group">
+				{% if files %}
+					{% for file in files %}
+					<a href="{% url app %}{{file.filename}}" class="list-group-item {% if file.filename == current_file.filename %}active{% endif %}"><span class="badge">{{ file.st_size|filesizeformat }}</span>{{ file.filename }}</a>
+					{% endfor %}
+				{% else %}
+					<a data-toggle="modal" data-target="#uploadModal" class="list-group-item">No files - Click here to upload one</a>
+				{% endif %}
+			</div>
+		</div>
+		<ul class="nav nav-pills bottom-nav">
+			<li><a href="{% url faq %}" title="F.A.Q"><span class="glyphicon glyphicon-question-sign" title="Upload"></span></a></li>
+			<li><a href="{% url about %}" title="About"><span class="glyphicon glyphicon-info-sign"></span></a></li>
+			<li><a title="Upload"  data-toggle="modal" data-target="#uploadModal"><span class="glyphicon glyphicon-cloud-upload"></span></a></li>
+		</ul>
 	</div>
 </div>
 
@@ -84,7 +109,7 @@
 	      <div class="modal-body">
 		    {% csrf_token %}
 		    {% for field in form %}
-		        <div class="fieldWrapper" id="appmain">
+		        <div class="fieldWrapper">
 		            {{ field.label_tag }} {{ field }}
 		            {{ field.errors }}
 		        </div>
@@ -93,6 +118,27 @@
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Dismiss</button>
 	        <button type="submit" value="Upload" class="btn btn-primary">Upload</button>
+	      </div>
+	    </form>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- Modal popup that shows settings -->
+<div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-labelledby="settingsModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+       	<h4 class="modal-title" id="settingsModalLabel"> Settings </h4>
+	      </div>
+		    <form action="" method="post" enctype="multipart/form-data" target="_self">
+	      <div class="modal-body">
+		    
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+	        <button type="submit" value="Upload" class="btn btn-primary">OK</button>
 	      </div>
 	    </form>
     </div><!-- /.modal-content -->
@@ -109,9 +155,5 @@
     {{ block.super }}
     {% load staticfiles %}
     <script src="{% static "js/offcanvas.js" %}"></script>
-    <script src="{% static "js/modal.js" %}"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script src="{% static "js/request.js" %}"></script>
-    <script src="{% static "js/data.js" %}"></script>
-    <script src="{% static "js/processing.js" %}"></script>
+    <script src="{% static "js/togglelink.js" %}"></script>
 {% endblock javascriptimport %}
