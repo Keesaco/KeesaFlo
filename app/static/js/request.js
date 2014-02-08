@@ -26,7 +26,7 @@ function ksfReq()
 ** \param callback	- [function] called with response
 ** \author jmccrea@keesaco.com of Keesaco
 ***************************************************************************/
-function ksfReq.fetch(URI, callback)
+ksfReq.fetch = function(URI, callback)
 {
 	$.get(URI, callback);
 }
