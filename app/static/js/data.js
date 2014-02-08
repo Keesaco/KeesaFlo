@@ -25,10 +25,10 @@ function ksfData()
  ** \param data - downloaded pagelet to be read
  ** \author jmccrea@keesaco.com of Keesaco
  ***************************************************************************/
-ksfData.copyPageletInto = function(URI, targetID)
+ksfData.pagelet = function(data)
 {
-	var res;
-	res.body = data;
+	var res = new Array();
+	res['body'] = data;
 	return res;
 }
 
@@ -41,10 +41,10 @@ ksfData.copyPageletInto = function(URI, targetID)
  ***************************************************************************/
 ksfData.copyPageletInto = function(URI, targetID)
 {
-	ksfData.fetch( 	URI,
+	ksfReq.fetch( 	URI,
 					function(response)
 				  	{
-						var pagelet = ksfData.pagelet(response)
+				 		var pagelet = ksfData.pagelet(response);
 				 	 	$(targetID).html(pagelet.body);
 				  	} );
 }
