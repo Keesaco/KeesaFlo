@@ -27,5 +27,5 @@ ksfProc.CONTENT_AREA = '#appmain';
  ***************************************************************************/
 ksfProc.loadFile = function(filename)
 {
-	ksfData.copyPageletInto('#!/' + filename, ksfProc.CONTENT_AREA);
+	ksfData.copyPageletInto(document.location.href + filename, ksfProc.CONTENT_AREA);
 }

@@ -57,7 +57,7 @@
             </div>
 			
 		</nav>
-		<div class="apppanel">
+		<div class="apppanel" id="appmain">
 			<div class="jumbotron">
 				<h1>Hello Guest!</h1>
 				{% if current_file %}
@@ -109,7 +109,7 @@
 	      <div class="modal-body">
 		    {% csrf_token %}
 		    {% for field in form %}
-		        <div class="fieldWrapper" id="appmain">
+		        <div class="fieldWrapper">
 		            {{ field.label_tag }} {{ field }}
 		            {{ field.errors }}
 		        </div>
