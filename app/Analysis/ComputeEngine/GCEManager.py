@@ -1,9 +1,9 @@
 ###########################################################################
-## \file app/Analysis/Manager/GCEManager.py
+## \file app/Analysis/ComputeEngine/GCEManager.py
 ## \brief Contains types and functions for managing instances.
 ## \author swhitehouse@keesaco.com of Keesaco
 ###########################################################################
-## \package app.Analysis.Manager.GCEManager
+## \package app.Analysis.ComputeEngine.GCEManager
 ## \brief Contains types and functions for managing instances on Compute Engine.
 ###########################################################################
 
@@ -16,7 +16,7 @@ from app.Dependencies.GAEPythonClientAPI.oauth2client.file import Storage
 from app.Dependencies.GAEPythonClientAPI.oauth2client import tools
 from app.Dependencies.GAEPythonClientAPI.oauth2client.tools import run_flow
 from app.Dependencies.GAEPythonClientAPI.apiclient.discovery import build
-from app.Analysis.Manager.ComputeEngineValues import *
+from app.Analysis.ComputeEngine.ComputeEngineConfig import *
 
 ## \brief Manager which tracks all instances within the scope of the project on Compute Engine.
 class GCEManager:
@@ -39,8 +39,8 @@ class GCEManager:
 		flags = parser.parse_args()
 		
 		# Perform OAuth 2.0 authorisation.
-		flow = flow_from_clientsecrets(CLIENT_SECRETS, scope=GCE_SCOPE)
-		storage = Storage(OAUTH2_STORAGE) # Stores temporary access data 
+		flow = flow_from_clientsecrets(SECRETS_URL, scope=GCE_SCOPE)
+		storage = Storage(STORAGE_URL) # Stores temporary access data 
 		credentials = storage.get()
 		if credentials is None or credentials.invalid:
 			credentials = run_flow(flow, storage, flags)
@@ -59,13 +59,10 @@ class GCEManager:
 		self.persistent_disks = []
 		## Bool to determine if persistent disks have been created yet.
 		self.pds_present = False
-		## The names of the instances currently running on Compute Engine.
-		self.instances = []
 		
 		# Creates instances
 		for i in range(0, MAX_INSTANCES):
 			self.persistent_disks.append(PersistentDisk(i, self.gce_service, self.auth_http))
-			self.instances.append("")
 		self.pds_present = True
 
 	###########################################################################
@@ -93,10 +90,9 @@ class GCEManager:
 	## \author swhitehouse@keesaco.com of Keesaco
 	###########################################################################
 	def start_instance_pd(self, instance_name, file_location):
-		for i in range(0, MAX_INSTANCES):
-			if self.instances[i] == "":
-				self.instances[i] = instance_name
-				self.persistent_disks[i].start_instance(instance_name, file_location)
+		for persistent_disk in self.persistent_disks:
+			if persistent_disk.instance_name == "":
+				persistent_disk.start_instance(instance_name, file_location)
 				return True
 		return False
 	
@@ -109,10 +105,9 @@ class GCEManager:
 	## \author swhitehouse@keesaco.com of Keesaco
 	###########################################################################
 	def terminate_instance_pd(self, instance_name):
-		for i in range(0, MAX_INSTANCES):
-			if self.instances[i] == instance_name:
-				self.instances[i] = ""
-				self.persistent_disks[i].terminate_instance()
+		for persistent_disk in self.persistent_disks:
+			if persistent_disk.instance_name == instance_name:
+				persistent_disk.terminate_instance()
 				return True
 		return False
 
@@ -125,11 +120,9 @@ class GCEManager:
 	###########################################################################
 	def terminate_pds(self):
 		if self.pds_present == True:
-			for i in range(0, MAX_INSTANCES):
-				if self.instances[i] != "":
-					self.instances[i] = ""
-					self.persistent_disks[i].terminate_instance()
 			for persistent_disk in self.persistent_disks:
+				if persistent_disk.instance_name != "":
+					persistent_disk.terminate_instance()
 				persistent_disk.terminate_pd()
 			self.pds_present = False
 			return True
@@ -190,7 +183,7 @@ class PersistentDisk:
 	## \author swhitehouse@keesaco.com of Keesaco
 	###########################################################################
 	def start_instance(self, instance_name, file_location):
-		if instance_name == "":
+		if self.instance_name == "":
 			self.instance_name = instance_name
 			instance = create_instance_request(self.pd_name, self.instance_name, file_location)
 			request = self.gce_service.instances().insert(
@@ -261,16 +254,16 @@ def create_instance_request(pd_name, instance_name, file_location):
 		'serviceAccounts': [{
 			'email': DEFAULT_SERVICE_EMAIL,
 			'scopes': DEFAULT_SCOPES
-			}]#,
-		# 'metadata': [{
-			# 'items': [{
-				# 'key': 'startup-script',
-				# 'value': open(STARTUP_SCRIPT, 'r').read()
-				# }, {
-				# 'key': 'file_location',
-				# 'value': file_location
-				# }]
-			# }]	
+			}],
+		'metadata': [{
+			'items': [{
+				'key': 'startup-script',
+				'value': open(STARTUP_URL, 'r').read()
+				}, {
+				'key': 'file_location',
+				'value': file_location
+				}]
+			}]	
 		}
 
 
