@@ -8,4 +8,14 @@
 ## \brief Contains abstraction layer functions for platform-specific permission table functionality. Results are returned to a calling API in a plaform-independent format
 ###########################################################################
 
-from app.API.PALDBTables import Users, Files, FilePermissions
+from API.PALDBTables import Users, Files, FilePermissions
+from API.User import User
+from google.appengine.ext import ndb
+
+def add_user(user):
+	new_user = Users(	parent = ndb.Key("UserTable", "*notitle*"),
+					 	unique_id = user.user_id(),
+					 	nickname = user.nickname(),
+					 	email_address = user.email()		)
+	new_user.put();
+	
