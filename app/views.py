@@ -46,3 +46,9 @@ def file_preview(request, file=None):
 
 def settings(request):
 	return render(request, 'settings.html')
+
+def pagenav(request):
+	return render(request, 'pagenav.html')
+
+def toolselect(request):
+	return render(request, 'toolselect.html')
