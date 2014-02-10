@@ -2,6 +2,7 @@ from django.conf.urls.defaults import *
 from django.contrib import admin
 import views #TODO may need to be moved, to be decided later
 import dbindexer
+import API.PALUsers as auth
 
 handler500 = 'djangotoolbox.errorviews.server_error'
 
@@ -23,5 +24,7 @@ urlpatterns = patterns('',
 	url(r'^app/panels/left/toolselect/$', 'views.toolselect', name='toolselect'),
 	url(r'^app/panels/left/pagenav/$', 'views.pagenav', name='pagenav'),
     url(r'^app/settings/$', 'views.settings', name='settings'),
+	url(r'^login/$', 'views.login', name='login'),
+	url(r'^logout/$', 'views.logout', name='logout'),
     ('^admin/', include(admin.site.urls))
 )
