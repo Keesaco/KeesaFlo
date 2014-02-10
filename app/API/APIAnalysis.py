@@ -9,7 +9,7 @@
 ###########################################################################
 
 # from app.Analysis.Manager import AnalysisManager
-from app.Analysis.ComputeEngine.GCEManager import GCEManager
+from Analysis.ComputeEngine.GCEManager import GCEManager
 
 ## !!TEMP!! The manager instance for Compute Engine.
 gce_manager = GCEManager()

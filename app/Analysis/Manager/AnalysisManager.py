@@ -7,11 +7,11 @@
 ## \brief Provides an Analysis Manager class which is responsible for managing analysis tasks.
 ###########################################################################
 
-from app.Analysis.Manager import PALAnalysisManager
-from app.Analysis.Scheduler import AnalysisScheduler
-from app.Analysis import AdminConfig
-from app.Analysis.Types import RequestList
-from app.Analysis.Manager.GCEManager import GCEManager
+from Analysis.Manager import PALAnalysisManager
+from Analysis.Scheduler import AnalysisScheduler
+from Analysis import AdminConfig
+from Analysis.Types import RequestList
+from Analysis.Manager.GCEManager import GCEManager
 
 ## The RequestList object which will hold information on analysis requests.
 request_list = RequestList()
