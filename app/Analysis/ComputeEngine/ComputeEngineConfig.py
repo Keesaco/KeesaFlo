@@ -7,7 +7,7 @@
 ## \brief Provides constants to modify instantiations on compute engine.
 ###########################################################################
 
-from Analysis import AdminConfig
+from app.Analysis import AdminConfig
 
 ## The id of the project as it appears on Google Cloud Developers Console.
 PROJECT_ID = 'keesaco-spe'
@@ -57,11 +57,11 @@ MACHINE_TYPE_URL = '%s/machineTypes/%s' % (ZONE_URL, DEFAULT_MACHINE_TYPE)
 ## The URL of the network to use.
 NETWORK_URL = '%s/global/networks/%s' % (PROJECT_URL, DEFAULT_NETWORK)
 ## The file path of the storage container for authentication
-STORAGE_URL = 'Analysis/ComputeEngine/Assets/%s' % OAUTH2_STORAGE
+STORAGE_URL = 'app/Analysis/ComputeEngine/%s' % OAUTH2_STORAGE
 ## The file path of the client_secrets.json file
-SECRETS_URL = 'Analysis/ComputeEngine/Assets/%s' % CLIENT_SECRETS
+SECRETS_URL = 'app/Analysis/ComputeEngine/%s' % CLIENT_SECRETS
 ## The file path of the startup script
-STARTUP_URL = 'Analysis/ComputeEngine/Assets/%s' % STARTUP_SCRIPT
+STARTUP_URL = 'app/Analysis/ComputeEngine/%s' % STARTUP_SCRIPT
 
 
 
