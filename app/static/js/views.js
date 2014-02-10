@@ -7,19 +7,32 @@
  ** \brief Provides methods for modifying data from the data layer for use by the front-end UI
  **************************************************************************/
 
+ksfViews.loadFromLocation = function(force)
+{
+	var urlVals = ksfData.urlValues();
+	if ( urlVals !== null )
+	{
+		ksfViews.setupView(urlVals);
+		ksfViews.loadView(urlVals);
+	}
+	else if (force)
+	{
+		ksfViews.setupView(['']);
+		ksfViews.loadView(['']);
+	}
+}
+
 $(document).ready(
 function()
 {
-	ksfViews.setupView();
-	ksfViews.loadView();
+	ksfViews.loadFromLocation(true)
 });
 
 
 /// \todo This has limited browser compatibility, if this is an issue support for onhashchange could be checked and an alternative timer arrangement provided for older browsers.
 window.onhashchange = function ()
 {
-	ksfViews.setupView();
-	ksfViews.loadView();
+	ksfViews.loadFromLocation();
 }
 
 /*!************************************************************************
@@ -40,9 +53,8 @@ FILE_SELECTOR = '#filelist';
 ** \brief sets up a view based on the current URL
 ** \author jmccrea@keesaco.com of Keesaco
 ***************************************************************************/
-ksfViews.setupView = function()
+ksfViews.setupView = function(urlVals)
 {
-	var urlVals = ksfData.urlValues();
 	switch ( urlVals[0] )
 	{
 		case 'preview':
@@ -60,13 +72,12 @@ ksfViews.setupView = function()
 	}
 }
 
-ksfViews.loadView = function()
+ksfViews.loadView = function(urlVals)
 {
-	var urlVals = ksfData.urlValues();
 	switch ( urlVals[0] )
 	{
 		case 'preview':
-			ksfViews.loadPreview( urlVals.length > 0 ? urlVals[1] : '' );
+			ksfViews.loadPreview( urlVals.length > 1 ? urlVals[1] : '' );
 			break;
 			
 		case 'faq':
@@ -74,8 +85,11 @@ ksfViews.loadView = function()
 			break;
 			
 		case 'about':
-			ksfView.loadAbout();
+			ksfViews.loadAbout();
 			break;
+			
+		default:
+			ksfViews.loadPreview('');
 	}
 }
 
@@ -128,16 +142,16 @@ ksfViews.showToolSelector = function(show)
 
 ksfViews.loadPreview = function(filename)
 {
-	ksfData.copyPageletInto( ksfData.baseUrl() + '/file=' + filename, CONTENT_AREA );
-	ksfData.copyPageletInto( ksfData.baseUrl() + '/file_list/', FILE_SELECTOR );
+	ksfData.copyPageletInto( ksfData.baseUrl() + encodeURIComponent('file=' + filename), CONTENT_AREA );
+	ksfData.copyPageletInto( ksfData.baseUrl() + 'file_list/', FILE_SELECTOR );
 }
 
 ksfViews.loadFAQ = function()
 {
-	ksfData.copyPageletInto( ksfData.baseUrl() + '/faq/', CONTENT_AREA );
+	ksfData.copyPageletInto( ksfData.baseUrl() + 'faq/', CONTENT_AREA );
 }
 
 ksfViews.loadAbout = function()
 {
-	ksfData.copyPageletInto( ksfData.baseUrl() + '/about/', CONTENT_AREA );
+	ksfData.copyPageletInto( ksfData.baseUrl() + 'about/', CONTENT_AREA );
 }

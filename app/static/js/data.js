@@ -56,15 +56,14 @@ ksfData.copyPageletInto = function(URI, targetID)
  ***************************************************************************/
 ksfData.urlValues = function()
 {
-	var url = location.href
-	url = url.split("#!/");
-	if (url.length > 1)
+	var hash = location.hash.split('#!/');
+	if (hash.length > 1)
 	{
-		return url[1].split("/");
+		return hash[1].split('/');
 	}
 	else
 	{
-		return "";
+		return null;
 	}
 }
 
@@ -75,5 +74,5 @@ ksfData.urlValues = function()
 ***************************************************************************/
 ksfData.baseUrl = function()
 {
-	return location.href.split("/#!/")[0];
+	return location.href.split("#")[0];
 }
