@@ -100,13 +100,13 @@ ksfViews.refreshAll = function()
 
 ksfViews.setupDefault = function()
 {
-	//ksfViews.showFilebar(true);
+	ksfViews.showFilebar(true);
 	//ksfViews.showToolSelector(true);
 }
 
 ksfViews.setupSimple = function()
 {
-	//ksfViews.showFilebar(false);
+	ksfViews.showFilebar(false);
 	//ksfViews.showToolSelector(false);
 }
 
@@ -115,13 +115,13 @@ ksfViews.showFilebar = function(show)
 	if ( show )
 	{
 		$(".togglefiles").show();
-		$("#filelist").css( { marginRight: '0px' } );
+		//$("#sidebar").show();//.css( { marginRight: '0px' } );
 	}
 	else
 	{
 		$(".togglefiles").hide();
-		var fl = $("#filelist");
-		fl.css( { marginRight: fl.outerWidth() } );
+		var fl = $("#sidebar");
+		fl.css( { marginRight: -fl.outerWidth() } );
 	}
 }
 
@@ -129,14 +129,12 @@ ksfViews.showToolSelector = function(show)
 {
 	if ( show )
 	{
-		//$("#toolselectorhead").show();
-		//$("#toolselector").css( { marginLeft: '0px' } );
+		/// \todo Specify width properly
+		$("#sidebar2").css( { width: '' } );
 	}
 	else
 	{
-		//$("#toolselectorhead").hide();
-		//var ts = $("#toolselector");
-		//ts.css( { marginLeft: ts.outerWidth() } );
+		$("#sidebar2").css( { width: '0px' } );
 	}
 }
 
