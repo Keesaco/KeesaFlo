@@ -7,7 +7,7 @@ from django.core.files.uploadhandler import FileUploadHandler
 import upload_handling
 import API.APIDatastore as ds;
 
-GRAPH_BUCKET = '/fc-raw-data'
+GRAPH_BUCKET = '/fc-vis-data'
 
 def index(request):
 	return render(request, 'index.html')
@@ -40,11 +40,14 @@ def file_list(request):
 def file_preview(request, file=None):
     lst = ds.list('/fc-raw-data')
     file_info = None
+    file_name_without_extension = None
     for temp_file in lst: 
         temp_file.filename = temp_file.filename.rpartition('/')[2]
         if temp_file.filename == file:
             file_info = temp_file;
-    return render(request, 'file_preview.html', {'current_file' : file_info})
+            file_name_without_extension = "".join(file.split(".")[0:-1])
+            #TODO: Might need to be siplified or moved to a fonction in fileinfo
+    return render(request, 'file_preview.html', {'current_file' : file_info, 'file_name_without_extension' : file_name_without_extension})
 
 def settings(request):
 	return render(request, 'settings.html')
