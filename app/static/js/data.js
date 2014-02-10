@@ -9,11 +9,11 @@
 
 
 /*!************************************************************************
- ** \fn ksfData()
- ** \brief ksfData constructor used for namespace
- ** \author jmccrea@keesaco.com of Keesaco
- ** \note This constructor currently (intentionally) does not have any effect
- ***************************************************************************/
+** \fn ksfData()
+** \brief ksfData constructor used for namespace
+** \author jmccrea@keesaco.com of Keesaco
+** \note This constructor currently (intentionally) does not have any effect
+***************************************************************************/
 function ksfData()
 {
 }
@@ -47,4 +47,33 @@ ksfData.copyPageletInto = function(URI, targetID)
 				 		var pagelet = ksfData.pagelet(response);
 				 	 	$(targetID).html(pagelet.body);
 				  	} );
+}
+
+/*!************************************************************************
+ ** \fn ksfData.urlValues()
+ ** \brief gets location after hashbang and splits by slashes
+ ** \author jmccrea@keesaco.com of Keesaco
+ ***************************************************************************/
+ksfData.urlValues = function()
+{
+	var url = location.href
+	url = url.split("#!/");
+	if (url.length > 1)
+	{
+		return url[1].split("/");
+	}
+	else
+	{
+		return "";
+	}
+}
+
+/*!************************************************************************
+** \fn ksfData.baseUrl()
+** \brief gets the part of the URL sent to the server (app base URL)
+** \author jmccrea@keesaco.com of Keesaco
+***************************************************************************/
+ksfData.baseUrl = function()
+{
+	return location.href.split("/#!/")[0];
 }

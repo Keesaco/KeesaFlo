@@ -30,3 +30,4 @@ ksfReq.fetch = function(URI, callback)
 {
 	$.get(URI, callback);
 }
+
