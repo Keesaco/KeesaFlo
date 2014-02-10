@@ -23,8 +23,7 @@ gce_manager = GCEManager()
 ###########################################################################
 def add_analysis_task(	file_location	):
 	# !!TEMP!! Uses the file location to start an instance on Compute Engine.
-	
-	return gce_manager.start_instance_pd("default", file_location)
+	return gce_manager.start_instance_pd("", file_location)
 	
 
 ###########################################################################
