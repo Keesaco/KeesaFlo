@@ -178,6 +178,11 @@ html, body, .row
      width: 16.7%;
   }
   
+.bullet-glyphicon
+{
+	margin-right: 8px;
+}
+
   @media screen and (max-width: 767px) {
     .row-offcanvas {
         position: relative;
