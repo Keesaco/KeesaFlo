@@ -8,52 +8,46 @@
 ## \brief Provides an API for accessing the analysis plugin management.
 ###########################################################################
 
-from app.Analysis.Manager import AnalysisManager
+# from app.Analysis.Manager import AnalysisManager
+from Analysis.ComputeEngine.GCEManager import GCEManager
+
+## !!TEMP!! The manager instance for Compute Engine.
+gce_manager = GCEManager()
 
 ###########################################################################
-## \brief Is called to request that a new analysis be created or added to.
-## \param user_id - the id of the user
-## \param priority - a value determining the priority of the user
-## \param data_location - the DataLocation object to be used in analysis
-## \param plugin_location - the PluginLocation object to be used in analysis
-## \return On fail, return false. On success, returns the analysis_id for the specific analysis request.
-## \note user_id is used primarily to make sure that other users cannot mess with the original user's analysis.
-## \warning This function does not check that the user has permissions to perform the specified analysis. Nor does it check whether the analysis has already been performed.
+## \brief Requests that a new analysis task be created.
+## \param file_location - the location of the file to be analysed
+## \return Returns analysis_id on success, False on fail.
 ## \author swhitehouse@keesaco.com of Keesaco
 ## \author rmurley@keesaco.com of Keesaco
 ###########################################################################
-def add_user_analysis(	user_id,
-						priority,
-						data_location,
-						plugin_location	):
-	return AnalysisManager.subscribe_user_analysis(user_id, priority, data_location, plugin_location)
+def add_analysis_task(	file_location	):
+	# !!TEMP!! Uses the file location to start an instance on Compute Engine.
+	return gce_manager.start_instance_pd("", file_location)
+	
 
 ###########################################################################
-## \brief Requests that a user is removed from an analysis request.
-## \param analysis_id - the id of the analysis to be removed from
-## \param user_id - the id of the user to be removed
-## \return Returns True on success, False if fails.
-## \note Will fail if the user_id does not match stored values in the analysis_id.
-## \note Will fail if the analysis_id does not exist.
+## \brief Requests that an exists analysis task be deleted.
+## \param analysis_id - the id of the analysis to be deleted
+## \return Returns True on success, False on fail.
 ## \author swhitehouse@keesaco.com of Keesaco
 ## \author rmurley@keesaco.com of Keesaco
 ###########################################################################
-def remove_user_analysis(	analysis_id,
-							user_id	):
-	return AnalysisManager.unsubscribe_user_analysis(analysis_id, user_id)
+def remove_analysis_task(	analysis_id	):
+	# !!TEMP!! Uses the file location to end an instance on Compute Engine.
+	return gce_manager.terminate_instance_pd(analysis_id)
 
 ###########################################################################
-## \brief Requests that the current state of the analysis is checked.
+## \brief Requests that the state of the analysis task be checked.
 ## \param analysis_id - the id of the analysis that is being checked
-## \param user_id - the id of the user checking the analysis
-## \return Returns information on the current state of the analysis. If failed, return False.
-## \note Will either return the analysis' position in the schedule, or the expected time remaining on the actual analysis.
-## \note Will fail if the user_id does not match stored values in the analysis_id.
-## \note Will fail if the analysis_id does not exist.
+## \return Returns information on the state of the analysis (details in notes).
+## \note True if the task is being analysed currently.
+## \note An integer (>1) of the task's position in the queue.
+## \note False if the analysis_id does not exist (i.e. the task does not exist).
 ## \author swhitehouse@keesaco.com of Keesaco
 ## \author rmurley@keesaco.com of Keesaco
 ###########################################################################
-def check_analysis(	analysis_id,
-					user_id	):
-	return AnalysisManager.check_analysis(analysis_id, user_id)
+def check_analysis_task(	analysis_id	):
+	# !!TEMP!! Always returns True.
+	return True
 

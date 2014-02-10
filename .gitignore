@@ -14,5 +14,6 @@ Doxygen/
 .DS_Store?
 .Spotlight-V100
 .Trashes
+app/Analysis/ComputeEngine/Assets/oauth2.dat
 ehthumbs.db
 Thumbs.db

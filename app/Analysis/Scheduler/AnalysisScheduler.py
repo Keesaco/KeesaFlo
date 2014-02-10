@@ -7,7 +7,7 @@
 ## \brief Provides the analysis scheduler class for task scheduling
 ###########################################################################
 	
-from app.Analysis.Types import ScheduleQueue
+from Analysis.Types import ScheduleQueue
 
 ## The schedule queue variable which holds the actual queue object.
 schedule_queue = ScheduleQueue()

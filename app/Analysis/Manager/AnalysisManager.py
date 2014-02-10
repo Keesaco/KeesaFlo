@@ -1,47 +1,32 @@
 ###########################################################################
 ## \file app/Analysis/Manager/AnalysisManager.py
-## \brief Defines the Analysis Manager which is responsible for instantiating plugins and providing information to the instantiations.
+## \brief Defines the Analysis Manager which is responsible for managing analysis tasks.
 ## \author swhitehouse@keesaco.com of Keesaco
 ###########################################################################
 ## \package app.Analysis.Manager.AnalysisManager
-## \brief Provides an Analysis Manager class which is responsible for instantiating plugins and providing information to the instantiations.
+## \brief Provides an Analysis Manager class which is responsible for managing analysis tasks.
 ###########################################################################
 
-from app.Analysis.Manager import PALAnalysisManager
-from app.Analysis.Scheduler import AnalysisScheduler
-from app.Analysis import AdminConfig
-from app.Analysis.Types import RequestList
+from Analysis.Manager import PALAnalysisManager
+from Analysis.Scheduler import AnalysisScheduler
+from Analysis import AdminConfig
+from Analysis.Types import RequestList
+from Analysis.Manager.GCEManager import GCEManager
 
 ## The RequestList object which will hold information on analysis requests.
 request_list = RequestList()
+gce_manager = GCEManager()
 
 ###########################################################################
 ## \brief Is called to add a user to an analysis task using the required plugin and dataset.
-## \param user_id - the id of the user to be added
-## \param priority - a value determining the priority for the user.
-## \param data_location - the DataLocation objects containing information on the data to be used
-## \param plugin_location - the PluginLocaiton object containing information on the plugin to be used
+## \param file_location - the location of the file to be analysed
 ## \return Returns the analysis_id of the analysis task added to. On fail, returns False.
 ## \note Will fail if the user has already been added to the analysis task.
 ## \author swhitehouse@keesaco.com of Keesaco
 ###########################################################################
-def subscribe_user_analysis(	user_id,
-								priority,
-								data_location,
-								plugin_location	):
-	analysis_id = request_list.subscribe_user(user_id, data_location, plugin_location)
-	if analysis_id == False:
-		return False
-	if priority > AdminConfig.max_priority:
-		priority = AdminConfig.max_priority
-	if request_list.requests[analysis_id].being_analysed == False:
-		if AnalysisScheduler.check_user(user_id) < AdminConfig.max_tasks_per_user:
-			if AnalysisScheduler.add_user_task(analysis_id, user_id, priority) == False:
-				request_list.unsubscribe_user(analysis_id, user_id)
-				return False
-			if request_list.requests[analysis_id].in_queue == False:
-				request_list.change_state_request(analysis_id, True, False)
-	return analysis_id
+def new_analysis_task(	file_location	):
+	return gce_manager.start_instance_pd(file_location)
+	
 
 ###########################################################################
 ## \brief Is called to remove a user from an analysis task.
