@@ -47,6 +47,9 @@ function ksfViews()
 
 CONTENT_AREA = '#appmain';
 FILE_SELECTOR = '#filelist';
+TOOL_SELECTOR = '#toolselector';
+
+ksfViews.currentView = null;
 
 /*!************************************************************************
 ** \fn ksfViews.loadView()
@@ -57,18 +60,23 @@ ksfViews.setupView = function(urlVals)
 {
 	switch ( urlVals[0] )
 	{
-		case 'preview':
-		case '':
-			ksfViews.setupDefault();
-			break;
-			
 		case 'faq':
 		case 'about':
-			ksfViews.setupSimple();
+			if (ksfViews.currentView != 'simple')
+			{
+				ksfViews.currentView = 'simple';
+				ksfViews.setupSimple();
+			}
 			break;
 			
+		case 'preview':
+		case '':
 		default:
-			ksfViews.setupDefault();
+			if (ksfViews.currentView != 'default')
+			{
+				ksfViews.currentView = 'default';
+				ksfViews.setupDefault();
+			}
 	}
 }
 
@@ -101,13 +109,15 @@ ksfViews.refreshAll = function()
 ksfViews.setupDefault = function()
 {
 	ksfViews.showFilebar(true);
-	//ksfViews.showToolSelector(true);
+	ksfViews.showToolSelector(true);
+	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/left/toolselect/', TOOL_SELECTOR );
 }
 
 ksfViews.setupSimple = function()
 {
 	ksfViews.showFilebar(false);
-	//ksfViews.showToolSelector(false);
+	ksfViews.showToolSelector(false);
+	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/left/pagenav/', TOOL_SELECTOR );
 }
 
 ksfViews.showFilebar = function(show)
@@ -129,27 +139,26 @@ ksfViews.showToolSelector = function(show)
 {
 	if ( show )
 	{
-		/// \todo Specify width properly
-		$("#sidebar2").css( { width: '' } );
+		$("toolselector-header").show();
 	}
 	else
 	{
-		$("#sidebar2").css( { width: '0px' } );
+		$("toolselector-header").hide();
 	}
 }
 
 ksfViews.loadPreview = function(filename)
 {
-	ksfData.copyPageletInto( ksfData.baseUrl() + encodeURIComponent('file=' + filename), CONTENT_AREA );
-	ksfData.copyPageletInto( ksfData.baseUrl() + 'file_list/', FILE_SELECTOR );
+	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/main/file' + encodeURIComponent('=' + filename), CONTENT_AREA );
+	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/right/file_list/', FILE_SELECTOR );
 }
 
 ksfViews.loadFAQ = function()
 {
-	ksfData.copyPageletInto( ksfData.baseUrl() + 'faq/', CONTENT_AREA );
+	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/main/faq/', CONTENT_AREA );
 }
 
 ksfViews.loadAbout = function()
 {
-	ksfData.copyPageletInto( ksfData.baseUrl() + 'about/', CONTENT_AREA );
+	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/main/about/', CONTENT_AREA );
 }
