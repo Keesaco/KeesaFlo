@@ -35,14 +35,14 @@ def file_list(request):
         temp_file.filename = temp_file.filename.rpartition('/')[2]
     return render(request, 'file_list.html', {'files' : lst})
 
-def file_page(request, file=None):
+def file_preview(request, file=None):
     lst = ds.list('/fc-raw-data')
     file_info = None
     for temp_file in lst: 
         temp_file.filename = temp_file.filename.rpartition('/')[2]
         if temp_file.filename == file:
             file_info = temp_file;
-    return render(request, 'file_page.html', {'current_file' : file_info})
+    return render(request, 'file_preview.html', {'current_file' : file_info})
 
 def settings(request):
 	return render(request, 'settings.html')
