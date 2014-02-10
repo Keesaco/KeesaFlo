@@ -17,15 +17,14 @@ function ksfProc()
 {
 }
 
-ksfProc.CONTENT_AREA = '#appmain';
-
 /*!************************************************************************
- ** \fn ksfProc.loadFile(filename)
- ** \brief Gets file details pagelet and loads it into the main content area
- ** \param filename - [String] name of file to get details of
- ** \author jmccrea@keesaco.com of Keesaco
- ***************************************************************************/
+** \fn ksfProc.loadFile(filename)
+** \brief Gets file details pagelet and loads it into the main content area
+** \param filename - [String] name of file to get details of
+** \author jmccrea@keesaco.com of Keesaco
+***************************************************************************/
 ksfProc.loadFile = function(filename)
 {
 	ksfData.copyPageletInto(document.location.href + filename, ksfProc.CONTENT_AREA);
 }
+

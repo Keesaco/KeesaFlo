@@ -16,12 +16,12 @@
 <div class="row row-offcanvas row-offcanvas-left">
     <!--toolbar-->
     <div class="col-sm-2 col-xs-5 toolbar-offcanvas" id="sidebar2" role="navigation">
-		<nav class="navbar navbar-inverse navbar-default navbar-static-top" role="navigation">
+		<nav class="navbar navbar-inverse navbar-default navbar-static-top" role="navigation" id="toolselectorhead">
 			<div class="navbar-header">
 				<a class="navbar-brand">Tools</a>
 			</div>
 		</nav>
-		<div class="navpanel">
+		<div class="navpanel" id="toolselector">
 			<div class="tool"><a href="#"><img src="/static/images/scatter.png"><p>Graph</p></a></div>
 		</div>
     </div>
@@ -144,4 +144,5 @@
 	<script src="{% static "js/request.js" %}"></script>
 	<script src="{% static "js/data.js" %}"></script>
 	<script src="{% static "js/processing.js" %}"></script>
+	<script src="{% static "js/views.js" %}"></script>
 {% endblock javascriptimport %}
