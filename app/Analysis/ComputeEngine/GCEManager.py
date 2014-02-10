@@ -64,6 +64,9 @@ class GCEManager:
 		for i in range(0, MAX_INSTANCES):
 			self.persistent_disks.append(PersistentDisk(i, self.gce_service, self.auth_http))
 		self.pds_present = True
+		
+		self.counter = 0
+		self.instance_names = []
 
 	###########################################################################
 	## \brief Creates persistent disk up to the max number of instances.
@@ -90,9 +93,11 @@ class GCEManager:
 	## \author swhitehouse@keesaco.com of Keesaco
 	###########################################################################
 	def start_instance_pd(self, instance_name, file_location):
+		self.instance_names = {file_location : 'keesaflo-analysis-' + str(self.counter)}
+		self.counter += 1
 		for persistent_disk in self.persistent_disks:
 			if persistent_disk.instance_name == "":
-				persistent_disk.start_instance(instance_name, file_location)
+				persistent_disk.start_instance(self.instance_names[file_location], file_location)
 				return True
 		return False
 	
@@ -106,7 +111,7 @@ class GCEManager:
 	###########################################################################
 	def terminate_instance_pd(self, instance_name):
 		for persistent_disk in self.persistent_disks:
-			if persistent_disk.instance_name == instance_name:
+			if persistent_disk.instance_name == self.instance_names[instance_name]:
 				persistent_disk.terminate_instance()
 				return True
 		return False
