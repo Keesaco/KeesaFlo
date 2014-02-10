@@ -10,13 +10,13 @@
 import logging
 import sys
 import argparse
-from app.Dependencies.GAEPythonClientAPI import httplib2
-from app.Dependencies.GAEPythonClientAPI.oauth2client.client import flow_from_clientsecrets
-from app.Dependencies.GAEPythonClientAPI.oauth2client.file import Storage
-from app.Dependencies.GAEPythonClientAPI.oauth2client import tools
-from app.Dependencies.GAEPythonClientAPI.oauth2client.tools import run_flow
-from app.Dependencies.GAEPythonClientAPI.apiclient.discovery import build
-from app.Analysis.ComputeEngine.ComputeEngineConfig import *
+import httplib2
+from oauth2client.client import flow_from_clientsecrets
+from oauth2client.file import Storage
+from oauth2client import tools
+from oauth2client.tools import run_flow
+from apiclient.discovery import build
+from Analysis.ComputeEngine.ComputeEngineConfig import *
 
 ## \brief Manager which tracks all instances within the scope of the project on Compute Engine.
 class GCEManager:
