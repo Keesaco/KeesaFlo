@@ -7,6 +7,8 @@ from django.core.files.uploadhandler import FileUploadHandler
 import upload_handling
 import API.APIDatastore as ds;
 
+GRAPH_BUCKET = '/fc-raw-data'
+
 def index(request):
 	return render(request, 'index.html')
 
@@ -52,3 +54,10 @@ def pagenav(request):
 
 def toolselect(request):
 	return render(request, 'toolselect.html')
+
+def get_graph(request, graph):
+    # Need protection against hack such as ../
+    file = ds.open(GRAPH_BUCKET + '/' + graph).read()
+    response = HttpResponse(file, content_type='image/png')
+    response['Content-Disposition'] = 'attachment; filename="' + graph + '"'
+    return response

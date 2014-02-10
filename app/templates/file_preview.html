@@ -5,6 +5,7 @@
 					<p>Size: {{ current_file.st_size|filesizeformat }} </p>
 					<p>MD5: {{ current_file.etag }} </p>
 					<p>Time: {{ current_file.st_ctime }} </p>
+					<img src="/app/panels/main/graph={{ current_file.filename }}">
 				{% else %}
 					Select a file in the sidebar.
 				{% endif %}
