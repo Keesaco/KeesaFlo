@@ -1,4 +1,5 @@
 from django.http import HttpResponse
+from django.http import HttpResponseNotFound  
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django import forms
@@ -8,6 +9,7 @@ import upload_handling
 import API.APIDatastore as ds;
 
 GRAPH_BUCKET = '/fc-vis-data'
+#GRAPH_BUCKET = '/fc-raw-data'
 
 def index(request):
 	return render(request, 'index.html')
@@ -60,7 +62,11 @@ def toolselect(request):
 
 def get_graph(request, graph):
     # Need protection against hack such as ../
-    file = ds.open(GRAPH_BUCKET + '/' + graph).read()
-    response = HttpResponse(file, content_type='image/png')
-    response['Content-Disposition'] = 'attachment; filename="' + graph + '"'
-    return response
+    buffer = ds.open(GRAPH_BUCKET + '/' + graph)
+    if buffer:
+        file = buffer.read()
+        response = HttpResponse(file, content_type='image/png')
+        response['Content-Disposition'] = 'attachment; filename="' + graph + '"'
+        return response
+    else:
+        return HttpResponseNotFound('<h1>' + graph + ' doesn\'t has any visualisation data</h1>')
