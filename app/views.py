@@ -61,12 +61,13 @@ def toolselect(request):
 	return render(request, 'toolselect.html')
 
 def get_graph(request, graph):
-    # Need protection against hack such as ../
+    # TODO: Need protection against hack such as ../
     buffer = ds.open(GRAPH_BUCKET + '/' + graph)
     if buffer:
         file = buffer.read()
+        # TODO: Maybe transform the httpresponse to streaminghttpresponse in case the graph is really large and to improve efficiency
         response = HttpResponse(file, content_type='image/png')
         response['Content-Disposition'] = 'attachment; filename="' + graph + '"'
         return response
     else:
-        return HttpResponseNotFound('<h1>' + graph + ' doesn\'t has any visualisation data</h1>')
+        return HttpResponseNotFound('<h1>' + graph + ' not found, probably because this dataset doesn\'t have any visualisation data</h1>')
