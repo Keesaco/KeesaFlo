@@ -9,12 +9,9 @@
 
 import logging
 import sys
-import argparse
 import httplib2
-from oauth2client.client import flow_from_clientsecrets
-from oauth2client.file import Storage
-from oauth2client import tools
-from oauth2client.tools import run_flow
+from oauth2client.client import SignedJwtAssertionCredentials
+#from oauth2client import tools
 from apiclient.discovery import build
 from Analysis.ComputeEngine.ComputeEngineConfig import *
 
@@ -29,21 +26,15 @@ class GCEManager:
 	###########################################################################
 	def __init__(self):
 		# Sets up logging for command line debugging
-		logging.basicConfig(level=logging.ERROR)
+		logging.basicConfig(level=logging.WARNING)
 
-		# Sets up flags for use in authentication flow
-		parser = argparse.ArgumentParser(
-			description=__doc__,
-			formatter_class=argparse.RawDescriptionHelpFormatter,
-			parents=[tools.argparser])
-		flags = parser.parse_args()
+		# Open private key file and read in private key
+		f = file(PRIVATE_KEY_URL, 'rb')
+		key = f.read()
+		f.close()
 		
-		# Perform OAuth 2.0 authorisation.
-		flow = flow_from_clientsecrets(SECRETS_URL, scope=GCE_SCOPE)
-		storage = Storage(STORAGE_URL) # Stores temporary access data 
-		credentials = storage.get()
-		if credentials is None or credentials.invalid:
-			credentials = run_flow(flow, storage, flags)
+		# Uses the service account email and private key to verify credentials
+		credentials = SignedJwtAssertionCredentials(SERVICE_ACCOUNT_EMAIL, key, GCE_SCOPE)
 		
 		# Sets up http authorisation using OAuth 2.0 credentials
 		http = httplib2.Http()
