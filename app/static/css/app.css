@@ -183,6 +183,10 @@ html, body, .row
 	margin-right: 8px;
 }
 
+.file-preview {
+    overflow: hidden;
+}
+
   @media screen and (max-width: 767px) {
     .row-offcanvas {
         position: relative;
