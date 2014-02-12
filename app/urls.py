@@ -18,7 +18,8 @@ urlpatterns = patterns('',
     url(r'^about/$', 'views.about', name='about'),
     url(r'^faq/$', 'views.faq', name='faq'),
     url(r'^app/$', 'views.app', name='app'),
-    url(r'^app/(?P<file>.+)$', 'views.app', name='app'),
     url(r'^settings/$', 'views.settings', name='settings'),
+    url(r'^upload/$', views.upload),
+	url(r'^analysis/$', views.analysis),
     ('^admin/', include(admin.site.urls))
 )
