@@ -41,14 +41,19 @@ def file_list(request):
 
 def file_preview(request, file=None):
     lst = ds.list('/fc-raw-data')
+    
+    file_name_without_extension = "".join(file.split(".")[0:-1])
+    if not ds.check_exists(GRAPH_BUCKET + '/' + file_name_without_extension + ".png", None):
+        file_name_without_extension = None
+            #TODO: Might need to be siplified or moved to a fonction in fileinfo
+
+    # TODO the folowing should be replaced by a method in the APIDatastore
     file_info = None
-    file_name_without_extension = None
     for temp_file in lst: 
         temp_file.filename = temp_file.filename.rpartition('/')[2]
         if temp_file.filename == file:
             file_info = temp_file;
-            file_name_without_extension = "".join(file.split(".")[0:-1])
-            #TODO: Might need to be siplified or moved to a fonction in fileinfo
+
     return render(request, 'file_preview.html', {'current_file' : file_info, 'file_name_without_extension' : file_name_without_extension})
 
 def settings(request):

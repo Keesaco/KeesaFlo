@@ -1,15 +1,19 @@
-			<div class="jumbotron">
-				<h1>Hello Guest!</h1>
-				{% if current_file %}
-					<p>You are trying to access the current_file: {{ current_file.filename }} </p>
-					<p>Size: {{ current_file.st_size|filesizeformat }} </p>
-					<p>MD5: {{ current_file.etag }} </p>
-					<p>Time: {{ current_file.st_ctime }} </p>
-					<img src="/app/panels/main/graph={{ file_name_without_extension }}.png">
-					{% comment %}
-					    TODO: has to be changed to a reverse url creator
-					{% endcomment %}
-				{% else %}
-					Select a file in the sidebar.
-				{% endif %}
-			</div>
+<div class="jumbotron">
+	<h1>Hello Guest!</h1>
+	{% if current_file %}
+		<p>You are trying to access the current_file: {{ current_file.filename }} </p>
+		<p>Size: {{ current_file.st_size|filesizeformat }} </p>
+		<p>MD5: {{ current_file.etag }} </p>
+		<p>Time: {{ current_file.st_ctime }} </p>
+
+		{% if file_name_without_extension %}
+			<img src="/app/panels/main/graph={{ file_name_without_extension }}.png">
+			{% comment %} TODO: has to be changed to a reverse url creator {% endcomment %}
+		{% else %}
+			<i>This dataset does not contain visualisation data</i>
+		{% endif %}
+		
+	{% else %}
+		Select a file in the sidebar.
+	{% endif %}
+</div>
