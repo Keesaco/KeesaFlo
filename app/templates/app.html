@@ -13,34 +13,34 @@
 
 {% block content %}
 
-<div class="row row-offcanvas row-offcanvas-left">
-    <nav class="navbar navbar-inverse navbar-default navbar-fixed-top" role="navigation">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
-					<span class="glyphicon glyphicon-chevron-down white"></span>
-				</button>
-                <button type="button" class="navbar-toggle pull-left visible-xs" data-toggle="offcanvas">
-					<span class="glyphicon glyphicon-th-list white"></span>
-				</button>
-				<a class="navbar-brand logo" href="#!/"><img src="/static/images/logo.png">FlowCloud</a>
-			</div>
-			<div class="nav-collapse navbar-collapse collapse">
-				<ul class="nav navbar-nav navbar-right">
-					<li><a class="togglefiles" href="#">Files</a></li>
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user bullet-glyphicon"></span>{{ authed_user_nick }}<b class="caret"></b></a>
-						<ul class="dropdown-menu">
-							<li><a title="Settings" data-toggle="modal" data-target="#settingsModal">Settings</a></li>
-							<li class="divider"></li>
-							<li><a href="{% url logout %}">Logout</a></li>
-						</ul>
-					</li>
+
+<nav class="navbar navbar-inverse navbar-default navbar-fixed-top" role="navigation">
+    <div class="navbar-header">
+		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+			<span class="glyphicon glyphicon-chevron-down white"></span>
+		</button>
+        <button type="button" class="toggletools navbar-toggle pull-left visible-xs" data-toggle="offcanvas">
+			<span class="glyphicon glyphicon-th-list white"></span>
+		</button>
+		<a class="navbar-brand logo" href="#!/"><img src="/static/images/logo.png">FlowCloud</a>
+	</div>
+	<div class="nav-collapse navbar-collapse collapse">
+		<ul class="nav navbar-nav navbar-right">
+			<li><a class="togglefiles" href="#">Files</a></li>
+			<li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user bullet-glyphicon"></span>{{ authed_user_nick }}<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+					<li><a title="Settings" data-toggle="modal" data-target="#settingsModal">Settings</a></li>
+					<li class="divider"></li>
+					<li><a href="{% url logout %}">Logout</a></li>
 				</ul>
-            </div>
-			
-		</nav>
+			</li>
+		</ul>
+    </div>
+</nav>
+<div class="row row-offcanvas row-offcanvas-left">
     <!--toolbar-->
-    <div class="col-sm-2 col-xs-5 toolbar-offcanvas" id="sidebar2" role="navigation">
+    <div class="col-sm-2 col-xs-5 toolbar-offcanvas tools-offcanvas" id="sidebar2" role="navigation">
         <nav class="navbar navbar-inverse navbar-default navbar-static-top" role="navigation">
 			<div class="navbar-header">
 				<a class="navbar-brand" href="#">Tools</a>
@@ -58,7 +58,7 @@
 	<!-- main panel -->
 	<div class="col-sm-10">
 		
-		<div class="apppanel" id="appmain">
+		<div class="apppanel tools-offcanvas" id="appmain">
 			<span>Loading...</span>
 		</div>
 	</div>
