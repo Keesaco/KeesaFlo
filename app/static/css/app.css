@@ -46,13 +46,6 @@
 
 }
 
-.apppanel
-{
-	bottom: 0;
-	padding: 20px 20px 20px 35px;
-	background-color: #E6E6E6;
-}
-
 .navpanel
 {
 	bottom: 0px;
@@ -65,6 +58,15 @@
 	top: 50px; /* height of the navbar */
 	overflow: auto;
 	width: 100%;
+}
+
+.apppanel
+{
+    left: 20%;
+	bottom: 0;
+    
+	padding: 20px 20px 20px 35px;
+	background-color: #E6E6E6;
 }
 
 .bottom-nav
@@ -149,8 +151,6 @@ html, body, .row
     width: 50%;
     padding: 20px;
 }
-
- 
   
   .navbar-togglel {
   position: relative;
@@ -172,7 +172,16 @@ html, body, .row
     right: 0;
     height: 100%;
     z-index: 2;
-  }
+  } 
+  
+  .toolbar-offcanvas{
+    position: fixed;
+    top: 0;
+    left: 0;
+    height:100%;
+    z-index: 0;
+}
+
   
   #sidebar:target {
      width: 16.7%;
@@ -185,6 +194,10 @@ html, body, .row
 
 .file-preview {
     overflow: hidden;
+}
+
+.white {
+    color: #ffffff;
 }
 
   @media screen and (max-width: 767px) {
@@ -213,5 +226,9 @@ html, body, .row
     
     .sidebar-offcanvas {
         margin-right: -50%;
+    }
+    
+    .apppanel {
+        left: 0;
     }
   }
