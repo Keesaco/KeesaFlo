@@ -7,14 +7,12 @@
 		<p>Time: {{ current_file.st_ctime }} </p>
 
 		{% if file_name_without_extension %}
-			<img src="/app/panels/main/fetch_graph={{ file_name_without_extension }}.png">
-			{% comment %} TODO: has to be changed to a reverse url creator {% endcomment %}
+			<img src="{% url get_graph file_name_without_extension %}">
 		{% else %}
 			<i>This dataset does not contain visualisation data</i>
 		{% endif %}
 		
-		<p><a class="btn btn-primary btn-lg" role="button" href="/app/panels/main/fetch_dataset={{ current_file.filename }}">Download Dataset</a></p>
-
+		<p><a class="btn btn-primary btn-lg" role="button" href="{% url get_dataset current_file.filename %}">Download Dataset</a></p>
 	{% else %}
 		Select a file in the sidebar.
 	{% endif %}

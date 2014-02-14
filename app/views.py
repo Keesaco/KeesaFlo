@@ -66,7 +66,7 @@ def toolselect(request):
 	return render(request, 'toolselect.html')
 
 def get_graph(request, graph):
-    return fetch_file(GRAPH_BUCKET + '/' + graph, 'image/png')
+    return fetch_file(GRAPH_BUCKET + '/' + graph + ".png", 'image/png')
 
 def get_dataset(request, dataset):
     return fetch_file(DATA_BUCKET + '/' + dataset, 'application/vnd.isac.fcs')
