@@ -68,10 +68,6 @@
 	background-color: #E6E6E6;
 }
 
-.col-sm-10 {
-    overflow: hidden;
-}
-
 .bottom-nav
 {
     position: absolute;
@@ -220,4 +216,8 @@ html, body, .row
     .apppanel {
         left: 0;
     }
+    
+    .col-sm-10 {
+        overflow: hidden;
+    }   
   }
