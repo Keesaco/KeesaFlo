@@ -64,9 +64,12 @@
 {
     left: 20%;
 	bottom: 0;
-    
 	padding: 20px 20px 20px 35px;
 	background-color: #E6E6E6;
+}
+
+.col-sm-10 {
+    overflow: hidden;
 }
 
 .bottom-nav
@@ -204,7 +207,7 @@ html, body, .row
     
     
     .toolbar-offcanvas {
-        margin-left: -50%;
+        margin-left: -41.7%;
         overflow: hidden;
         position: fixed;
         z-index: 2;
