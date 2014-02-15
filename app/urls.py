@@ -25,7 +25,6 @@ urlpatterns = patterns('',
     url(r'^app/panels/right/file_list/$', 'views.file_list', name='pagelet_list'),
 	url(r'^app/panels/left/toolselect/$', 'views.toolselect', name='toolselect'),
 	url(r'^app/panels/left/pagenav/$', 'views.pagenav', name='pagenav'),
-    url(r'^app/settings/$', 'views.settings', name='settings'),
 	url(r'^login/$', 'views.login', name='login'),
 	url(r'^logout/$', 'views.logout', name='logout'),
     ('^admin/', include(admin.site.urls))

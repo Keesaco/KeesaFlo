@@ -1,13 +1,13 @@
 from django.http import HttpResponse
 from django.http import HttpResponseNotFound  
 from django.shortcuts import render
-from django.shortcuts import redirect
 from django import forms
 import forms
 from django.core.files.uploadhandler import FileUploadHandler
 import upload_handling
 import API.APIDatastore as ds
 import API.PALUsers as auth
+from API import APIAnalysis
 
 DATA_BUCKET = '/fc-raw-data'
 GRAPH_BUCKET = '/fc-vis-data'
@@ -38,18 +38,19 @@ def app(request):
         return redirect('/')
     else:
         authed_user_nick = authed_user.nickname()
+	return render(request, 'app.html')
 
+# Testing code for data upload
+def upload(request):
     request.upload_handlers = [upload_handling.fcsUploadHandler()]
     if request.method == 'POST':
-        form = forms.UploadFile(request.POST, request.FILES)
+        form = forms.UploadFile(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
-            return redirect('app')
+            return HttpResponse('This file is called %s' % cd['title'])
         else:
+            form = forms.UploadFile()
             return render(request, 'app.html', {'form': form, 'files' : lst , 'current_file' : file_info, 'authed_user_nick' : authed_user_nick})
-    else:
-        form = forms.UploadFile()
-        return render(request, 'app.html', {'form': form, 'files' : lst , 'current_file' : file_info, 'authed_user_nick' : authed_user_nick})
 
 def file_list(request):
     lst = ds.list(DATA_BUCKET)
@@ -78,7 +79,8 @@ def file_preview(request, file=None):
             file_info = temp_file;
     return render(request, 'file_preview.html', {'current_file' : file_info, 'authed_user_nick': authed_user_nick, 'file_name_without_extension' : file_name_without_extension})
 
-def settings(request):
+def analysis(request):
+	APIAnalysis.add_analysis_task("test0.fcs")
 	return render(request, 'settings.html')
 
 def pagenav(request):
