@@ -1,11 +1,19 @@
-			<div class="jumbotron">
-				<h1>Hello {{ authed_user_nick }}!</h1>
-				{% if current_file %}
-					<p>You are trying to access the current_file: {{ current_file.filename }} </p>
-					<p>Size: {{ current_file.st_size|filesizeformat }} </p>
-					<p>MD5: {{ current_file.etag }} </p>
-					<p>Time: {{ current_file.st_ctime }} </p>
-				{% else %}
-					Select a file in the sidebar.
-				{% endif %}
-			</div>
+<div class="jumbotron">
+	<h1>Hello {{ authed_user_nick }}!</h1>
+	{% if current_file %}
+		<p>You are trying to access the current_file: {{ current_file.filename }} </p>
+		<p>Size: {{ current_file.st_size|filesizeformat }} </p>
+		<p>MD5: {{ current_file.etag }} </p>
+		<p>Time: {{ current_file.st_ctime }} </p>
+
+		{% if file_name_without_extension %}
+			<img src="{% url get_graph file_name_without_extension %}">
+		{% else %}
+			<i>This dataset does not contain visualisation data</i>
+		{% endif %}
+		
+		<p><a class="btn btn-primary btn-lg" role="button" href="{% url get_dataset current_file.filename %}">Download Dataset</a></p>
+	{% else %}
+		Select a file in the sidebar.
+	{% endif %}
+</div>
