@@ -1,9 +1,16 @@
 $(function() {
+    var $marginRighty = $('#sidebar');
     $('.togglefiles').click(function() {
-        var $marginRighty = $('#sidebar');
         $marginRighty.animate({
             marginRight: parseInt($marginRighty.css('marginRight'), 10) == 0 ?
-                '-50%' : 0}, 900
-        );  
+                -$marginRighty.outerWidth() : 0
+        });  
+    });
+    $(window).resize(function() {
+        if(parseInt($marginRighty.css('marginRight'), 10) < 0) {
+            $marginRighty.css({
+                marginRight: -$marginRighty.outerWidth()
+            });
+        }
     });
 });
