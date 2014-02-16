@@ -9,6 +9,7 @@
 from django.core.files.uploadhandler import FileUploadHandler
 from django.core.files.uploadedfile import UploadedFile
 import API.APIDatastore as ds
+import API.APIAnalysis as analy
 
 ## default upload bucket
 DEFAULT_BUCKET = '/fc-raw-data/'
@@ -34,6 +35,7 @@ class fcsUploadHandler(FileUploadHandler):
         while ds.check_exists(self.path, None):
             self.path = base_path + '(' + str(i) + ')'
             i += 1
+        self.file_name = file_name + '(' + str(i) + ')'
         self.file_handle = ds.add_file(self.path, 'raw_data', 'w')
         self.upload = fcsUploadedFile(self.path, file_name, content_type, charset)
         return None
@@ -49,13 +51,14 @@ class fcsUploadHandler(FileUploadHandler):
         return None
 
     ###########################################################################
-    ## \brief Called when a file has finished uploading. Simply closes the Datastore file.
+    ## \brief Called when a file has finished uploading. Closes the Datastore file and starts an analysis task.
     ## \param file_size - size of the uploaded file
     ## \author rmurley@keesaco.com of Keesaco
     ###########################################################################
     def file_complete(self, file_size):
         self.file_handle.close()
         self.upload.size = file_size
+        analy.add_analysis_task(self.file_name)
         return self.upload
 
 # Custom uploaded file class.
