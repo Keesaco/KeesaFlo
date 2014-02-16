@@ -8,7 +8,6 @@ from django.core.files.uploadhandler import FileUploadHandler
 import upload_handling
 import API.APIDatastore as ds
 import API.PALUsers as auth
-from API import APIAnalysis
 
 DATA_BUCKET = '/fc-raw-data'
 GRAPH_BUCKET = '/fc-vis-data'
@@ -31,27 +30,26 @@ def faq(request):
 	return render(request, 'faq.html')
 
 def app(request):
-    lst = ds.list('/fc-raw-data')
+    lst = ds.list(DATA_BUCKET)
     file_info = None
     authed_user = auth.get_current_user()
-	
+
     if authed_user is None:
         return redirect('/')
     else:
         authed_user_nick = authed_user.nickname()
-	return render(request, 'app.html')
 
-# Testing code for data upload
-def upload(request):
     request.upload_handlers = [upload_handling.fcsUploadHandler()]
     if request.method == 'POST':
-        form = forms.UploadFile(request.POST)
+        form = forms.UploadFile(request.POST, request.FILES)
         if form.is_valid():
             cd = form.cleaned_data
-            return HttpResponse('This file is called %s' % cd['title'])
+            return redirect('app')
         else:
-            form = forms.UploadFile()
             return render(request, 'app.html', {'form': form, 'files' : lst , 'current_file' : file_info, 'authed_user_nick' : authed_user_nick})
+    else:
+        form = forms.UploadFile()
+        return render(request, 'app.html', {'form': form, 'files' : lst , 'current_file' : file_info, 'authed_user_nick' : authed_user_nick})
 
 def file_list(request):
     lst = ds.list(DATA_BUCKET)
@@ -79,10 +77,6 @@ def file_preview(request, file=None):
         if temp_file.filename == file:
             file_info = temp_file;
     return render(request, 'file_preview.html', {'current_file' : file_info, 'authed_user_nick': authed_user_nick, 'file_name_without_extension' : file_name_without_extension})
-
-def analysis(request):
-	APIAnalysis.add_analysis_task("test0.fcs")
-	return render(request, 'settings.html')
 
 def pagenav(request):
 	return render(request, 'pagenav.html')
