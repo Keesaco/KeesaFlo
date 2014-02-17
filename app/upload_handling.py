@@ -31,11 +31,12 @@ class fcsUploadHandler(FileUploadHandler):
     def new_file(self, field_name, file_name, content_type, content_length, charset):
         base_path = ds.generate_path(DEFAULT_BUCKET, None, file_name)
         self.path = base_path
+        self.file_name = file_name
         i = 1
         while ds.check_exists(self.path, None):
             self.path = base_path + '(' + str(i) + ')'
+            self.file_name = file_name + '(' + str(i) + ')'
             i += 1
-        self.file_name = file_name + '(' + str(i) + ')'
         self.file_handle = ds.add_file(self.path, 'raw_data', 'w')
         self.upload = fcsUploadedFile(self.path, file_name, content_type, charset)
         return None

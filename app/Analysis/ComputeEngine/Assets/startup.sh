@@ -8,4 +8,4 @@
 ## Obtains the file location from the metadata of the instance request.
 FILE_LOCATION=$(curl http://metadata/computeMetadata/v1/instance/attributes/file_location -H "X-Google-Metadata-Request: True")
 ## Runs the analysis on the file location.
-python visualise.py $FILE_LOCATION
+python visualise.py "$FILE_LOCATION"
