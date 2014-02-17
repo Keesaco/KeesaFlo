@@ -178,7 +178,7 @@ html, body, .row
     top: 0;
     left: 0;
     height:100%;
-    z-index: 0;
+    z-index: 900;
 }
 
   
