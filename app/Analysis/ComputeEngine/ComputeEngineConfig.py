@@ -9,8 +9,8 @@
 
 from Analysis import AdminConfig
 
-## !!IMPORTANT!! - This variable needs to be set to a short unique string (such as your name) to avoid naming collisions.
-UNIQUE_USER_NAME = 'changeme'
+## This avoids naming confusion between separate instances running in the same project by tagging them with a unique, lower-case string.
+UNIQUE_NAME = 'keesaflo'
 
 ## The id of the project as it appears on Google Cloud Developers Console.
 PROJECT_ID = 'keesaco-spe'
@@ -34,9 +34,9 @@ GCE_SCOPE = 'https://www.googleapis.com/auth/compute'
 ## The name of the disk image to use for persistent disks.
 DEFAULT_IMAGE = 'debian-bioconductor5'
 ## The root name of the persistent disks created.
-DEFAULT_PD_NAME = '%s-keesaflo-root-pd-' % UNIQUE_USER_NAME
+DEFAULT_PD_NAME = '%s-root-pd-' % UNIQUE_NAME
 ## The root name of the instances created.
-DEFAULT_INSTANCE_NAME = '%s-keesaflo-analysis-' % UNIQUE_USER_NAME
+DEFAULT_INSTANCE_NAME = '%s-analysis-' % UNIQUE_NAME
 
 ## The default machine type to run instances on.
 DEFAULT_MACHINE_TYPE = 'f1-micro'
