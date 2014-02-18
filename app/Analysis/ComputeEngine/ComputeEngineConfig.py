@@ -4,10 +4,13 @@
 ## \author swhitehouse@keesaco.com of Keesaco
 ###########################################################################
 ## \package app.Analysis.ComputeEngine.ComputeEngineConfig
-## \brief Provides constants to modify instantiations on compute engine.
+## \brief Provides constants to administrate instantiations on compute engine.
 ###########################################################################
 
 from Analysis import AdminConfig
+
+## This avoids naming confusion between separate instances running in the same project by tagging them with a unique, lower-case string.
+UNIQUE_NAME = 'keesaflo'
 
 ## The id of the project as it appears on Google Cloud Developers Console.
 PROJECT_ID = 'keesaco-spe'
@@ -15,6 +18,8 @@ PROJECT_ID = 'keesaco-spe'
 DEFAULT_ZONE = 'europe-west1-a'
 ## The maximum number of instances which can exist simultaneously.
 MAX_INSTANCES = AdminConfig.MAX_TOTAL_TASKS
+## The amount of redundancy on compute engine created while scaling (in lots of 10 percent)
+CE_SCALING = 2
 
 ## The Compute Engine version.
 API_VERSION = 'v1'
@@ -29,7 +34,9 @@ GCE_SCOPE = 'https://www.googleapis.com/auth/compute'
 ## The name of the disk image to use for persistent disks.
 DEFAULT_IMAGE = 'debian-bioconductor5'
 ## The root name of the persistent disks created.
-DEFAULT_PD_NAME = 'flowcloud-root-pd-'
+DEFAULT_PD_NAME = '%s-root-pd-' % UNIQUE_NAME
+## The root name of the instances created.
+DEFAULT_INSTANCE_NAME = '%s-analysis-' % UNIQUE_NAME
 
 ## The default machine type to run instances on.
 DEFAULT_MACHINE_TYPE = 'f1-micro'
@@ -39,7 +46,7 @@ DEFAULT_NETWORK = 'default'
 DEFAULT_SERVICE_EMAIL = 'default'
 ## Tha control scopes of instances.
 DEFAULT_SCOPES = [	'https://www.googleapis.com/auth/devstorage.full_control',
-					'https://www.googleapis.com/auth/compute']
+					'https://www.googleapis.com/auth/compute'	]
 
 ## The name of the startup script to run on instantiation.
 STARTUP_SCRIPT = 'startup.sh'
