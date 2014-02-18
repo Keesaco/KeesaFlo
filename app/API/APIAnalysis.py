@@ -23,7 +23,7 @@ gce_manager = GCEManager()
 ###########################################################################
 def add_analysis_task(	file_location	):
 	# !!TEMP!! Uses the file location to start an instance on Compute Engine.
-	return gce_manager.start_instance_pd("", file_location)
+	return gce_manager.pd_start_instance(file_location)
 	
 
 ###########################################################################
@@ -34,8 +34,17 @@ def add_analysis_task(	file_location	):
 ## \author rmurley@keesaco.com of Keesaco
 ###########################################################################
 def remove_analysis_task(	analysis_id	):
-	# !!TEMP!! Uses the file location to end an instance on Compute Engine.
-	return gce_manager.terminate_instance_pd(analysis_id)
+	# !!TEMP!! This function serves no purpose until the scheduler is implemented, as tasks cannot be cancelled once they are running.
+	return False
+
+###########################################################################
+## \brief Deletes the gce_manager, and cleans up all remaining instances and persistent disks on compute engine.
+## \note It is a good idea to use this command when shutting the server down, as it handles the majority of the clean-up.
+## \author swhitehouse@keesaco.com of Keesaco
+## \author rmurley@keesaco.com of Keesaco
+###########################################################################
+def clean_termination():
+	del gce_manager
 
 ###########################################################################
 ## \brief Requests that the state of the analysis task be checked.
