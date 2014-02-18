@@ -4,10 +4,13 @@
 ## \author swhitehouse@keesaco.com of Keesaco
 ###########################################################################
 ## \package app.Analysis.ComputeEngine.ComputeEngineConfig
-## \brief Provides constants to modify instantiations on compute engine.
+## \brief Provides constants to administrate instantiations on compute engine.
 ###########################################################################
 
 from Analysis import AdminConfig
+
+## !!IMPORTANT!! - This variable needs to be set to a short unique string (such as your name) to avoid naming collisions.
+UNIQUE_USER_NAME = 'changeme'
 
 ## The id of the project as it appears on Google Cloud Developers Console.
 PROJECT_ID = 'keesaco-spe'
@@ -15,6 +18,8 @@ PROJECT_ID = 'keesaco-spe'
 DEFAULT_ZONE = 'europe-west1-a'
 ## The maximum number of instances which can exist simultaneously.
 MAX_INSTANCES = AdminConfig.MAX_TOTAL_TASKS
+## The amount of redundancy on compute engine created while scaling (in lots of 10 percent)
+CE_SCALING = 2
 
 ## The Compute Engine version.
 API_VERSION = 'v1'
@@ -27,9 +32,11 @@ PRIVATE_KEY = 'private_key.pem'
 GCE_SCOPE = 'https://www.googleapis.com/auth/compute'
 
 ## The name of the disk image to use for persistent disks.
-DEFAULT_IMAGE = 'debian-bioconductor3'
+DEFAULT_IMAGE = 'debian-bioconductor5'
 ## The root name of the persistent disks created.
-DEFAULT_PD_NAME = 'flowcloud-root-pd-'
+DEFAULT_PD_NAME = '%s-keesaflo-root-pd-' % UNIQUE_USER_NAME
+## The root name of the instances created.
+DEFAULT_INSTANCE_NAME = '%s-keesaflo-analysis-' % UNIQUE_USER_NAME
 
 ## The default machine type to run instances on.
 DEFAULT_MACHINE_TYPE = 'f1-micro'
@@ -39,7 +46,7 @@ DEFAULT_NETWORK = 'default'
 DEFAULT_SERVICE_EMAIL = 'default'
 ## Tha control scopes of instances.
 DEFAULT_SCOPES = [	'https://www.googleapis.com/auth/devstorage.full_control',
-					'https://www.googleapis.com/auth/compute']
+					'https://www.googleapis.com/auth/compute'	]
 
 ## The name of the startup script to run on instantiation.
 STARTUP_SCRIPT = 'startup.sh'
@@ -62,7 +69,4 @@ ASSETS_URL = 'Analysis/ComputeEngine/Assets'
 STARTUP_URL = '%s/%s' % (ASSETS_URL, STARTUP_SCRIPT)
 ## The URL of the private key.
 PRIVATE_KEY_URL = '%s/%s' % (ASSETS_URL, PRIVATE_KEY)
-
-
-
 
