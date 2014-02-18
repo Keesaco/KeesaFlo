@@ -44,7 +44,7 @@ def save_fcs(	name,
 ## \author rmurley@keesaco.com of Keesaco
 ###########################################################################
 def visualise(	name):
-	subprocess.call(["Rscript", "visualise.r", name + '.fcs', name + '.png'])
+	subprocess.call(["Rscript", "visualise.r", name, name + '.png'])
 
 ###########################################################################
 ## \brief Saves a visualisation image from local disk to Datastore

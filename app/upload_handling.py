@@ -10,11 +10,12 @@ from django.core.files.uploadhandler import FileUploadHandler
 from django.core.files.uploadedfile import UploadedFile
 import API.APIDatastore as ds
 import API.APIAnalysis as analy
+from os.path import splitext
 
 ## default upload bucket
 DEFAULT_BUCKET = '/fc-raw-data/'
 
-# Custom upload handler class.
+## Custom upload handler class.
 class fcsUploadHandler(FileUploadHandler):
     def __init__(self):
         FileUploadHandler.__init__(self)
@@ -29,15 +30,21 @@ class fcsUploadHandler(FileUploadHandler):
     ## \author rmurley@keesaco.com of Keesaco
     ###########################################################################
     def new_file(self, field_name, file_name, content_type, content_length, charset):
-        base_path = ds.generate_path(DEFAULT_BUCKET, None, file_name)
+        ## Remove extension from the file name.
+        base_name = splitext(file_name)[0]
+        self.name = base_name
+        ## Generate datastore path.
+        base_path = ds.generate_path(DEFAULT_BUCKET, None, base_name)
         self.path = base_path
-        self.file_name = file_name
+        ## Check for conflicting names, and if so adjust names.
         i = 1
         while ds.check_exists(self.path, None):
             self.path = base_path + '(' + str(i) + ')'
-            self.file_name = file_name + '(' + str(i) + ')'
+            self.name = base_name + '(' + str(i) + ')'
             i += 1
+        ## Setup file handle.
         self.file_handle = ds.add_file(self.path, 'raw_data', 'w')
+        ## Setup uploaded file.
         self.upload = fcsUploadedFile(self.path, file_name, content_type, charset)
         return None
 
@@ -59,10 +66,11 @@ class fcsUploadHandler(FileUploadHandler):
     def file_complete(self, file_size):
         self.file_handle.close()
         self.upload.size = file_size
-        analy.add_analysis_task(self.file_name)
+        ## Start analysis.
+        analy.add_analysis_task(self.name)
         return self.upload
 
-# Custom uploaded file class.
+## Custom uploaded file class.
 class fcsUploadedFile(UploadedFile):
     def __init__(self, path, file_name, content_type, charset):
         UploadedFile.__init__(self)

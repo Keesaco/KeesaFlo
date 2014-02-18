@@ -9,12 +9,11 @@
 import sys, os
 import API.APIAnalysis as Ana
 
-## Parse command line arguments given by Compute Engine's statup shell script, stripping '.fcs'.
-arg_name = sys.argv[1]
-name = arg_name[:-4]
+## Parse command line arguments given by Compute Engine's startup shell script.
+name = sys.argv[1]
 
 ## Load raw fcs data from cloud storage.
-Ana.load_fcs(name + '.fcs')
+Ana.load_fcs(name)
 
 ## Create visualisation of raw fcs data.
 Ana.visualise(name)
@@ -23,5 +22,5 @@ Ana.visualise(name)
 Ana.save_vis(name + '.png')
 
 ## Clean up.
-os.remove(name + '.fcs')
+os.remove(name)
 os.remove(name + '.png')
