@@ -27,7 +27,7 @@ PRIVATE_KEY = 'private_key.pem'
 GCE_SCOPE = 'https://www.googleapis.com/auth/compute'
 
 ## The name of the disk image to use for persistent disks.
-DEFAULT_IMAGE = 'debian-bioconductor4'
+DEFAULT_IMAGE = 'debian-bioconductor5'
 ## The root name of the persistent disks created.
 DEFAULT_PD_NAME = 'flowcloud-root-pd-'
 

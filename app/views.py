@@ -57,7 +57,7 @@ def file_list(request):
         temp_file.filename = temp_file.filename.rpartition('/')[2]
     return render(request, 'file_list.html', {'files' : lst})
 
-def file_preview(request, file=None):
+def file_preview(request, file = None):
     ## Authentication.
     authed_user = auth.get_current_user()
     if authed_user is None:
@@ -65,7 +65,7 @@ def file_preview(request, file=None):
     else:
         authed_user_nick = authed_user.nickname()
     ## Graph visualisation.
-    file_name_without_extension = "".join(file.split(".")[0:-1])
+    file_name_without_extension = file
     if not ds.check_exists(GRAPH_BUCKET + '/' + file_name_without_extension + '.png', None):
         file_name_without_extension = None
             #TODO: Might need to be simplified or moved to a function in fileinfo
