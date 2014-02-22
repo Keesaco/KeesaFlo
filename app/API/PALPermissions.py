@@ -50,15 +50,34 @@ def modify_user_by_id(user_id, new_user):
 	pass
 
 ###########################################################################
-## \brief
-## \param
-## \return
+## \brief gets user details from the permissions DB
+## \param user_id - [String] unique ID of user to look up
+## \return	None if not found or User object
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
-## \todo Stub - needs implementing
+## \note Looks up user details in DB then tries to find more details using Google services, if the user's details have changed since last login this will not be possible and last-known details form the DB will be used as a fall-back
+## \todo check and update user details if found using Google auth
 ###########################################################################
 def get_user_by_id(user_id):
-	pass
+	users = Users.query(Users.unique_id == user_id)
+	user = users.get()
+	
+	if user is None:
+		## user not found
+		return None
+	else:
+		user_obj = User(user.email_address)
+		
+		## return user object if details were retrieved from Google
+		if user_obj.found:
+			return user_obj
+		else:
+			## set unknown details from records
+			user_obj.set_unque_id(user.user_id)
+			user_obj.set_nickname(user.nickname)
+			return user_obj
+
+
 
 ###########################################################################
 ## \brief
@@ -126,7 +145,7 @@ def get_file_by_name(file_name):
 ## \author cwike@keesaco.com of Keesaco
 ## \todo Stub - needs implementing
 ###########################################################################
-def add_file_permissions(file_key, permissions)
+def add_file_permissions(file_key, permissions):
 	pass
 
 ###########################################################################
