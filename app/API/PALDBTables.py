@@ -12,6 +12,7 @@ from google.appengine.ext import ndb
 
 class Files(ndb.Model):
 	file_name 		= ndb.StringProperty()
+	owner_key		= ndb.KeyProperty()
 
 class Users(ndb.Model):
 	### unique ID of user (does not change)
@@ -24,9 +25,9 @@ class Users(ndb.Model):
 class FilePermissions(ndb.Model):
 	###keys
 	### - user ID
-	user_id 		= ndb.KeyProperty()
+	user_key 		= ndb.KeyProperty()
 	### - file ID
-	file_id 		= ndb.KeyProperty()
+	file_key 		= ndb.KeyProperty()
 
 	###Permissions
 	### - read access
