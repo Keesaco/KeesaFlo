@@ -1,6 +1,13 @@
+###########################################################################
+## \file app/ulrs.py
+## \brief Defines the allowed urls of the webapp
+## \author mrudelle@keesaco.com of Keesaco
+## \author rmurley@keesaco.com of Keesaco
+###########################################################################
+
 from django.conf.urls.defaults import *
 from django.contrib import admin
-import views #TODO may need to be moved, to be decided later
+import views 
 import dbindexer
 import API.PALUsers as auth
 
@@ -12,9 +19,13 @@ admin.autodiscover()
 # search for dbindexes.py in all INSTALLED_APPS and load them
 dbindexer.autodiscover()
 
+
 urlpatterns = patterns('',
+
+    # Used by Django to start the web app
     ('^_ah/warmup$', 'djangoappengine.views.warmup'),
-    #('^$', 'django.views.generic.simple.direct_to_template', {'template': 'index.html'}),
+
+    # Various pages that can be requested
     url(r'^$', 'views.index', name='index'),
     url(r'^app/panels/main/about/$', 'views.about', name='about'),
     url(r'^app/panels/main/faq/$', 'views.faq', name='faq'),
@@ -27,5 +38,8 @@ urlpatterns = patterns('',
 	url(r'^app/panels/left/pagenav/$', 'views.pagenav', name='pagenav'),
 	url(r'^login/$', 'views.login', name='login'),
 	url(r'^logout/$', 'views.logout', name='logout'),
+    url(r'^settings/$', 'views.settings', name='settings'),
+
+    # Used for administration purpose5
     ('^admin/', include(admin.site.urls))
 )
