@@ -103,9 +103,15 @@ def file_preview(request, file = None):
     file_name_without_extension = file
     if not ds.check_exists(GRAPH_BUCKET + '/' + file_name_without_extension + '.png', None):
         file_name_without_extension = None
-            #TODO: Might need to be simplified or moved to a function in fileinfo
+	#TODO: Might need to be simplified or moved to a function in fileinfo
     # TODO the folowing should be replaced by a method in the APIDatastore
     lst = ds.list(DATA_BUCKET)
+    file_info = None
+    for temp_file in lst:
+        temp_file.filename = temp_file.filename.rpartition('/')[2]
+        if temp_file.filename == file:
+            file_info = temp_file;
+    return render(request, 'file_preview.html', {'current_file' : file_info, 'authed_user_nick': authed_user_nick, 'file_name_without_extension' : file_name_without_extension})
 
 ###########################################################################
 ## \brief Is called when the pagelet containing the app's main panel is requested.
