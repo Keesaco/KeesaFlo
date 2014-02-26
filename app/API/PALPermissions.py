@@ -80,15 +80,48 @@ def get_user_by_id(user_id):
 
 
 ###########################################################################
-## \brief
-## \param
-## \return
+## \brief gets a user's details from the key of entry in the Users table
+## \param user_key - [Key] the key to look up
+## \return User object or None if not found
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
-## \todo Stub - needs implementing
+## \todo Stub - This shares logic with get_user_by_id - consider reviewing/abstracting this, also see todo on get_user_by_id
 ###########################################################################
 def get_user_by_key(user_key):
-	pass
+	user = user_key.get()
+
+	if user is None:
+		## user not found
+		return None
+	else:
+		user_obj = User(user.email_address)
+
+		## return user object if details were retrieved from Google
+		if user_obj.found:
+			return user_obj
+		else:
+			## set unknown details from records
+			user_obj.set_unque_id(user.user_id)
+			user_obj.set_nickname(user.nickname)
+			return user_obj
+
+
+
+###########################################################################
+## \brief Add a file to the file table with a given name and owner
+## \param new_file_name - [String] name of file to add
+## \param new_file_owner_key - [Key] key of user which owns the new file
+## \return key of new file
+## \author jmccrea@keesaco.com of Keesaco
+## \author cwike@keesaco.com of Keesaco
+## \todo Currently this does not check if the file exists or if there is already an entry for it - consider reviewing this and implementing some checking
+###########################################################################
+def add_file(new_file_name, new_file_owner_key):
+	new_file = Files(	parent = ndb.Key("FileTable", "*notitle*"),
+					 	file_name = new_file_name,
+					 	owner_key = new_file_owner_key );
+						
+	return new_file.put();
 
 ###########################################################################
 ## \brief
@@ -98,9 +131,6 @@ def get_user_by_key(user_key):
 ## \author cwike@keesaco.com of Keesaco
 ## \todo Stub - needs implementing
 ###########################################################################
-def add_file(file_name, owner_key):
-	pass
-
 def remove_file_by_key(file_key):
 	pass
 
