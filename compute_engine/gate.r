@@ -10,11 +10,11 @@ library("methods")
 ## Parse arguments.
 args <- commandArgs(trailingOnly = TRUE)
 fcs_name <- args[1]
-gatename <- args[2]
-tlx <- 50000
-tly <- 150000
-brx <- 100000
-bry <- 50000
+gate_name <- args[2]
+tlx <- as.integer(args[3])
+tly <- as.integer(args[4])
+brx <- as.integer(args[5])
+bry <- as.integer(args[6])
 
 ## Read fcs data.
 x <- read.FCS(fcs_name, transformation = FALSE)
@@ -33,9 +33,6 @@ y <- Subset(x, rgate)
 ## Plotting the gate
 u <- range(tlx, brx)
 v <- range(bry, tly)
-png(gatename)
-plot(y,c(a, b))
-
-## Saves gate as .fcs file
-
+png(gate_name)
+plot(y,c(a, b), xlim = u, ylim = v)
 dev.off()

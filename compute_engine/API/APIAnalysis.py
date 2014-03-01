@@ -47,6 +47,16 @@ def visualise(	name):
 	subprocess.call(["Rscript", "visualise.r", name, name + '.png'])
 
 ###########################################################################
+## \brief Saves a visualisation of a gated fcs file
+## \param name - name of fcs file to gate
+## \return returns True if successful else False
+## \todo Add gating coordinates
+## \author hdoughty@keesaco.com of Keesaco
+###########################################################################
+def rect_gate(  name, top_left_x, top_left_y, bottom_right_x, bottom_right_y):
+	subprocess.call(["Rscript", "gate.r", name, name + 'gate.png', top_left_x, top_left_y, bottom_right_x, bottom_right_y])
+
+###########################################################################
 ## \brief Saves a visualisation image from local disk to Datastore
 ## \param name - name of image file to save
 ## \param permissions - user attempting to perform access
