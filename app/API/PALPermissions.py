@@ -124,48 +124,80 @@ def add_file(new_file_name, new_file_owner_key):
 	return new_file.put();
 
 ###########################################################################
-## \brief
-## \param
-## \return
+## \brief Removes a file object from the Files table
+## \param file_key - [Key] key of file object
+## \return true on aparrent success, false otherwise
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
-## \todo Stub - needs implementing
+## \todo Stub - needs testing
 ###########################################################################
 def remove_file_by_key(file_key):
-	pass
+	if isinstance(file_key,ndb.Key):
+		file_key.delete()
+		return true
+	else
+		return false
 
 ###########################################################################
-## \brief
-## \param
-## \return
+## \brief Renames a file stored in a Files object, via Files table key lookup
+## \param file_key - [Key] key of file object
+## \param new_file_name - [String] new name to call file
+## \return true on aparrent success, false otherwise
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
-## \todo Stub - needs implementing
+## \todo Stub - needs testing
 ###########################################################################
 def rename_file_by_key(file_key, new_file_name):
-	pass
+	if isinstance(file_key,ndb.Key):
+		file = file_key.get()
+		file.file_name = new_file_name
+		file.put()
+		return true
+	else
+		return false
 
 ###########################################################################
-## \brief
-## \param
-## \return
+## \brief gets a file object from its key
+## \param file_key - [Key] key of file object
+## \return returns file object on success or None
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
-## \todo Stub - needs implementing
+## \todo Stub - needs testing
 ###########################################################################
 def get_file_by_key(file_key):
-	pass
+	if isinstance(file_key,ndb.Key):
+		file = file_key.get()
+		return file
+	else
+		return None
+		
 
 ###########################################################################
-## \brief
-## \param
-## \return
+## \brief gets a file object from its internal file name
+## \param file_name - [String] name of file stored in file object
+## \return returns first matching file object on success or None
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
-## \todo Stub - needs implementing
+## \todo Stub - needs testing
 ###########################################################################
 def get_file_by_name(file_name):
-	pass
+	query = Files.query(Files.file_name == file_name)
+	file = query.get()
+	return file
+	
+###########################################################################
+## \brief gets list of files by owner key
+## \param owner_key - [Key] owner key of file
+## \return returns iterator object over Files objects
+## \author jmccrea@keesaco.com of Keesaco
+## \author cwike@keesaco.com of Keesaco
+## \todo Stub - needs testing
+###########################################################################
+def get_file_by_owner_key(owner_key):
+	if isinstance(owner_key,ndb.Key):
+	query = Files.query(Files.owner_key == owner_key)
+	iterator = query.iter()
+	return iterator
 
 ###########################################################################
 ## \brief
@@ -276,3 +308,10 @@ def get_file_permissions_list(file_key):
 ###########################################################################
 def get_user_permissions_list(user_key):
 	pass
+
+	
+	
+		
+		
+		
+		
