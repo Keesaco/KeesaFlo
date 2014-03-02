@@ -28,26 +28,62 @@ def add_user(user):
 	return new_user.put();
 
 ###########################################################################
-## \brief
-## \param
-## \return
+## \brief Removes a user entry from the database given that use's unique ID
+## \param user_id - [String] unique ID of user to remove
+## \return True on success, False on failure
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
-## \todo Stub - needs implementing
+## \note The return value is not affected by the return value of the actual deletion as the actual ndb.Key.delete method always returns None
 ###########################################################################
 def remove_user_by_id(user_id):
-	pass
+	users = Users.query(Users.unique_id == user_id)
+	user = users.get()
+	
+	if user is None:
+		return False
+	else:
+		user.key.delete()
+		return True
 
 ###########################################################################
-## \brief
-## \param
+## \brief Removes a user from the database given the key of the user entry
+## \param user_key - [Key] key of user entry to remove
+## \return True on success, False on error
+## \author jmccrea@keesaco.com of Keesaco
+## \author cwike@keesaco.com of Keesaco
+## \note The return value is not affected by the return value of the actual deletion as the actual ndb.Key.delete method always returns None
+###########################################################################
+def remove_user_by_key(user_key):
+	#Check that given key is actually a Key object
+	if isinstance(user_key, ndb.Key):
+		user_key.delete()
+		return True
+	else:
+		#Can't remove due to invalid key, return False
+		return False
+
+
+
+###########################################################################
+## \brief update a user's details in the database given the user's ID
+## \param user_id - [String] ID of user to update
+## \param new_user - [String]
 ## \return
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
-## \todo Stub - needs implementing
 ###########################################################################
 def modify_user_by_id(user_id, new_user):
-	pass
+	users = Users.query(Users.unique_id == user_id)
+	user = users.get()
+
+	if user is None:
+		return False
+	else:
+		user.user_id 	= new_user.user_id()
+		user.nickname 	= new_user.nickname()
+		user.email 		= new_user.email()
+
+		return user.put()
 
 ###########################################################################
 ## \brief gets user details from the permissions DB
@@ -88,22 +124,25 @@ def get_user_by_id(user_id):
 ## \todo Stub - This shares logic with get_user_by_id - consider reviewing/abstracting this, also see todo on get_user_by_id
 ###########################################################################
 def get_user_by_key(user_key):
-	user = user_key.get()
+	if isinstance(user_key, ndb.Key):
+		user = user_key.get()
 
-	if user is None:
-		## user not found
-		return None
-	else:
-		user_obj = User(user.email_address)
-
-		## return user object if details were retrieved from Google
-		if user_obj.found:
-			return user_obj
+		if user is None:
+			## user not found
+			return None
 		else:
-			## set unknown details from records
-			user_obj.set_unque_id(user.user_id)
-			user_obj.set_nickname(user.nickname)
-			return user_obj
+			user_obj = User(user.email_address)
+	
+			## return user object if details were retrieved from Google
+			if user_obj.found:
+				return user_obj
+			else:
+				## set unknown details from records
+				user_obj.set_unque_id(user.user_id)
+				user_obj.set_nickname(user.nickname)
+				return user_obj
+	else:
+		return False
 
 
 
