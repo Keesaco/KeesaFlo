@@ -23,6 +23,17 @@ x <- read.FCS(fcs_name, transformation = FALSE)
 a <- colnames(x[,1])
 b <- colnames(x[,2])
 
+## Calculate graph coordinates from pixel coordinates
+r1 <- range(x[,1])
+r2 <- range(x[,2])
+
+tlx <- ((tlx-73)/360) * (r1[2,1]-r1[1,1])
+brx <- ((brx-73)/360) * (r1[2,1]-r1[1,1])
+
+tly <- r2[2,1] - (((tly-61)/332) * (r2[2,1]-r2[1,1]))
+bry <- r2[2,1] - (((bry-61)/332) * (r2[2,1]-r2[1,1]))
+
+
 ## Working out gate, need to change values.
 mat <- matrix(c(tlx, brx, bry, tly), ncol=2, dimnames=list(c("min", "max"), c(a, b)))
 rgate <- rectangleGate(.gate=mat)

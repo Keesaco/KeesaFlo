@@ -49,8 +49,12 @@ def visualise(	name):
 ###########################################################################
 ## \brief Saves a visualisation of a gated fcs file
 ## \param name - name of fcs file to gate
+## \pararm top_left_x - x coordinate of top left corner of rectangular gate
+## \pararm top_left_y - y coordinate of top left corner of rectangular gate
+## \pararm bottom_right_x - x coordinate of bottom right corner of rectangular gate
+## \pararm bottom_right_y - y coordinate of bottom right corner of rectangular gate
 ## \return returns True if successful else False
-## \todo Add gating coordinates
+## \note all parameters should be strings
 ## \author hdoughty@keesaco.com of Keesaco
 ###########################################################################
 def rect_gate(  name, top_left_x, top_left_y, bottom_right_x, bottom_right_y):
