@@ -1,5 +1,5 @@
 ###########################################################################
-## \file compute_engine/gating.r
+## \file compute_engine/gate.r
 ## \brief Gates flow cytometry data.
 ## \author hdoughty@keesaco.com of Keesaco
 ###########################################################################
