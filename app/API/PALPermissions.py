@@ -11,6 +11,7 @@
 from API.PALDBTables import Users, Files, FilePermissions
 from API.User import User
 from google.appengine.ext import ndb
+from Permissions import Types
 
 
 ###########################################################################
@@ -168,7 +169,6 @@ def add_file(new_file_name, new_file_owner_key):
 ## \return true on aparrent success, false otherwise
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
-## \todo Stub - needs testing
 ###########################################################################
 def remove_file_by_key(file_key):
 	if isinstance(file_key,ndb.Key):
@@ -184,7 +184,6 @@ def remove_file_by_key(file_key):
 ## \return true on aparrent success, false otherwise
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
-## \todo Stub - needs testing
 ###########################################################################
 def rename_file_by_key(file_key, new_file_name):
 	if isinstance(file_key,ndb.Key):
@@ -201,7 +200,6 @@ def rename_file_by_key(file_key, new_file_name):
 ## \return returns file object on success or None
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
-## \todo Stub - needs testing
 ###########################################################################
 def get_file_by_key(file_key):
 	if isinstance(file_key,ndb.Key):
@@ -217,7 +215,6 @@ def get_file_by_key(file_key):
 ## \return returns first matching file object on success or None
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
-## \todo Stub - needs testing
 ###########################################################################
 def get_file_by_name(file_name):
 	query = Files.query(Files.file_name == file_name)
@@ -230,7 +227,6 @@ def get_file_by_name(file_name):
 ## \return returns iterator object over Files objects
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
-## \todo Stub - needs testing
 ###########################################################################
 def get_file_by_owner_key(owner_key):
 	if isinstance(owner_key,ndb.Key):
@@ -245,10 +241,16 @@ def get_file_by_owner_key(owner_key):
 ## \return
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
-## \todo Stub - needs implementing
+## \todo Stub - needs testing
 ###########################################################################
-def add_file_permissions(file_key, permissions):
-	pass
+def add_file_permissions(permissions_file_key,permissions_user_key, permissions):
+	new_permission = FilePermissions( 	parent = ndb.Key("PermissionsTable", "*notitle*"),
+										user_key = permissions_user_key,
+										file_key = permissions_file_key,
+										read = permissions.read,
+										write = permissions.write,
+										full_control = permissions.full_control );
+	return new_permission.put()
 
 ###########################################################################
 ## \brief
@@ -256,10 +258,18 @@ def add_file_permissions(file_key, permissions):
 ## \return
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
-## \todo Stub - needs implementing
+## \todo Stub - needs testing
 ###########################################################################
-def modify_file_permissions_by_key(permissions_key, permissions):
-	pass
+def modify_file_permissions_by_key(permissions_key, new_permissions):
+	if isinstance(permissions_key,ndb.Key):
+		permissions = permissions_key.get()
+		permissions.read = new_permissions.read
+		permissions.write = new_permissions.write
+		permissions.full_control = new_permissions.full_control
+		permissions.put()
+		return True
+	else:
+		return False
 
 ###########################################################################
 ## \brief
@@ -267,10 +277,18 @@ def modify_file_permissions_by_key(permissions_key, permissions):
 ## \return
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
-## \todo Stub - needs implementing
+## \todo Stub - needs testing
 ###########################################################################
 def modify_file_permissions_by_keys(file_key, user_key, permissions):
-	pass
+	if (isinstance(user_key,ndb.Key)) and (isinstance(file_key,ndb.Key)):
+		permissions = permissions_key.get()
+		permissions.read = new_permissions.read
+		permissions.write = new_permissions.write
+		permissions.full_control = new_permissions.full_control
+		permissions.put()
+		return True
+	else:
+		return False
 
 ###########################################################################
 ## \brief
@@ -278,10 +296,17 @@ def modify_file_permissions_by_keys(file_key, user_key, permissions):
 ## \return
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
-## \todo Stub - needs implementing
+## \todo Stub - needs testing
 ###########################################################################
 def revoke_all_by_file_key(file_key):
-	pass
+	if(isinstance(file_key,ndb.Key)):
+		query = Permissions.query(Permissions.file_key == file_key)
+		iterator = query.iter()
+		for entry in iterator:
+			entry.key.delete()
+		return True
+	else
+		return False
 
 ###########################################################################
 ## \brief
