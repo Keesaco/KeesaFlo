@@ -106,7 +106,7 @@ class User:
 	## \author cwike@keesaco.com of keesaco
 	## \author jmccrea@keesaco.com of keesaco
 	###########################################################################
-	def set_unique_id(self, unique_id):
-		self._unique_id = unique_id
+	def set_user_id(self, user_id):
+		self._user_id = user_id
 
 
