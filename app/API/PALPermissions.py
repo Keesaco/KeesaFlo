@@ -109,7 +109,7 @@ def get_user_by_id(user_id):
 			return user_obj
 		else:
 			## set unknown details from records
-			user_obj.set_unque_id(user.user_id)
+			user_obj.set_user_id(user.user_id)
 			user_obj.set_nickname(user.nickname)
 			return user_obj
 
