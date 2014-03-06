@@ -37,15 +37,19 @@ ksfData.pagelet = function(data)
  ** \brief gets a pagelet and displays its contents in the target container
  ** \param URI - [string] pagelet URI
  ** \param targetID - [string] (Should include '#' prefix) ID of the element to show the pagelet in
+ ** \param executeOnLoading - [function] To be executed once the pagelet is completely loaded in the page
  ** \author jmccrea@keesaco.com of Keesaco
  ***************************************************************************/
-ksfData.copyPageletInto = function(URI, targetID)
+ksfData.copyPageletInto = function(URI, targetID, executeOnLoading)
 {
 	ksfReq.fetch( 	URI,
 					function(response)
 				  	{
 				 		var pagelet = ksfData.pagelet(response);
 				 	 	$(targetID).html(pagelet.body);
+				 	 	if (executeOnLoading) {
+				 	 		executeOnLoading();
+				 	 	}
 				  	} );
 }
 
