@@ -110,14 +110,14 @@ ksfViews.setupDefault = function()
 {
 	ksfViews.showFilebar(true);
 	ksfViews.showToolSelector(true);
-	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/left/toolselect/', TOOL_SELECTOR );
+	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/left/toolselect/', TOOL_SELECTOR, ksfTools.addToolsListener );
 }
 
 ksfViews.setupSimple = function()
 {
 	ksfViews.showFilebar(false);
 	ksfViews.showToolSelector(false);
-	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/left/pagenav/', TOOL_SELECTOR );
+	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/left/pagenav/', TOOL_SELECTOR, null );
 }
 
 ksfViews.showFilebar = function(show)
@@ -149,16 +149,16 @@ ksfViews.showToolSelector = function(show)
 
 ksfViews.loadPreview = function(filename)
 {
-	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/main/file' + encodeURIComponent('=' + filename), CONTENT_AREA );
-	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/right/file_list/', FILE_SELECTOR );
+	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/main/file' + encodeURIComponent('=' + filename), CONTENT_AREA, ksfGraphTools.addListener );
+	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/right/file_list/', FILE_SELECTOR, null);
 }
 
 ksfViews.loadFAQ = function()
 {
-	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/main/faq/', CONTENT_AREA );
+	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/main/faq/', CONTENT_AREA, null );
 }
 
 ksfViews.loadAbout = function()
 {
-	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/main/about/', CONTENT_AREA );
+	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/main/about/', CONTENT_AREA, null );
 }
