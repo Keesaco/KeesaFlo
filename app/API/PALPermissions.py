@@ -134,9 +134,9 @@ def add_file(new_file_name, new_file_owner_key):
 def remove_file_by_key(file_key):
 	if isinstance(file_key,ndb.Key):
 		file_key.delete()
-		return true
-	else
-		return false
+		return True
+	else:
+		return False
 
 ###########################################################################
 ## \brief Renames a file stored in a Files object, via Files table key lookup
@@ -152,9 +152,9 @@ def rename_file_by_key(file_key, new_file_name):
 		file = file_key.get()
 		file.file_name = new_file_name
 		file.put()
-		return true
-	else
-		return false
+		return True
+	else:
+		return False
 
 ###########################################################################
 ## \brief gets a file object from its key
@@ -168,7 +168,7 @@ def get_file_by_key(file_key):
 	if isinstance(file_key,ndb.Key):
 		file = file_key.get()
 		return file
-	else
+	else:
 		return None
 		
 
@@ -195,10 +195,11 @@ def get_file_by_name(file_name):
 ###########################################################################
 def get_file_by_owner_key(owner_key):
 	if isinstance(owner_key,ndb.Key):
-	query = Files.query(Files.owner_key == owner_key)
-	iterator = query.iter()
-	return iterator
-
+		query = Files.query(Files.owner_key == owner_key)
+		iterator = query.iter()
+		return iterator
+	else:
+		return None
 ###########################################################################
 ## \brief
 ## \param
