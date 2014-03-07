@@ -36,3 +36,5 @@ app/static/js/bootstrap.js
 app/static/js/jquery-2.1.0.js
 app/uritemplate/
 tmp-packages/
+app/static/fonts/
+app/static/js/jquery.js

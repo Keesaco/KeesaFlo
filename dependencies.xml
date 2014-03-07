@@ -10,7 +10,7 @@
 			<uri>http://code.jquery.com/jquery-2.1.0.js</uri>
 			<unzip>0</unzip>
 			<move>
-				<destination>app/static/js/</destination>
+				<destination rename="1">app/static/js/jquery.js</destination>
 			</move>
 		</package>
 		<package name="bootstrap">
