@@ -174,9 +174,16 @@ ksfGraphTools.addListener = function()
     if (tool_popover !== null) {
         tool_popover.innerHTML = "You must choose a tool.";
     }
+    
+    if (ksfTools.CurrentTool !== null){
+        ksfTools.CurrentTool.resetTool();
+    }
+    
     canvas = document.getElementById(GRAPH_ID_RAW);
-    canvas.width = 0;
-    canvas.height = 0;
+    if (canvas !== null){
+        canvas.width = 0;
+        canvas.height = 0;
+    }
     context = canvas.getContext('2d');
 }
 
