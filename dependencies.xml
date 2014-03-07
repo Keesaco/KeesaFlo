@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<dconfig>
+	<setup>
+		<param name="tempdir">tmp-packages/</param>
+		<param name="default-dir">dependencies</param>
+		<param name="force-acquire">1</param>
+	</setup>
+	<packages>
+		<package name="jQuery">
+			<uri>http://code.jquery.com/jquery-2.1.0.js</uri>
+			<unzip>0</unzip>
+			<move>
+				<destination>app/static/js/</destination>
+			</move>
+		</package>
+		<package name="bootstrap">
+			<uri>https://github.com/twbs/bootstrap/releases/download/v3.1.1/bootstrap-3.1.1-dist.zip</uri>
+			<unzip>1</unzip>
+			<move>
+				<innersource>bootstrap-3.1.1-dist/js/bootstrap.min.js</innersource>
+				<destination>app/static/js/bootstrap.js</destination>
+			</move>
+			<move>
+				<innersource>bootstrap-3.1.1-dist/css/bootstrap.min.css</innersource>
+				<destination>app/static/css/bootstrap.css</destination>
+			</move>
+			<move>
+				<innersource dir="1">bootstrap-3.1.1-dist/fonts/</innersource>
+				<destination>app/static/fonts/</destination>
+			</move>
+		</package>
+		<package name="cloudstorage">
+			<uri>https://appengine-gcs-client.googlecode.com/files/appengine-gcs-client-python-r127.zip</uri>
+			<unzip>1</unzip>
+			<move>
+				<mkdir>app/cloudstorage</mkdir>
+				<innersource dir="1">src/cloudstorage</innersource>
+				<destination>app/cloudstorage</destination>
+			</move>
+		</package>
+		<package name="googleAPI">
+			<uri>https://google-api-python-client.googlecode.com/files/google-api-python-client-gae-1.2.zip</uri>
+			<unzip>1</unzip>
+			<move>
+				<mkdir>app/googleAPI</mkdir>
+				<innersource dir="1"></innersource>
+				<destination>app/googleAPI</destination>
+			</move>
+			<move>
+				<innersource dir="1"></innersource>
+				<destination>app</destination>
+			</move>
+		</package>
+		<package name="django-autoload">
+			<uri>https://github.com/adieu/django-autoload/archive/master.zip</uri>
+			<unzip>1</unzip>
+			<move>
+				<mkdir>app/autoload</mkdir>
+				<innersource dir="1">django-autoload-master/autoload</innersource>
+				<destination>app/autoload</destination>
+			</move>
+		</package>
+		<package name="django-dbindexer">
+			<uri>https://github.com/django-nonrel/django-dbindexer/archive/master.zip</uri>
+			<unzip>1</unzip>
+			<move>
+				<mkdir>app/dbindexer</mkdir>
+				<innersource dir="1">django-dbindexer-master/dbindexer</innersource>
+				<destination>app/dbindexer</destination>
+			</move>
+		</package>
+		<package name="djangoappengine">
+			<uri>https://github.com/django-nonrel/djangoappengine/archive/master.zip</uri>
+			<unzip>1</unzip>
+			<move>
+				<mkdir>app/djangoappengine</mkdir>
+				<innersource dir="1">djangoappengine-master/djangoappengine</innersource>
+				<destination>app/djangoappengine</destination>
+			</move>
+		</package>
+		<package name="djangotoolbox">
+			<uri>https://github.com/django-nonrel/djangotoolbox/archive/master.zip</uri>
+			<unzip>1</unzip>
+			<move>
+				<mkdir>app/djangotoolbox</mkdir>
+				<innersource dir="1">djangotoolbox-master/djangotoolbox</innersource>
+				<destination>app/djangotoolbox</destination>
+			</move>
+		</package>		
+	</packages>
+</dconfig>
