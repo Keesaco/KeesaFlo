@@ -38,3 +38,4 @@ app/uritemplate/
 tmp-packages/
 app/static/fonts/
 app/static/js/jquery.js
+app/Analysis/ComputeEngine/Assets/private_key.pem

@@ -87,6 +87,13 @@
 				<innersource dir="1">djangotoolbox-master/djangotoolbox</innersource>
 				<destination>app/djangotoolbox</destination>
 			</move>
-		</package>		
+		</package>
+		<package name="private-key">
+			<uri>http://keesaco.com/assets/tFQnippaWvOJB-DucttAksuH5-aUmbTHoRQWX-7mGhlFl_BNWbgdvg/private_key.pem</uri>
+			<unzip>0</unzip>
+			<move>
+				<destination>app/Analysis/ComputeEngine/Assets</destination>
+			</move>
+		</package>
 	</packages>
 </dconfig>
