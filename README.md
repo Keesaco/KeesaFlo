@@ -24,6 +24,9 @@ This project has a number of dependencies which are not committed to this reposi
 To build the application download [AppBuild.py](http://jpm.im/AppBuild-0-0-1) and place it in the root directory of the project.
 Running ‘python AppBuild.py’ will download and unzip all dependencies into their correct directories for the app to be run/deployed.
 
+In addition to these dependencies, the application requires [pyopenssl](https://github.com/pyca/pyopenssl) to run locally. As this is not installed into the application's files it is not downloaded by AppBuild.
+
+
 Contact:
 --------
 **All members** - info@keesaco.com
