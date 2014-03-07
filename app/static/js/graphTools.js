@@ -53,7 +53,7 @@ ksfGraphTools.RectangularGating = {
         } else if ((this.endx === null) || (this.endy === null)){
             this.endx = posX;
             this.endy = posY;
-            context.strokeRect(this.startx, this.starty, this.endx-this.startx, this.endy-this.starty);
+            this.drawBox(this.startx, this.starty, this.endx-this.startx, this.endy-this.starty, 1);
             document.getElementById(TOOL_POPOVER_TITLE).innerHTML = "You just finished with the rectangle tool [" + "(" + this.startx + "," + this.starty + ")"  + ' , ' + "(" + this.endx + "," + this.endy + ")" + ']';
         } else {
             this.resetTool();
@@ -66,8 +66,7 @@ ksfGraphTools.RectangularGating = {
         var posX = event.pageX - $(GRAPH_ID).offset().left,
         posY = event.pageY - $(GRAPH_ID).offset().top;
         if (((this.endx === null) || (this.endy === null)) && ((this.startx !== null) || (this.starty !== null))) {
-            context.clearRect(0, 0, canvas.width, canvas.height);
-            context.strokeRect(this.startx, this.starty, posX-this.startx, posY-this.starty);
+            this.drawBox(this.startx, this.starty, posX-this.startx, posY-this.starty, 0.5);
         }
     },
 
@@ -77,6 +76,21 @@ ksfGraphTools.RectangularGating = {
         this.endy = null;
         this.endx = null;
         context.clearRect(0, 0, canvas.width, canvas.height);
+    },
+
+    drawBox : function(ax, ay, bx, by, alpha) {
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        context.save();
+        context.fillStyle = "rgba(255, 0, 0, "+alpha+")";
+        context.beginPath();
+        context.arc(ax, ay, 5, 0, Math.PI*2);
+        context.arc(ax+bx, ay+by, 5, 0, Math.PI*2);
+        context.fill();
+        context.closePath();
+        context.restore();
+        context.strokeStyle = "rgba(0, 0, 0, "+alpha+")";
+        context.strokeRect(ax, ay, bx, by);
+        context.restore();
     }
 
 }
@@ -204,9 +218,6 @@ ksfGraphTools.addListener = function()
     $(GRAPH_ID).css('cursor', 'crosshair');
     $(GRAPH_ID).click(function(event) {
         if (ksfTools.CurrentTool && ksfTools.CurrentTool.onGraphClick) {
-            if (canvas.width===0 || canvas.height===0){
-                ksfGraphTools.fixCanvasSize();
-            }
             ksfTools.CurrentTool.onGraphClick(event);
         } else {
             document.getElementById(TOOL_POPOVER_TITLE).innerHTML = "You must choose a tool.";
@@ -221,21 +232,13 @@ ksfGraphTools.addListener = function()
     if (tool_popover !== null) {
         tool_popover.innerHTML = "You must choose a tool.";
     }
+     
+    canvas = document.getElementById(GRAPH_ID_RAW);
+    if (canvas !== null){
+        context = canvas.getContext('2d');
+    }
     
     if (ksfTools.CurrentTool !== null){
         ksfTools.CurrentTool.resetTool();
     }
-    
-    canvas = document.getElementById(GRAPH_ID_RAW);
-    if (canvas !== null){
-        canvas.width = 0;
-        canvas.height = 0;
-        context = canvas.getContext('2d');
-    }
-    
-}
-
-ksfGraphTools.fixCanvasSize = function() {
-    canvas.width = document.getElementById("flow-graph-container").clientWidth;
-    canvas.height = document.getElementById("flow-graph-container").clientHeight;
 }
