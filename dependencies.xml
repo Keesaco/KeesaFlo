@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <dconfig>
 	<setup>
+		<param name="input-version">00003</param>
 		<param name="tempdir">tmp-packages/</param>
 		<param name="default-dir">dependencies</param>
 		<param name="force-acquire">1</param>
