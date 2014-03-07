@@ -236,9 +236,11 @@ def get_file_by_owner_key(owner_key):
 	else:
 		return None
 ###########################################################################
-## \brief
-## \param
-## \return
+## \brief adds file permissions entry to file permissions table
+## \param permissions_file_key - [Key] key of file to set permissions
+## \param permissions_user_key - [Key] key of user to assign file permissions to
+## \param permissions - [Permissions] permissions object setting permissions
+## \return entity key
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
 ## \todo Stub - needs testing
@@ -253,9 +255,10 @@ def add_file_permissions(permissions_file_key,permissions_user_key, permissions)
 	return new_permission.put()
 
 ###########################################################################
-## \brief
-## \param
-## \return
+## \brief modifies permissions on permissions entry 
+## \param permissions key - [Key] key of permissions entry
+## \param new_permissions - [Permissions] new permissions to set
+## \return True on success, False otherwise
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
 ## \todo Stub - needs testing
@@ -272,16 +275,21 @@ def modify_file_permissions_by_key(permissions_key, new_permissions):
 		return False
 
 ###########################################################################
-## \brief
-## \param
-## \return
+## \brief modifies permissions on permissions entry
+## \param file_key - [Key] key of file entry permissions pertain to
+## \param user_key - [Key] key of user entry permissions pertain to
+## \param permissions - [Permissions] new permissions to set
+## \return  True on success, False otherwise
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
 ## \todo Stub - needs testing
 ###########################################################################
 def modify_file_permissions_by_keys(file_key, user_key, permissions):
 	if (isinstance(user_key,ndb.Key)) and (isinstance(file_key,ndb.Key)):
-		permissions = permissions_key.get()
+		query = FilePermissions.query(ndb.AND(FilePermissions.user_key == user_key,
+											 FilePermissions.file_key == file_key))
+
+		permissions = query.get()
 		permissions.read = new_permissions.read
 		permissions.write = new_permissions.write
 		permissions.full_control = new_permissions.full_control
@@ -291,9 +299,9 @@ def modify_file_permissions_by_keys(file_key, user_key, permissions):
 		return False
 
 ###########################################################################
-## \brief
-## \param
-## \return
+## \brief removes all file permissions entries pertaining to file entry
+## \param file_key - [Key] key of file entry a permissions entry references
+## \return True on success, False otherwise
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
 ## \todo Stub - needs testing
@@ -309,26 +317,37 @@ def revoke_all_by_file_key(file_key):
 		return False
 
 ###########################################################################
-## \brief
-## \param
-## \return
+## \brief removes all file permissions pertaining to an user entry
+## \param user_key - [Key] key of user entry a permissions entry references
+## \return True on success, False otherwise
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
-## \todo Stub - needs implementing
+## \todo Stub - needs testing
 ###########################################################################
 def revoke_all_by_user_key(user_key):
-	pass
+	if(isinstance(user_key,ndb.Key)):
+		query = Permissions.query(Permissions.user_key == user_key)
+		iterator = query.iter()
+		for entry in iterator:
+			entry.key.delete()
+		return True
+	else
+		return False
 
 ###########################################################################
-## \brief
-## \param
-## \return
+## \brief removes a file permission
+## \param permissions_key - [Key] key of permissions entry
+## \return True on success, False otherwise
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
-## \todo Stub - needs implementing
+## \todo Stub - needs testing
 ###########################################################################
 def revoke_permissions_by_key(permissions_key):
-	pass
+	if isinstance(permissions_key,ndb.Key):
+		permissions_key.delete()
+		return True
+	else:
+		return False
 
 ###########################################################################
 ## \brief
@@ -336,10 +355,16 @@ def revoke_permissions_by_key(permissions_key):
 ## \return
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
-## \todo Stub - needs implementing
+## \todo Stub - needs testing
 ###########################################################################
 def revoke_user_file_permissions(file_key, user_key):
-	pass
+	if (isinstance(user_key,ndb.Key)) and (isinstance(file_key,ndb.Key)):
+		query = FilePermissions.query(ndb.AND(FilePermissions.user_key == user_key,
+											 FilePermissions.file_key == file_key))
+		query.get().key.delete()
+		return True
+	else:
+		return False
 
 ###########################################################################
 ## \brief
@@ -347,10 +372,16 @@ def revoke_user_file_permissions(file_key, user_key):
 ## \return
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
-## \todo Stub - needs implementing
+## \todo Stub - needs testing
 ###########################################################################
 def get_user_file_permissions(file_key, user_key):
-	pass
+	if (isinstance(user_key,ndb.Key)) and (isinstance(file_key,ndb.Key)):
+		query = FilePermissions.query(ndb.AND(FilePermissions.user_key == user_key,
+											 FilePermissions.file_key == file_key))
+		return query.get()
+	else:
+		return False
+
 
 ###########################################################################
 ## \brief
@@ -358,10 +389,14 @@ def get_user_file_permissions(file_key, user_key):
 ## \return
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
-## \todo Stub - needs implementing
+## \todo Stub - needs testing
 ###########################################################################
 def get_file_permissions_list(file_key):
-	pass
+	if(isinstance(file_key,ndb.Key)):
+		query = Permissions.query(Permissions.file_key == file_key)
+		return query.iter()
+	else:
+		return False
 
 ###########################################################################
 ## \brief
@@ -369,14 +404,11 @@ def get_file_permissions_list(file_key):
 ## \return
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
-## \todo Stub - needs implementing
+## \todo Stub - needs testing
 ###########################################################################
 def get_user_permissions_list(user_key):
-	pass
-
-	
-	
-		
-		
-		
-		
+	if(isinstance(file_key,ndb.Key)):
+		query = Permissions.query(Permissions.file_key == file_key)
+		return query.iter()
+	else:
+		return False
