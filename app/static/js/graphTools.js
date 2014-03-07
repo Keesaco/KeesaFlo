@@ -86,43 +86,83 @@ ksfGraphTools.RectangularGating = {
 ksfGraphTools.PolygonGating = {
 
     PointList : [],
+    SelectionDone : false,
     ELEMENT_ID : "#tool_polygon_gating",
+    START_RADIUS : 5,
 
     onGraphClick : function(event) {
-        var posX = event.pageX - $(GRAPH_ID).offset().left,
+        if (this.SelectionDone) {
+            return;
+        }
+        
+        var posX, posY, x, y, d;
+
+        posX = event.pageX - $(GRAPH_ID).offset().left;
         posY = event.pageY - $(GRAPH_ID).offset().top;
-        PointList.add(posX);
-        PointList.add(posY);
-        this.drawPolygon(null, null);
-        document.getElementById(TOOL_POPOVER_TITLE).innerHTML = "new point: ("+posX+","+posY+")";
+
+        // Triggered when the path is closed
+        if (this.distanceToStart(posX, posY) < this.START_RADIUS){
+            this.drawPolygon(null, null);
+            this.SelectionDone = true;
+            document.getElementById(TOOL_POPOVER_TITLE).innerHTML = "selection is finished: "+ (this.PointList.length/2) + "points";
+        } else {
+            this.PointList.push(posX);
+            this.PointList.push(posY);
+            this.drawPolygon(null, null);
+            document.getElementById(TOOL_POPOVER_TITLE).innerHTML = "point #"+ (this.PointList.length/2) +": ("+posX+","+posY+")";
+        }
     },
 
     resetTool : function() {
         this.PointList = [];
+        this.SelectionDone = false;
+        context.clearRect(0, 0, canvas.width, canvas.height);
     },
 
     onGraphMouseMove : function(event) {
-        var posX = event.pageX - $(GRAPH_ID).offset().left,
-        posY = event.pageY - $(GRAPH_ID).offset().top;
-        this.drawPolygon(posX, posY);
+        $(GRAPH_ID).css( 'cursor', 'crosshair' );
+        if (this.SelectionDone) {
+            this.drawPolygon(this.PointList[0], this.PointList[1]);
+            document.getElementById(TOOL_POPOVER_TITLE).innerHTML = "selection is finished: "+ (this.PointList.length/2) + "points";
+        } else {
+            var posX = event.pageX - $(GRAPH_ID).offset().left,
+            posY = event.pageY - $(GRAPH_ID).offset().top;
+            this.drawPolygon(posX, posY);
+            if (this.distanceToStart(posX, posY) < this.START_RADIUS){
+                $(GRAPH_ID).css( 'cursor', 'pointer' );
+            }
+        }
     },
 
     drawPolygon : function(lastx, lasty) {
-        if (PointList.size < 4) {
+        if (this.PointList.length < 2 || ((lastx === null || lasty === null) && this.PointList.length < 4)) {
             return;
         }
 
         context.clearRect(0, 0, canvas.width, canvas.height);
         context.beginPath();
-        context.moveTo(PointList[0], PointList[1]);
-        for (var i = 2; i < PointList.size ; i+=2) {
-            context.lineTo(PointList[i], PointList[i+1]);
+        context.fillStyle = "rgba(255, 0, 0, 0.5)";
+        context.arc(this.PointList[0], this.PointList[1], this.START_RADIUS, 0, Math.PI*2);
+        context.fill();
+        context.moveTo(this.PointList[0], this.PointList[1]);
+        for (var i = 2; i < this.PointList.length ; i+=2) {
+            context.lineTo(this.PointList[i], this.PointList[i+1]);
         };
         if (lastx !== null || lasty !== null){
             context.lineTo(lastx, lasty);
         }
         context.stroke();
         context.closePath();
+    },
+    
+    distanceToStart : function(posx, posy){
+        var x, y;
+        if (this.PointList.length >= 2) {
+            x = this.PointList[0]-posx;
+            y = this.PointList[1]-posy;
+            return Math.sqrt(Math.pow(x,2)+Math.pow(y,2));
+        }
+        return Math.MAX;
     }
 }
 
@@ -138,12 +178,18 @@ ksfGraphTools.OvalGating = {
         posY = event.pageY - $(GRAPH_ID).offset().top;
         document.getElementById(TOOL_POPOVER_TITLE).innerHTML = "The oval tool remains to be implemented";
     },
+    
+    onGraphMouseMove : function(event) {
+        
+    },
 
     resetTool : function() {
         this.starty = null;
         this.startx = null;
         this.endy = null;
         this.endx = null;
+        //TODO: might be moved to a graphReset function
+        context.clearRect(0, 0, canvas.width, canvas.height);
     }
 }
 
@@ -155,6 +201,7 @@ ksfGraphTools.OvalGating = {
 ***************************************************************************/
 ksfGraphTools.addListener = function() 
 {
+    $(GRAPH_ID).css('cursor', 'crosshair');
     $(GRAPH_ID).click(function(event) {
         if (ksfTools.CurrentTool && ksfTools.CurrentTool.onGraphClick) {
             if (canvas.width===0 || canvas.height===0){
@@ -183,8 +230,9 @@ ksfGraphTools.addListener = function()
     if (canvas !== null){
         canvas.width = 0;
         canvas.height = 0;
+        context = canvas.getContext('2d');
     }
-    context = canvas.getContext('2d');
+    
 }
 
 ksfGraphTools.fixCanvasSize = function() {
