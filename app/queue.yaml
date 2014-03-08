@@ -1,0 +1,6 @@
+queue:
+- name: jobs
+  mode: pull
+  acl:
+  - user_email: roganmurley@gmail.com
+  - writer_email: roganmurley@gmail.com
