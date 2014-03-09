@@ -17,3 +17,25 @@ Doxygen/
 app/Analysis/ComputeEngine/Assets/oauth2.dat
 ehthumbs.db
 Thumbs.db
+
+# AppBuild tracked dependencies #
+#################################
+AppBuild.py
+app/apiclient/
+app/autoload/
+app/cloudstorage/
+app/dbindexer/
+app/djangoappengine/
+app/djangotoolbox/
+app/google-api-python-client-gae-1.2.zip
+app/googleAPI/
+app/httplib2/
+app/oauth2client/
+app/static/css/bootstrap.css
+app/static/js/bootstrap.js
+app/static/js/jquery-2.1.0.js
+app/uritemplate/
+tmp-packages/
+app/static/fonts/
+app/static/js/jquery.js
+app/Analysis/ComputeEngine/Assets/private_key.pem
