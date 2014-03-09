@@ -10,8 +10,14 @@
 
 from google.appengine.api import taskqueue
 
-def add_task( task ):
-    q = taskqueue.Queue('jobs')
+###########################################################################
+## \brief Adds a task to the Google Task Queue.
+## \param queue - name of a Google Task pull queue to add task to
+## \param task - task payload string
+## \author rmurley@keesaco.com of Keesaco
+###########################################################################
+def add_task(	queue, task ):
+    q = taskqueue.Queue(queue)
     tasks = []
     tasks.append(taskqueue.Task(payload = task, method = 'PULL'))
     q.add(tasks)

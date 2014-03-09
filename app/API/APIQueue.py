@@ -17,11 +17,12 @@ import API.PALQueue as queue
 ## \author rmurley@keesaco.com of Keesaco
 ###########################################################################
 def visualise(	filename ):
-	queue.add_task('vis;' + filename)
+	queue.add_task('jobs', 'vis;' + filename)
 
 ###########################################################################
 ## \brief Adds a task to kill a virtual machine instance.
 ## \author rmurley@keesaco.com of Keesaco
 ###########################################################################
 def kill():
-    queue.add_task('kill;' + filename)
+    queue.add_task('jobs', 'kill;' + filename)
+   
