@@ -176,19 +176,15 @@ ksfGraphTools.OvalGating = {
         var posX = event.pageX - $(GRAPH_ID).offset().left,
         posY = event.pageY - $(GRAPH_ID).offset().top;
 
-        ksfCanvas.clear();
+        
 
-        if (this.centerx === null || this.centery === null) {
-            // moving red dot ?
-        } else if (this.r1 === null) {
-            var r = Math.sqrt(Math.pow(this.centerx-posX,2)+Math.pow(this.centery-posY,2));
-            ksfCanvas.drawOval(this.centerx, this.centery, r, null, null);
-        } else if (this.pointx === null || this.pointy === null) {
-            ksfCanvas.drawOval(this.centerx, this.centery, this.r1, posX, posY);
-            ksfCanvas.toolText("oval corectly selected");
-        } else {
-            this.resetTool();
-            ksfCanvas.toolText("select oval\'s center");
+        if (this.centerx !== null || this.centery !== null) {
+            if (this.r1 === null) {
+                var r = Math.sqrt(Math.pow(this.centerx-posX,2)+Math.pow(this.centery-posY,2));
+                ksfCanvas.drawOval(this.centerx, this.centery, r, null, null);
+            } else if (this.pointx === null || this.pointy === null) {
+                ksfCanvas.drawOval(this.centerx, this.centery, this.r1, posX, posY);
+            } 
         }
     },
 

@@ -11,9 +11,9 @@ var tool_popover;
 
 // Print the selection box on the screen
 ksfCanvas.drawBox = function(ax, ay, bx, by, alpha) {
-    this.clear();
+	this.clear();
     context.save();
-    context.fillStyle = "rgba(255, 0, 0, "+alpha+")";
+    context.fillStyle = "rgba(255, 0, 0, "+alpha/2+")";
     context.beginPath();
     context.arc(ax, ay, 5, 0, Math.PI*2);
     context.arc(ax+bx, ay+by, 5, 0, Math.PI*2);
@@ -27,15 +27,19 @@ ksfCanvas.drawBox = function(ax, ay, bx, by, alpha) {
 
 //print the polygon on the canvas
 ksfCanvas.drawPolygon = function(pointList, lastx, lasty, startRadius) {
+	this.clear();
+	
     if (pointList.length < 2 || ((lastx === null || lasty === null) && pointList.length < 4)) {
         return;
     }
 
-    this.clear();
-    context.beginPath();
+	context.beginPath();
     context.fillStyle = "rgba(255, 0, 0, 0.5)";
     context.arc(pointList[0], pointList[1], startRadius, 0, Math.PI*2);
     context.fill();
+	context.closePath();
+	
+	context.beginPath();
     context.moveTo(pointList[0], pointList[1]);
     for (var i = 2; i < pointList.length ; i+=2) {
        context.lineTo(pointList[i], pointList[i+1]);
@@ -48,7 +52,51 @@ ksfCanvas.drawPolygon = function(pointList, lastx, lasty, startRadius) {
 }
 
 ksfCanvas.drawOval = function(cx, cy, r1, p2x, p2y) {
-    
+	this.clear();
+	
+    var r2, angle, tx, ty;
+	var alpha = 1;
+	if (p2x !== null && p2y !== null) {
+		tx = cx-p2x;
+		ty = cy-p2y;
+    	r2 = Math.sqrt(Math.pow(cx-p2x,2)+Math.pow(cy-p2y,2));
+		if (tx === 0) {
+        	angle = Math.PI/2;
+		} else if (ty === 0) {
+			angle = 0;
+		} else {
+			angle = Math.atan(ty/tx);
+		}
+	} else {
+		r2 = r1;
+		angle = 0;
+	}
+	
+	context.beginPath();
+    context.fillStyle = "rgba(255, 0, 0, "+(alpha/2)+")";
+    context.arc(cx, cy, 5, 0, Math.PI*2);
+	context.closePath();
+    context.arc(p2x, p2y, 5, 0, Math.PI*2);
+	context.closePath();
+	if (p2x !== null && p2y !== null){
+		var p1x=cx+Math.cos(angle-Math.PI/2)*r1,
+		p1y=cy+Math.sin(angle-Math.PI/2)*r1;
+		context.arc(p1x, p1y, 5, 0, Math.PI*2);
+		context.closePath();
+	}
+    context.fill();
+	
+	
+    context.save();
+	
+    context.beginPath();
+	context.translate(cx,cy);
+	context.rotate(angle);
+	context.scale(r2/r1,1);
+	
+    context.arc(0, 0, r1, 0, Math.PI*2);
+    context.restore();
+    context.stroke();
 }
 
 ksfCanvas.toolText = function(msg) {
