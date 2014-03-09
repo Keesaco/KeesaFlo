@@ -16,14 +16,6 @@
 function ksfGraphTools() {
 }
 
-// Allows one to fetch the graph element of the page
-GRAPH_ID = "#flow-canvas";
-GRAPH_ID_RAW = "flow-canvas";
-TOOL_POPOVER_TITLE = "tool-popover-title";
-
-var context;
-var canvas;
-
 /*
     Each of the folowing elements represent a graph related tool
     they contains - an ELEMENT_ID that allows one to access the tool's button
@@ -49,16 +41,16 @@ ksfGraphTools.RectangularGating = {
         if ((this.startx === null) || (this.starty === null)) {
             this.startx = posX;
             this.starty = posY;
-            document.getElementById(TOOL_POPOVER_TITLE).innerHTML = "You just started with the rectangle tool " + (posX) + ' , ' + (posY);
+            ksfCanvas.toolText("You just started with the rectangle tool " + (posX) + ' , ' + (posY));
         } else if ((this.endx === null) || (this.endy === null)){
             this.endx = posX;
             this.endy = posY;
-            this.drawBox(this.startx, this.starty, this.endx-this.startx, this.endy-this.starty, 1);
-            document.getElementById(TOOL_POPOVER_TITLE).innerHTML = "You just finished with the rectangle tool [" + "(" + this.startx + "," + this.starty + ")"  + ' , ' + "(" + this.endx + "," + this.endy + ")" + ']';
+            ksfCanvas.drawBox(this.startx, this.starty, this.endx-this.startx, this.endy-this.starty, 1);
+            ksfCanvas.toolText("You just finished with the rectangle tool [" + "(" + this.startx + "," + this.starty + ")"  + ' , ' + "(" + this.endx + "," + this.endy + ")" + ']');
         } else {
             this.resetTool();
-            context.clearRect(0, 0, canvas.width, canvas.height);
-            document.getElementById(TOOL_POPOVER_TITLE).innerHTML = "The rectangle has been reset.";
+            ksfCanvas.clear();
+            ksfCanvas.toolText("The rectangle has been reset.");
         }
     },
 
@@ -66,7 +58,7 @@ ksfGraphTools.RectangularGating = {
         var posX = event.pageX - $(GRAPH_ID).offset().left,
         posY = event.pageY - $(GRAPH_ID).offset().top;
         if (((this.endx === null) || (this.endy === null)) && ((this.startx !== null) || (this.starty !== null))) {
-            this.drawBox(this.startx, this.starty, posX-this.startx, posY-this.starty, 0.5);
+            ksfCanvas.drawBox(this.startx, this.starty, posX-this.startx, posY-this.starty, 0.5);
         }
     },
 
@@ -75,24 +67,8 @@ ksfGraphTools.RectangularGating = {
         this.startx = null;
         this.endy = null;
         this.endx = null;
-        context.clearRect(0, 0, canvas.width, canvas.height);
+        ksfCanvas.clear();
     },
-
-    drawBox : function(ax, ay, bx, by, alpha) {
-        context.clearRect(0, 0, canvas.width, canvas.height);
-        context.save();
-        context.fillStyle = "rgba(255, 0, 0, "+alpha+")";
-        context.beginPath();
-        context.arc(ax, ay, 5, 0, Math.PI*2);
-        context.arc(ax+bx, ay+by, 5, 0, Math.PI*2);
-        context.fill();
-        context.closePath();
-        context.restore();
-        context.strokeStyle = "rgba(0, 0, 0, "+alpha+")";
-        context.strokeRect(ax, ay, bx, by);
-        context.restore();
-    }
-
 }
 
 // This tool propose to draw a polygon, the polygon is closed whenever
@@ -116,59 +92,39 @@ ksfGraphTools.PolygonGating = {
 
         // Triggered when the path is closed
         if (this.distanceToStart(posX, posY) < this.START_RADIUS){
-            this.drawPolygon(null, null);
+            ksfCanvas.drawPolygon(this.PointList, null, null, this.START_RADIUS);
             this.SelectionDone = true;
-            document.getElementById(TOOL_POPOVER_TITLE).innerHTML = "selection is finished: "+ (this.PointList.length/2) + "points";
+            ksfCanvas.toolText("selection is finished: "+ (this.PointList.length/2) + "points");
         } else {
             this.PointList.push(posX);
             this.PointList.push(posY);
-            this.drawPolygon(null, null);
-            document.getElementById(TOOL_POPOVER_TITLE).innerHTML = "point #"+ (this.PointList.length/2) +": ("+posX+","+posY+")";
+            ksfCanvas.drawPolygon(this.PointList, null, null, this.START_RADIUS);
+            ksfCanvas.toolText("point #"+ (this.PointList.length/2) +": ("+posX+","+posY+")");
         }
     },
 
     resetTool : function() {
         this.PointList = [];
         this.SelectionDone = false;
-        context.clearRect(0, 0, canvas.width, canvas.height);
+        ksfCanvas.clear();
     },
 
     onGraphMouseMove : function(event) {
-        $(GRAPH_ID).css( 'cursor', 'crosshair' );
+        ksfCanvas.setCursor('crosshair');
         if (this.SelectionDone) {
-            this.drawPolygon(this.PointList[0], this.PointList[1]);
-            document.getElementById(TOOL_POPOVER_TITLE).innerHTML = "selection is finished: "+ (this.PointList.length/2) + "points";
+            ksfCanvas.drawPolygon(this.PointList, this.PointList[0], this.PointList[1], this.START_RADIUS);
+            ksfCanvas.toolText("selection is finished: "+ (this.PointList.length/2) + "points");
         } else {
             var posX = event.pageX - $(GRAPH_ID).offset().left,
             posY = event.pageY - $(GRAPH_ID).offset().top;
-            this.drawPolygon(posX, posY);
+            ksfCanvas.drawPolygon(this.PointList, posX, posY, this.START_RADIUS);
             if (this.distanceToStart(posX, posY) < this.START_RADIUS){
-                $(GRAPH_ID).css( 'cursor', 'pointer' );
+                ksfCanvas.setCursor('pointer');
             }
         }
     },
 
-    drawPolygon : function(lastx, lasty) {
-        if (this.PointList.length < 2 || ((lastx === null || lasty === null) && this.PointList.length < 4)) {
-            return;
-        }
-
-        context.clearRect(0, 0, canvas.width, canvas.height);
-        context.beginPath();
-        context.fillStyle = "rgba(255, 0, 0, 0.5)";
-        context.arc(this.PointList[0], this.PointList[1], this.START_RADIUS, 0, Math.PI*2);
-        context.fill();
-        context.moveTo(this.PointList[0], this.PointList[1]);
-        for (var i = 2; i < this.PointList.length ; i+=2) {
-            context.lineTo(this.PointList[i], this.PointList[i+1]);
-        };
-        if (lastx !== null || lasty !== null){
-            context.lineTo(lastx, lasty);
-        }
-        context.stroke();
-        context.closePath();
-    },
-    
+    //return the distance to the starting point
     distanceToStart : function(posx, posy){
         var x, y;
         if (this.PointList.length >= 2) {
@@ -184,61 +140,64 @@ ksfGraphTools.PolygonGating = {
 //It's behaviour remains to be specified
 ksfGraphTools.OvalGating = {
     params : null,
+    
+    centerx : null, 
+    centery : null, 
+    r1 : null, 
+    pointx : null, 
+    pointy : null, 
 
     ELEMENT_ID : "#tool_oval_gating",
 
     onGraphClick : function(event) {
         var posX = event.pageX - $(GRAPH_ID).offset().left,
         posY = event.pageY - $(GRAPH_ID).offset().top;
-        document.getElementById(TOOL_POPOVER_TITLE).innerHTML = "The oval tool remains to be implemented";
+        
+        if (this.centerx === null || this.centery === null) {
+            this.centerx = posX;
+            this.centery = posY;
+            ksfCanvas.toolText("select the smaller radius");
+        } else if (this.r1 === null) {
+            this.r1 = Math.sqrt(Math.pow(this.centerx-posX,2)+Math.pow(this.centery-posY,2));
+            ksfCanvas.toolText("select the oval\'s last point")
+        } else if (this.pointx === null || this.pointy === null) {
+            this.pointx = posX;
+            this.pointy = posY;
+            ksfCanvas.drawOval(this.centerx, this.centery, this.r1, this.pointx, this.pointy);
+            ksfCanvas.toolText("oval corectly selected");
+        } else {
+            this.resetTool();
+            ksfCanvas.toolText("select oval\'s center");
+        }
+        
     },
     
     onGraphMouseMove : function(event) {
-        
+        var posX = event.pageX - $(GRAPH_ID).offset().left,
+        posY = event.pageY - $(GRAPH_ID).offset().top;
+
+        ksfCanvas.clear();
+
+        if (this.centerx === null || this.centery === null) {
+            // moving red dot ?
+        } else if (this.r1 === null) {
+            var r = Math.sqrt(Math.pow(this.centerx-posX,2)+Math.pow(this.centery-posY,2));
+            ksfCanvas.drawOval(this.centerx, this.centery, r, null, null);
+        } else if (this.pointx === null || this.pointy === null) {
+            ksfCanvas.drawOval(this.centerx, this.centery, this.r1, posX, posY);
+            ksfCanvas.toolText("oval corectly selected");
+        } else {
+            this.resetTool();
+            ksfCanvas.toolText("select oval\'s center");
+        }
     },
 
     resetTool : function() {
-        this.starty = null;
-        this.startx = null;
-        this.endy = null;
-        this.endx = null;
-        //TODO: might be moved to a graphReset function
-        context.clearRect(0, 0, canvas.width, canvas.height);
-    }
-}
-
-/*!************************************************************************
-** \fn ksfGraphTools.addListener()
-** \brief set a click listener to the graph
-** \author mrudelle@keesaco.com of Keesaco
-** \note The listener triggers the proper tool's onGraphClick() function
-***************************************************************************/
-ksfGraphTools.addListener = function() 
-{
-    $(GRAPH_ID).css('cursor', 'crosshair');
-    $(GRAPH_ID).click(function(event) {
-        if (ksfTools.CurrentTool && ksfTools.CurrentTool.onGraphClick) {
-            ksfTools.CurrentTool.onGraphClick(event);
-        } else {
-            document.getElementById(TOOL_POPOVER_TITLE).innerHTML = "You must choose a tool.";
-        }
-    });
-    $(GRAPH_ID).mousemove(function(event) {
-        if (ksfTools.CurrentTool && ksfTools.CurrentTool.onGraphClick) {
-            ksfTools.CurrentTool.onGraphMouseMove(event);
-        }
-    });
-    var tool_popover = document.getElementById(TOOL_POPOVER_TITLE);
-    if (tool_popover !== null) {
-        tool_popover.innerHTML = "You must choose a tool.";
-    }
-     
-    canvas = document.getElementById(GRAPH_ID_RAW);
-    if (canvas !== null){
-        context = canvas.getContext('2d');
-    }
-    
-    if (ksfTools.CurrentTool !== null){
-        ksfTools.CurrentTool.resetTool();
+        this.centerx = null; 
+        this.centery = null; 
+        this.r1 = null; 
+        this.pointx = null; 
+        this.pointy = null; 
+        ksfCanvas.clear();
     }
 }
