@@ -149,7 +149,7 @@ ksfViews.showToolSelector = function(show)
 
 ksfViews.loadPreview = function(filename)
 {
-	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/main/file' + encodeURIComponent('=' + filename), CONTENT_AREA, ksfGraphTools.addListener );
+	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/main/file' + encodeURIComponent('=' + filename), CONTENT_AREA, ksfCanvas.addListener );
 	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/right/file_list/', FILE_SELECTOR, null);
 }
 
