@@ -6,12 +6,13 @@
 		<p>Size: {{ current_file.st_size|filesizeformat }} </p>
 		<p>MD5: {{ current_file.etag }} </p>
 		<p>Time: {{ current_file.st_ctime }} </p>
-		<p><i>This dataset does not contain visualisation data</i></p>
 		
-		<div id="flow-graph-container">
 			{% if file_name_without_extension %}
+				<div id="flow-graph-container">
 				<img src="{% url get_graph file_name_without_extension %}">
 			{% else %}
+				<p><i>This dataset does not contain visualisation data</i></p>
+				<div id="flow-graph-container">
 				<img src="{% static "images/temp_graph.png" %}">
 			{% endif %}
 
@@ -21,8 +22,11 @@
 			<canvas id="flow-canvas" class="over-graph" width="480px" height="480px">
 			</canvas> 
 		</div>
-
-		<p><a class="btn btn-primary btn-lg" role="button" href="{% url get_dataset current_file.filename %}">Download Dataset</a></p>
+		<div class="btn-group btn-group-lg action-btn-group">
+			<button type="button" class="btn btn-defauls"><a href="{% url get_dataset current_file.filename %}">Download Dataset</a></button>
+		  	<button type="button" class="btn btn-defauls" id="request-gating-btn" disabled>Create gating</button>
+		  	<button type="button" class="btn btn-defauls" id="reset-tool-btn" disabled>Reset Tool</button>
+		</div>
 	{% else %}
 		Select a file in the sidebar.
 	{% endif %}
