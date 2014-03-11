@@ -1,26 +1,15 @@
-/*!************************************************************************
- ** \file app/static/js/views.js
- ** \brief JavaScript library for setting up views within the app page
- ** \author jmccrea@keesaco.com of Keesaco
- ***************************************************************************
- ** \package app.static.js.views
- ** \brief Provides methods for modifying data from the data layer for use by the front-end UI
- **************************************************************************/
+/**
+ * \file app/static/js/views.js
+ * \brief JavaScript library for setting up views within the app page
+ * \author jmccrea@keesaco.com of Keesaco
+ */
 
-ksfViews.loadFromLocation = function(force)
-{
-	var urlVals = ksfData.urlValues();
-	if ( urlVals !== null )
-	{
-		ksfViews.setupView(urlVals);
-		ksfViews.loadView(urlVals);
-	}
-	else if (force)
-	{
-		ksfViews.setupView(['']);
-		ksfViews.loadView(['']);
-	}
-}
+/**
+ * \package app.static.js.views
+ * \brief Provides methods for modifying data from the data layer for use by the front-end UI
+ */
+
+
 
 $(document).ready(
 function()
@@ -35,12 +24,13 @@ window.onhashchange = function ()
 	ksfViews.loadFromLocation();
 }
 
-/*!************************************************************************
-** \fn ksfViews()
-** \brief ksfViews constructor used for namespace
-** \author jmccrea@keesaco.com of Keesaco
-** \note This constructor currently (intentionally) does not have any effect
-***************************************************************************/
+
+
+/**
+ * ksfViews constructor used for namespace
+ * \author jmccrea@keesaco.com of Keesaco
+ * \note This constructor currently (intentionally) does not have any effect
+ */
 function ksfViews()
 {
 }
@@ -51,12 +41,13 @@ TOOL_SELECTOR = '#toolselector';
 
 ksfViews.currentView = null;
 
-/*!************************************************************************
-** \fn ksfViews.loadView()
-** \brief sets up a view based on the current URL
-** \author jmccrea@keesaco.com of Keesaco
-***************************************************************************/
-ksfViews.setupView = function(urlVals)
+/**
+ * sets up a view based on the current URL
+ * \tparam String[] urlVals - values taken from the RHS of the hashbang in the URL if found
+ * \return None
+ * \author jmccrea@keesaco.com of Keesaco
+ */
+function ksfViews_setupViews(urlVals)
 {
 	switch ( urlVals[0] )
 	{
@@ -77,6 +68,23 @@ ksfViews.setupView = function(urlVals)
 				ksfViews.currentView = 'default';
 				ksfViews.setupDefault();
 			}
+	}
+}
+ksfViews.setupView = ksfViews_setupViews;
+
+
+ksfViews.loadFromLocation = function(force)
+{
+	var urlVals = ksfData.urlValues();
+	if ( urlVals !== null )
+	{
+		ksfViews.setupView(urlVals);
+		ksfViews.loadView(urlVals);
+	}
+	else if (force)
+	{
+		ksfViews.setupView(['']);
+		ksfViews.loadView(['']);
 	}
 }
 
@@ -125,7 +133,6 @@ ksfViews.showFilebar = function(show)
 	if ( show )
 	{
 		$(".togglefiles").show();
-		//$("#sidebar").show();//.css( { marginRight: '0px' } );
 	}
 	else
 	{
