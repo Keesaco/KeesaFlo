@@ -819,7 +819,25 @@ RECURSIVE              = YES
 # Note that relative paths are relative to the directory from which doxygen is
 # run.
 
-EXCLUDE                = 
+EXCLUDE                = AppBuild.py \
+                         app/apiclient/ \
+                         app/autoload/ \
+                         app/cloudstorage/ \
+                         app/dbindexer/ \
+                         app/djangoappengine/ \
+                         app/djangotoolbox/ \
+                         app/google-api-python-client-gae-1.2.zip \
+                         app/googleAPI/ \
+                         app/httplib2/ \
+                         app/oauth2client/ \
+                         app/static/css/bootstrap.css \
+                         app/static/js/bootstrap.js \
+                         app/static/js/jquery-2.1.0.js \
+                         app/uritemplate/ \
+                         tmp-packages/ \
+                         app/static/fonts/ \
+                         app/static/js/jquery.js \
+                         app/Analysis/ComputeEngine/Assets/private_key.pem
 
 # The EXCLUDE_SYMLINKS tag can be used to select whether or not files or
 # directories that are symbolic links (a Unix file system feature) are excluded
