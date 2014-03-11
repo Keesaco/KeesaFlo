@@ -1,20 +1,14 @@
-<div class="jumbotron">
-	{% load staticfiles %}
-	<h1>Hello {{ authed_user_nick }}!</h1>
-	{% if current_file %}
-		<p>You are trying to access the current_file: {{ current_file.filename }} </p>
-		<p>Size: {{ current_file.st_size|filesizeformat }} </p>
-		<p>MD5: {{ current_file.etag }} </p>
-		<p>Time: {{ current_file.st_ctime }} </p>
-		
-			{% if file_name_without_extension %}
-				<div id="flow-graph-container">
-				<img src="{% url get_graph file_name_without_extension %}">
-			{% else %}
-				<p><i>This dataset does not contain visualisation data</i></p>
-				<div id="flow-graph-container">
-				<img src="{% static "images/temp_graph.png" %}">
-			{% endif %}
+{% if current_file %}
+	<div  class="well app-well">	
+		{% if file_name_without_extension %}
+		<div id="flow-graph-container well app-well">
+			<img src="{% url get_graph file_name_without_extension %}">
+		{% else %}
+		<p><i>This dataset does not contain visualisation data</i></p>
+		<div id="flow-graph-container">
+			{% load staticfiles %}
+			<img src="{% static "images/temp_graph.png" %}">
+		{% endif %}
 
 			<div class="over-graph">
 				<p id="tool-popover-title" class="greybox">Tool</p>
@@ -22,12 +16,17 @@
 			<canvas id="flow-canvas" class="over-graph" width="480px" height="480px">
 			</canvas> 
 		</div>
-		<div class="btn-group btn-group-lg action-btn-group">
-			<button type="button" class="btn btn-defauls"><a href="{% url get_dataset current_file.filename %}">Download Dataset</a></button>
-		  	<button type="button" class="btn btn-defauls" id="request-gating-btn" disabled>Create gating</button>
-		  	<button type="button" class="btn btn-defauls" id="reset-tool-btn" disabled>Reset Tool</button>
-		</div>
-	{% else %}
-		Select a file in the sidebar.
-	{% endif %}
-</div>
+	</div>	
+	<div class="btn-group btn-group-lg action-btn-group well app-well">
+		<button type="button" class="btn btn-defauls btn-download"><a href="{% url get_dataset current_file.filename %}">Download Dataset</a></button>
+	  	<button type="button" class="btn btn-defauls" id="request-gating-btn" disabled>Create gating</button>
+	  	<button type="button" class="btn btn-defauls" id="reset-tool-btn" disabled>Reset Tool</button>
+	</div>
+	<div class="well app-well">
+		<h3>{{ current_file.filename }} <span class="label label-default">{{ current_file.st_size|filesizeformat }}</span></h3>
+		<p>MD5: {{ current_file.etag }} / Time: {{ current_file.st_ctime }} </p>
+		<p>Your are connected as {{ authed_user_nick }}</p>
+	</div>
+{% else %}
+	Select a file in the sidebar.
+{% endif %}
