@@ -1,45 +1,44 @@
-/*!************************************************************************
-** \file app/static/js/data.js
-** \brief JavaScript library for the client-side data layer.
-** \author jmccrea@keesaco.com of Keesaco
-***************************************************************************
-** \package app.static.js.data
-** \brief Provides methods for data transformation/intermediate processsing before it is passed to the processing layer
-**************************************************************************/
+/**
+ * \file app/static/js/data.js
+ * \brief JavaScript library for the client-side data layer.
+ * \author jmccrea@keesaco.com of Keesaco
+ */
+/** \package app.static.js.data
+ * \brief Provides methods for data transformation/intermediate processsing before it is passed to the processing layer
+ */
 
 
-/*!************************************************************************
-** \fn ksfData()
-** \brief ksfData constructor used for namespace
-** \author jmccrea@keesaco.com of Keesaco
-** \note This constructor currently (intentionally) does not have any effect
-***************************************************************************/
+/**
+ * ksfData constructor used for namespace
+ * \author jmccrea@keesaco.com of Keesaco
+ * \note This constructor currently (intentionally) does not have any effect
+ */
 function ksfData()
 {
 }
 
 
-/*!************************************************************************
- ** \fn ksfData.pagelet(data)
- ** \brief splits a downloaded pagelet into body and metadata
- ** \param data - downloaded pagelet to be read
- ** \author jmccrea@keesaco.com of Keesaco
- ***************************************************************************/
-ksfData.pagelet = function(data)
+/**
+ * splits a downloaded pagelet into body and metadata
+ * \tparam Pagelet data - downloaded pagelet to be read
+ * \author jmccrea@keesaco.com of Keesaco
+ */
+function ksfData_pagelet(data)
 {
 	var res = new Array();
 	res['body'] = data;
 	return res;
 }
+ksfData.pagelet = ksfData_pagelet;
 
-/*!************************************************************************
- ** \fn ksfData.copyPageletInto(URI, targetID)
- ** \brief gets a pagelet and displays its contents in the target container
- ** \param URI - [string] pagelet URI
- ** \param targetID - [string] (Should include '#' prefix) ID of the element to show the pagelet in
- ** \author jmccrea@keesaco.com of Keesaco
- ***************************************************************************/
-ksfData.copyPageletInto = function(URI, targetID)
+
+/**
+ * gets a pagelet and displays its contents in the target container
+ * \tparam String URI - pagelet URI
+ * \tparam String targetID - (Should include '#' prefix) ID of the element to show the pagelet in
+ * \author jmccrea@keesaco.com of Keesaco
+ */
+function ksfData_copyPageletInto(URI, targetID)
 {
 	ksfReq.fetch( 	URI,
 					function(response)
@@ -48,13 +47,14 @@ ksfData.copyPageletInto = function(URI, targetID)
 				 	 	$(targetID).html(pagelet.body);
 				  	} );
 }
+ksfData.copyPageletInto = ksfData_copyPageletInto;
 
-/*!************************************************************************
- ** \fn ksfData.urlValues()
- ** \brief gets location after hashbang and splits by slashes
- ** \author jmccrea@keesaco.com of Keesaco
- ***************************************************************************/
-ksfData.urlValues = function()
+
+/**
+ * gets location after hashbang and splits by slashes
+ * \author jmccrea@keesaco.com of Keesaco
+ */
+function ksfData_urlValues()
 {
 	var hash = location.hash.split('#!/');
 	if (hash.length > 1)
@@ -66,13 +66,15 @@ ksfData.urlValues = function()
 		return null;
 	}
 }
+ksfData.urlValues = ksfData_urlValues;
 
-/*!************************************************************************
-** \fn ksfData.baseUrl()
-** \brief gets the part of the URL sent to the server (app base URL)
-** \author jmccrea@keesaco.com of Keesaco
-***************************************************************************/
-ksfData.baseUrl = function()
+
+/**
+ * gets the part of the URL sent to the server (app base URL)
+ * \author jmccrea@keesaco.com of Keesaco
+ */
+function ksfData_baseUrl()
 {
 	return location.href.split("#")[0];
 }
+ksfData.baseUrl = ksfData_baseUrl;
