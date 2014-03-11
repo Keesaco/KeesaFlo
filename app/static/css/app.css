@@ -64,7 +64,7 @@
 {
     left: 20%;
 	bottom: 0;
-	padding: 20px 20px 20px 35px;
+	padding: 20px;
 	background-color: #E6E6E6;
 }
 
@@ -246,4 +246,9 @@ html, body, .row
 
 .action-btn-group {
   padding: 20px;
+}
+
+.app-well {
+  margin-bottom: 20px;
+  margin-right: 20px;
 }
