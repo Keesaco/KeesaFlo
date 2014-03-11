@@ -27,7 +27,6 @@ function ksfReq()
  * \tparam String URI - URI to request
  * \tparam Function callback - called with received data after a response is received
  * \return None
- * \param callback	- [function] called with response
  * \author jmccrea@keesaco.com of Keesaco
  */
 function ksfReq_fetch(URI, callback)
