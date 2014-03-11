@@ -24,4 +24,4 @@ def visualise(	filename ):
 ## \author rmurley@keesaco.com of Keesaco
 ###########################################################################
 def kill():
-	queue.add_task('jobs', 'kill;' + filename)
+	queue.add_task('jobs', 'kill')
