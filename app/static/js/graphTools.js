@@ -47,6 +47,7 @@ ksfGraphTools.RectangularGating = {
             this.endy = posY;
             ksfCanvas.drawBox(this.startx, this.starty, this.endx-this.startx, this.endy-this.starty, 1);
             ksfCanvas.toolText("You just finished with the rectangle tool [" + "(" + this.startx + "," + this.starty + ")"  + ' , ' + "(" + this.endx + "," + this.endy + ")" + ']');
+            ksfCanvas.enableBtn(REQUEST_GATING_BTN, true);
         } else {
             this.resetTool();
             ksfCanvas.clear();
@@ -68,7 +69,12 @@ ksfGraphTools.RectangularGating = {
         this.endy = null;
         this.endx = null;
         ksfCanvas.clear();
+        ksfCanvas.enableBtn(REQUEST_GATING_BTN, false);
     },
+    
+    requestGating : function() {
+        
+    }
 }
 
 // This tool propose to draw a polygon, the polygon is closed whenever
@@ -95,6 +101,7 @@ ksfGraphTools.PolygonGating = {
             ksfCanvas.drawPolygon(this.PointList, this.PointList[0], this.PointList[1], this.START_RADIUS);
             this.SelectionDone = true;
             ksfCanvas.toolText("selection is finished: "+ (this.PointList.length/2) + "points");
+            ksfCanvas.enableBtn(REQUEST_GATING_BTN, true);
         } else {
             this.PointList.push(posX);
             this.PointList.push(posY);
@@ -107,6 +114,7 @@ ksfGraphTools.PolygonGating = {
         this.PointList = [];
         this.SelectionDone = false;
         ksfCanvas.clear();
+        ksfCanvas.enableBtn(REQUEST_GATING_BTN, false);
     },
 
     onGraphMouseMove : function(event) {
@@ -133,6 +141,10 @@ ksfGraphTools.PolygonGating = {
             return Math.sqrt(Math.pow(x,2)+Math.pow(y,2));
         }
         return Math.MAX;
+    }
+    
+    requestGating : function() {
+        
     }
 }
 
@@ -165,6 +177,7 @@ ksfGraphTools.OvalGating = {
             this.pointy = posY;
             ksfCanvas.drawOval(this.centerx, this.centery, this.r1, this.pointx, this.pointy);
             ksfCanvas.toolText("oval corectly selected");
+            ksfCanvas.enableBtn(REQUEST_GATING_BTN, true);
         } else {
             this.resetTool();
             ksfCanvas.toolText("select oval\'s center");
@@ -195,5 +208,10 @@ ksfGraphTools.OvalGating = {
         this.pointx = null; 
         this.pointy = null; 
         ksfCanvas.clear();
+        ksfCanvas.enableBtn(REQUEST_GATING_BTN, false);
+    }
+    
+    requestGating : function() {
+        
     }
 }
