@@ -78,7 +78,7 @@ ksfGraphTools.PolygonGating = {
     PointList : [],
     SelectionDone : false,
     ELEMENT_ID : "#tool_polygon_gating",
-    START_RADIUS : 5,
+    START_RADIUS : 10,
 
     onGraphClick : function(event) {
         if (this.SelectionDone) {
@@ -92,7 +92,7 @@ ksfGraphTools.PolygonGating = {
 
         // Triggered when the path is closed
         if (this.distanceToStart(posX, posY) < this.START_RADIUS){
-            ksfCanvas.drawPolygon(this.PointList, null, null, this.START_RADIUS);
+            ksfCanvas.drawPolygon(this.PointList, this.PointList[0], this.PointList[1], this.START_RADIUS);
             this.SelectionDone = true;
             ksfCanvas.toolText("selection is finished: "+ (this.PointList.length/2) + "points");
         } else {

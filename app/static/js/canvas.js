@@ -29,15 +29,19 @@ ksfCanvas.drawBox = function(ax, ay, bx, by, alpha) {
 ksfCanvas.drawPolygon = function(pointList, lastx, lasty, startRadius) {
 	this.clear();
 	
-    if (pointList.length < 2 || ((lastx === null || lasty === null) && pointList.length < 4)) {
+    if (pointList.length < 2) {
         return;
-    }
+    };
 
-	context.beginPath();
+    context.beginPath();
     context.fillStyle = "rgba(255, 0, 0, 0.5)";
     context.arc(pointList[0], pointList[1], startRadius, 0, Math.PI*2);
     context.fill();
-	context.closePath();
+    context.closePath();
+
+    if (((lastx === null || lasty === null) && pointList.length < 4)) {
+        return;
+    }
 	
 	context.beginPath();
     context.moveTo(pointList[0], pointList[1]);
