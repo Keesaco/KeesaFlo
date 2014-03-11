@@ -159,3 +159,17 @@ def fetch_file(path, type):
 ###########################################################################
 def settings(request):
 	return render(request, 'settings.html')
+
+
+def rect_gating(request, params):
+    paramList = params.split(',')
+    if len(paramList) == 4 :
+        return HttpResponse("correct " + params, content_type="text/html")
+    else:
+        return HttpResponse("notcorrect " + params + " length:" + str(len(paramList)) + " is not equal to 4" , content_type="text/html")
+
+def poly_gating(request, params):
+    return HttpResponse("poly_gating with " + params)
+
+def oval_gating(request, params):
+    return HttpResponse("oval_gating with " + params)
