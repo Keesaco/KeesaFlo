@@ -60,7 +60,7 @@ class Permissions:
 		## full control
 		self.full_control = False
 		
-		self.setPermissions(read, write, full_control)
+		self.set_permissions(read, write, full_control)
 	
 	###########################################################################
 	## \brief sets the permissions to a given set of permissions
@@ -72,7 +72,7 @@ class Permissions:
 	## \note if full_control is True, read and write will also be forced True
 	## \author jmccrea@keesaco.com of Keesaco
 	###########################################################################
-	def setPermissions(self, read = False, write = False, full_control = False):
+	def set_permissions(self, read = False, write = False, full_control = False):
 		self.full_control = full_control
 		if full_control:
 			self.read = True
@@ -106,7 +106,7 @@ class PermissionSet:
 	## \return none
 	## \author jmccrea@keesaco.com of Keesaco
 	###########################################################################
-	def addUser(self, new_user):
+	def add_user(self, new_user):
 		self.users.append(new_user)
 	
 	###########################################################################
@@ -116,7 +116,7 @@ class PermissionSet:
 	## \return none
 	## \author jmccrea@keesaco.com of Keesaco
 	###########################################################################
-	def addGroup(self, new_group):
+	def add_group(self, new_group):
 		self.groups.append(new_group)
 
 ## \brief Contains information about a user
