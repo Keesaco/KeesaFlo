@@ -113,7 +113,7 @@ ksfCanvas.toolText = function(msg) {
 
 
 ksfCanvas.clear = function() {
-    if (context !== null) {
+    if (context !== null && canvas !== undefined) {
         context.clearRect(0, 0, canvas.width, canvas.height);
     }
 }

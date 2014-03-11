@@ -73,7 +73,7 @@ ksfGraphTools.RectangularGating = {
     },
     
     requestGating : function() {
-        
+        ksfGraphTools.sendGatingRequest('gating/rectangular/' + this.startx + "," + this.starty + "," + this.endx + "," + this.endy);
     }
 }
 
@@ -141,10 +141,11 @@ ksfGraphTools.PolygonGating = {
             return Math.sqrt(Math.pow(x,2)+Math.pow(y,2));
         }
         return Math.MAX;
-    }
+    },
     
     requestGating : function() {
-        
+        var URL = "gating/polygon/" + this.PointList.join(",");
+        ksfGraphTools.sendGatingRequest(URL);
     }
 }
 
@@ -209,9 +210,18 @@ ksfGraphTools.OvalGating = {
         this.pointy = null; 
         ksfCanvas.clear();
         ksfCanvas.enableBtn(REQUEST_GATING_BTN, false);
-    }
+    },
     
     requestGating : function() {
-        
+        ksfGraphTools.sendGatingRequest("gating/oval/" + this.centerx + "," + this.centery + "," + this.r1 + "," + this.pointx + "," + this.pointy);
     }
+}
+
+
+//Might need to be moved to ksfViews
+ksfGraphTools.sendGatingRequest = function(gatingURL){
+    ksfCanvas.toolText("loading...");
+    ksfReq.fetch(gatingURL, function(response){
+        ksfCanvas.toolText("Server answered:" + response);
+    });
 }
