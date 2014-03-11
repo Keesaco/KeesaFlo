@@ -4,6 +4,8 @@ function ksfCanvas(){
 // Allows one to fetch the elements of the page
 GRAPH_ID = "#flow-canvas";
 TOOL_POPOVER_TITLE = "#tool-popover-title";
+REQUEST_GATING_BTN = "#request-gating-btn";
+RESET_TOOL_BTN = "#reset-tool-btn";
 
 var context;
 var canvas;
@@ -42,7 +44,7 @@ ksfCanvas.drawPolygon = function(pointList, lastx, lasty, startRadius) {
     if (((lastx === null || lasty === null) && pointList.length < 4)) {
         return;
     }
-	
+
 	context.beginPath();
     context.moveTo(pointList[0], pointList[1]);
     for (var i = 2; i < pointList.length ; i+=2) {
@@ -147,4 +149,19 @@ ksfCanvas.addListener = function(argument) {
     if (canvas !== null && canvas !== undefined){
         context = canvas.getContext('2d');
     }  
+	
+	$(RESET_TOOL_BTN).click(function(){
+		ksfTools.CurrentTool.resetTool();
+	});
+	$(REQUEST_GATING_BTN).click(function(){
+		ksfTools.CurrentTool.requestGating();
+	})
+}
+
+ksfCanvas.enableBtn = function(btn, enable){
+    if (enable) {
+        $(btn).removeAttr("disabled");
+    } else {
+        $(btn).attr('disabled','disabled');
+    }
 }
