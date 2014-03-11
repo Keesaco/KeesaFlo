@@ -95,5 +95,13 @@
 				<destination>app/Analysis/ComputeEngine/Assets</destination>
 			</move>
 		</package>
+		<package name="UneedTest">
+			<uri>https://uneedtest.googlecode.com/files/UneedTest-1.0.zip</uri>
+			<unzip>1</unzip>
+			<move>
+				<innersource>UneedTest/uneedtest.py</innersource>
+				<destination>app</destination>
+			</move>
+		</package>
 	</packages>
 </dconfig>
