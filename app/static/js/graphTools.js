@@ -213,13 +213,18 @@ ksfGraphTools.OvalGating = {
     },
     
     requestGating : function() {
-        ksfGraphTools.sendGatingRequest("gating/oval/" + this.centerx + "," + this.centery + "," + this.r1 + "," + this.pointx + "," + this.pointy, "oval_gating");
+        var tx = this.centerx-this.pointx,
+            ty = this.centery-this.pointy;
+        var angle = ksfGraphTools.mesureAngle(tx, ty);
+        var p1x=this.centerx+Math.cos(angle-Math.PI/2)*this.r1,
+        p1y=this.centery+Math.sin(angle-Math.PI/2)*this.r1;
+        ksfGraphTools.sendGatingRequest("gating/oval/" + this.centerx + "," + this.centery + "," + p1x + "," + p1y + "," + this.pointx + "," + this.pointy, "oval_gating");
     }
 }
 
 
 //Might need to be moved to ksfViews
-ksfGraphTools.sendGatingRequest = function(gatingURL, suffix){
+ksfGraphTools.sendGatingRequest = function(gatingURL, suffix) {
     if (suffix === undefined) {
         suffix = "gating";
     }
@@ -234,4 +239,16 @@ ksfGraphTools.sendGatingRequest = function(gatingURL, suffix){
                             $("#graph-img").attr("src", response.imgUrl);
                             $("#filename").text(filename);
                         } );
+}
+
+ksfGraphTools.mesureAngle = function(tx, ty) {
+    var angle;
+    if (tx === 0) {
+        angle = ty > 0 ? Math.PI/2 : -Math.PI/2;
+    } else if (ty === 0) {
+        angle = tx > 0 ? 0 : Math.PI;
+    } else {
+        angle = tx > 0 ? Math.atan(ty/tx) : Math.atan(ty/tx)-Math.PI;
+    }
+    return angle
 }

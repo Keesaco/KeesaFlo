@@ -61,18 +61,13 @@ ksfCanvas.drawOval = function(cx, cy, r1, p2x, p2y) {
 	this.clear();
 	
     var r2, angle, tx, ty;
+    //TODO pass alpha as an atribute
 	var alpha = 1;
 	if (p2x !== null && p2y !== null) {
-		tx = cx-p2x;
-		ty = cy-p2y;
-    	r2 = Math.sqrt(Math.pow(cx-p2x,2)+Math.pow(cy-p2y,2));
-		if (tx === 0) {
-        	angle = Math.PI/2;
-		} else if (ty === 0) {
-			angle = 0;
-		} else {
-			angle = Math.atan(ty/tx);
-		}
+		tx=cx-p2x;
+		ty=cy-p2y;
+    	r2 = Math.sqrt(Math.pow(tx,2)+Math.pow(ty,2));
+        angle = ksfGraphTools.mesureAngle(tx, ty);
 	} else {
 		r2 = r1;
 		angle = 0;
