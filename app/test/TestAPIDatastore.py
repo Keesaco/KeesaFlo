@@ -112,7 +112,7 @@ class TestAPIDatastore(unittest.TestCase):
 	###########################################################################
 	def test_addfile_alreadyExists(self):
 		ds.add_file("/test_bucket/test_dir/test_file_2.ext");
-		self.assertFalse(ds.add_file("/test_bucket/test_dir/test_file)2.ext"))
+		self.assertFalse(ds.add_file("/test_bucket/test_dir/test_file2.ext"))
 	
 	###########################################################################
 	## \brief	Adds a file with a known string as contents then reads the file
