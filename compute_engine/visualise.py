@@ -6,49 +6,26 @@
 ## \package compute_engine.visualise
 ## \brief Visualises flow cytometry data using Google Cloud Storage and Bioconductor. Should be called by the Compute Engine startup sheel script. Depends on AnalysisAPI.
 ###########################################################################
-import sys, os
+import os
 import API.APIAnalysis as Ana
+import API.APIQueue as Queue
 
-# Task queue imports.
-from oauth2client import gce
-from apiclient.discovery import build
-import httplib2
-from base64 import b64decode
-import time
-
-# Lease a task and return payload.
-def lease_payload():
-	credentials = gce.AppAssertionCredentials('')
-	auth_http = credentials.authorize(httplib2.Http())
-	credentials.refresh(auth_http)
-	service = build('taskqueue', 'v1beta2', http = auth_http)
-	tq = service.tasks()
-	response = tq.lease(project = 's~keesaco-spe',
-		leaseSecs = 30,
-		numTasks = 1,
-		taskqueue = 'jobs'
-		).execute()
-	# Get task from response.
-	if 'items' in response:
-		task = response['items'][0]
-		# Get payload from task.
-		payload = b64decode(task['payloadBase64'])
-		print payload
-		# Get commands from payload.
-		return payload.split(';')
-	else:
-		print 'No commands.'
-		return ['']
-
-# Check task queue.
-while True:
+# Check task queue until 'kill' command is received.
+alive = True
+while alive:
 	# Lease a command.
-	commands = lease_payload()
-	# If command is to kill instance, break out of loop and exit python script.
+	task = Queue.lease('jobs', 30)
+	# If there are tasks in queue extract id and commands, else restart loop and check queue again.
+	if task is not None:
+		task_id = task[0]
+		commands = task[1]
+	else:
+		continue
+	# If command is to kill instance, stop looping and exit python script.
 	if (commands[0] == 'kill'):
-		break
+		alive = False
 	# If command is to visualise, visualise.
-	if (commands[0] == 'vis'):
+	elif (commands[0] == 'vis'):
 		# Get name.
 		name = commands[1]
 		## Load raw fcs data from cloud storage.
@@ -60,5 +37,6 @@ while True:
 		## Clean up.
 		os.remove(name)
 		os.remove(name + '.png')
-	# Wait before checking queue again.
-	time.sleep(1)
+	# Delete any processed tasks from queue.
+	if task_id is not None:
+		Queue.delete('jobs', task_id)
