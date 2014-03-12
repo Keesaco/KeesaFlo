@@ -11,16 +11,21 @@ import API.APIAnalysis as Ana
 
 ## Parse command line arguments given by Compute Engine's startup shell script.
 name = sys.argv[1]
-tlx = sys.argv[2]
-tly = sys.argv[3]
-brx = sys.argv[4]
-bry = sys.argv[5]
+gate_type = sys.argv[2]
+points = sys.argv[3]
 
 ## Load raw fcs data from cloud storage.
 Ana.load_fcs(name)
 
 ## Create visualisation of raw fcs data.
-Ana.rect_gate(name, tlx, tly, brx, bry)
+if gate_type == "R":
+	args = points.split()
+	Ana.rect_gate(name, args[0], args[1], args[2], args[3])
+elif gate_type == "O":
+	args = points.split()
+	Ana.oval_gate(name, args[0], args[1], args[2], args[3], args[4], args[5])
+else:
+	Ana.poly_gate(name, points)
 
 ## Save visualisation to cloud storage.
 Ana.save_vis(name + 'gate.png')

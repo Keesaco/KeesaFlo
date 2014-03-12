@@ -11,8 +11,8 @@ library("methods")
 args <- commandArgs(trailingOnly = TRUE)
 fcs_name <- args[1]
 gate_name <- args[2]
-mean_x <- as.integer(args[3])
-mean_y <- as.integer(args[4])
+mx <- as.integer(args[3])
+my <- as.integer(args[4])
 ax <- as.integer(args[5])
 ay <- as.integer(args[6])
 bx <- as.integer(args[7])
@@ -24,6 +24,18 @@ x <- read.FCS(fcs_name, transformation = FALSE)
 ## Finding first two observables.
 a <- colnames(x[,1])
 b <- colnames(x[,2])
+
+## Calculate graph coordinates from pixel coordinates
+r1 <- range(x[,1])
+r2 <- range(x[,2])
+
+mx <- ((mx-73)/360) * (r1[2,1]-r1[1,1])
+ax <- ((ax-73)/360) * (r1[2,1]-r1[1,1])
+bx <- ((bx-73)/360) * (r1[2,1]-r1[1,1])
+
+my <- r2[2,1] - (((my-61)/332) * (r2[2,1]-r2[1,1]))
+ay <- r2[2,1] - (((ay-61)/332) * (r2[2,1]-r2[1,1]))
+by <- r2[2,1] - (((by-61)/332) * (r2[2,1]-r2[1,1]))
 
 ## Calculate eigenvalues of covariance matrix
 
@@ -53,7 +65,7 @@ y <- Subset(x, egate)
 
 ## Plotting the gate
 png(gate_name)
-plot(y,c(a, b), xlim = u, ylim = v)
+plot(y,c(a, b))
 dev.off()
 
 
