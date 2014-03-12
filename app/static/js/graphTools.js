@@ -73,7 +73,7 @@ ksfGraphTools.RectangularGating = {
     },
     
     requestGating : function() {
-        ksfGraphTools.sendGatingRequest('gating/rectangular/' + this.startx + "," + this.starty + "," + this.endx + "," + this.endy);
+        ksfGraphTools.sendGatingRequest('gating/rectangular/' + this.startx + "," + this.starty + "," + this.endx + "," + this.endy, "rect_gating");
     }
 }
 
@@ -145,7 +145,7 @@ ksfGraphTools.PolygonGating = {
     
     requestGating : function() {
         var URL = "gating/polygon/" + this.PointList.join(",");
-        ksfGraphTools.sendGatingRequest(URL);
+        ksfGraphTools.sendGatingRequest(URL, "poly_gating");
     }
 }
 
@@ -213,15 +213,25 @@ ksfGraphTools.OvalGating = {
     },
     
     requestGating : function() {
-        ksfGraphTools.sendGatingRequest("gating/oval/" + this.centerx + "," + this.centery + "," + this.r1 + "," + this.pointx + "," + this.pointy);
+        ksfGraphTools.sendGatingRequest("gating/oval/" + this.centerx + "," + this.centery + "," + this.r1 + "," + this.pointx + "," + this.pointy, "oval_gating");
     }
 }
 
 
 //Might need to be moved to ksfViews
-ksfGraphTools.sendGatingRequest = function(gatingURL){
+ksfGraphTools.sendGatingRequest = function(gatingURL, suffix){
+    if (suffix === undefined) {
+        suffix = "gating";
+    }
+    var filename = $("#filename").text() + "-" + suffix;
     ksfCanvas.toolText("loading...");
-    ksfReq.fetch(gatingURL, function(response){
-        ksfCanvas.toolText("Server answered:" + response);
-    });
+
+    ksfReq.fetch(   gatingURL + "," + filename, 
+                    function(response)
+                        {
+                            console.log("answer get");
+                            ksfCanvas.toolText("Server answered:" + response.status + " : " + response.message);
+                            $("#graph-img").attr("src", response.imgUrl);
+                            $("#filename").text(filename);
+                        } );
 }

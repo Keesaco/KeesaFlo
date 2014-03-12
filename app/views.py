@@ -10,9 +10,11 @@ from django.http import HttpResponse
 from django.http import HttpResponseNotFound  
 from django.shortcuts import render
 from django.shortcuts import redirect
+from django.utils import simplejson
 from django import forms
 import forms
 from django.core.files.uploadhandler import FileUploadHandler
+from django.core.urlresolvers import reverse
 import upload_handling
 import API.APIDatastore as ds
 import API.PALUsers as auth
@@ -163,13 +165,67 @@ def settings(request):
 
 def rect_gating(request, params):
     paramList = params.split(',')
-    if len(paramList) == 4 :
-        return HttpResponse("correct " + params, content_type="text/html")
+
+    if len(paramList) == 5 :
+        #Reoder the point to take the topLeft and bottomRight points of the square 
+        if paramList[0] > paramList[2]:
+            tempcoor = paramList[0]
+            paramList[0] = paramList[2]
+            paramList[2] = tempcoor
+        if paramList[1] > paramList[3]:
+            tempcoor = paramList[1]
+            paramList[1] = paramList[3]
+            paramList[3] = tempcoor
+
+        gatingRequest =" ".join( paramList[0:3])        
+
+        # here send the request
+
+        status = "success"
+        message = "the gating was performed correctly"
+        url = reverse('get_graph', args=[paramList[4]])
     else:
-        return HttpResponse("notcorrect " + params + " length:" + str(len(paramList)) + " is not equal to 4" , content_type="text/html")
+        status = "fail"
+        message = "notcorrect " + params + " length:" + str(len(paramList)) + " is not equal to 4"
+        url = null
+         
+    return HttpResponse(generate_gating_answer(status, message, url), content_type="application/json")
+    
+    
 
 def poly_gating(request, params):
-    return HttpResponse("poly_gating with " + params)
+    paramList = params.split(',')
+
+    if len(paramList)%1 == 1 :
+        gatingRequest = " ".join(paramList[0:-1])        
+
+        # here send the request
+
+        status = "success"
+        message = "the gating was performed correctly"
+        url = reverse('get_graph', args=[paramList[-1]])
+    else:
+        status = "fail"
+        message = "notcorrect " + params + " #pointCoordinates:" + str(len(paramList)) + " is not pair"
+        url = null
+         
+    return HttpResponse(generate_gating_answer(status, message, url), content_type="application/json")
 
 def oval_gating(request, params):
-    return HttpResponse("oval_gating with " + params)
+    paramList = params.split(',')
+
+    if len(paramList) == 6 :
+        gatingRequest = " ".join(paramList[0:-1])        
+
+        # here send the request
+
+        status = "success"
+        message = "the gating was performed correctly"
+        url = reverse('get_graph', args=[paramList[-1]])
+    else:
+        status = "fail"
+        message = "notcorrect " + params + " #pointCoordinates:" + str(len(paramList)) + " is not pair"
+        url = null
+
+def generate_gating_answer(status, message, url):
+    return simplejson.dumps({"status" : status, "message" : message, "imgUrl" : url});

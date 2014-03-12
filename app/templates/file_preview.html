@@ -2,12 +2,12 @@
 	<div  class="well app-well">	
 		{% if file_name_without_extension %}
 		<div id="flow-graph-container well app-well">
-			<img src="{% url get_graph file_name_without_extension %}">
+			<img id="graph-img" src="{% url get_graph file_name_without_extension %}">
 		{% else %}
 		<p><i>This dataset does not contain visualisation data</i></p>
 		<div id="flow-graph-container">
 			{% load staticfiles %}
-			<img src="{% static "images/temp_graph.png" %}">
+			<img id="graph-img" src="{% static "images/temp_graph.png" %}">
 		{% endif %}
 
 			<div class="over-graph">
@@ -23,7 +23,7 @@
 	  	<button type="button" class="btn btn-defauls" id="reset-tool-btn">Reset Tool</button>
 	</div>
 	<div class="well app-well">
-		<h3>{{ current_file.filename }} <span class="label label-default">{{ current_file.st_size|filesizeformat }}</span></h3>
+		<h3 id="filename">{{ current_file.filename }} <span class="label label-default">{{ current_file.st_size|filesizeformat }}</span></h3>
 		<p>MD5: {{ current_file.etag }} / Time: {{ current_file.st_ctime }} </p>
 		<p>Your are connected as {{ authed_user_nick }}</p>
 	</div>
