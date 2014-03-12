@@ -26,6 +26,12 @@ Running ‘python AppBuild.py’ will download and unzip all dependencies into t
 
 In addition to these dependencies, the application requires [pyopenssl](https://github.com/pyca/pyopenssl) to run locally. As this is not installed into the application's files it is not downloaded by AppBuild.
 
+Running with Local Dev Server:
+------------------------------
+1. Download the [Google App Engine Python SDK](https://developers.google.com/appengine/downloads).
+2. Acquire dependencies using AppBuild as described above.
+3. Add an (existing) application to the dev_appserver using the 'app' directory as the path.
+
 
 Contact:
 --------
