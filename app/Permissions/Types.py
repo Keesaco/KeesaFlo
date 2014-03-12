@@ -72,7 +72,8 @@ class Permissions:
 	## \note if full_control is True, read and write will also be forced True
 	## \author jmccrea@keesaco.com of Keesaco
 	###########################################################################
-	def set_permissions(self, read = False, write = False, full_control = False):
+	def set_permissions(self, read = None, write = None, full_control = None):
+
 		if full_control is not None:
 			self.full_control = full_control
 		
