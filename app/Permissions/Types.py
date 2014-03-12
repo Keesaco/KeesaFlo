@@ -73,13 +73,17 @@ class Permissions:
 	## \author jmccrea@keesaco.com of Keesaco
 	###########################################################################
 	def set_permissions(self, read = False, write = False, full_control = False):
-		self.full_control = full_control
-		if full_control:
+		if full_control is not None:
+			self.full_control = full_control
+		
+		if self.full_control:
 			self.read = True
 			self.write = True
 		else:
-			self.read = read
-			self.write = write
+			if read is not None:
+				self.read = read
+			if write is not None:
+				self.write = write
 
 ## \brief Defines a set of users and groups and their permissions to access a resource as well as the currently authenticated user
 class PermissionSet:
