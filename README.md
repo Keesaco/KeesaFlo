@@ -28,7 +28,7 @@ In addition to these dependencies, the application requires [pyopenssl](https://
 
 Testing:
 --------
-Automated unit testing is included in this project. Given that functionality largely relies on the Google Cloud Platform, these tests must be run using the dev_appserver. When the app is being served by the dev server, navigate to http://localhost:8080//_ah/unittest/ (changing the port if necessary).
+Automated unit testing is included in this project. Given that functionality largely relies on the Google Cloud Platform, these tests must be run using the dev_appserver. When the app is being served by the dev server, navigate to http://localhost:8080/_ah/unittest/ (changing the port if necessary).
 New tests can be added by adding additional methods to existing Python files in the app/test directory, or by adding new test files to the app/test directory and then importing them from app/test/__init__.py.
 
 Running with Local Dev Server:
