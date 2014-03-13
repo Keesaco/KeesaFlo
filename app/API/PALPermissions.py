@@ -313,7 +313,7 @@ def revoke_all_by_file_key(file_key):
 		for entry in iterator:
 			entry.key.delete()
 		return True
-	else
+	else:
 		return False
 
 ###########################################################################
@@ -331,7 +331,7 @@ def revoke_all_by_user_key(user_key):
 		for entry in iterator:
 			entry.key.delete()
 		return True
-	else
+	else:
 		return False
 
 ###########################################################################

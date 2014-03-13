@@ -8,7 +8,7 @@
 ###########################################################################
 
 import unittest
-from google.appengine.ext import testbed
+from google.appengine.ext import testbed, ndb
 
 import API.PALPermissions as ps
 
