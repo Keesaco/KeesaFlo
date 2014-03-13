@@ -1,18 +1,19 @@
-/*!************************************************************************
- ** \file app/static/js/graphTools.js
- ** \brief JavaScript library to manage graph related tools
- ** \author mrudelle@keesaco.com of Keesaco
- ***************************************************************************
- ** \package app.static.js.graphTools
- ** \brief Provides methods for triggering tool event
- **************************************************************************/
+/*
+ * \file app/static/js/graphTools.js
+ * \brief JavaScript library to manage graph related tools
+ * \author mrudelle@keesaco.com of Keesaco
+ */
 
-/*!************************************************************************
-** \fn ksfGraphTools()
-** \brief ksfTools constructor used for namespace
-** \author mrudelle@keesaco.com of Keesaco
-** \note This constructor currently (intentionally) does not have any effect
-***************************************************************************/
+ /* \package app.static.js.graphTools
+ * \brief Provides methods for triggering tool event
+ */
+
+/*
+* \fn ksfGraphTools()
+* \brief ksfTools constructor used for namespace
+* \author mrudelle@keesaco.com of Keesaco
+* \note This constructor currently (intentionally) does not have any effect
+*/
 function ksfGraphTools() {
 }
 
@@ -20,6 +21,7 @@ FEEDBACK_SUCCESS = "alert-success";
 FEEDBACK_INFO = "alert-info";
 FEEDBACK_WARING = "alert-warning";
 FEEDBACK_DANGER = "alert-danger";
+
 /*
     Each of the folowing elements represent a graph related tool
     they contains - an ELEMENT_ID that allows one to access the tool's button
@@ -226,14 +228,14 @@ ksfGraphTools.OvalGating = {
     }
 }
 
-/*!************************************************************************
-** \fn ksfGraphTools.sendGatingRequest()
-** \brief Perform a gating request and update the view correspondingly
-** \param gatingURL - [String] url of the gating command
-** \param suffix - [String] suffix to be added at the end of the new file
-** \author mrudelle@keesaco.com of Keesaco
-** \note This might be moved to views.js in the future
-***************************************************************************/
+/*
+* \fn ksfGraphTools.sendGatingRequest()
+* \brief Perform a gating request and update the view correspondingly
+* \param gatingURL - [String] url of the gating command
+* \param suffix - [String] suffix to be added at the end of the new file
+* \author mrudelle@keesaco.com of Keesaco
+* \note This might be moved to views.js in the future
+*/
 ksfGraphTools.sendGatingRequest = function(gatingURL, suffix) {
     if (suffix === undefined) {
         suffix = "gating";
@@ -261,13 +263,13 @@ ksfGraphTools.sendGatingRequest = function(gatingURL, suffix) {
                         } );
 }
 
-/*!************************************************************************
-** \fn ksfGraphTools.mesureAngle()
-** \brief Calculate the angle of a vector
-** \param tx - [int] x coordinate of the vector
-** \param ty - [int] y coordinate of the vector
-** \author mrudelle@keesaco.com of Keesaco
-***************************************************************************/
+/*
+* \fn ksfGraphTools.mesureAngle()
+* \brief Calculate the angle of a vector
+* \param tx - [int] x coordinate of the vector
+* \param ty - [int] y coordinate of the vector
+* \author mrudelle@keesaco.com of Keesaco
+*/
 ksfGraphTools.mesureAngle = function(tx, ty) {
     var angle;
     if (tx === 0) {
@@ -280,14 +282,14 @@ ksfGraphTools.mesureAngle = function(tx, ty) {
     return angle
 }
 
-/*!************************************************************************
-** \fn ksfGraphTools.showFeedback()
-** \brief Popup a feedback on the app panel
-** \param type - [String] type of the alert: FEEDBACK_[INFO|WARNING|DANGER|SUCCESS]
-** \param title - [String] title of the message
-** \param message - [String] message of the alert
-** \author mrudelle@keesaco.com of Keesaco
-***************************************************************************/
+/*
+* \fn ksfGraphTools.showFeedback()
+* \brief Popup a feedback on the app panel
+* \param type - [String] type of the alert: FEEDBACK_[INFO|WARNING|DANGER|SUCCESS]
+* \param title - [String] title of the message
+* \param message - [String] message of the alert
+* \author mrudelle@keesaco.com of Keesaco
+*/
 ksfGraphTools.showFeedback = function(type, title, message) {
     $(".alert").remove();
     var alert = "<div class=\"alert "+type+" alert-dismissable\"> " +
