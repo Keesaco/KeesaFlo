@@ -350,9 +350,10 @@ def revoke_permissions_by_key(permissions_key):
 		return False
 
 ###########################################################################
-## \brief
-## \param
-## \return
+## \brief removes a file permissions
+## \param file_key - [Key] key of file entry pertains to
+## \param user_key - [Key] key of user entry pertains to
+## \return True on success, False otherwise
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
 ## \todo Stub - needs testing
@@ -367,9 +368,10 @@ def revoke_user_file_permissions(file_key, user_key):
 		return False
 
 ###########################################################################
-## \brief
-## \param
-## \return
+## \brief retrieves a entry from the permissions table
+## \param file_key - [Key] key of file entry pertains to
+## \param user_key - [Key] key of user entry pertains to
+## \return FilePermissions object on sucess, False otherwise
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
 ## \todo Stub - needs testing
@@ -384,9 +386,9 @@ def get_user_file_permissions(file_key, user_key):
 
 
 ###########################################################################
-## \brief
-## \param
-## \return
+## \brief gets a list of permissions pertaining to a file
+## \param file_key - [Key] key of file entries pertain to
+## \return iterator object over FilePermissions object on sucess, or False otherwise
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
 ## \todo Stub - needs testing
@@ -399,9 +401,9 @@ def get_file_permissions_list(file_key):
 		return False
 
 ###########################################################################
-## \brief
-## \param
-## \return
+## \brief gets a list of permissions pertaining to a user
+## \param user_key - [Key] key of user entries pertain to
+## \return iterator object over FilePermissions object on sucess, or False otherwise
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
 ## \todo Stub - needs testing
