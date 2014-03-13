@@ -81,7 +81,7 @@ ksfGraphTools.RectangularGating = {
     },
     
     requestGating : function() {
-        ksfGraphTools.sendGatingRequest('gating/rectangular/' + this.startx + "," + this.starty + "," + this.endx + "," + this.endy, "rect_gating");
+        ksfGraphTools.sendGatingRequest('gating/rectangular/' + this.startx + "," + this.starty + "," + this.endx + "," + this.endy);
     }
 }
 
@@ -153,7 +153,7 @@ ksfGraphTools.PolygonGating = {
     
     requestGating : function() {
         var URL = "gating/polygon/" + this.PointList.join(",");
-        ksfGraphTools.sendGatingRequest(URL, "poly_gating");
+        ksfGraphTools.sendGatingRequest(URL);
     }
 }
 
@@ -224,7 +224,7 @@ ksfGraphTools.OvalGating = {
         var angle = ksfGraphTools.mesureAngle(tx, ty);
         var p1x=this.centerx+Math.cos(angle-Math.PI/2)*this.r1,
         p1y=this.centery+Math.sin(angle-Math.PI/2)*this.r1;
-        ksfGraphTools.sendGatingRequest("gating/oval/" + this.centerx + "," + this.centery + "," + p1x + "," + p1y + "," + this.pointx + "," + this.pointy, "oval_gating");
+        ksfGraphTools.sendGatingRequest("gating/oval/" + this.centerx + "," + this.centery + "," + p1x + "," + p1y + "," + this.pointx + "," + this.pointy);
     }
 }
 
@@ -232,35 +232,48 @@ ksfGraphTools.OvalGating = {
 * \fn ksfGraphTools.sendGatingRequest()
 * \brief Perform a gating request and update the view correspondingly
 * \param gatingURL - [String] url of the gating command
-* \param suffix - [String] suffix to be added at the end of the new file
 * \author mrudelle@keesaco.com of Keesaco
 * \note This might be moved to views.js in the future
 */
-ksfGraphTools.sendGatingRequest = function(gatingURL, suffix) {
-    if (suffix === undefined) {
-        suffix = "gating";
-    }
+ksfGraphTools.sendGatingRequest = function(gatingURL) {
     // allows to fetch the name correctly. In the future (final release) this should be replace by a json file fetched from the server containing all the file's data
+    
     $("#filesize").remove();
-    var filename = $("#filename").text() + "-" + suffix;
-    ksfCanvas.toolText("loading...");
+    var filename = $("#filename").text();
+    
+    ksfTools.CurrentTool.resetTool();
+    ksfCanvas.toolText("loading the graph...");
 
     ksfReq.fetch(   gatingURL + "," + filename, 
                     function(response)
                         {
-                            console.log("answer get");
                             ksfGraphTools.showFeedback(
                                 response.status === "success" ? FEEDBACK_SUCCESS :
                                 response.status === "fail" ? FEEDBACK_DANGER: FEEDBACK_INFO,
                                 response.status, response.message);
                             ksfCanvas.toolText("");
-                            $("#graph-img").attr("src", response.imgUrl);
                             $("#filename").text(filename);
+                            ksfGraphTools.setGraphUrl(response.imgUrl);
                         },
                     function()
                         {
                              ksfGraphTools.showFeedback(FEEDBACK_DANGER, "fail", "the server failed to respond to the gating request");
                         } );
+}
+
+ksfGraphTools.setGraphUrl = function(url) {
+    $("#graph-img").off('error');
+    $("#graph-img").on('error', function()
+        {
+            setTimeout(ksfGraphTools.reloadImage, 1000);
+        });
+    $("#graph-img").attr("src", url);
+}
+
+ksfGraphTools.reloadImage = function() {
+    ksfCanvas.toolText("Reloading Graph");
+    $("#graph-img").attr("src", $("#graph-img").attr("src"));
+    ksfCanvas.toolText("");
 }
 
 /*

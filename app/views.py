@@ -237,7 +237,7 @@ def poly_gating(request, params):
 
         status = "success"
         message = "the gating was performed correctly"
-        url = reverse('get_graph', args=[paramList[-1]])
+        url = reverse('get_graph', args=[paramList[-1]]) 
     else:
         status = "fail"
         message = "notcorrect " + params + " #pointCoordinates:" + str(len(paramList))-1 + " is not pair"
@@ -264,7 +264,7 @@ def oval_gating(request, params):
         url = reverse('get_graph', args=[paramList[-1]])
     else:
         status = "fail"
-        message = "notcorrect " + params + " #pointCoordinates:" + str(len(paramList)) + " is not pair"
+        message = "notcorrect " + params + " #pointCoordinates:" + str(len(paramList)) + " is not even"
         url = None
 
     return HttpResponse(generate_gating_answer(status, message, url), content_type="application/json")
