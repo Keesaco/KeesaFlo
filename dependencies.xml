@@ -43,11 +43,6 @@
 			<uri>https://google-api-python-client.googlecode.com/files/google-api-python-client-gae-1.2.zip</uri>
 			<unzip>1</unzip>
 			<move>
-				<mkdir>app/googleAPI</mkdir>
-				<innersource dir="1"></innersource>
-				<destination>app/googleAPI</destination>
-			</move>
-			<move>
 				<innersource dir="1"></innersource>
 				<destination>app</destination>
 			</move>
