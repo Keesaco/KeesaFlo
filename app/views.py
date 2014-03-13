@@ -213,11 +213,11 @@ def rect_gating(request, params):
 
         status = "success"
         message = "the gating was performed correctly"
-        url = reverse('get_graph', args=[paramList[4]])
+        url = reverse('get_graph', args=[paramList[-1]])
     else:
         status = "fail"
         message = "notcorrect " + params + " length:" + str(len(paramList)) + " is not equal to 4"
-        url = null
+        url = None
          
     return HttpResponse(generate_gating_answer(status, message, url), content_type="application/json")
 
@@ -230,7 +230,7 @@ def rect_gating(request, params):
 def poly_gating(request, params):
     paramList = params.split(',')
 
-    if len(paramList)%1 == 1 :
+    if len(paramList)%2 == 1 :
         gatingRequest = " ".join(paramList[0:-1])        
 
         # here send the request
@@ -240,8 +240,8 @@ def poly_gating(request, params):
         url = reverse('get_graph', args=[paramList[-1]])
     else:
         status = "fail"
-        message = "notcorrect " + params + " #pointCoordinates:" + str(len(paramList)) + " is not pair"
-        url = null
+        message = "notcorrect " + params + " #pointCoordinates:" + str(len(paramList))-1 + " is not pair"
+        url = None
          
     return HttpResponse(generate_gating_answer(status, message, url), content_type="application/json")
 
@@ -265,7 +265,9 @@ def oval_gating(request, params):
     else:
         status = "fail"
         message = "notcorrect " + params + " #pointCoordinates:" + str(len(paramList)) + " is not pair"
-        url = null
+        url = None
+
+    return HttpResponse(generate_gating_answer(status, message, url), content_type="application/json")
 
 ###########################################################################
 ## \brief create a JSON string containing the status, message and graph's url of a gating response
