@@ -117,12 +117,12 @@ ksfCanvas.setCursor = function(cursor) {
 	$(GRAPH_ID).css( 'cursor', cursor );
 }
 
-/*!************************************************************************
-** \fn ksfCanvas.addListener()
-** \brief set a click listener to the graph
-** \author mrudelle@keesaco.com of Keesaco
-** \note The listener triggers the proper tool's onGraphClick() function
-***************************************************************************/
+/*
+* \fn ksfCanvas.addListener()
+* \brief set a click listener to the graph
+* \author mrudelle@keesaco.com of Keesaco
+* \note The listener triggers the proper tool's onGraphClick() function
+*/
 ksfCanvas.addListener = function(argument) {
 	$(GRAPH_ID).css('cursor', 'crosshair');
     $(GRAPH_ID).click(function(event) {
