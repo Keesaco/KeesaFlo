@@ -5,6 +5,7 @@
 {% block cssimport %}
 {% load staticfiles %}
 <link href="{% static "css/app.css" %}" rel="stylesheet">
+<link href="{% static "css/bootstrap-tour.min.css" %}" rel="stylesheet">
 {% endblock cssimport %}
 
 {% block customstyle %}<!-- no need of a top padding here -->{% endblock customstyle %}
@@ -22,15 +23,17 @@
         <button type="button" class="toggletools navbar-toggle pull-left visible-xs" data-toggle="offcanvas">
 			<span class="glyphicon glyphicon-th-list white"></span>
 		</button>
-		<a class="navbar-brand logo" href="#!/"><img src="/static/images/logo.png">FlowCloud</a>
+		<a class="tour-step tour-step-four navbar-brand logo" href="#!/"><img src="/static/images/logo.png">FlowCloud</a>
 	</div>
 	<div class="nav-collapse navbar-collapse collapse" id="dropdownmenu">
 		<ul class="nav navbar-nav navbar-right">
-			<li><a class="togglefiles" href="#">Files</a></li>
+			<li><a class="tour-step tour-step-two togglefiles" href="#">Files</a></li>
 			<li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user bullet-glyphicon"></span>{{ authed_user_nick }}<b class="caret"></b></a>
+                <a href="#" class="tour-step tour-step-five dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user bullet-glyphicon"></span>{{ authed_user_nick }}<b class="caret"></b></a>
                 <ul class="dropdown-menu">
 					<li><a title="Settings" data-toggle="modal" data-target="#settingsModal">Settings</a></li>
+					<li class="divider"></li>
+					<li><button type = "button" onClick="force_start()">Help</li>
 					<li class="divider"></li>
 					<li><a href="{% url logout %}">Logout</a></li>
 				</ul>
@@ -46,13 +49,13 @@
 				<a class="navbar-brand" id="toolselector-header">Tools</a>
 			</div>
 		</nav>
-		<div class="navpanel" id="toolselector">
+		<div class="tour-step tour-step-six navpanel" id="toolselector">
 			<span>Loading...</span>
 		</div>
         <ul class="nav nav-pills bottom-nav">
-			<li><a href="#!/faq/" title="F.A.Q"><span class="glyphicon glyphicon-question-sign" title="Upload"></span></a></li>
+			<li class="tour-step tour-step-three"><a href="#!/faq/" title="F.A.Q"><span class="glyphicon glyphicon-question-sign" title="Upload"></span></a></li>
 			<li><a href="#!/about/" title="About"><span class="glyphicon glyphicon-info-sign"></span></a></li>
-			<li><a title="Upload"  data-toggle="modal" data-target="#uploadModal"><span class="glyphicon glyphicon-cloud-upload"></span></a></li>
+			<li class="tour-step tour-step-one"><a title="Upload"  data-toggle="modal" data-target="#uploadModal"><span class="glyphicon glyphicon-cloud-upload"></span></a></li>
 		</ul>
     </div>
 	<!-- main panel -->
@@ -141,4 +144,7 @@
 	<script src="{% static "js/data.js" %}"></script>
 	<script src="{% static "js/processing.js" %}"></script>
 	<script src="{% static "js/views.js" %}"></script>
+	
+	<script src="{% static "js/bootstrap-tour.min.js" %}"></script>
+    <script src="{% static "js/helptour.js" %}"></script>
 {% endblock javascriptimport %}
