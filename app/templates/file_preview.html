@@ -1,7 +1,7 @@
 {% if current_file %}
 	<div  class="well app-well">	
 		{% if file_name_without_extension %}
-		<div id="flow-graph-container well app-well">
+		<div id="flow-graph-container">
 			<img id="graph-img" src="{% url get_graph file_name_without_extension %}">
 		{% else %}
 		<p><i>This dataset does not contain visualisation data</i></p>
