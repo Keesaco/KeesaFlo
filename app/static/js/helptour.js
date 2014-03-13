@@ -59,7 +59,7 @@ tour.init();
 // Start the tour
 tour.start();
 
-function force_start()
+function help_force_start()
 {
 	if (tour.ended()){
 		tour.restart();
