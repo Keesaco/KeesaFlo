@@ -21,6 +21,8 @@ function ksfGraphTools() {
     they contains - an ELEMENT_ID that allows one to access the tool's button
                   - a function onGraphClick, trigered by a click on the graph when this tool is selected
                   - a function resetTool, called when the tool is unselected
+                  - a function onGraphMouseMove, called to redraw the canvas when the mouse is moving over it
+                  - a function requestGating which ask the server to perform a gating on the dataset.
                   - some personal variables related to the behaviour of the tool
                   */
 
@@ -150,7 +152,7 @@ ksfGraphTools.PolygonGating = {
 }
 
 //This tool allows one to create an oval shaped selection
-//It's behaviour remains to be specified
+//you have to select the central point, then the smaller radius and finally the orientation and the biggest radius.
 ksfGraphTools.OvalGating = {
     params : null,
     
@@ -189,9 +191,7 @@ ksfGraphTools.OvalGating = {
     onGraphMouseMove : function(event) {
         var posX = event.pageX - $(GRAPH_ID).offset().left,
         posY = event.pageY - $(GRAPH_ID).offset().top;
-
         
-
         if (this.centerx !== null || this.centery !== null) {
             if (this.r1 === null) {
                 var r = Math.sqrt(Math.pow(this.centerx-posX,2)+Math.pow(this.centery-posY,2));
@@ -222,12 +222,20 @@ ksfGraphTools.OvalGating = {
     }
 }
 
-
-//Might need to be moved to ksfViews
+/*!************************************************************************
+** \fn ksfGraphTools.sendGatingRequest()
+** \brief Perform a gating request and update the view correspondingly
+** \param gatingURL - [String] url of the gating command
+** \param suffix - [String] suffix to be added at the end of the new file
+** \author mrudelle@keesaco.com of Keesaco
+** \note This might be moved to views.js in the future
+***************************************************************************/
 ksfGraphTools.sendGatingRequest = function(gatingURL, suffix) {
     if (suffix === undefined) {
         suffix = "gating";
     }
+    // allows to fetch the name correctly. In the future (final release) this should be replace by a json file fetched from the server containing all the file's data
+    $("#filesize").remove();
     var filename = $("#filename").text() + "-" + suffix;
     ksfCanvas.toolText("loading...");
 
@@ -241,6 +249,13 @@ ksfGraphTools.sendGatingRequest = function(gatingURL, suffix) {
                         } );
 }
 
+/*!************************************************************************
+** \fn ksfGraphTools.mesureAngle()
+** \brief Calculate the angle of a vector
+** \param tx - [int] x coordinate of the vector
+** \param ty - [int] y coordinate of the vector
+** \author mrudelle@keesaco.com of Keesaco
+***************************************************************************/
 ksfGraphTools.mesureAngle = function(tx, ty) {
     var angle;
     if (tx === 0) {
