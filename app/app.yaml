@@ -63,6 +63,10 @@ handlers:
 - url: /_ah/stats/.*
   script: djangoappengine.appstats.application
 
+# Route unit test requests
+- url: /_ah/unittest/.*
+  script: uneedtest.app
+
 - url: /media/admin
   static_dir: django/contrib/admin/media
   expiration: '0'
