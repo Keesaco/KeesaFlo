@@ -16,6 +16,10 @@
 function ksfGraphTools() {
 }
 
+FEEDBACK_SUCCESS = "alert-success";
+FEEDBACK_INFO = "alert-info";
+FEEDBACK_WARING = "alert-warning";
+FEEDBACK_DANGER = "alert-danger";
 /*
     Each of the folowing elements represent a graph related tool
     they contains - an ELEMENT_ID that allows one to access the tool's button
@@ -191,7 +195,7 @@ ksfGraphTools.OvalGating = {
     onGraphMouseMove : function(event) {
         var posX = event.pageX - $(GRAPH_ID).offset().left,
         posY = event.pageY - $(GRAPH_ID).offset().top;
-        
+
         if (this.centerx !== null || this.centery !== null) {
             if (this.r1 === null) {
                 var r = Math.sqrt(Math.pow(this.centerx-posX,2)+Math.pow(this.centery-posY,2));
@@ -243,9 +247,17 @@ ksfGraphTools.sendGatingRequest = function(gatingURL, suffix) {
                     function(response)
                         {
                             console.log("answer get");
-                            ksfCanvas.toolText("Server answered:" + response.status + " : " + response.message);
+                            ksfGraphTools.showFeedback(
+                                response.status === "success" ? FEEDBACK_SUCCESS :
+                                response.status === "fail" ? FEEDBACK_DANGER: FEEDBACK_INFO,
+                                response.status, response.message);
+                            ksfCanvas.toolText("");
                             $("#graph-img").attr("src", response.imgUrl);
                             $("#filename").text(filename);
+                        },
+                    function()
+                        {
+                             ksfGraphTools.showFeedback(FEEDBACK_DANGER, "fail", "the server failed to respond to the gating request");
                         } );
 }
 
@@ -266,4 +278,21 @@ ksfGraphTools.mesureAngle = function(tx, ty) {
         angle = tx > 0 ? Math.atan(ty/tx) : Math.atan(ty/tx)-Math.PI;
     }
     return angle
+}
+
+/*!************************************************************************
+** \fn ksfGraphTools.showFeedback()
+** \brief Popup a feedback on the app panel
+** \param type - [String] type of the alert: FEEDBACK_[INFO|WARNING|DANGER|SUCCESS]
+** \param title - [String] title of the message
+** \param message - [String] message of the alert
+** \author mrudelle@keesaco.com of Keesaco
+***************************************************************************/
+ksfGraphTools.showFeedback = function(type, title, message) {
+    $(".alert").remove();
+    var alert = "<div class=\"alert "+type+" alert-dismissable\"> " +
+    "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button> "+ 
+    "<strong>"+title+"</strong> "+message+
+    "</div>";
+    $(CONTENT_AREA).prepend(alert);
 }
