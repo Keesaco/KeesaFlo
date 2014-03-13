@@ -1,30 +1,35 @@
-/*!************************************************************************
-** \file app/static/js/processing.js
-** \brief JavaScript library for the client-side processing layer
-** \author jmccrea@keesaco.com of Keesaco
-***************************************************************************
-** \package app.static.js.processing
-** \brief Provides methods for modifying data from the data layer for use by the front-end UI
-**************************************************************************/
+/**
+ * \file app/static/js/processing.js
+ * \brief JavaScript library for the client-side processing layer
+ * \author jmccrea@keesaco.com of Keesaco
+ */
 
-/*!************************************************************************
-** \fn ksfProc()
-** \brief ksfProc constructor used for namespace
-** \author jmccrea@keesaco.com of Keesaco
-** \note This constructor currently (intentionally) does not have any effect
-***************************************************************************/
+/**
+ * \package app.static.js.processing
+ * \brief Provides methods for modifying data from the data layer for use by the front-end UI
+ */
+
+
+/**
+ * ksfProc constructor used for namespace
+ * \return None
+ * \author jmccrea@keesaco.com of Keesaco
+ * \note This constructor currently (intentionally) does not have any effect
+ */
 function ksfProc()
 {
 }
 
-/*!************************************************************************
-** \fn ksfProc.loadFile(filename)
-** \brief Gets file details pagelet and loads it into the main content area
-** \param filename - [String] name of file to get details of
-** \author jmccrea@keesaco.com of Keesaco
-***************************************************************************/
-ksfProc.loadFile = function(filename)
+
+/**
+ * ksfProc.loadFile(filename)
+ * Gets file details pagelet and loads it into the main content area
+ * \tparam String filename - name of file to get details of
+ * \return None
+ * \author jmccrea@keesaco.com of Keesaco
+ */
+function ksfProc_loadFile(filename)
 {
 	ksfData.copyPageletInto(document.location.href + filename, ksfProc.CONTENT_AREA);
 }
-
+ksfProc.loadFile = ksfProc_loadFile;

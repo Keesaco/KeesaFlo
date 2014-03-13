@@ -11,9 +11,9 @@
 class Group:
 	###########################################################################
 	## \brief constructor - creates a Group instance with a given groupname
-	## \param self - instance reference
-	## \param name - (= None) [String] name of user group
-	## \return Group instance
+	## \param Group self - instance reference
+	## \param String name - (= None) name of user group
+	## \return None
 	## \author jmccrea@keesaco.com of Keesaco
 	###########################################################################
 	def __init__(self, name = None):
@@ -25,10 +25,10 @@ class GroupAccess:
 
 	###########################################################################
 	## \brief Constructs a GroupAccess instance for a given Group and Permissions instance
-	## \param self - instance reference
-	## \param group - (= None) [Group] the group the permissions belong to
-	## \param permissions - (= None) [Permissions] the permissions the group have
-	## \return GroupAccess instance for given Group and Permissions
+	## \param GroupAccess self - instance reference
+	## \param Group group - (= None) the group the permissions belong to
+	## \param Permissions permissions - (= None) the permissions the group have
+	## \return None
 	## \author jmccrea@keesaco.com of Keesaco
 	###########################################################################
 	def __init__(self, group = None, permissions = None):
@@ -42,11 +42,11 @@ class Permissions:
 
 	###########################################################################
 	## \brief Constructs a Permissions instance with given permissions
-	## \param self - intance reference
-	## \param read - (= False) [Boolean] read access
-	## \param write - (= False) [Boolean] write access
-	## \param full_control - (= False) [Boolean] full control
-	## \return A Permissions instance with the given permissions
+	## \param Permissions self - intance reference
+	## \param Boolean read - (= False) read access
+	## \param Boolean write - (= False) write access
+	## \param Boolean full_control - (= False) full control
+	## \return None
 	## \note if full_control is true, read and write will also be forced true
 	## \author jmccrea@keesaco.com of Keesaco
 	###########################################################################
@@ -60,35 +60,40 @@ class Permissions:
 		## full control
 		self.full_control = False
 		
-		self.setPermissions(read, write, full_control)
+		self.set_permissions(read, write, full_control)
 	
 	###########################################################################
 	## \brief sets the permissions to a given set of permissions
-	## \param self - intance reference
-	## \param read - (= False) [Boolean] set read access
-	## \param write - (= False) [Boolean] set write access
-	## \param full_control - (= False) [Boolean] full control
-	## \return none
+	## \param Permissions self - intance reference
+	## \param Boolean read - (= False) set read access
+	## \param Boolean write - (= False) set write access
+	## \param Boolean full_control - (= False) [Boolean] full control
+	## \return None
 	## \note if full_control is True, read and write will also be forced True
 	## \author jmccrea@keesaco.com of Keesaco
 	###########################################################################
-	def setPermissions(self, read = False, write = False, full_control = False):
-		self.full_control = full_control
-		if full_control:
+	def set_permissions(self, read = None, write = None, full_control = None):
+
+		if full_control is not None:
+			self.full_control = full_control
+		
+		if self.full_control:
 			self.read = True
 			self.write = True
 		else:
-			self.read = read
-			self.write = write
+			if read is not None:
+				self.read = read
+			if write is not None:
+				self.write = write
 
 ## \brief Defines a set of users and groups and their permissions to access a resource as well as the currently authenticated user
 class PermissionSet:
 
 	###########################################################################
 	## \brief Constructs a PermissionSet instance for a given authenticated user
-	## \param self - instance reference
-	## \param authed_user - (= None) [User] the currently authenticated user, usually this user's permissions will be checked when attempting to access resources
-	## \return PermissionSet object
+	## \param PermissionSet self - instance reference
+	## \param User authed_user - (= None) the currently authenticated user, usually this user's permissions will be checked when attempting to access resources
+	## \return None
 	## \author jmccrea@keesaco.com of Keesaco
 	###########################################################################
 	def __init__(self, authed_user = None):
@@ -101,22 +106,22 @@ class PermissionSet:
 	
 	###########################################################################
 	## \brief Adds a user/permissions pair to the list of users/permissions
-	## \param self - instance reference
-	## \param new_user - [UserAccess] UserAccess object representing the user and permissions pairing to be added to the user list
-	## \return none
+	## \param PermissionSet self - instance reference
+	## \param UserAccess new_user - UserAccess object representing the user and permissions pairing to be added to the user list
+	## \return None
 	## \author jmccrea@keesaco.com of Keesaco
 	###########################################################################
-	def addUser(self, new_user):
+	def add_user(self, new_user):
 		self.users.append(new_user)
 	
 	###########################################################################
 	## \brief Adds a group/permissions pair to the list of groups/permissions
-	## \param self - instance reference
-	## \param new_group - [GroupAccess] GroupAccess object representing the group and permissions pairing to be added to the group list
+	## \param PermissionSet self - instance reference
+	## \param GroupAccess new_group - GroupAccess object representing the group and permissions pairing to be added to the group list
 	## \return none
 	## \author jmccrea@keesaco.com of Keesaco
 	###########################################################################
-	def addGroup(self, new_group):
+	def add_group(self, new_group):
 		self.groups.append(new_group)
 
 ## \brief Contains information about a user
@@ -124,9 +129,9 @@ class User:
 
 	###########################################################################
 	## \brief Constructs a User object with a given name
-	## \param self - instance reference
-	## \param name - (= None) [String] username of created user
-	## \return User instance
+	## \param User self - instance reference
+	## \param String name - (= None) username of created user
+	## \return None
 	## \author jmccrea@keesaco.com of Keesaco
 	###########################################################################
 	def __init__(self, name = None):
@@ -139,10 +144,10 @@ class UserAccess:
 
 	###########################################################################
 	## \brief Constructs a UserAccess instance for given User and Permissions instances
-	## \param self - instance reference
-	## \param user - (= None) [User] the user which the permissions belong to
-	## \param permissions - (= None) [Permissions] permissions which the user has
-	## \return UserAccess instance for the given user and permissions
+	## \param UserAccess self - instance reference
+	## \param User user - (= None) the user which the permissions belong to
+	## \param Permissions permissions - (= None) permissions which the user has
+	## \return None
 	## \author jmccrea@keesaco.com of Keesaco
 	###########################################################################
 	def __init__(self, user = None, permissions = None):
