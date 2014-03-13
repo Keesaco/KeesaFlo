@@ -98,5 +98,17 @@
 				<destination>app</destination>
 			</move>
 		</package>
+		<package name="bootstrap-tour">
+			<uri>https://github.com/sorich87/bootstrap-tour/archive/v0.9.1.zip</uri>
+			<unzip>1</unzip>
+			<move>
+				<innersource>bootstrap-tour-0.9.1/build/css/bootstrap-tour.min.css</innersource>
+				<destination>app/static/css/bootstrap-tour.min.css</destination>
+			</move>
+			<move>
+				<innersource>bootstrap-tour-0.9.1/build/js/bootstrap-tour.min.js</innersource>
+				<destination>app/static/js/bootstrap-tour.min.js</destination>
+			</move>
+		</package>
 	</packages>
 </dconfig>
