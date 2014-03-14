@@ -41,3 +41,5 @@ app/static/js/jquery.js
 app/Analysis/ComputeEngine/Assets/private_key.pem
 js2doxy.pl
 app/uneedtest.py
+app/static/css/bootstrap-tour.min.css
+app/static/js/bootstrap-tour.min.js
