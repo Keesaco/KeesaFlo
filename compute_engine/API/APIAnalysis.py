@@ -10,6 +10,7 @@ import subprocess
 
 RAW_BUCKET = 'gs://fc-raw-data/'
 VIS_BUCKET = 'gs://fc-vis-data/'
+INFO_BUCKET = 'gs://fc-info-data/'
 
 ###########################################################################
 ## \brief Loads an fcs file from the Datastore to local disk
@@ -57,8 +58,8 @@ def visualise(	name):
 ## \note all parameters should be strings
 ## \author hdoughty@keesaco.com of Keesaco
 ###########################################################################
-def rect_gate(  name, top_left_x, top_left_y, bottom_right_x, bottom_right_y):
-	subprocess.call(["Rscript", "gate.r", name, name + 'gate.png', top_left_x, top_left_y, bottom_right_x, bottom_right_y])
+def rect_gate(  name, gate_name, top_left_x, top_left_y, bottom_right_x, bottom_right_y):
+	subprocess.call(["Rscript", "gate.r", name, gate_name, top_left_x, top_left_y, bottom_right_x, bottom_right_y])
 
 ###########################################################################
 ## \brief Saves a visualisation of a gated fcs file
@@ -73,8 +74,8 @@ def rect_gate(  name, top_left_x, top_left_y, bottom_right_x, bottom_right_y):
 ## \note all parameters should be strings
 ## \author hdoughty@keesaco.com of Keesaco
 ###########################################################################
-def oval_gate(name, mean_x, mean_y, a_x, a_y, b_x, b_y):
-	subprocess.call(["Rscript", "ovalgate.r", name, name + 'gate.png', mean_x, mean_y, a_x, a_y, b_x, b_y])
+def oval_gate(name, gate_name, mean_x, mean_y, a_x, a_y, b_x, b_y):
+	subprocess.call(["Rscript", "ovalgate.r", name, gate_name, mean_x, mean_y, a_x, a_y, b_x, b_y])
 
 ###########################################################################
 ## \brief Saves a visualisation of a gated fcs file
@@ -84,8 +85,8 @@ def oval_gate(name, mean_x, mean_y, a_x, a_y, b_x, b_y):
 ## \note all parameters should be strings
 ## \author hdoughty@keesaco.com of Keesaco
 ###########################################################################
-def poly_gate(name, points):
-	subprocess.call(["Rscript", "polygate.r", name, name + 'gate.png', points])
+def poly_gate(name, gate_name, points):
+	subprocess.call(["Rscript", "polygate.r", name, gate_name, points])
 
 ###########################################################################
 ## \brief Saves a visualisation image from local disk to Datastore
@@ -98,4 +99,9 @@ def poly_gate(name, points):
 def save_vis(	name,
 				permissions = None):
 	subprocess.call(['gsutil', 'cp', name, VIS_BUCKET])
+	return True
+
+def save_info(	name,
+				permission = None):
+	subprocess.call(['gsutil', 'cp', name, INFO_BUCKET])
 	return True

@@ -63,8 +63,19 @@ egate <- ellipsoidGate(.gate = cov, mean = mean)
 ## Creating subset of data.
 y <- Subset(x, egate)
 
+## Calculating proportion
+
+result <- filter(x, egate)
+total <- summary(result)$n
+inGate <- summary(result)$true
+proportion <- summary(result)$p
+info <- c(inGate, total, proportion)
+info_name <- paste(gate_name, ".txt", sep="")
+write(info, file = info_name)
+
 ## Plotting the gate
-png(gate_name)
+image_name <- paste(gate_name, ".png", sep="")
+png(image_name)
 plot(y,c(a, b))
 dev.off()
 

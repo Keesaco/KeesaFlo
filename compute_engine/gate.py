@@ -13,6 +13,7 @@ import API.APIAnalysis as Ana
 name = sys.argv[1]
 gate_type = sys.argv[2]
 points = sys.argv[3]
+gate_name = sys.argv[4]
 
 ## Load raw fcs data from cloud storage.
 Ana.load_fcs(name)
@@ -20,16 +21,19 @@ Ana.load_fcs(name)
 ## Create visualisation of raw fcs data.
 if gate_type == "R":
 	args = points.split()
-	Ana.rect_gate(name, args[0], args[1], args[2], args[3])
+	Ana.rect_gate(name, gate_name, args[0], args[1], args[2], args[3])
 elif gate_type == "O":
 	args = points.split()
-	Ana.oval_gate(name, args[0], args[1], args[2], args[3], args[4], args[5])
-else:
-	Ana.poly_gate(name, points)
+	Ana.oval_gate(name, gate_name, args[0], args[1], args[2], args[3], args[4], args[5])
+elif gate_type == "P":
+	Ana.poly_gate(name, gate_name, points)
 
 ## Save visualisation to cloud storage.
-Ana.save_vis(name + 'gate.png')
+Ana.save_vis(gate_name + '.png')
+
+## Saves info about gate to cloud storage
+Ana.save_info(gate_name + '.txt')
 
 ## Clean up.
 os.remove(name)
-os.remove(name + 'gate.png')
+os.remove(gate_name + '.png')
