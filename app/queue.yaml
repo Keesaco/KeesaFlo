@@ -1,7 +1,7 @@
+total_storage_limit: 120M
 queue:
 - name: jobs
   mode: pull
-  total_storage_limit: 120M
   acl:
   - user_email: roganmurley@gmail.com
   - writer_email: roganmurley@gmail.com
