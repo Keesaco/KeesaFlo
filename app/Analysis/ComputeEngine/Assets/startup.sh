@@ -13,7 +13,7 @@ INSTANCE_NAME=$(curl http://metadata/computeMetadata/v1/instance/attributes/inst
 ## Move to the analysis directory.
 cd Analysis
 ## Download analysis scripts from Google Cloud Storage.
-gsutil cp -R * gs://keesaco_gce/
+gsutil cp -R gs://keesaco_gce/* .
 ## Runs the visualisation script
 python visualise.py
 ## Shut own instance down.
