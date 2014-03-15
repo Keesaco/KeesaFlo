@@ -37,7 +37,7 @@ def gate_rectangle(	filename, coords, gatename):
 ## \brief Adds a task to perform a polyagonal gate on fcs data.
 ## \author rmurley@keesaco.com of Keesaco
 ###########################################################################
-def gate_polyagonal(	filename, coords, gatename):
+def gate_polyagon(	filename, coords, gatename):
 	queue.add_task('jobs', 'gate_poly;' + filename + ';' + coords + ';' + gatename)
 
 ###########################################################################
