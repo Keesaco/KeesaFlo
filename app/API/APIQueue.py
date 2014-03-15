@@ -46,3 +46,11 @@ def gate_polyagonal(	filename, coords, gatename):
 ###########################################################################
 def gate_circle(	filename, coords, gatename):
 	queue.add_task('jobs', 'gate_cir;' + filename + ';' + coords + ';' + gatename)
+
+###########################################################################
+## \brief Counts the number of tasks in the queue.
+## \return number of tasks in queue.
+## \author rmurley@keesaco.com of Keesaco
+###########################################################################
+def task_count():
+	queue.task_count('jobs')

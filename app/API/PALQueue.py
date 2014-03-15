@@ -21,3 +21,13 @@ def add_task(	queue, task ):
 	tasks = []
 	tasks.append(taskqueue.Task(payload = task, method = 'PULL'))
 	q.add(tasks)
+
+###########################################################################
+## \brief Counts the tasks in a Google Task Queue.
+## \param queue - name of a Google Task pull queue to count tasks in.
+## \author rmurley@keesaco.com of Keesaco
+###########################################################################
+def task_count(	queue ):
+	q = taskqueue.Queue(queue)
+	stats = q.fetch_statistics()
+	return stats.tasks
