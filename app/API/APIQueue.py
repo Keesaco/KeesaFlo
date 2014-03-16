@@ -53,4 +53,4 @@ def gate_circle(	filename, coords, gatename):
 ## \author rmurley@keesaco.com of Keesaco
 ###########################################################################
 def task_count():
-	queue.task_count('jobs')
+	return queue.task_count('jobs')
