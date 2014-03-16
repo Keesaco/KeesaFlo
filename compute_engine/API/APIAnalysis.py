@@ -10,6 +10,7 @@ import subprocess
 
 RAW_BUCKET = 'gs://fc-raw-data/'
 VIS_BUCKET = 'gs://fc-vis-data/'
+INFO_BUCKET = 'gs://fc-info-data/'
 
 ###########################################################################
 ## \brief Loads an fcs file from the Datastore to local disk
@@ -47,6 +48,47 @@ def visualise(	name):
 	subprocess.call(["Rscript", "visualise.r", name, name + '.png'])
 
 ###########################################################################
+## \brief Saves a visualisation of a gated fcs file
+## \param name - name of fcs file to gate
+## \pararm top_left_x - x coordinate of top left corner of rectangular gate
+## \pararm top_left_y - y coordinate of top left corner of rectangular gate
+## \pararm bottom_right_x - x coordinate of bottom right corner of rectangular gate
+## \pararm bottom_right_y - y coordinate of bottom right corner of rectangular gate
+## \return returns True if successful else False
+## \note all parameters should be strings
+## \author hdoughty@keesaco.com of Keesaco
+###########################################################################
+def rect_gate(  name, gate_name, top_left_x, top_left_y, bottom_right_x, bottom_right_y):
+	subprocess.call(["Rscript", "gate.r", name, gate_name, top_left_x, top_left_y, bottom_right_x, bottom_right_y])
+
+###########################################################################
+## \brief Saves a visualisation of a gated fcs file
+## \param name - name of fcs file to gate
+## \pararm mean_x - x coordinate of the mean of the gate
+## \pararm mean_y - y coordinate of the mean of the gate
+## \pararm a_x - x coordinate of the point further from the mean
+## \pararm a_y - y coordinate of the point further from the mean
+## \pararm b_x - x coordinate of the point closest to the mean
+## \pararm b_y - y coordinate of the point closest to the mean
+## \return returns True if successful else False
+## \note all parameters should be strings
+## \author hdoughty@keesaco.com of Keesaco
+###########################################################################
+def oval_gate(name, gate_name, mean_x, mean_y, a_x, a_y, b_x, b_y):
+	subprocess.call(["Rscript", "ovalgate.r", name, gate_name, mean_x, mean_y, a_x, a_y, b_x, b_y])
+
+###########################################################################
+## \brief Saves a visualisation of a gated fcs file
+## \param name - name of fcs file to gate
+## \pararm points - string of all the points which define the polygon gate
+## \return returns True if successful else False
+## \note all parameters should be strings
+## \author hdoughty@keesaco.com of Keesaco
+###########################################################################
+def poly_gate(name, gate_name, points):
+	subprocess.call(["Rscript", "polygate.r", name, gate_name, points])
+
+###########################################################################
 ## \brief Saves a visualisation image from local disk to Datastore
 ## \param name - name of image file to save
 ## \param permissions - user attempting to perform access
@@ -57,4 +99,9 @@ def visualise(	name):
 def save_vis(	name,
 				permissions = None):
 	subprocess.call(['gsutil', 'cp', name, VIS_BUCKET])
+	return True
+
+def save_info(	name,
+				permission = None):
+	subprocess.call(['gsutil', 'cp', name, INFO_BUCKET])
 	return True

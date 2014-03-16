@@ -7,14 +7,15 @@
 
 #!/bin/bash
 ## Obtains the file location from the metadata of the instance request.
-FILE_LOCATION=$(curl http://metadata/computeMetadata/v1/instance/attributes/file_location -H "X-Google-Metadata-Request: True")
+#FILE_LOCATION=$(curl http://metadata/computeMetadata/v1/instance/attributes/file_location -H "X-Google-Metadata-Request: True")
 ## Obtains the instance name from the metadata of the instance request.
 INSTANCE_NAME=$(curl http://metadata/computeMetadata/v1/instance/attributes/instance_name -H "X-Google-Metadata-Request: True")
 ## Move to the analysis directory.
 cd Analysis
 ## Download analysis scripts from Google Cloud Storage.
-gsutil cp -R gs://keesaco_compute_engine/compute_engine/* .
-## Runs the analysis on the file location.
-python visualise.py "$FILE_LOCATION"
+gsutil cp -R gs://keesaco_gce/* .
+## Runs the visualisation script
+python visualise.py
 ## Shut own instance down.
-gcutil deleteinstance "$INSTANCE_NAME" -f --nodelete_boot_pd
+#gcutil deleteinstance "$INSTANCE_NAME" -f --nodelete_boot_pd
+echo "INSTANCE SHOULD BE SHUT DOWN"
