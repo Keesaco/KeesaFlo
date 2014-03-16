@@ -249,7 +249,7 @@ html, body, .row
 }
 
 .app-well {
-  float: left;
+  display: inline-block;
   margin-bottom: 20px;
   margin-right: 20px;
 }
