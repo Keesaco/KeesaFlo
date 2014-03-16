@@ -10,6 +10,7 @@ from django.core.files.uploadhandler import FileUploadHandler
 from django.core.files.uploadedfile import UploadedFile
 import API.APIDatastore as ds
 import API.APIAnalysis as analy
+import API.APIQueue as queue
 from os.path import splitext
 
 ## default upload bucket
@@ -67,7 +68,8 @@ class fcsUploadHandler(FileUploadHandler):
         self.file_handle.close()
         self.upload.size = file_size
         ## Start analysis.
-        analy.add_analysis_task(self.name)
+        #analy.add_analysis_task(self.name)
+        queue.visualise(self.name)
         return self.upload
 
 ## Custom uploaded file class.
