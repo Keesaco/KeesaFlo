@@ -18,6 +18,7 @@ from django.core.urlresolvers import reverse
 import upload_handling
 import API.APIDatastore as ds
 import API.PALUsers as auth
+import API.APIQueue as queue
 
 DATA_BUCKET = '/fc-raw-data'
 GRAPH_BUCKET = '/fc-vis-data'
@@ -209,11 +210,12 @@ def rect_gating(request, params):
 
         gatingRequest =" ".join( paramList[0:3])        
 
-        # here send the request
+        newName = paramList[-1] + "-rectGate";
+        queue.gate_rectangle(paramList[-1], gatingRequest, newName);
 
         status = "success"
         message = "the gating was performed correctly"
-        url = reverse('get_graph', args=[paramList[-1]])
+        url = reverse('get_graph', args=[newName])
     else:
         status = "fail"
         message = "notcorrect " + params + " length:" + str(len(paramList)) + " is not equal to 4"
@@ -233,11 +235,12 @@ def poly_gating(request, params):
     if len(paramList)%2 == 1 :
         gatingRequest = " ".join(paramList[0:-1])        
 
-        # here send the request
+        newName = paramList[-1] + "-polyGate";
+        queue.gate_polygon(paramList[-1], gatingRequest, newName);
 
         status = "success"
         message = "the gating was performed correctly"
-        url = reverse('get_graph', args=[paramList[-1]]) 
+        url = reverse('get_graph', args=[newName]) 
     else:
         status = "fail"
         message = "notcorrect " + params + " #pointCoordinates:" + str(len(paramList))-1 + " is not pair"
@@ -257,11 +260,12 @@ def oval_gating(request, params):
     if len(paramList) == 7 :
         gatingRequest = " ".join(paramList[0:-1])        
 
-        # here send the request
+        newName = paramList[-1] + "-ovalGate";
+        queue.gate_circle(paramList[-1], gatingRequest, newName);
 
         status = "success"
         message = "the gating was performed correctly"
-        url = reverse('get_graph', args=[paramList[-1]])
+        url = reverse('get_graph', args=[newName])
     else:
         status = "fail"
         message = "notcorrect " + params + " #pointCoordinates:" + str(len(paramList)) + " is not even"
