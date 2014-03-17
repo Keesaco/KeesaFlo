@@ -3,9 +3,5 @@ queue:
 - name: jobs
   mode: pull
   acl:
-  - user_email: roganmurley@gmail.com
-  - writer_email: roganmurley@gmail.com
-  - user_email: 41520595559-5smi2i2nlql32u488dr0ig5epladi0hq@developer.gserviceaccount.com
-  - writer_email: 41520595559-5smi2i2nlql32u488dr0ig5epladi0hq@developer.gserviceaccount.com
   - user_email: 41520595559@developer.gserviceaccount.com
   - writer_email: 41520595559@developer.gserviceaccount.com

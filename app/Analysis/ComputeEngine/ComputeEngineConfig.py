@@ -46,7 +46,8 @@ DEFAULT_NETWORK = 'default'
 DEFAULT_SERVICE_EMAIL = 'default'
 ## Tha control scopes of instances.
 DEFAULT_SCOPES = [	'https://www.googleapis.com/auth/devstorage.full_control',
-					'https://www.googleapis.com/auth/compute'	]
+					'https://www.googleapis.com/auth/compute',
+					'https://www.googleapis.com/auth/taskqueue'	]
 
 ## The name of the startup script to run on instantiation.
 STARTUP_SCRIPT = 'startup.sh'
