@@ -101,6 +101,14 @@ def save_vis(	name,
 	subprocess.call(['gsutil', 'cp', name, VIS_BUCKET])
 	return True
 
+###########################################################################
+## \brief Saves a text file containing gating info from local disk to Datastore
+## \param name - name of text file to save
+## \param permissions - user attempting to perform access
+## \return returns True if authourised else False
+## \author hdoughty@keesaco.com of Keesaco
+###########################################################################
+
 def save_info(	name,
 				permission = None):
 	subprocess.call(['gsutil', 'cp', name, INFO_BUCKET])
