@@ -62,26 +62,26 @@ def faq(request):
 ## \return the app page skeleton
 ###########################################################################
 def app(request):
-    lst = ds.list(DATA_BUCKET)
-    file_info = None
-    authed_user = auth.get_current_user()
+	lst = ds.list(DATA_BUCKET)
+	file_info = None
+	authed_user = auth.get_current_user()
 
-    if authed_user is None:
-        return redirect('/')
-    else:
-        authed_user_nick = authed_user.nickname()
+	if authed_user is None:
+		return redirect('/')
+	else:
+		authed_user_nick = authed_user.nickname()
 
-    request.upload_handlers = [upload_handling.fcsUploadHandler()]
-    if request.method == 'POST':
-        form = forms.UploadFile(request.POST, request.FILES)
-        if form.is_valid():
-            cd = form.cleaned_data
-            return redirect('app')
-        else:
-            return render(request, 'app.html', {'form': form, 'files' : lst , 'current_file' : file_info, 'authed_user_nick' : authed_user_nick})
-    else:
-        form = forms.UploadFile()
-        return render(request, 'app.html', {'form': form, 'files' : lst , 'current_file' : file_info, 'authed_user_nick' : authed_user_nick})
+	request.upload_handlers = [upload_handling.fcsUploadHandler()]
+	if request.method == 'POST':
+		form = forms.UploadFile(request.POST, request.FILES)
+		if form.is_valid():
+			cd = form.cleaned_data
+			return redirect('app')
+		else:
+			return render(request, 'app.html', {'form': form, 'files' : lst , 'current_file' : file_info, 'authed_user_nick' : authed_user_nick})
+	else:
+		form = forms.UploadFile()
+		return render(request, 'app.html', {'form': form, 'files' : lst , 'current_file' : file_info, 'authed_user_nick' : authed_user_nick})
 
 ###########################################################################
 ## \brief Is called when the pagelet containing the file list is requested.
@@ -90,10 +90,10 @@ def app(request):
 ## \return the list of files pagelet
 ###########################################################################
 def file_list(request):
-    lst = ds.list(DATA_BUCKET)
-    for temp_file in lst: 
-        temp_file.filename = temp_file.filename.rpartition('/')[2]
-    return render(request, 'file_list.html', {'files' : lst})
+	lst = ds.list(DATA_BUCKET)
+	for temp_file in lst: 
+		temp_file.filename = temp_file.filename.rpartition('/')[2]
+	return render(request, 'file_list.html', {'files' : lst})
 
 ###########################################################################
 ## \brief Is called when the pagelet containing the main content of the page is requested.
@@ -103,25 +103,25 @@ def file_list(request):
 ## \return the app main panel
 ###########################################################################
 def file_preview(request, file = None):
-    ## Authentication.
-    authed_user = auth.get_current_user()
-    if authed_user is None:
-        authed_user_nick = 'Guest'
-    else:
-        authed_user_nick = authed_user.nickname()
-    ## Graph visualisation.
-    file_name_without_extension = file
-    if not ds.check_exists(GRAPH_BUCKET + '/' + file_name_without_extension + '.png', None):
-        file_name_without_extension = None
+	## Authentication.
+	authed_user = auth.get_current_user()
+	if authed_user is None:
+		authed_user_nick = 'Guest'
+	else:
+		authed_user_nick = authed_user.nickname()
+	## Graph visualisation.
+	file_name_without_extension = file
+	if not ds.check_exists(GRAPH_BUCKET + '/' + file_name_without_extension + '.png', None):
+		file_name_without_extension = None
 	#TODO: Might need to be simplified or moved to a function in fileinfo
-    # TODO the folowing should be replaced by a method in the APIDatastore
-    lst = ds.list(DATA_BUCKET)
-    file_info = None
-    for temp_file in lst:
-        temp_file.filename = temp_file.filename.rpartition('/')[2]
-        if temp_file.filename == file:
-            file_info = temp_file;
-    return render(request, 'file_preview.html', {'current_file' : file_info, 'authed_user_nick': authed_user_nick, 'file_name_without_extension' : file_name_without_extension})
+	# TODO the folowing should be replaced by a method in the APIDatastore
+	lst = ds.list(DATA_BUCKET)
+	file_info = None
+	for temp_file in lst:
+		temp_file.filename = temp_file.filename.rpartition('/')[2]
+		if temp_file.filename == file:
+			file_info = temp_file;
+	return render(request, 'file_preview.html', {'current_file' : file_info, 'authed_user_nick': authed_user_nick, 'file_name_without_extension' : file_name_without_extension})
 
 ###########################################################################
 ## \brief Is called when the pagelet containing the app's main panel is requested.
@@ -130,13 +130,13 @@ def file_preview(request, file = None):
 ## \return the main panel pagelet
 ###########################################################################
 def file_page(request, file=None):
-    lst = ds.list('/fc-raw-data')
-    file_info = None
-    for temp_file in lst:
-        temp_file.filename = temp_file.filename.rpartition('/')[2]
-        if temp_file.filename == file:
-            file_info = temp_file;
-    return render(request, 'file_preview.html', {'current_file' : file_info, 'authed_user_nick': authed_user_nick, 'file_name_without_extension' : file_name_without_extension})
+	lst = ds.list('/fc-raw-data')
+	file_info = None
+	for temp_file in lst:
+		temp_file.filename = temp_file.filename.rpartition('/')[2]
+		if temp_file.filename == file:
+			file_info = temp_file;
+	return render(request, 'file_preview.html', {'current_file' : file_info, 'authed_user_nick': authed_user_nick, 'file_name_without_extension' : file_name_without_extension})
 
 def pagenav(request):
 	return render(request, 'pagenav.html')
@@ -151,7 +151,7 @@ def toolselect(request):
 ## \return the graph's immage
 ###########################################################################
 def get_graph(request, graph):
-    return fetch_file(GRAPH_BUCKET + '/' + graph + ".png", 'image/png')
+	return fetch_file(GRAPH_BUCKET + '/' + graph + ".png", 'image/png')
 
 ###########################################################################
 ## \brief Is called when a file is requested.
@@ -160,7 +160,7 @@ def get_graph(request, graph):
 ## \return the file requested
 ###########################################################################
 def get_dataset(request, dataset):
-    return fetch_file(DATA_BUCKET + '/' + dataset, 'application/vnd.isac.fcs')
+	return fetch_file(DATA_BUCKET + '/' + dataset, 'application/vnd.isac.fcs')
 
 ###########################################################################
 ## \brief Return a response containing the file
@@ -169,16 +169,16 @@ def get_dataset(request, dataset):
 ## \return an HttpResponse ccontaining the file to be sent
 ###########################################################################
 def fetch_file(path, type):
-    # TODO: Need protection against hack such as ../
-    buffer = ds.open(path)
-    if buffer:
-        file = buffer.read()
-        # TODO: Maybe transform the httpresponse to streaminghttpresponse in case the graph is really large and to improve efficiency
-        response = HttpResponse(file, content_type=type)
-        response['Content-Disposition'] = 'attachment; filename="' + path + '"'
-        return response
-    else:
-        return HttpResponseNotFound('<h1>404 : ' + path + ' not found</h1>')
+	# TODO: Need protection against hack such as ../
+	buffer = ds.open(path)
+	if buffer:
+		file = buffer.read()
+		# TODO: Maybe transform the httpresponse to streaminghttpresponse in case the graph is really large and to improve efficiency
+		response = HttpResponse(file, content_type=type)
+		response['Content-Disposition'] = 'attachment; filename="' + path + '"'
+		return response
+	else:
+		return HttpResponseNotFound('<h1>404 : ' + path + ' not found</h1>')
 
 ###########################################################################
 ## \brief Is called when the settings page is requested.
@@ -195,33 +195,33 @@ def settings(request):
 ## \return a JSON object in a httpresponse, containing the status of the gating, a short message and the link to the newly created graph
 ###########################################################################
 def rect_gating(request, params):
-    paramList = params.split(',')
+	paramList = params.split(',')
 
-    if len(paramList) == 5 :
-        #Reoder the point to take the topLeft and bottomRight points of the square 
-        if paramList[0] > paramList[2]:
-            tempcoor = paramList[0]
-            paramList[0] = paramList[2]
-            paramList[2] = tempcoor
-        if paramList[1] > paramList[3]:
-            tempcoor = paramList[1]
-            paramList[1] = paramList[3]
-            paramList[3] = tempcoor
+	if len(paramList) == 5 :
+		#Reoder the point to take the topLeft and bottomRight points of the square 
+		if paramList[0] > paramList[2]:
+			tempcoor = paramList[0]
+			paramList[0] = paramList[2]
+			paramList[2] = tempcoor
+		if paramList[1] > paramList[3]:
+			tempcoor = paramList[1]
+			paramList[1] = paramList[3]
+			paramList[3] = tempcoor
 
-        gatingRequest =" ".join( paramList[0:3])        
+		gatingRequest =" ".join( paramList[0:3])
 
-        newName = paramList[-1] + "-rectGate";
-        queue.gate_rectangle(paramList[-1], gatingRequest, newName);
+		newName = paramList[-1] + "-rectGate";
+		queue.gate_rectangle(paramList[-1], gatingRequest, newName);
 
-        status = "success"
-        message = "the gating was performed correctly"
-        url = reverse('get_graph', args=[newName])
-    else:
-        status = "fail"
-        message = "notcorrect " + params + " length:" + str(len(paramList)) + " is not equal to 4"
-        url = None
-         
-    return HttpResponse(generate_gating_answer(status, message, url), content_type="application/json")
+		status = "success"
+		message = "the gating was performed correctly"
+		url = reverse('get_graph', args=[newName])
+	else:
+		status = "fail"
+		message = "notcorrect " + params + " length:" + str(len(paramList)) + " is not equal to 4"
+		url = None
+		 
+	return HttpResponse(generate_gating_answer(status, message, url), content_type="application/json")
 
 ###########################################################################
 ## \brief Is called when a polygonal gating is requested.
@@ -230,23 +230,23 @@ def rect_gating(request, params):
 ## \return a JSON object in a httpresponse, containing the status of the gating, a short message and the link to the newly created graph
 ###########################################################################
 def poly_gating(request, params):
-    paramList = params.split(',')
+	paramList = params.split(',')
 
-    if len(paramList)%2 == 1 :
-        gatingRequest = " ".join(paramList[0:-1])        
+	if len(paramList)%2 == 1 :
+		gatingRequest = " ".join(paramList[0:-1])        
 
-        newName = paramList[-1] + "-polyGate";
-        queue.gate_polygon(paramList[-1], gatingRequest, newName);
+		newName = paramList[-1] + "-polyGate";
+		queue.gate_polygon(paramList[-1], gatingRequest, newName);
 
-        status = "success"
-        message = "the gating was performed correctly"
-        url = reverse('get_graph', args=[newName]) 
-    else:
-        status = "fail"
-        message = "notcorrect " + params + " #pointCoordinates:" + str(len(paramList))-1 + " is not pair"
-        url = None
-         
-    return HttpResponse(generate_gating_answer(status, message, url), content_type="application/json")
+		status = "success"
+		message = "the gating was performed correctly"
+		url = reverse('get_graph', args=[newName]) 
+	else:
+		status = "fail"
+		message = "notcorrect " + params + " #pointCoordinates:" + str(len(paramList))-1 + " is not pair"
+		url = None
+		 
+	return HttpResponse(generate_gating_answer(status, message, url), content_type="application/json")
 
 ###########################################################################
 ## \brief Is called when an oval gating is requested.
@@ -255,23 +255,23 @@ def poly_gating(request, params):
 ## \return a JSON object in a httpresponse, containing the status of the gating, a short message and the link to the newly created graph
 ###########################################################################
 def oval_gating(request, params):
-    paramList = params.split(',')
+	paramList = params.split(',')
 
-    if len(paramList) == 7 :
-        gatingRequest = " ".join(paramList[0:-1])        
+	if len(paramList) == 7 :
+		gatingRequest = " ".join(paramList[0:-1])        
 
-        newName = paramList[-1] + "-ovalGate";
-        queue.gate_circle(paramList[-1], gatingRequest, newName);
+		newName = paramList[-1] + "-ovalGate";
+		queue.gate_circle(paramList[-1], gatingRequest, newName);
 
-        status = "success"
-        message = "the gating was performed correctly"
-        url = reverse('get_graph', args=[newName])
-    else:
-        status = "fail"
-        message = "notcorrect " + params + " #pointCoordinates:" + str(len(paramList)) + " is not even"
-        url = None
+		status = "success"
+		message = "the gating was performed correctly"
+		url = reverse('get_graph', args=[newName])
+	else:
+		status = "fail"
+		message = "notcorrect " + params + " #pointCoordinates:" + str(len(paramList)) + " is not even"
+		url = None
 
-    return HttpResponse(generate_gating_answer(status, message, url), content_type="application/json")
+	return HttpResponse(generate_gating_answer(status, message, url), content_type="application/json")
 
 ###########################################################################
 ## \brief create a JSON string containing the status, message and graph's url of a gating response
@@ -281,4 +281,4 @@ def oval_gating(request, params):
 ## \return a JSON object containing the status of the gating, a short message and the link to the newly created graph
 ###########################################################################
 def generate_gating_answer(status, message, url):
-    return simplejson.dumps({"status" : status, "message" : message, "imgUrl" : url});
+	return simplejson.dumps({"status" : status, "message" : message, "imgUrl" : url});
