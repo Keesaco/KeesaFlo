@@ -108,7 +108,7 @@ ksfGraphTools.PolygonGating = {
 		if (this.distanceToStart(posX, posY) < this.START_RADIUS){
 			ksfCanvas.drawPolygon(this.PointList, this.PointList[0], this.PointList[1], this.START_RADIUS);
 			this.SelectionDone = true;
-			ksfCanvas.toolText("Selection is finished: "+ (this.PointList.length/2) + "points");
+			ksfCanvas.toolText("Selection is finished: "+ (this.PointList.length/2) + " points");
 			ksfCanvas.enableBtn(REQUEST_GATING_BTN, true);
 		} else {
 			this.PointList.push(posX);
