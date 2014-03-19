@@ -1,19 +1,32 @@
-			<div class="jumbotron">
-				<h1>Hello {{ authed_user_nick }}!</h1>
-				{% if current_file %}
-					<p>You are trying to access the current_file: {{ current_file.filename }} </p>
-					<p>Size: {{ current_file.st_size|filesizeformat }} </p>
-					<p>MD5: {{ current_file.etag }} </p>
-					<p>Time: {{ current_file.st_ctime }} </p>
+{% if current_file %}
+	<div  class="well app-well">	
+		{% if file_name_without_extension %}
+		<div id="flow-graph-container">
+			<img id="graph-img" src="{% url get_graph file_name_without_extension %}">
+		{% else %}
+		<p><i>This dataset does not contain visualisation data</i></p>
+		<div id="flow-graph-container">
+			{% load staticfiles %}
+			<img id="graph-img" src="{% static "images/temp_graph.png" %}">
+		{% endif %}
 
-					{% if file_name_without_extension %}
-						<img src="{% url get_graph file_name_without_extension %}">
-					{% else %}
-						<i>This dataset does not contain visualisation data</i>
-					{% endif %}
-		
-					<p><a class="btn btn-primary btn-lg" role="button" href="{% url get_dataset current_file.filename %}">Download Dataset</a></p>
-				{% else %}
-					Select a file in the sidebar.
-				{% endif %}
+			<div class="over-graph">
+				<p id="tool-popover-title" class="greybox">Tool</p>
 			</div>
+			<canvas id="flow-canvas" class="over-graph" width="480px" height="480px">
+			</canvas> 
+		</div>
+	</div>	
+	<div class="well app-well">
+		<h3 id="filename">{{ current_file.filename }}<span id="filesize" class="label label-default">{{ current_file.st_size|filesizeformat }}</span></h3>
+		<p>MD5: {{ current_file.etag }} / Time: {{ current_file.st_ctime }} </p>
+		<p>Your are connected as {{ authed_user_nick }}</p>
+		<div class="btn-group btn-group-lg action-btn-group">
+		<button type="button" class="btn btn-defauls btn-download"><a href="{% url get_dataset current_file.filename %}">Download Dataset</a></button>
+	  	<button type="button" class="btn btn-defauls" id="request-gating-btn" disabled>Create gating</button>
+	  	<button type="button" class="btn btn-defauls" id="reset-tool-btn">Reset Tool</button>
+	</div>
+	</div>
+{% else %}
+	Select a file in the sidebar.
+{% endif %}
