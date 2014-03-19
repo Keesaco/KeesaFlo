@@ -1,24 +1,24 @@
 .navbar-brand img {
-    height: 30px;
-    padding-right: 12px;
+	height: 30px;
+	padding-right: 12px;
 }
 
 .navbar-inverse .navbar-brand 
 {
-    padding-top: 10px;
-    padding-bottom: 10px;
-    color: #dddddd;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	color: #dddddd;
 }
 
 body {
-    padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+	padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
 }  
-         
+		 
 .white {
-    color: #fff;
+	color: #fff;
 }
 
 .container {
-    margin-right: auto;
-    margin-left: auto;
+	margin-right: auto;
+	margin-left: auto;
 }
