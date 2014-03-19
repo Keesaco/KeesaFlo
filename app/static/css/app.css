@@ -7,23 +7,23 @@
 }
 
 .tool  a {
-    color: #AAAAAA;
-    display: block;
-    font-weight: bold;
+		color: #AAAAAA;
+		display: block;
+		font-weight: bold;
 }
 
 .tool a p {
-    padding-left: 20px;
-    font-size: 100%;
+		padding-left: 20px;
+		font-size: 100%;
 }
 
 .tool a:hover {
-    color: #E6E6E6;
-    text-decoration: none;
+		color: #E6E6E6;
+		text-decoration: none;
 }
 
 .tool a:hover img {
-    -webkit-filter: brightness(1.3);
+		-webkit-filter: brightness(1.3);
 }
 
 .navbar
@@ -42,7 +42,7 @@
 }
 
 .logo {
-    padding: 10px 15px;
+		padding: 10px 15px;
 
 }
 
@@ -62,7 +62,7 @@
 
 .apppanel
 {
-    left: 20%;
+		left: 20%;
 	bottom: 0;
 	padding: 20px;
 	background-color: #E6E6E6;
@@ -70,9 +70,9 @@
 
 .bottom-nav
 {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
+		position: absolute;
+		bottom: 0;
+		width: 100%;
 }
 
 .bottom-nav li {
@@ -143,113 +143,113 @@ html, body, .row
 
 .tool
 {
-    color: #333333;
+		color: #333333;
 }
 
 .tool img {
-    width: 50%;
-    padding: 20px;
+		width: 50%;
+		padding: 20px;
 }
-  
-  .navbar-togglel {
-  position: relative;
-  float: right;
-  padding: 9px 10px;
-  margin-top: 8px;
-  margin-right: 15px;
-  margin-bottom: 8px;
-  background-color: transparent;
-  border: 1px solid transparent;
-  border-radius: 4px;
-}
-
-  .sidebar-offcanvas {
-    margin-right: -16.7%;
-    overflow: hidden;
-    position: fixed;
-    top: 0;
-    right: 0;
-    height: 100%;
-    z-index: 2;
-  } 
-  
-  .toolbar-offcanvas{
-    position: fixed;
-    top: 0;
-    left: 0;
-    height:100%;
-    z-index: 900;
+	
+	.navbar-togglel {
+	position: relative;
+	float: right;
+	padding: 9px 10px;
+	margin-top: 8px;
+	margin-right: 15px;
+	margin-bottom: 8px;
+	background-color: transparent;
+	border: 1px solid transparent;
+	border-radius: 4px;
 }
 
-  
-  #sidebar:target {
-     width: 16.7%;
-  }
-  
+	.sidebar-offcanvas {
+		margin-right: -16.7%;
+		overflow: hidden;
+		position: fixed;
+		top: 0;
+		right: 0;
+		height: 100%;
+		z-index: 2;
+	} 
+	
+	.toolbar-offcanvas{
+		position: fixed;
+		top: 0;
+		left: 0;
+		height:100%;
+		z-index: 900;
+}
+
+	
+	#sidebar:target {
+		 width: 16.7%;
+	}
+	
 .bullet-glyphicon
 {
 	margin-right: 8px;
 }
 
 .file-preview {
-    overflow: hidden;
+		overflow: hidden;
 }
 
 .white {
-    color: #ffffff;
+		color: #ffffff;
 }
 
 @media screen and (max-width: 767px) {
-  
-  
-  .toolbar-offcanvas {
-      margin-left: -41.7%;
-      overflow: hidden;
-      position: fixed;
-      z-index: 2;
-  }
-  
-  .sidebar-offcanvas {
-      margin-right: -50%;
-  }
-  
-  .apppanel {
-      left: 0;
-  }
-  
-  .col-sm-10 {
-      overflow: hidden;
-  }   
+	
+	
+	.toolbar-offcanvas {
+			margin-left: -41.7%;
+			overflow: hidden;
+			position: fixed;
+			z-index: 2;
+	}
+	
+	.sidebar-offcanvas {
+			margin-right: -50%;
+	}
+	
+	.apppanel {
+			left: 0;
+	}
+	
+	.col-sm-10 {
+			overflow: hidden;
+	}   
 }
 
 .greybox {
-  float: left;
-  max-width: 475px;
-  text-shadow: 0 1px 1px rgba(0,0,0,0.8);
-  word-wrap: break-word;
-  padding: 8px;
+	float: left;
+	max-width: 475px;
+	text-shadow: 0 1px 1px rgba(0,0,0,0.8);
+	word-wrap: break-word;
+	padding: 8px;
 }
 
 #flow-graph-container {
-  position: relative;
-  width: 480px;
-  height: 480px;
+	position: relative;
+	width: 480px;
+	height: 480px;
 }
 
 .over-graph {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  height: 100%;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
 }
 
 .action-btn-group {
-  padding: 20px;
+	padding: 20px;
 }
 
 .app-well {
-  display: inline-block;
-  margin-bottom: 20px;
-  margin-right: 20px;
+	display: inline-block;
+	margin-bottom: 20px;
+	margin-right: 20px;
 }
