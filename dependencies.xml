@@ -43,11 +43,6 @@
 			<uri>https://google-api-python-client.googlecode.com/files/google-api-python-client-gae-1.2.zip</uri>
 			<unzip>1</unzip>
 			<move>
-				<mkdir>app/googleAPI</mkdir>
-				<innersource dir="1"></innersource>
-				<destination>app/googleAPI</destination>
-			</move>
-			<move>
 				<innersource dir="1"></innersource>
 				<destination>app</destination>
 			</move>
@@ -93,6 +88,26 @@
 			<unzip>0</unzip>
 			<move>
 				<destination>app/Analysis/ComputeEngine/Assets</destination>
+			</move>
+		</package>
+		<package name="UneedTest">
+			<uri>https://uneedtest.googlecode.com/files/UneedTest-1.0.zip</uri>
+			<unzip>1</unzip>
+			<move>
+				<innersource>UneedTest/uneedtest.py</innersource>
+				<destination>app</destination>
+			</move>
+		</package>
+		<package name="bootstrap-tour">
+			<uri>https://github.com/sorich87/bootstrap-tour/archive/v0.9.1.zip</uri>
+			<unzip>1</unzip>
+			<move>
+				<innersource>bootstrap-tour-0.9.1/build/css/bootstrap-tour.min.css</innersource>
+				<destination>app/static/css/bootstrap-tour.min.css</destination>
+			</move>
+			<move>
+				<innersource>bootstrap-tour-0.9.1/build/js/bootstrap-tour.min.js</innersource>
+				<destination>app/static/js/bootstrap-tour.min.js</destination>
 			</move>
 		</package>
 	</packages>

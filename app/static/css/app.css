@@ -64,7 +64,7 @@
 {
     left: 20%;
 	bottom: 0;
-	padding: 20px 20px 20px 35px;
+	padding: 20px;
 	background-color: #E6E6E6;
 }
 
@@ -199,25 +199,57 @@ html, body, .row
     color: #ffffff;
 }
 
-  @media screen and (max-width: 767px) {
-    
-    
-    .toolbar-offcanvas {
-        margin-left: -41.7%;
-        overflow: hidden;
-        position: fixed;
-        z-index: 2;
-    }
-    
-    .sidebar-offcanvas {
-        margin-right: -50%;
-    }
-    
-    .apppanel {
-        left: 0;
-    }
-    
-    .col-sm-10 {
-        overflow: hidden;
-    }   
+@media screen and (max-width: 767px) {
+  
+  
+  .toolbar-offcanvas {
+      margin-left: -41.7%;
+      overflow: hidden;
+      position: fixed;
+      z-index: 2;
   }
+  
+  .sidebar-offcanvas {
+      margin-right: -50%;
+  }
+  
+  .apppanel {
+      left: 0;
+  }
+  
+  .col-sm-10 {
+      overflow: hidden;
+  }   
+}
+
+.greybox {
+  float: left;
+  max-width: 475px;
+  text-shadow: 0 1px 1px rgba(0,0,0,0.8);
+  word-wrap: break-word;
+  padding: 8px;
+}
+
+#flow-graph-container {
+  position: relative;
+  width: 480px;
+  height: 480px;
+}
+
+.over-graph {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+}
+
+.action-btn-group {
+  padding: 20px;
+}
+
+.app-well {
+  display: inline-block;
+  margin-bottom: 20px;
+  margin-right: 20px;
+}

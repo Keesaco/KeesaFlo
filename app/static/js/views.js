@@ -1,26 +1,15 @@
-/*!************************************************************************
- ** \file app/static/js/views.js
- ** \brief JavaScript library for setting up views within the app page
- ** \author jmccrea@keesaco.com of Keesaco
- ***************************************************************************
- ** \package app.static.js.views
- ** \brief Provides methods for modifying data from the data layer for use by the front-end UI
- **************************************************************************/
+/**
+ * \file app/static/js/views.js
+ * \brief JavaScript library for setting up views within the app page
+ * \author jmccrea@keesaco.com of Keesaco
+ */
 
-ksfViews.loadFromLocation = function(force)
-{
-	var urlVals = ksfData.urlValues();
-	if ( urlVals !== null )
-	{
-		ksfViews.setupView(urlVals);
-		ksfViews.loadView(urlVals);
-	}
-	else if (force)
-	{
-		ksfViews.setupView(['']);
-		ksfViews.loadView(['']);
-	}
-}
+/**
+ * \package app.static.js.views
+ * \brief Provides methods for modifying data from the data layer for use by the front-end UI
+ */
+
+
 
 $(document).ready(
 function()
@@ -29,18 +18,22 @@ function()
 });
 
 
-/// \todo This has limited browser compatibility, if this is an issue support for onhashchange could be checked and an alternative timer arrangement provided for older browsers.
+/**
+ *\fn anonymous_window_onhashchange_views
+ *\todo This has limited browser compatibility, if this is an issue support for onhashchange could be checked and an alternative timer arrangement provided for older browsers.
+ */
 window.onhashchange = function ()
 {
 	ksfViews.loadFromLocation();
 }
 
-/*!************************************************************************
-** \fn ksfViews()
-** \brief ksfViews constructor used for namespace
-** \author jmccrea@keesaco.com of Keesaco
-** \note This constructor currently (intentionally) does not have any effect
-***************************************************************************/
+
+
+/**
+ * ksfViews constructor used for namespace
+ * \author jmccrea@keesaco.com of Keesaco
+ * \note This constructor currently (intentionally) does not have any effect
+ */
 function ksfViews()
 {
 }
@@ -51,12 +44,13 @@ TOOL_SELECTOR = '#toolselector';
 
 ksfViews.currentView = null;
 
-/*!************************************************************************
-** \fn ksfViews.loadView()
-** \brief sets up a view based on the current URL
-** \author jmccrea@keesaco.com of Keesaco
-***************************************************************************/
-ksfViews.setupView = function(urlVals)
+/**
+ * sets up a view based on the current URL
+ * \tparam String[] urlVals - values taken from the RHS of the hashbang in the URL if found
+ * \return None
+ * \author jmccrea@keesaco.com of Keesaco
+ */
+function ksfViews_setupViews(urlVals)
 {
 	switch ( urlVals[0] )
 	{
@@ -79,8 +73,38 @@ ksfViews.setupView = function(urlVals)
 			}
 	}
 }
+ksfViews.setupView = ksfViews_setupViews;
 
-ksfViews.loadView = function(urlVals)
+/**
+ * Sets up the correct view then loads required panels given the current URL
+ * \tparam Boolean force - if true the view will be updated even if the URL value is empty
+ * \return None
+ * \author jmccrea@keesaco.com of Keesaco
+ */
+function ksfViews_loadFromLocation(force)
+{
+	var urlVals = ksfData.urlValues();
+	if ( urlVals !== null )
+	{
+		ksfViews.setupView(urlVals);
+		ksfViews.loadView(urlVals);
+	}
+	else if (force)
+	{
+		ksfViews.setupView(['']);
+		ksfViews.loadView(['']);
+	}
+}
+ksfViews.loadFromLocation = ksfViews_loadFromLocation;
+
+
+/**
+ * downloads and displays the correct panels for the current view given the URL
+ * \tparam String[] urlVals - values taken from the RHS of the hashbang in the URL if found
+ * \return None
+ * \author jmccrea@keesaco.com of Keesaco
+ */
+function ksfViews_loadView(urlVals)
 {
 	switch ( urlVals[0] )
 	{
@@ -100,32 +124,60 @@ ksfViews.loadView = function(urlVals)
 			ksfViews.loadPreview('');
 	}
 }
+ksfViews.loadView = ksfViews_loadView;
 
-ksfViews.refreshAll = function()
+
+/**
+ * reloads the current view
+ * \return None
+ * \author jmccrea@keesaco.com of Keesaco
+ */
+function ksfViews_refreshAll()
 {
 	ksfProc.loadView();
 }
+ksfViews.refreshAll = ksfViews_refreshAll;
 
-ksfViews.setupDefault = function()
+
+/**
+ * sets up the default view (file preview/gating)
+ * \return None
+ * \author jmccrea@keesaco.com of Keesaco
+ */
+function ksfViews_setupDefault()
 {
 	ksfViews.showFilebar(true);
 	ksfViews.showToolSelector(true);
-	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/left/toolselect/', TOOL_SELECTOR );
+	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/left/toolselect/', TOOL_SELECTOR, ksfTools.addToolsListener );
 }
+ksfViews.setupDefault = ksfViews_setupDefault;
 
-ksfViews.setupSimple = function()
+
+/**
+ * sets up the simple view (FAQ/about)
+ * \return None
+ * \author jmccrea@keesaco.com of Keesaco
+ */
+function ksfViews_setupSimple()
 {
 	ksfViews.showFilebar(false);
 	ksfViews.showToolSelector(false);
-	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/left/pagenav/', TOOL_SELECTOR );
+	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/left/pagenav/', TOOL_SELECTOR, null );
 }
+ksfViews.setupSimple = ksfViews_setupSimple;
 
-ksfViews.showFilebar = function(show)
+
+/**
+ * shows or hides the file selector bar
+ * \tparam Boolean show - if show evaluates to true then the filebar is shown, otherwise it is hidden
+ * \return None
+ * \author jmccrea@keesaco.com of Keesaco
+ */
+function ksfViewS_showFilebar(show)
 {
 	if ( show )
 	{
 		$(".togglefiles").show();
-		//$("#sidebar").show();//.css( { marginRight: '0px' } );
 	}
 	else
 	{
@@ -134,8 +186,16 @@ ksfViews.showFilebar = function(show)
 		fl.css( { marginRight: -fl.outerWidth() } );
 	}
 }
+ksfViews.showFilebar = ksfViewS_showFilebar;
 
-ksfViews.showToolSelector = function(show)
+
+/**
+ * shows or hides the tool selector
+ * \tparam Boolean show - if show evaluates to true then the toolbar is shown, otherwise it is hidden
+ * \return None
+ * \author jmccrea@keesaco.com of Keesaco
+ */
+function ksfViews_showToolSelector(show)
 {
 	if ( show )
 	{
@@ -146,19 +206,42 @@ ksfViews.showToolSelector = function(show)
 		$("toolselector-header").hide();
 	}
 }
+ksfViews.showToolSelector = ksfViews_showToolSelector;
 
-ksfViews.loadPreview = function(filename)
-{
-	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/main/file' + encodeURIComponent('=' + filename), CONTENT_AREA );
-	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/right/file_list/', FILE_SELECTOR );
-}
 
-ksfViews.loadFAQ = function()
+/**
+ * Downloads and displays the panels for the file preview view
+ * \tparam String filename - name of file to show
+ * \return None
+ * \author jmccrea@keesaco.com of Keesaco
+ */
+function ksfViews_loadPreview(filename)
 {
-	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/main/faq/', CONTENT_AREA );
+	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/main/file' + encodeURIComponent('=' + filename), CONTENT_AREA, ksfCanvas.addListener );
+	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/right/file_list/', FILE_SELECTOR, null);
 }
+ksfViews.loadPreview = ksfViews_loadPreview;
 
-ksfViews.loadAbout = function()
+
+/**
+ * Downloads and displays the panels for the FAQ page
+ * \return None
+ * \author jmccrea@keesaco.com of Keesaco
+ */
+function ksfViewS_loadFAQ()
 {
-	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/main/about/', CONTENT_AREA );
+	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/main/faq/', CONTENT_AREA, null );
 }
+ksfViews.loadFAQ = ksfViewS_loadFAQ;
+
+
+/**
+ * Downloads and displays the panels for 'about' page
+ * \return None
+ * \author jmccrea@keesaco.com of Keesaco
+ */
+function ksfViews_loadAbout()
+{
+	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/main/about/', CONTENT_AREA, null );
+}
+ksfViews.loadAbout = ksfViews_loadAbout;

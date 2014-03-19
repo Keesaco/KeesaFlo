@@ -1,0 +1,1 @@
+$("#help-force-start").click(function () { help_force_start(); } );
