@@ -15,7 +15,12 @@ import API.APIQueue as Queue
 alive = True
 while alive:
 	# Lease a command.
-	task = Queue.lease('jobs', 30)
+	try:
+		task = Queue.lease('jobs', 30)
+	except errors.HttpError, e:
+		print e
+	except errors.BadStatusLine, e:
+		print e
 	# If there are tasks in queue extract id and commands, else restart loop and check queue again.
 	if task is not None:
 		task_id = task[0]
