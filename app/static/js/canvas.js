@@ -11,7 +11,16 @@ var context;
 var canvas;
 var tool_popover;
 
-// Print the selection box on the screen
+/*
+* \fn ksfCanvas.drawBox()
+* \brief Draw a selection box on the canvas
+* \param ax - x coordinate of the first point
+* \param ay - y coordinate of the first point
+* \param bx - x coordinate of the second point
+* \param by - y coordinate of the second point
+* \param alpha - from 0 to 1, define the tansparency of the box 
+* \author mrudelle@keesaco.com of Keesaco
+*/
 ksfCanvas.drawBox = function(ax, ay, bx, by, alpha) {
 	this.clear();
     context.save();
@@ -27,7 +36,16 @@ ksfCanvas.drawBox = function(ax, ay, bx, by, alpha) {
     context.restore();
 }
 
-//print the polygon on the canvas
+/*
+* \fn ksfCanvas.drawPolygon()
+* \brief Draw a polygon on the canvas
+* \param xList - x coordinates of the points
+* \param yList - y coordinates of the points
+* \param lastx - x coordinates of the last points (null if no last point)
+* \param lasty - y coordinates of the last points (null if no last point)
+* \param startRadius - radius of the starting point (red area clickable to close the gate) 
+* \author mrudelle@keesaco.com of Keesaco
+*/
 ksfCanvas.drawPolygon = function(xList, yList, lastx, lasty, startRadius) {
 	this.clear();
 	
@@ -57,6 +75,16 @@ ksfCanvas.drawPolygon = function(xList, yList, lastx, lasty, startRadius) {
     context.closePath();
 }
 
+/*
+* \fn ksfCanvas.drawOval()
+* \brief Draws an oval on the canvas
+* \param cx - x coordinates of the center points
+* \param cy - y coordinates of the center points
+* \param r1 - first radius of the oval
+* \param p2x - x coordinates of the last point (it belongs to the oval)
+* \param p2y - y coordinates of the last point (it belongs to the oval) 
+* \author mrudelle@keesaco.com of Keesaco
+*/
 ksfCanvas.drawOval = function(cx, cy, r1, p2x, p2y) {
 	this.clear();
 	
@@ -100,19 +128,37 @@ ksfCanvas.drawOval = function(cx, cy, r1, p2x, p2y) {
     context.stroke();
 }
 
+/*
+* \fn ksfCanvas.toolText()
+* \brief Set the text shown over the graph 
+* \param msg - [string] text to be shown
+* \note This area is used to provide the user with a short feedback on his actions
+* \author mrudelle@keesaco.com of Keesaco
+*/
 ksfCanvas.toolText = function(msg) {
     if (tool_popover !== null) {
         tool_popover.text(msg);
     }
 }
 
-
+/*
+* \fn ksfCanvas.clear()
+* \brief Clear the canvas (erase it's content to make it transparent)
+* \author mrudelle@keesaco.com of Keesaco
+*/
 ksfCanvas.clear = function() {
     if (context !== null && canvas !== undefined) {
         context.clearRect(0, 0, canvas.width, canvas.height);
     }
 }
 
+/*
+* \fn ksfCanvas.setCursor()
+* \brief Set the cursor of the graph 
+* \param cursor - [string] cursor name as defined by css (see http://www.w3schools.com/cssref/pr_class_cursor.asp)
+* \note This area is used to provide the user with a short feedback on his actions
+* \author mrudelle@keesaco.com of Keesaco
+*/
 ksfCanvas.setCursor = function(cursor) {
 	$(GRAPH_ID).css( 'cursor', cursor );
 }
@@ -153,6 +199,14 @@ ksfCanvas.addListener = function(argument) {
 	})
 }
 
+/*
+* \fn ksfCanvas.enableBtn()
+* \brief Set the enbabled status of a button
+* \param btn - [string] jquerry name (#id , .class ... etc) that points to the button
+* \param enable - [boolean] define if we want to enable or not the button
+* \note depending on the string this can applies to multiple buttons
+* \author mrudelle@keesaco.com of Keesaco
+*/
 ksfCanvas.enableBtn = function(btn, enable){
     if (enable) {
         $(btn).removeAttr("disabled");
