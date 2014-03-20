@@ -28,27 +28,27 @@ ksfCanvas.drawBox = function(ax, ay, bx, by, alpha) {
 }
 
 //print the polygon on the canvas
-ksfCanvas.drawPolygon = function(pointList, lastx, lasty, startRadius) {
+ksfCanvas.drawPolygon = function(xList, yList, lastx, lasty, startRadius) {
 	this.clear();
 	
-    if (pointList.length < 2) {
+    if (xList.length < 1) {
         return;
     };
 
     context.beginPath();
     context.fillStyle = "rgba(255, 0, 0, 0.5)";
-    context.arc(pointList[0], pointList[1], startRadius, 0, Math.PI*2);
+    context.arc(xList[0], yList[0], startRadius, 0, Math.PI*2);
     context.fill();
     context.closePath();
 
-    if (((lastx === null || lasty === null) && pointList.length < 4)) {
+    if (((lastx === null || lasty === null) && xList.length < 2)) {
         return;
     }
 
 	context.beginPath();
-    context.moveTo(pointList[0], pointList[1]);
-    for (var i = 2; i < pointList.length ; i+=2) {
-       context.lineTo(pointList[i], pointList[i+1]);
+    context.moveTo(xList[0], yList[0]);
+    for (var i = 1; i < xList.length ; i++) {
+       context.lineTo(xList[i], yList[i]);
     };
     if (lastx !== null || lasty !== null){
        context.lineTo(lastx, lasty);

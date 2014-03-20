@@ -208,13 +208,13 @@ def rect_gating(request, params):
 			paramList[1] = paramList[3]
 			paramList[3] = tempcoor
 
-		gatingRequest =" ".join( paramList[0:3])
+		gatingRequest =" ".join(paramList[0:4])        
 
 		newName = paramList[-1] + "-rectGate";
 		queue.gate_rectangle(paramList[-1], gatingRequest, newName);
 
 		status = "success"
-		message = "the gating was performed correctly"
+		message = "the rectangular gating was performed correctly"
 		url = reverse('get_graph', args=[newName])
 	else:
 		status = "fail"
@@ -239,7 +239,7 @@ def poly_gating(request, params):
 		queue.gate_polygon(paramList[-1], gatingRequest, newName);
 
 		status = "success"
-		message = "the gating was performed correctly"
+		message = "the polygonal gating was performed correctly"
 		url = reverse('get_graph', args=[newName]) 
 	else:
 		status = "fail"
@@ -264,7 +264,7 @@ def oval_gating(request, params):
 		queue.gate_circle(paramList[-1], gatingRequest, newName);
 
 		status = "success"
-		message = "the gating was performed correctly"
+		message = "the oval gating was performed correctly"
 		url = reverse('get_graph', args=[newName])
 	else:
 		status = "fail"
