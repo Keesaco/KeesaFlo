@@ -267,5 +267,4 @@ cursor: pointer;
 /* fix a weird padding on the welcome jumbotron */
 .jumbotron > h2 {
 margin-bottom: 30px;
->>>>>>> MR-gating_tool
 }

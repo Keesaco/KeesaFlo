@@ -1,14 +1,8 @@
 {% if current_file %}
-	<div  class="well app-well">	
-		{% if file_name_without_extension %}
+	{% if file_name_without_extension %}
+	<div  class="well app-well">
 		<div id="flow-graph-container">
 			<img id="graph-img" src="{% url get_graph file_name_without_extension %}">
-		{% else %}
-		<p><i>This dataset does not contain visualisation data</i></p>
-		<div id="flow-graph-container">
-			{% load staticfiles %}
-		{% endif %}
-
 			<div class="over-graph">
 				<p id="tool-popover-title" class="greybox">Tool</p>
 			</div>
@@ -21,11 +15,18 @@
 		<p>MD5: {{ current_file.etag }} / Time: {{ current_file.st_ctime }} </p>
 		<p>Your are connected as {{ authed_user_nick }}</p>
 		<div class="btn-group btn-group-lg action-btn-group">
-		<button type="button" class="btn btn-defauls btn-download"><a href="{% url get_dataset current_file.filename %}">Download Dataset</a></button>
-	  	<button type="button" class="btn btn-defauls" id="request-gating-btn" disabled>Create gating</button>
-	  	<button type="button" class="btn btn-defauls" id="reset-tool-btn">Reset Tool</button>
+			<button type="button" class="btn btn-defauls btn-download"><a href="{% url get_dataset current_file.filename %}">Download Dataset</a></button>
+		  	<button type="button" class="btn btn-defauls" id="request-gating-btn" disabled>Create gating</button>
+		  	<button type="button" class="btn btn-defauls" id="reset-tool-btn">Reset Tool</button>
+		</div>
 	</div>
-	</div>
+	{% else %}
+		<div  class="well app-well">
+			<h1>No visualisation data</h1>
+			<p>You may want to refresh if you expect a graph to appear</p>
+		</div>
+	{% endif %}
+
 {% else %}
 	<div class="jumbotron"> 
 		<h2>Hi {{ authed_user_nick }},</h2>
