@@ -1,0 +1,7 @@
+total_storage_limit: 120M
+queue:
+- name: jobs
+  mode: pull
+  acl:
+  - user_email: 41520595559@developer.gserviceaccount.com
+  - writer_email: 41520595559@developer.gserviceaccount.com

@@ -46,6 +46,10 @@
 				<innersource dir="1"></innersource>
 				<destination>app</destination>
 			</move>
+			<move>
+				<innersource dir="1"></innersource>
+				<destination>compute_engine</destination>
+			</move>
 		</package>
 		<package name="django-autoload">
 			<uri>https://github.com/adieu/django-autoload/archive/master.zip</uri>
