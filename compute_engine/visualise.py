@@ -7,7 +7,7 @@
 ## \package compute_engine.visualise
 ## \brief Visualises flow cytometry data using Google Cloud Storage and Bioconductor. Should be called by the Compute Engine startup sheel script. Depends on AnalysisAPI.
 ###########################################################################
-import os
+import os, time
 import API.APIAnalysis as Ana
 import API.APIQueue as Queue
 
@@ -26,6 +26,7 @@ while alive:
 		task_id = task[0]
 		commands = task[1]
 	else:
+		time.sleep(0.6)
 		continue
 	# If command is to kill instance, stop looping and exit python script.
 	if (commands[0] == 'kill'):
