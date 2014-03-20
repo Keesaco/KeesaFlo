@@ -236,6 +236,7 @@ html, body, .row
   height: 480px;
 }
 
+/* allows a div to be position exactly over the other elements in its div */
 .over-graph {
   position: absolute;
   top: 0px;
@@ -244,12 +245,26 @@ html, body, .row
   height: 100%;
 }
 
+/* leave space arround action buttons on the app page*/
 .action-btn-group {
   padding: 20px;
 }
 
+/* contains the app page's main elements */
 .app-well {
+  vertical-align: top;
   display: inline-block;
   margin-bottom: 20px;
   margin-right: 20px;
+}
+
+/* allows a link into a label to show nicely */
+.label > a {
+color: #fff;
+cursor: pointer;
+}
+
+/* fix a weird padding on the welcome jumbotron */
+.jumbotron > h2 {
+margin-bottom: 30px;
 }
