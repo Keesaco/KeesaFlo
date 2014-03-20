@@ -28,5 +28,19 @@
 	</div>
 	</div>
 {% else %}
-	Select a file in the sidebar.
+	<div class="jumbotron"> 
+		<h2>Hi {{ authed_user_nick }},</h2>
+		<p>Welcome to 
+			<span class="label label-primary">
+				KeesaFlo
+			</span> !</p>
+		<p>To get started, first select a file in the 
+			<span class="label label-success">
+				<a class="togglefiles">file selector</a>
+			</span> or 
+			<span class="label label-success">
+				<a title="Upload"  data-toggle="modal" data-target="#uploadModal">upload a new file</a>
+			</span>.
+		</p>
+	</div>
 {% endif %}
