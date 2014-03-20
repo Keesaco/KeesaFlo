@@ -90,6 +90,8 @@ ksfGraphTools.RectangularGating = {
 ksfGraphTools.PolygonGating = {
 
 	PointList : [],
+	xList : [],
+	yList : [],
 	SelectionDone : false,
 	ELEMENT_ID : "#tool_polygon_gating",
 	START_RADIUS : 10,
@@ -104,6 +106,7 @@ ksfGraphTools.PolygonGating = {
 		posX = event.pageX - $(GRAPH_ID).offset().left;
 		posY = event.pageY - $(GRAPH_ID).offset().top;
 
+<<<<<<< HEAD
 		// Triggered when the path is closed
 		if (this.distanceToStart(posX, posY) < this.START_RADIUS){
 			ksfCanvas.drawPolygon(this.PointList, this.PointList[0], this.PointList[1], this.START_RADIUS);
@@ -155,6 +158,60 @@ ksfGraphTools.PolygonGating = {
 		var URL = "gating/polygon/" + this.PointList.join(",");
 		ksfGraphTools.sendGatingRequest(URL);
 	}
+=======
+		// Triggered when the path is closed
+		if (this.distanceToStart(posX, posY) < this.START_RADIUS){
+			ksfCanvas.drawPolygon(this.xList, this.yList, this.xList[0], this.yList[0], this.START_RADIUS);
+			this.SelectionDone = true;
+			ksfCanvas.toolText("selection is finished: "+ (this.xList.length) + "points");
+			ksfCanvas.enableBtn(REQUEST_GATING_BTN, true);
+		} else {
+			this.xList.push(posX);
+			this.yList.push(posY);
+			ksfCanvas.drawPolygon(this.xList, this.yList, null, null, this.START_RADIUS);
+			ksfCanvas.toolText("point #"+ (this.xList.lengt) +": ("+posX+","+posY+")");
+		}
+	},
+
+	resetTool : function() {
+		this.xList = [];
+		this.yList = [];
+		this.SelectionDone = false;
+		ksfCanvas.clear();
+		ksfCanvas.enableBtn(REQUEST_GATING_BTN, false);
+	},
+
+	onGraphMouseMove : function(event) {
+		ksfCanvas.setCursor('crosshair');
+		if (this.SelectionDone) {
+			ksfCanvas.drawPolygon(this.xList, this.yList, this.xList[0], this.yList[0], this.START_RADIUS);
+			ksfCanvas.toolText("selection is finished: "+ (this.xList.length) + "points");
+		} else {
+			var posX = event.pageX - $(GRAPH_ID).offset().left,
+			posY = event.pageY - $(GRAPH_ID).offset().top;
+			ksfCanvas.drawPolygon(this.xList, this.yList, posX, posY, this.START_RADIUS);
+			if (this.distanceToStart(posX, posY) < this.START_RADIUS){
+				ksfCanvas.setCursor('pointer');
+			}
+		}
+	},
+
+	//return the distance to the starting point
+	distanceToStart : function(posx, posy){
+		var x, y;
+		if (this.xList.length >= 1) {
+			x = this.xList[0]-posx;
+			y = this.yList[0]-posy;
+			return Math.sqrt(Math.pow(x,2)+Math.pow(y,2));
+		}
+		return Math.MAX;
+	},
+	
+	requestGating : function() {
+		var URL = "gating/polygon/" + this.xList.concat(this.yList).join(",");
+		ksfGraphTools.sendGatingRequest(URL);
+	}
+>>>>>>> MR-gating_tool
 }
 
 //This tool allows one to create an oval shaped selection
