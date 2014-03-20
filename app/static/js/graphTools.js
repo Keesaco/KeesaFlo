@@ -264,6 +264,13 @@ ksfGraphTools.sendGatingRequest = function(gatingURL) {
 						} );
 }
 
+/*
+* \fn ksfGraphTools.setGraphUrl()
+* \brief Change properly the graph image
+* \param url - [String] url of the new graph
+* \author mrudelle@keesaco.com of Keesaco
+* \note If the link throw an error it will enter a loop to reload the image
+*/
 ksfGraphTools.setGraphUrl = function(url) {
 	$("#graph-img").off('error');
 	$("#graph-img").on('error', function()
@@ -273,15 +280,18 @@ ksfGraphTools.setGraphUrl = function(url) {
 	$("#graph-img").attr("src", url);
 }
 
+/*
+* \fn ksfGraphTools.reloadImage()
+* \brief Allows one to reload properly the image of the graph
+* \author mrudelle@keesaco.com of Keesaco
+*/
 ksfGraphTools.reloadImage = function() {
-	ksfCanvas.toolText("Reloading Graph");
 	$("#graph-img").attr("src", $("#graph-img").attr("src"));
-	ksfCanvas.toolText("");
 }
 
 /*
 * \fn ksfGraphTools.mesureAngle()
-* \brief Calculate the angle of a vector
+* \brief Calculate the angle to the horizontal of a vector
 * \param tx - [int] x coordinate of the vector
 * \param ty - [int] y coordinate of the vector
 * \author mrudelle@keesaco.com of Keesaco
