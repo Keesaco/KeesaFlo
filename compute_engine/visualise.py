@@ -26,7 +26,7 @@ while alive:
 		task_id = task[0]
 		commands = task[1]
 	else:
-		time.sleep(0.6)
+		time.sleep(0.9)
 		continue
 	# If command is to kill instance, stop looping and exit python script.
 	if (commands[0] == 'kill'):
