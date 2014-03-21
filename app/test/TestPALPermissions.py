@@ -45,6 +45,7 @@ class TestPALPerissions(unittest.TestCase):
 		usr.set_nickname('Somebodyau')
 		usr.set_user_id('SomeUserid1234au')
 		ret = ps.add_user(usr)
+
 		self.assertTrue(isinstance(ret, ndb.Key))
 
 	###########################################################################
@@ -64,6 +65,7 @@ class TestPALPerissions(unittest.TestCase):
 		usr.set_nickname('Somebodyruis')
 		usr.set_user_id('SomeUserid1234ruis')
 		ps.add_user(usr)
+
 		self.assertTrue(ps.remove_user_by_id('SomeUserid1234'))
 
 	###########################################################################
@@ -72,6 +74,7 @@ class TestPALPerissions(unittest.TestCase):
 	###########################################################################
 	def test_user_remove_user_by_key_fail(self):
 		fakeKey = ndb.Key("doesntExist","noReally")
+
 		self.assertFalse(ps.remove_user_by_key(fakeKey))
 
 	###########################################################################
@@ -84,6 +87,7 @@ class TestPALPerissions(unittest.TestCase):
 		usr.set_nickname('Somebodyruks')
 		usr.set_user_id('SomeUserid1234ruks')
 		ukey = ps.add_user(usr)
+
 		self.assertTrue(ps.remove_user_by_key(ukey))
 
 	###########################################################################
@@ -94,6 +98,7 @@ class TestPALPerissions(unittest.TestCase):
 		usr = User('somebody@somewheremidf.com')
 		usr.set_nickname('Somebodymidf')
 		usr.set_user_id('SomeUserid1234midf')
+
 		self.assertIsNone(ps.modify_user_by_id("AWSEDRFGYHUJUG23151",usr))
 
 	###########################################################################
@@ -139,6 +144,7 @@ class TestPALPerissions(unittest.TestCase):
 	###########################################################################
 	def test_user_get_user_by_key_fail(self):
 		fakeKey = ndb.Key("doesntExist","noReally")
+
 		self.assertIsNone(ps.get_user_by_key(fakeKey))
 
 	###########################################################################
@@ -154,3 +160,55 @@ class TestPALPerissions(unittest.TestCase):
 
 		self.assertEqual(ps.get_user_by_key(key).email(), usr.email())
 	
+	###########################################################################
+	## \brief 	Tests adding a new file to table
+	## \author 	cwike@Keesaco.com of Keesaco
+	###########################################################################
+	def test_file_add_file(self):
+		ret = ps.add_file("testFileaf","someKeyaf")
+
+		self.assertTrue(isInstance(ret,ndb.Key))
+
+	###########################################################################
+	## \brief 	Tests removing a file by key from table success case
+	## \note 	depenends on functioning add_file function
+	## \author 	cwike@Keesaco.com of Keesaco
+	###########################################################################
+	def test_file_remove_file_by_key_success(self):
+		key = ps.add_file("testFilerfks","someKeyrfks")
+
+		self.assertTrue(ps.remove_file_by_key(key))
+
+	###########################################################################
+	## \brief 	Tests renaming a file by key success case
+	## \note 	depends on functioning add_file,get_file_by_key function
+	## \author 	cwike@Keesaco.com of Keesaco
+	###########################################################################
+	def test_file_rename_file_by_key_success(self):
+		key = ps.add_file("testFilernfks","someKeyrnfks")
+
+		self.assertTrue(ps.rename_file_by_key(key,"testFilernfks2"))
+
+		fileobj = ps.get_file_by_key(key)
+
+		self.assertEqual(fileobj.file_name,"testFilernfks2")
+
+	###########################################################################
+	## \brief 	Tests getting existing file by key
+	## \note 	depends on functioning add_file function
+	## \author 	cwike@Keesaco.com of Keesaco
+	###########################################################################
+	def test_file_get_file_by_key_success(self):
+		key = ps.add_file("testFilegfks","someKeygfks")
+		fileobj = ps.get_file_by_key(key)
+
+		self.assertEqual(fileobj.file_name,"testFilegfks")
+
+	def test_file_get_file_by_name_failure(self):
+		pass
+
+	def test_file_get_file_by_name_success(self):
+		pass
+
+	def test_file_get_files_by_user_key_sucess(self):
+		pass
