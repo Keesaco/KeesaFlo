@@ -203,8 +203,8 @@ def rename_file_by_key(file_key, new_file_name):
 ###########################################################################
 def get_file_by_key(file_key):
 	if isinstance(file_key,ndb.Key):
-		file = file_key.get()
-		return file
+		files = file_key.get()
+		return files
 	else:
 		return None
 		
@@ -218,8 +218,8 @@ def get_file_by_key(file_key):
 ###########################################################################
 def get_file_by_name(file_name):
 	query = Files.query(Files.file_name == file_name)
-	file = query.get()
-	return file
+	files = query.get()
+	return files
 	
 ###########################################################################
 ## \brief gets list of files by owner key
