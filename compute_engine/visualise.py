@@ -94,6 +94,19 @@ while alive:
 		os.remove(name)
 		os.remove(gate_name + '.txt')
 		os.remove(gate_name + '.png')
+	elif (commands[0] == 'change_axis'):
+		name = commands[1]
+		x_axis = commands[2]
+		y_axis = commands[3]
+		##Loads raw fcs data from cloud storage
+		Ana.load_fcs(name)
+		##Creates a visualisation of the graph with different axis
+		Ana.change_axis(name, x_axis, y_axis)
+		##Saves visualisation to loud storage
+		Ana.save_vis(name + '1.png')
+		## Clean up
+		os.remove(name)
+		os.remove(name + '1.png')
 	# Delete any processed tasks from queue.
 	if task_id is not None:
 		Queue.delete('jobs', task_id)
