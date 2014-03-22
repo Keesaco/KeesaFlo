@@ -62,7 +62,7 @@
 
 .apppanel
 {
-		left: 20%;
+	//left: 20%;
 	bottom: 0;
 	padding: 20px;
 	background-color: #E6E6E6;
@@ -174,7 +174,6 @@ html, body, .row
 	} 
 	
 	.toolbar-offcanvas{
-		position: fixed;
 		top: 0;
 		left: 0;
 		height:100%;
