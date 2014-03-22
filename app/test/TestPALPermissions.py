@@ -165,9 +165,9 @@ class TestPALPerissions(unittest.TestCase):
 	## \author 	cwike@Keesaco.com of Keesaco
 	###########################################################################
 	def test_file_add_file(self):
-		ret = ps.add_file("testFileaf","someKeyaf")
+		ret = ps.add_file("testFileaf",ndb.Key("someKey","af"))
 
-		self.assertTrue(isInstance(ret,ndb.Key))
+		self.assertTrue(isinstance(ret, ndb.Key))
 
 	###########################################################################
 	## \brief 	Tests removing a file by key from table success case
@@ -175,7 +175,7 @@ class TestPALPerissions(unittest.TestCase):
 	## \author 	cwike@Keesaco.com of Keesaco
 	###########################################################################
 	def test_file_remove_file_by_key_success(self):
-		key = ps.add_file("testFilerfks","someKeyrfks")
+		key = ps.add_file("testFilerfks",ndb.Key("someKey","rfks"))
 
 		self.assertTrue(ps.remove_file_by_key(key))
 
@@ -185,7 +185,7 @@ class TestPALPerissions(unittest.TestCase):
 	## \author 	cwike@Keesaco.com of Keesaco
 	###########################################################################
 	def test_file_rename_file_by_key_success(self):
-		key = ps.add_file("testFilernfks","someKeyrnfks")
+		key = ps.add_file("testFilernfks",ndb.Key("someKey","rnfks"))
 
 		self.assertTrue(ps.rename_file_by_key(key,"testFilernfks2"))
 
@@ -199,16 +199,42 @@ class TestPALPerissions(unittest.TestCase):
 	## \author 	cwike@Keesaco.com of Keesaco
 	###########################################################################
 	def test_file_get_file_by_key_success(self):
-		key = ps.add_file("testFilegfks","someKeygfks")
+		key = ps.add_file("testFilegfks",ndb.Key("someKey","gfks"))
 		fileobj = ps.get_file_by_key(key)
 
 		self.assertEqual(fileobj.file_name,"testFilegfks")
 
+	###########################################################################
+	## \brief 	Tests getting non existing file by name
+	## \author 	cwike@Keesaco.com of Keesaco
+	###########################################################################
 	def test_file_get_file_by_name_failure(self):
-		pass
+		self.assertIsNone(ps.get_file_by_name("testFilethatDoesntExist"))
 
+	###########################################################################
+	## \brief 	Tests getting existing file by name
+	## \note 	depends on functioning add_file function
+	## \author 	cwike@Keesaco.com of Keesaco
+	###########################################################################
 	def test_file_get_file_by_name_success(self):
-		pass
+		ps.add_file("testFilegfns",ndb.Key("someKey","gfns"))
+		fileobj = ps.get_file_by_name("testFilegfns")
 
-	def test_file_get_files_by_user_key_sucess(self):
-		pass
+		self.assertEqual(fileobj.owner_key,ndb.Key("someKey","gfns" ))
+
+	###########################################################################
+	## \brief 	Tests getting existing files by owner_key
+	## \note 	depends on functioning add_file function
+	## \author 	cwike@Keesaco.com of Keesaco
+	###########################################################################
+	def test_file_get_files_by_owner_key_sucess(self):
+		ps.add_file("testFile1",ndb.Key("someKey","gfuks"))
+		ps.add_file("testFile2",ndb.Key("someKey","gfuks"))
+		ps.add_file("testFile3",ndb.Key("someKey","gfuks"))
+		ps.add_file("testFile4",ndb.Key("someKey","gfuks"))
+		
+		iterate = ps.get_file_by_owner_key(ndb.Key("someKey","gfuks"))
+
+		for fileobj in iterate:
+			self.assertEqual(fileobj.owner_key, ndb.Key("someKey","gfuks"))
+
