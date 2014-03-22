@@ -49,8 +49,10 @@ mat <- matrix(point, ncol=2, dimnames=list(rownames, c(a,b)))
 pgate <- polygonGate(.gate=mat)
 y <- Subset(x, pgate)
 
-## Calculating proportion
+## Save gate as fcs file
+write.FCS(y, gate_name)
 
+## Calculating proportion
 result <- filter(x, pgate)
 total <- summary(result)$n
 inGate <- summary(result)$true

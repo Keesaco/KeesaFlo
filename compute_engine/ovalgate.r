@@ -38,33 +38,31 @@ ay <- r2[2,1] - (((ay-61)/332) * (r2[2,1]-r2[1,1]))
 by <- r2[2,1] - (((by-61)/332) * (r2[2,1]-r2[1,1]))
 
 ## Calculate eigenvalues of covariance matrix
-
 l1 <- (ax-mx)^2+(ay-my)^2
 l2 <- (bx-mx)^2+(by-my)^2
 
 ## Calculate eigenvectors of covariance matrix
-
 v11 <- ax-mx
 v12 <- ay-my
 v21 <- v12 ## This ensures the eigenvectors are perpendicular to each other
 v22 <- -v11
 
 ## Calculate covariance matrix
-
 V <- matrix(c(v11, v21, v12, v22), ncol = 2, dimnames=list(c(a, b), c(a, b)))
 L <- matrix(c(l1, 0, 0, l2), ncol = 2, dimnames=list(c(a, b), c(a, b)))
 cov <- V %*% L %*% solve(V)
 
 ## Creates the gating parameters
-
 mean <- c(a=mx, b=my)
 egate <- ellipsoidGate(.gate = cov, mean = mean)
 
 ## Creating subset of data.
 y <- Subset(x, egate)
 
-## Calculating proportion
+## Save gate as fcs file
+write.FCS(y, gate_name)
 
+## Calculating proportion
 result <- filter(x, egate)
 total <- summary(result)$n
 inGate <- summary(result)$true

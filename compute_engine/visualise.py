@@ -80,10 +80,13 @@ while alive:
 		Ana.save_vis(gate_name + '.png')
 		## Saves info about gate to cloud storage
 		Ana.save_info(gate_name + '.txt')
+		## Saves gate as fcs file
+		Ana.save_fcs(gate_name)
 		## Clean up.
 		os.remove(name)
 		os.remove(gate_name + '.txt')
 		os.remove(gate_name + '.png')
+		os.remove(gate_name)
 	elif (commands[0] == 'gate_poly'):
 		name = commands[1]
 		points = commands[2]
@@ -96,10 +99,13 @@ while alive:
 		Ana.save_vis(gate_name + '.png')
 		## Saves info about gate to cloud storage
 		Ana.save_info(gate_name + '.txt')
+		## Saves gate as fcs file
+		Ana.save_fcs(gate_name)
 		## Clean up.
 		os.remove(name)
 		os.remove(gate_name + '.txt')
 		os.remove(gate_name + '.png')
+		os.remove(gate_name)
 	elif (commands[0] == 'change_axis'):
 		name = commands[1]
 		x_axis = commands[2]
