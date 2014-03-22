@@ -77,7 +77,7 @@
 
 .bottom-nav li {
 	margin-left: 0;
-	width: 33.33333333333334%;
+	width: 100%;
 	text-align: center;
 	border-top: 1px solid #3D3D3D;
 }
@@ -124,6 +124,13 @@ a.list-group-item
 {
 	color: #AAAAAA;
 	word-wrap: break-word;
+}
+
+.toolbutton
+{
+	font-size: 200%;
+	padding: 0;
+	text-align: center;
 }
 
 a.list-group-item:hover {
