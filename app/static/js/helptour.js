@@ -1,6 +1,5 @@
 var tour = new Tour
 ({
-	storage: false,
 	debug: true
 });
 
@@ -151,7 +150,7 @@ tour.init();
 // Start the tour
 tour.start();
 
-function help_force_start()
+function helpForceStart()
 {
 	if (tour.ended()){
 		tour.restart();

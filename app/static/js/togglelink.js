@@ -20,3 +20,10 @@ $(function(){
 	});
 });
 
+function fileSelector()
+{
+	$('#sidebar').animate({
+		marginRight: 0
+	});
+}
+
