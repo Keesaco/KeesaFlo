@@ -41,8 +41,10 @@ rgate <- rectangleGate(.gate=mat)
 ## Creating subset of data.
 y <- Subset(x, rgate)
 
-## Calculating proportion
+## Save gate as fcs file
+write.FCS(y, gate_name)
 
+## Calculating proportion
 result <- filter(x, rgate)
 total <- summary(result)$n
 inGate <- summary(result)$true

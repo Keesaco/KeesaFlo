@@ -35,7 +35,7 @@ def load_fcs(	name,
 ###########################################################################
 def save_fcs(	name,
 				permissions = None):
-	subprocess.call(['gsutil', 'cp', path_local, DEFAULT_BUCKET])
+	subprocess.call(['gsutil', 'cp', name, RAW_BUCKET])
 
 ###########################################################################
 ## \brief Saves a visualisation of an fcs file
