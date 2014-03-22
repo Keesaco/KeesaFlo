@@ -66,16 +66,16 @@ class TestPALPerissions(unittest.TestCase):
 		usr.set_user_id('SomeUserid1234ruis')
 		ps.add_user(usr)
 
-		self.assertTrue(ps.remove_user_by_id('SomeUserid1234'))
+		self.assertTrue(ps.remove_user_by_id('SomeUserid1234ruis'))
 
 	###########################################################################
 	## \brief 	Tests removing non existent user by key 
 	## \author 	cwike@Keesaco.com of Keesaco
 	###########################################################################
 	def test_user_remove_user_by_key_fail(self):
-		fakeKey = ndb.Key("doesntExist","noReally")
+		badKey = "asdfasdf"
 
-		self.assertFalse(ps.remove_user_by_key(fakeKey))
+		self.assertFalse(ps.remove_user_by_key(badKey))
 
 	###########################################################################
 	## \brief 	Tests removing existing user by key
@@ -99,7 +99,7 @@ class TestPALPerissions(unittest.TestCase):
 		usr.set_nickname('Somebodymidf')
 		usr.set_user_id('SomeUserid1234midf')
 
-		self.assertIsNone(ps.modify_user_by_id("AWSEDRFGYHUJUG23151",usr))
+		self.assertFalse(ps.modify_user_by_id("AWSEDRFGYHUJUG23151",usr))
 
 	###########################################################################
 	## \brief 	Tests modifying existing user by id
@@ -111,12 +111,13 @@ class TestPALPerissions(unittest.TestCase):
 		usr.set_nickname('Somebodymids')
 		usr.set_user_id('SomeUserid1234mids')
 		ps.add_user(usr)
+
 		newusr = User('somebodyelse@somewhereelsemids.com')
 		newusr.set_nickname('SomebodyElsemids')
 		newusr.set_user_id('SomeUotherId3878mids')
 		key = ps.modify_user_by_id('SomeUserid1234mids',newusr)
 
-		self.assertEqual(ps.get_user_by_key(key).email(),newusr.email())
+		self.assertEqual(ps.get_user_by_key(key).email(), newusr.email())
 
 	###########################################################################
 	## \brief 	Tests getting non existant user by id
