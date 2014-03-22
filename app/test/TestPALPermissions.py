@@ -13,6 +13,7 @@ from google.appengine.ext import testbed, ndb
 import API.PALPermissions as ps
 
 from API.User import User
+from Permissions.Types import Permissions
 
 ###########################################################################
 ## \brief 	Testing for Permissions table PAL
@@ -238,4 +239,18 @@ class TestPALPerissions(unittest.TestCase):
 
 		for fileobj in iterate:
 			self.assertEqual(fileobj.owner_key, ndb.Key("someKey","gfuks"))
+
+	def test_permissions_add_file_permissions(self):
+
+		permission = Permissions(True,True,False)
+
+		ret = ps.add_file_permissions(ndb.Key("fk","afp"),ndb.Key("uk","afp"),permission)
+
+		self.assertTrue(isinstance(ret, ndb.Key))
+
+	def test_permissions_modify_file_permissions_by_key(self):
+		permission = Permissions(True,True,False)
+		key = ps.add_file_permissions(ndb.Key("fk","mfpk"),ndb.Key("uk","mfpk"),permission)
+		
+
 
