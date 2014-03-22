@@ -17,9 +17,7 @@ while alive:
 	# Lease a command.
 	try:
 		task = Queue.lease('jobs', 30)
-	except errors.HttpError, e:
-		print e
-	except errors.BadStatusLine, e:
+	except Exception, e:
 		print e
 	# If there are tasks in queue extract id and commands, else restart loop and check queue again.
 	if task is not None:
