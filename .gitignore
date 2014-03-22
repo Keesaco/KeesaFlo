@@ -43,3 +43,8 @@ js2doxy.pl
 app/uneedtest.py
 app/static/css/bootstrap-tour.min.css
 app/static/js/bootstrap-tour.min.js
+compute_engine/apiclient/
+compute_engine/google-api-python-client-gae-1.2.zip
+compute_engine/httplib2/
+compute_engine/oauth2client/
+compute_engine/uritemplate/
