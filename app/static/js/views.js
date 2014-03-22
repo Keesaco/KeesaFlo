@@ -148,7 +148,7 @@ function ksfViews_setupDefault()
 {
 	ksfViews.showFilebar(true);
 	ksfViews.showToolSelector(true);
-	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/left/toolselect/', TOOL_SELECTOR );
+	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/left/toolselect/', TOOL_SELECTOR, ksfTools.addToolsListener );
 }
 ksfViews.setupDefault = ksfViews_setupDefault;
 
@@ -162,7 +162,7 @@ function ksfViews_setupSimple()
 {
 	ksfViews.showFilebar(false);
 	ksfViews.showToolSelector(false);
-	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/left/pagenav/', TOOL_SELECTOR );
+	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/left/pagenav/', TOOL_SELECTOR, null );
 }
 ksfViews.setupSimple = ksfViews_setupSimple;
 
@@ -217,8 +217,8 @@ ksfViews.showToolSelector = ksfViews_showToolSelector;
  */
 function ksfViews_loadPreview(filename)
 {
-	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/main/file' + encodeURIComponent('=' + filename), CONTENT_AREA );
-	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/right/file_list/', FILE_SELECTOR );
+	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/main/file' + encodeURIComponent('=' + filename), CONTENT_AREA, ksfCanvas.addListener );
+	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/right/file_list/', FILE_SELECTOR, null);
 }
 ksfViews.loadPreview = ksfViews_loadPreview;
 
@@ -230,7 +230,7 @@ ksfViews.loadPreview = ksfViews_loadPreview;
  */
 function ksfViewS_loadFAQ()
 {
-	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/main/faq/', CONTENT_AREA );
+	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/main/faq/', CONTENT_AREA, null );
 }
 ksfViews.loadFAQ = ksfViewS_loadFAQ;
 
@@ -242,6 +242,6 @@ ksfViews.loadFAQ = ksfViewS_loadFAQ;
  */
 function ksfViews_loadAbout()
 {
-	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/main/about/', CONTENT_AREA );
+	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/main/about/', CONTENT_AREA, null );
 }
 ksfViews.loadAbout = ksfViews_loadAbout;

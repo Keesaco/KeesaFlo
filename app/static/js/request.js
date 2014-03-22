@@ -24,13 +24,14 @@ function ksfReq()
 
 /**
  * makes an HTTP request for a given URI and calls the given callback with the reseponse
- * \tparam String URI - URI to request
- * \tparam Function callback - called with received data after a response is received
+ * \param String URI - URI to request
+ * \param Function callback - called with received data after a response is received
+ * \param Function failcallback - called on request failure
  * \return None
  * \author jmccrea@keesaco.com of Keesaco
  */
-function ksfReq_fetch(URI, callback)
+function ksfReq_fetch(URI, callback, failcallback)
 {
-	$.get(URI, callback);
+	$.get(URI, callback).fail(failcallback);
 }
 ksfReq.fetch = ksfReq_fetch;

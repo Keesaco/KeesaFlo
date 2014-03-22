@@ -38,18 +38,22 @@ ksfData.pagelet = ksfData_pagelet;
 
 /**
  * gets a pagelet and displays its contents in the target container
- * \tparam String URI - pagelet URI
- * \tparam String targetID - (Should include '#' prefix) ID of the element to show the pagelet in
+ * \param String URI - pagelet URI
+ * \param String targetID - (Should include '#' prefix) ID of the element to show the pagelet in
+ * \param Function executeOnLoading - To be executed once the pagelet is completely loaded in the page
  * \return None
  * \author jmccrea@keesaco.com of Keesaco
  */
-function ksfData_copyPageletInto(URI, targetID)
+function ksfData_copyPageletInto(URI, targetID, executeOnLoading)
 {
 	ksfReq.fetch( 	URI,
 					function(response)
 				  	{
 				 		var pagelet = ksfData.pagelet(response);
 				 	 	$(targetID).html(pagelet.body);
+				 	 	if (executeOnLoading) {
+				 	 		executeOnLoading();
+				 	 	}
 				  	} );
 }
 ksfData.copyPageletInto = ksfData_copyPageletInto;
