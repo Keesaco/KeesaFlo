@@ -13,7 +13,6 @@ from API.User import User
 from google.appengine.ext import ndb
 from Permissions import Types
 
-
 ###########################################################################
 ## \brief Adds a new user entry to the Users table
 ## \param user - [User] user object for the user to be added to the table
@@ -114,6 +113,13 @@ def get_user_by_id(user_id):
 			user_obj.set_nickname(user.nickname)
 			return user_obj
 
+###########################################################################
+## \brief gets user details from the permissions DB
+## \param user_id - [String] unique ID of user to look up
+## \return	None if not found or User key
+## \author jmccrea@keesaco.com of Keesaco
+## \author cwike@keesaco.com of Keesaco
+###########################################################################
 def get_user_key_by_id(user_id):
 	users = Users.query(Users.unique_id == user_id)
 	user = users.get()
@@ -390,6 +396,13 @@ def get_user_file_permissions(file_key, user_key):
 		return query.get()
 	else:
 		return False
+
+def get_permissions_by_key(permissions_key):
+	if isinstance(file_key,ndb.Key):
+		files = file_key.get()
+		return files
+	else:
+		return None
 
 
 ###########################################################################

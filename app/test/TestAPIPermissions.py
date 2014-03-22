@@ -10,7 +10,7 @@
 import unittest
 from google.appengine.ext import testbed, ndb
 
-import API.PALPermissions as ps
+import API.APIPermissions as ps
 
 from API.User import User
 from Permissions.Types import Permissions
@@ -19,7 +19,7 @@ from Permissions.Types import Permissions
 ## \brief 	Testing for Permissions table PAL
 ## \author 	cwike@Keesaco.com of Keesaco
 ###########################################################################
-class TestPALPerissions(unittest.TestCase):
+class TestAPIPermissions(unittest.TestCase):
 
 	###########################################################################
 	## \brief 	setup method for testing
@@ -240,17 +240,41 @@ class TestPALPerissions(unittest.TestCase):
 		for fileobj in iterate:
 			self.assertEqual(fileobj.owner_key, ndb.Key("someKey","gfuks"))
 
+	###########################################################################
+	## \brief 	
+	## \author 	cwike@Keesaco.com of Keesaco
+	###########################################################################
 	def test_permissions_add_file_permissions(self):
 
 		permission = Permissions(True,True,False)
-
 		ret = ps.add_file_permissions(ndb.Key("fk","afp"),ndb.Key("uk","afp"),permission)
 
 		self.assertTrue(isinstance(ret, ndb.Key))
 
 	def test_permissions_modify_file_permissions_by_key(self):
-		permission = Permissions(True,True,False)
+		permission = Permissions(True,True,True)
 		key = ps.add_file_permissions(ndb.Key("fk","mfpk"),ndb.Key("uk","mfpk"),permission)
-		
 
+		new_permissions = Permissions(False,False,False)
+		ps.modify_file_permissions_by_key(key, new_permissions)
+		retrieved = get_permissions_by_key(key)
 
+		self.assertEqual(new_permissions.read, retrieved.read)
+		self.assertEqual(new_permissions.write, retrieved.write)
+		self.assertEqual(new_permissions.full_control, retrieved.full_control)
+
+	def test_permissions_modify_file_permissions_by_keys(self):
+		permission = Permissions(True,True,True)
+		ret = ps.add_file_permissions(ndb.Key("fk","mfpks"),ndb.Key("uk","mfpks"),permission)
+
+		new_permissions =  Permissions(False,False,False)
+
+		ps.modify_file_permissions_by_keys(ndb.Key("fk","mfpks"),ndb.Key("uk","mfpks"), new_permissions)
+		retrieved = get_permissions_by_key(key)
+
+		self.assertEqual(new_permissions.read, retrieved.read)
+		self.assertEqual(new_permissions.write, retrieved.write)
+		self.assertEqual(new_permissions.full_control, retrieved.full_control)
+
+	def test_permissions_revoke_all_by_file_key(self):
+		pass

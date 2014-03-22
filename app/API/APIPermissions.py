@@ -174,7 +174,7 @@ def add_file_permissions(permissions_file_key,permissions_user_key, permissions)
 ## \todo Stub - needs testing
 ###########################################################################
 def modify_file_permissions_by_key(permissions_key, new_permissions):
-	return modify_file_permissions_by_key(permissions_key,new_permissions)
+	return PAL.modify_file_permissions_by_key(permissions_key,new_permissions)
 
 ###########################################################################
 ## \brief modifies permissions on permissions entry
@@ -187,7 +187,7 @@ def modify_file_permissions_by_key(permissions_key, new_permissions):
 ## \todo Stub - needs testing
 ###########################################################################
 def modify_file_permissions_by_keys(file_key, user_key, permissions):
-	return modify_file_permissions_by_keys(file_key,user_key, permissions)
+	return PAL.modify_file_permissions_by_keys(file_key,user_key, permissions)
 
 ###########################################################################
 ## \brief removes all file permissions entries pertaining to file entry
@@ -198,7 +198,7 @@ def modify_file_permissions_by_keys(file_key, user_key, permissions):
 ## \todo Stub - needs testing
 ###########################################################################
 def revoke_all_by_file_key(file_key):
-	return revoke_all_by_file_key(file_key)
+	return PAL.revoke_all_by_file_key(file_key)
 
 ###########################################################################
 ## \brief removes all file permissions pertaining to an user entry
@@ -209,7 +209,7 @@ def revoke_all_by_file_key(file_key):
 ## \todo Stub - needs testing
 ###########################################################################
 def revoke_all_by_user_key(user_key):
-	return revoke_all_by_user_key(user_key)
+	return PAL.revoke_all_by_user_key(user_key)
 
 ###########################################################################
 ## \brief removes a file permission
@@ -220,7 +220,7 @@ def revoke_all_by_user_key(user_key):
 ## \todo Stub - needs testing
 ###########################################################################
 def revoke_permissions_by_key(permissions_key):
-	return revoke_permissions_by_ker(permissions_key)
+	return PAL.revoke_permissions_by_ker(permissions_key)
 
 ###########################################################################
 ## \brief removes a file permissions
@@ -232,7 +232,7 @@ def revoke_permissions_by_key(permissions_key):
 ## \todo Stub - needs testing
 ###########################################################################
 def revoke_user_file_permissions(file_key, user_key):
-	return revoke_user_file_permissions(file_key, user_key)
+	return PAL.revoke_user_file_permissions(file_key, user_key)
 
 ###########################################################################
 ## \brief retrieves a entry from the permissions table
@@ -244,7 +244,10 @@ def revoke_user_file_permissions(file_key, user_key):
 ## \todo Stub - needs testing
 ###########################################################################
 def get_user_file_permissions(file_key, user_key):
-	return get_user_file_permissions(file_key, user_key)
+	return PAL.get_user_file_permissions(file_key, user_key)
+
+def get_permissions_by_key(permissions_key):
+	return PAL.get_permissions_by_key(permissions_key)
 
 ###########################################################################
 ## \brief retrieves a entry from the permissions table
@@ -256,7 +259,7 @@ def get_user_file_permissions(file_key, user_key):
 ## \todo Stub - needs testing
 ###########################################################################
 def get_user_file_permissions_key(file_key, user_key):
-	return get_user_file_permissions(file_key, user_key).key
+	return PAL.get_user_file_permissions(file_key, user_key).key
 
 ###########################################################################
 ## \brief gets a list of permissions pertaining to a file
@@ -267,7 +270,7 @@ def get_user_file_permissions_key(file_key, user_key):
 ## \todo Stub - needs testing
 ###########################################################################
 def get_file_permissions_list(file_key):
-	return get_file_permissions_list(file_key)
+	return PAL.get_file_permissions_list(file_key)
 
 ###########################################################################
 ## \brief gets a list of permissions pertaining to a user
@@ -278,4 +281,4 @@ def get_file_permissions_list(file_key):
 ## \todo Stub - needs testing
 ###########################################################################
 def get_user_permissions_list(user_key):
-	return get_user_permissions_list(user_key)
+	return PAL.get_user_permissions_list(user_key)
