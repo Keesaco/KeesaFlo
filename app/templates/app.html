@@ -24,19 +24,19 @@
         <button type="button" class="toggletools navbar-toggle pull-left visible-xs" data-toggle="offcanvas">
 			<span class="glyphicon glyphicon-th-list white"></span>
 		</button>
-		<a class="tour-step tour-step-four navbar-brand logo" href="#!/"><img src="/static/images/logo.png">FlowCloud</a>
+		<a class="navbar-brand logo" href="#!/"><img src="/static/images/logo.png">FlowCloud</a>
 	</div>
 	<div class="nav-collapse navbar-collapse collapse" id="dropdownmenu">
 		<ul class="nav navbar-nav navbar-right">
-			<li><a class="tour-step tour-step-two togglefiles">Files</a></li>
+			<li><a class="tour-step files togglefiles">Files</a></li>
 			<li class="dropdown">
-                <a class="tour-step tour-step-five dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user bullet-glyphicon"></span>{{ authed_user_nick }}<b class="caret"></b></a>
+                <a class="tour-step account dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user bullet-glyphicon"></span>{{ authed_user_nick }}<b class="caret"></b></a>
                 <ul class="dropdown-menu">
 					<li><a title="Settings" data-toggle="modal" data-target="#settingsModal">Settings</a></li>
 					<li class="divider"></li>
 					<li><a title="Help" id="help-force-start">Help</a></li>
 					<li class="divider"></li>
-					<li><a href="{% url logout %}">Logout</a></li>
+					<li><a title="Logout" href="{% url logout %}">Logout</a></li>
 				</ul>
 			</li>
 		</ul>
@@ -50,7 +50,7 @@
 				<a class="navbar-brand" id="toolselector-header">Tools</a>
 			</div>
 		</nav>
-		<div class="tour-step tour-step-six navpanel" id="toolselector">
+		<div class="navpanel" id="toolselector">
 			<span>Loading...</span>
 		</div>
     </div>
