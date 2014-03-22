@@ -133,6 +133,11 @@ a.list-group-item
 	text-align: center;
 }
 
+.dropdown-pad
+{
+	padding-right: 12px;
+}
+
 a.list-group-item:hover {
 	background-color: #333333;
 }
