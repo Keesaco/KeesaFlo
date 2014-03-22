@@ -45,7 +45,7 @@ def save_fcs(	name,
 ## \author rmurley@keesaco.com of Keesaco
 ###########################################################################
 def visualise(	name):
-	subprocess.call(["Rscript", "visualise.r", name, name + '.png'])
+	subprocess.call(["Rscript", "visualise.r", name, name + '.png', name + 'info.txt'])
 
 ###########################################################################
 ## \brief Saves a visualisation of an fcs file

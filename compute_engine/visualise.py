@@ -41,9 +41,12 @@ while alive:
 		Ana.visualise(name)
 		## Save visualisation to cloud storage.
 		Ana.save_vis(name + '.png')
+		## Saves info about fcs file to cloud storage
+		Ana.save_info(name + 'info.txt')
 		## Clean up.
 		os.remove(name)
 		os.remove(name + '.png')
+		os.remove(name + 'info.txt')
 	elif (commands[0] == 'gate_rec'):
 		name = commands[1]
 		points = commands[2]
