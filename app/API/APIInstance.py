@@ -9,7 +9,7 @@
 ## \sa app.API.PALInstance
 ###########################################################################
 
-
+import API.PALInstance as instances
 
 ###########################################################################
 ## \brief Counts the number of active instances.
@@ -18,3 +18,11 @@
 ###########################################################################
 def count():
 	instances.count()
+
+###########################################################################
+## \brief starts a new instances.
+## \return returns True if successful, false otherwise.
+## \author rmurley@keesaco.com of Keesaco
+###########################################################################
+def start():
+	instances.start('f1-micro')
