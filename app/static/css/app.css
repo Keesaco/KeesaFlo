@@ -163,7 +163,7 @@ html, body, .row
 		padding: 20px;
 }
 	
-	.navbar-togglel {
+	.navbar-toggle {
 	position: relative;
 	float: right;
 	padding: 9px 10px;
@@ -173,6 +173,11 @@ html, body, .row
 	background-color: transparent;
 	border: 1px solid transparent;
 	border-radius: 4px;
+}
+
+.toggletools
+{
+	margin-left: 15px;
 }
 
 	.sidebar-offcanvas {
