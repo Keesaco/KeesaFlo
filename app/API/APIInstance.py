@@ -10,6 +10,8 @@
 ###########################################################################
 
 import API.PALInstance as instances
+from Analysis.ComputeEngine.ComputeEngineConfig import *
+from uuid import uuid1
 
 ###########################################################################
 ## \brief Counts the number of active instances.
@@ -25,4 +27,9 @@ def count():
 ## \author rmurley@keesaco.com of Keesaco
 ###########################################################################
 def start():
-	instances.start('f1-micro')
+	## Generate unique identifier, removing hyphens.
+	id = UNIQUE_NAME + '-' + str(uuid1())
+	## Create persistent disk.
+	print instances.create_disk(id)
+	## Start instance.
+	print instances.start(id, id)

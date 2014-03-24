@@ -17,5 +17,5 @@ gsutil cp -R gs://keesaco_gce/* .
 ## Runs the visualisation script
 python visualise.py
 ## Shut own instance down.
-#gcutil deleteinstance "$INSTANCE_NAME" -f --nodelete_boot_pd
-echo "INSTANCE SHOULD BE SHUT DOWN"
+gcutil deleteinstance "$INSTANCE_NAME" -f --delete_boot_pd
+#echo "INSTANCE SHOULD BE SHUT DOWN"

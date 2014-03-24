@@ -279,14 +279,14 @@ def block_until_done(gce_service, auth_http, response):
 		if 'zone' in response:
 			zone_name = response['zone'].split('/')[-1]
 			request = gce_service.zoneOperations().get(
-				project=PROJECT_ID,
-				operation=operation_id,
-				zone=zone_name)
+				project = PROJECT_ID,
+				operation = operation_id,
+				zone = zone_name)
 		else:
 			request = gce_service.globalOperations().get(
-				project=PROJECT_ID, operation=operation_id)
+				project = PROJECT_ID, operation = operation_id)
 
-		response = request.execute(http=auth_http)
+		response = request.execute(http = auth_http)
 		if response:
 			status = response['status']
 			
