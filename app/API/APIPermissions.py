@@ -159,7 +159,6 @@ def get_file_by_owner_key(owner_key):
 ## \return entity key
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
-## \todo Stub - needs testing
 ###########################################################################
 def add_file_permissions(permissions_file_key,permissions_user_key, permissions):
 	return PAL.add_file_permissions(permissions_file_key, permissions_user_key, permissions)
@@ -171,7 +170,6 @@ def add_file_permissions(permissions_file_key,permissions_user_key, permissions)
 ## \return True on success, False otherwise
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
-## \todo Stub - needs testing
 ###########################################################################
 def modify_file_permissions_by_key(permissions_key, new_permissions):
 	return PAL.modify_file_permissions_by_key(permissions_key,new_permissions)
@@ -184,7 +182,6 @@ def modify_file_permissions_by_key(permissions_key, new_permissions):
 ## \return  True on success, False otherwise
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
-## \todo Stub - needs testing
 ###########################################################################
 def modify_file_permissions_by_keys(file_key, user_key, permissions):
 	return PAL.modify_file_permissions_by_keys(file_key,user_key, permissions)
@@ -195,7 +192,6 @@ def modify_file_permissions_by_keys(file_key, user_key, permissions):
 ## \return True on success, False otherwise
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
-## \todo Stub - needs testing
 ###########################################################################
 def revoke_all_by_file_key(file_key):
 	return PAL.revoke_all_by_file_key(file_key)
@@ -206,7 +202,6 @@ def revoke_all_by_file_key(file_key):
 ## \return True on success, False otherwise
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
-## \todo Stub - needs testing
 ###########################################################################
 def revoke_all_by_user_key(user_key):
 	return PAL.revoke_all_by_user_key(user_key)
@@ -217,7 +212,6 @@ def revoke_all_by_user_key(user_key):
 ## \return True on success, False otherwise
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
-## \todo Stub - needs testing
 ###########################################################################
 def revoke_permissions_by_key(permissions_key):
 	return PAL.revoke_permissions_by_key(permissions_key)
@@ -229,7 +223,6 @@ def revoke_permissions_by_key(permissions_key):
 ## \return True on success, False otherwise
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
-## \todo Stub - needs testing
 ###########################################################################
 def revoke_user_file_permissions(file_key, user_key):
 	return PAL.revoke_user_file_permissions(file_key, user_key)
@@ -241,11 +234,18 @@ def revoke_user_file_permissions(file_key, user_key):
 ## \return FilePermissions object on sucess, False otherwise
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
-## \todo Stub - needs testing
 ###########################################################################
 def get_user_file_permissions(file_key, user_key):
 	return PAL.get_user_file_permissions(file_key, user_key)
 
+
+###########################################################################
+## \brief retrieves a entry from the permissions table
+## \param permissions_key - [Key] key of permissions entry pertains to
+## \return FilePermissions object on sucess, False otherwise
+## \author jmccrea@keesaco.com of Keesaco
+## \author cwike@keesaco.com of Keesaco
+###########################################################################
 def get_permissions_by_key(permissions_key):
 	return PAL.get_permissions_by_key(permissions_key)
 
@@ -256,7 +256,6 @@ def get_permissions_by_key(permissions_key):
 ## \return FilePermissions key, False otherwise
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
-## \todo Stub - needs testing
 ###########################################################################
 def get_user_file_permissions_key(file_key, user_key):
 	return PAL.get_user_file_permissions(file_key, user_key).key
@@ -267,7 +266,6 @@ def get_user_file_permissions_key(file_key, user_key):
 ## \return iterator object over FilePermissions object on sucess, or False otherwise
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
-## \todo Stub - needs testing
 ###########################################################################
 def get_file_permissions_list(file_key):
 	return PAL.get_file_permissions_list(file_key)
@@ -278,7 +276,6 @@ def get_file_permissions_list(file_key):
 ## \return iterator object over FilePermissions object on sucess, or False otherwise
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
-## \todo Stub - needs testing
 ###########################################################################
 def get_user_permissions_list(user_key):
 	return PAL.get_user_permissions_list(user_key)
