@@ -171,7 +171,7 @@ def get_dataset(request, dataset):
 ## \return the file requested
 ###########################################################################
 def get_info(request, infofile):
-	return fetch_file(INFO_BUCKET + '/' + infofile, 'text/plain')
+	return fetch_file(INFO_BUCKET + '/' + infofile, 'text/html')
 
 ###########################################################################
 ## \brief Return a response containing the file
