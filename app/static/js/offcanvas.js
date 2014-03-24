@@ -4,11 +4,11 @@ $(function() {
     $('.toggletools').click(function() {
         $marginLefty.animate({
             marginLeft: parseInt($marginLefty.css('marginLeft'), 10) == 0 ?
-                -$marginLefty.outerWidth() : 0
+                -50 : 0
         });
         $marginPanel.animate({
             marginLeft: parseInt($marginPanel.css('marginLeft'), 10) == 0 ?
-                $marginLefty.outerWidth() : 0
+                50 : 0
         });
     });
     $(window).resize(function() {
@@ -25,7 +25,7 @@ $(function() {
         }
         else {
             $marginLefty.css({
-                marginLeft: -$marginLefty.outerWidth()
+                marginLeft: -50
             });
         }
     });
