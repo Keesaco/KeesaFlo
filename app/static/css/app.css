@@ -6,24 +6,28 @@
 	height: 100%;
 }
 
-.tool  a {
-		color: #AAAAAA;
-		display: block;
-		font-weight: bold;
+.tool  a
+{
+	color: #AAAAAA;
+	display: block;
+	font-weight: bold;
 }
 
-.tool a p {
-		padding-left: 20px;
-		font-size: 100%;
+.tool a p
+{
+	padding-left: 20px;
+	font-size: 100%;
 }
 
-.tool a:hover {
-		color: #E6E6E6;
-		text-decoration: none;
+.tool a:hover
+{
+	color: #E6E6E6;
+	text-decoration: none;
 }
 
-.tool a:hover img {
-		-webkit-filter: brightness(1.3);
+.tool a:hover img
+{
+	-webkit-filter: brightness(1.3);
 }
 
 .navbar
@@ -36,77 +40,97 @@
 	border-color: #3D3D3D;
 }
 
-.navbar-brand img {
+.navbar-brand img
+{
 	height: 30px;
 	margin-right: 10px; 
 }
 
-.logo {
-		padding: 10px 15px;
-
+.logo
+{
+	padding: 10px 15px;
 }
 
 .navpanel
 {
 	bottom: 0px;
 	background-color: #222222;
+	width: 50px;
 }
 
-.apppanel, .navpanel
+.apppanel, .navpanel, .filepanel
 {
 	position: absolute;
 	top: 50px; /* height of the navbar */
 	overflow: auto;
-	width: 100%;
+}
+
+.navpanel, .filepanel
+{
+	bottom: 0px;
+	background-color: #222222;
+}
+
+.filepanel
+{
+	width: 100%;	
 }
 
 .apppanel
 {
-	//left: 20%;
-	bottom: 0;
+	left: 50px;
+	right: 0px;
+	bottom: 0px;
 	padding: 20px;
 	background-color: #E6E6E6;
 }
 
 .bottom-nav
 {
-		position: absolute;
-		bottom: 0;
-		width: 100%;
+	position: absolute;
+	bottom: 0;
+	width: 100%;
 }
 
-.bottom-nav li {
+.bottom-nav li
+{
 	margin-left: 0;
 	width: 100%;
 	text-align: center;
 	border-top: 1px solid #3D3D3D;
 }
 
-.nav-pills > li > a {
+.nav-pills > li > a
+{
 	border-radius: 0;
 	background-color: #222222;
 	color: #AAAAAA;
 }
 
-.nav-pills > li > a:hover {
+.nav-pills > li > a:hover
+{
 	background-color: #333333;
 }
 
-.bottom-nav > li + li { /* used to overlap bootstrap style */
+/* used to overlap bootstrap style */
+.bottom-nav > li + li
+{
 	margin-left: 0;
 }
 
-.list-group 
+.list-group
 {
 	width: 100%;
 }
 
-.list-group-item:last-child {
+.list-group-item:last-child
+{
 	border-bottom-right-radius: 0;
 	border-bottom-left-radius: 0;
 }
 
-.list-group-item:first-child {
+.list-group-item:first-child
+{
 	border-top-right-radius: 0;
 	border-top-left-radius: 0;
 }
@@ -137,7 +161,8 @@ a.list-group-item
 	padding-right: 12px;
 }
 
-a.list-group-item:hover {
+a.list-group-item:hover
+{
 	background-color: #333333;
 }
 
@@ -154,15 +179,16 @@ html, body, .row
 
 .tool
 {
-		color: #333333;
+	color: #333333;
 }
 
 .tool img {
-		width: 50%;
-		padding: 20px;
+	width: 50%;
+	padding: 20px;
 }
 	
-	.navbar-toggle {
+.navbar-toggle
+{
 	position: relative;
 	float: right;
 	padding: 9px 10px;
@@ -179,27 +205,30 @@ html, body, .row
 	margin-left: 15px;
 }
 
-	.sidebar-offcanvas {
-		margin-right: -16.7%;
-		overflow: hidden;
-		position: fixed;
-		top: 0;
-		right: 0;
-		height: 100%;
-		z-index: 2;
-	} 
-	
-	.toolbar-offcanvas{
-		top: 0;
-		left: 0;
-		height:100%;
-		z-index: 900;
+.sidebar-offcanvas 
+{
+	margin-right: -16.7%;
+	overflow: hidden;
+	position: fixed;
+	top: 0;
+	right: 0;
+	height: 100%;
+	z-index: 2;
 }
 
-	
-	#sidebar:target {
-		 width: 16.7%;
-	}
+.toolbar-offcanvas
+{
+	top: 0;
+	left: 0;
+	height:100%;
+	z-index: 900;
+}
+
+
+#sidebar:target
+{
+	width: 16.7%;
+}
 	
 .bullet-glyphicon
 {
@@ -208,41 +237,47 @@ html, body, .row
 
 .footnav-pad
 {
-padding-bottom: 20px;	
+	padding-bottom: 20px;	
 }
 
-.file-preview {
+.file-preview
+{
+	overflow: hidden;
+}
+
+.white
+{
+	color: #ffffff;
+}
+
+@media screen and (max-width: 767px)
+{
+	.toolbar-offcanvas
+	{
+		margin-left: -41.7%;
 		overflow: hidden;
-}
-
-.white {
-		color: #ffffff;
-}
-
-@media screen and (max-width: 767px) {
-	
-	
-	.toolbar-offcanvas {
-			margin-left: -41.7%;
-			overflow: hidden;
-			position: fixed;
-			z-index: 2;
+		position: fixed;
+		z-index: 2;
 	}
 	
-	.sidebar-offcanvas {
-			margin-right: -50%;
+	.sidebar-offcanvas
+	{
+		margin-right: -50%;
 	}
 	
-	.apppanel {
-			left: 0;
+	.apppanel
+	{
+		left: 0;
 	}
 	
-	.col-sm-10 {
-			overflow: hidden;
+	.col-sm-10
+	{
+		overflow: hidden;
 	}
 }
 
-.greybox {
+.greybox
+{
 	float: left;
 	max-width: 475px;
 	text-shadow: 0 1px 1px rgba(0,0,0,0.8);
@@ -250,14 +285,16 @@ padding-bottom: 20px;
 	padding: 8px;
 }
 
-#flow-graph-container {
+#flow-graph-container
+{
 	position: relative;
 	width: 480px;
 	height: 480px;
 }
 
 /* allows a div to be position exactly over the other elements in its div */
-.over-graph {
+.over-graph
+{
 	position: absolute;
 	top: 0px;
 	left: 0px;
@@ -266,12 +303,14 @@ padding-bottom: 20px;
 }
 
 /* leave space arround action buttons on the app page*/
-.action-btn-group {
+.action-btn-group
+{
 	padding: 20px;
 }
 
 /* contains the app page's main elements */
-.app-well {
+.app-well
+{
 	vertical-align: top;
 	display: inline-block;
 	margin-bottom: 20px;
@@ -279,12 +318,15 @@ padding-bottom: 20px;
 }
 
 /* allows a link into a label to show nicely */
-.label > a {
+.label > a
+{
+
 	color: #fff;
 	cursor: pointer;
 }
 
 /* fix a weird padding on the welcome jumbotron */
+
 .jumbotron > h2 {
 	margin-bottom: 30px;
 }
@@ -301,4 +343,10 @@ padding-bottom: 20px;
 	background-image: url('../images/spinner.gif');
 	background-repeat: no-repeat;
 	background-position: center;
+}
+
+.large-name
+{
+	font-size:		130%;
+	font-weight:	bold;
 }

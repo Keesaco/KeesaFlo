@@ -24,13 +24,13 @@
         <button type="button" class="toggletools navbar-toggle pull-left visible-xs" data-toggle="offcanvas">
 			<span class="glyphicon glyphicon-th-list white"></span>
 		</button>
-		<a class="tour-step tour-step-four navbar-brand logo" href="#!/"><img src="/static/images/logo.png">KeesaFlo</a>
+		<a class="navbar-brand logo" href="#!/"><img src="/static/images/logo.png">KeesaFlo</a>
 	</div>
 	<div class="nav-collapse navbar-collapse collapse" id="dropdownmenu">
 		<ul class="nav navbar-nav navbar-right">
 			<li><a class="tour-step files togglefiles">Files</a></li>
 			<li class="dropdown">
-                <a class="tour-step tour-step-five dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user bullet-glyphicon"></span>{{ authed_user_nick }}<b class="caret"></b><span class="dropdown-pad"></span></a>
+                <a class="tour-step account dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user bullet-glyphicon"></span>{{ authed_user_nick }}<b class="caret"></b><span class="dropdown-pad"></span></a>
                 <ul class="dropdown-menu">
 					<li><a title="Settings" data-toggle="modal" data-target="#settingsModal">Settings</a></li>
 					<li class="divider"></li>
@@ -44,7 +44,7 @@
 </nav>
 <div class="row row-offcanvas row-offcanvas-left">
     <!--toolbar-->
-    <div class="col-sm-1 col-xs-2 toolbar-offcanvas tools-offcanvas" id="sidebar2" role="navigation">
+    <div class="toolbar-offcanvas tools-offcanvas" id="sidebar2" role="navigation">
         <nav class="navbar navbar-inverse navbar-default navbar-static-top" role="navigation">
 			<div class="navbar-header">
 				<a class="navbar-brand" id="toolselector-header">Tools</a>
@@ -55,10 +55,8 @@
 		</div>
     </div>
 	<!-- main panel -->
-	<div class="col-sm-11">
-		<div class="apppanel tools-offcanvas" id="appmain">
-			<span>Loading...</span>
-		</div>
+	<div class="apppanel tools-offcanvas" id="appmain">
+		<span>Loading...</span>
 	</div>
     <!-- file panel -->
 	<div class="col-sm-2 col-xs-5 sidebar-offcanvas" id="sidebar" role="navigation">
@@ -67,13 +65,13 @@
 				<a class="navbar-brand togglefiles" href="#">Files</a>
 			</div>
 		</nav>
-		<div class="navpanel">
+		<div class="filepanel">
 			<div class="list-group" id="filelist">
 				<a class="list-group-item">Loading...</a>
 			</div>
 		</div>
 		<ul class="nav nav-pills bottom-nav">
-			<li class="tour-step tour-step-one"><a title="Upload"  data-toggle="modal" data-target="#uploadModal"><span class="glyphicon glyphicon-cloud-upload"></span> Upload</a></li>
+			<li class="tour-step upload"><a title="Upload"  data-toggle="modal" data-target="#uploadModal"><span class="glyphicon glyphicon-cloud-upload"></span> Upload</a></li>
 		</ul>
 	</div>
 </div>
@@ -135,9 +133,6 @@
     <!--Placed at the end of the document so the pages load faster but lot of these might not be useful to load-->
     {{ block.super }}
     {% load staticfiles %}
-    <script src="{% static "js/offcanvas.js" %}"></script>
-    <script src="{% static "js/togglelink.js" %}"></script>
-
 	<script src="{% static "js/canvas.js" %}"></script>
 	<script src="{% static "js/graphTools.js" %}"></script>
 	<script src="{% static "js/tools.js" %}"></script>
