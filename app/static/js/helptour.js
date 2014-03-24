@@ -152,8 +152,7 @@ var keesafloTour = new Tour
 						next:		-1,
 						prev: 		9
 					}
-				],
-	debug:		true
+				]
 });
 
 // Shows the tool bar on true, hides on false.
