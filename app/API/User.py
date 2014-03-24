@@ -31,6 +31,7 @@ class User:
 		self._user_id = None
 		self._federated_provider = None
 		self._email = None
+		self.found = False
 		
 		try:
 			google_user = users.User(email_addr,federated_identity)
@@ -41,7 +42,8 @@ class User:
 			self._nickname = google_user.nickname()
 			self._user_id = google_user.user_id()
 			self._federated_provider = google_user.federated_provider()
-			self._email = google_user.email()	
+			self._email = google_user.email()
+			self.found = True
 
 	###########################################################################
 	## \brief getter for nickname
@@ -86,6 +88,25 @@ class User:
 	###########################################################################
 	def federated_provider(self):
 		return self._federated_provider
-		
-		
-		
+
+	###########################################################################
+	## \brief setter for user nickname
+	## \param nickname - [String] new nickname
+	## \return None
+	## \author cwike@keesaco.com of keesaco
+	## \author jmccrea@keesaco.com of keesaco
+	###########################################################################
+	def set_nickname(self, nickname):
+		self._nickname = nickname
+
+	###########################################################################
+	## \brief setter for unique_id
+	## \param unique_id - [String] new unique_id
+	## \return None
+	## \author cwike@keesaco.com of keesaco
+	## \author jmccrea@keesaco.com of keesaco
+	###########################################################################
+	def set_user_id(self, user_id):
+		self._user_id = user_id
+
+
