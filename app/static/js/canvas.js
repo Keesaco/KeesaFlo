@@ -213,6 +213,10 @@ ksfCanvas.enableBtn = function(btn, enable){
     } else {
         $(btn).attr('disabled','disabled');
     }
+
+    if (btn === REQUEST_GATING_BTN) {
+        ksfCanvas.blinkButton(btn);
+    }
 }
 
 /*
@@ -231,6 +235,12 @@ ksfCanvas.setLoading = function(enable) {
     }
 }
 
+/*
+* \fn ksfCanvas.blinkButton()
+* \brief Makes an element blink
+* \param btn - element to blink (#id, .class, etc)
+* \author mrudelle@keesaco.com of Keesaco
+*/
 ksfCanvas.blinkButton = function(btn) {
     var resetBackColor = $(btn).css('background-color');
     var resetColor = $(btn).css('color');
@@ -238,12 +248,12 @@ ksfCanvas.blinkButton = function(btn) {
         {
             "background-color": "#FF8500",
             "color": "#fff"
-        }, 500, function()
+        }, 200, function()
         {
             $(btn).animate(
             {
               "background-color": resetBackColor,
               "color": resetColor
-            }, 500);
+            }, 800);
         });
 }
