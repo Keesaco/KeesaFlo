@@ -117,10 +117,9 @@ class TestAPIPermissions(unittest.TestCase):
 	###########################################################################
 	## \brief 	Tests modifying existing user by id
 	## \note 	depends on functioning add_user, get_user_by_key function
-	## \note 	test not functioning, skips, however tested to work
 	## \author 	cwike@Keesaco.com of Keesaco
 	###########################################################################
-	@unittest.skip("Manually tested to work")
+	#@unittest.skip("Manually tested to work")
 	def test_user_modify_user_by_id_succeed(self):
 		usr = User('somebody@somewheremids.com')
 		usr.set_nickname('Somebodymids')
@@ -177,6 +176,12 @@ class TestAPIPermissions(unittest.TestCase):
 		self.assertEqual(ps.get_user_by_key(key).email(), usr.email())
 	
 	def test_user_get_user_key_by_id(self):
+		usr = User('somebody@somewhereguki.com')
+		usr.set_nickname('Somebodyguki')
+		usr.set_user_id('SomeUserid1234guki')
+		key = ps.add_user(usr)
+
+		self.assertEqual(key,ps.get_user_key_by_id("SomeUserid1234guki"))
 
 	###########################################################################
 	## \brief 	Tests adding a new file to table
@@ -313,23 +318,72 @@ class TestAPIPermissions(unittest.TestCase):
 		with self.assertRaises(StopIteration):
 			ps.get_user_permissions_list(uk).next()
 
-	def test_permissions_revoke_by_key(self):
-		pass
+	def test_permissions_revoke_permissions_by_key(self):
+		key = ps.add_file_permissions(ndb.Key("fk","rpbk"),ndb.Key("uk","rpbk"),Permissions(True,True,True))
+		ps.revoke_permissions_by_key(key)
+
+		self.assertIsNone(ps.get_permissions_by_key(key))
 
 	def test_permissions_revoke_user_file_permissions(self):
-		pass
+		user_key = ndb.Key("uk","rufp")
+		file_key = ndb.Key("fk","rufp")
+		ps.add_file_permissions(file_key,user_key,Permissions(True,True,True))
+		ps.revoke_user_file_permissions(file_key,user_key)
+		self.assertIsNone(ps.get_user_file_permissions(file_key,user_key))
 
 	def test_permissions_get_user_file_permissions(self):
-		pass
+		user_key = ndb.Key("uk","gufp")
+		file_key = ndb.Key("fk","gufp")
+		perms = Permissions(True,True,True)
+		ps.add_file_permissions(file_key,user_key,perms)
+
+		obj = ps.get_user_file_permissions(file_key,user_key)
+
+		self.assertEqual(obj.user_key, user_key)
+		self.assertEqual(obj.file_key, file_key)
+		self.assertEqual(obj.read, perms.read)
+		self.assertEqual(obj.write, perms.write)
+		self.assertEqual(obj.full_control, perms.full_control)
 
 	def test_permissions_get_permissions_by_key(self):
-		pass
+		user_key = ndb.Key("uk","gpbk")
+		file_key = ndb.Key("fk","gpbk")
+		perms = Permissions(True,True,True)
+		key = ps.add_file_permissions(file_key,user_key,perms)
+
+		obj = ps.get_permissions_by_key(key)
+		self.assertEqual(obj.user_key, user_key)
+		self.assertEqual(obj.file_key, file_key)
+		self.assertEqual(obj.read, perms.read)
+		self.assertEqual(obj.write, perms.write)
+		self.assertEqual(obj.full_control, perms.full_control)
 
 	def test_permissions_get_user_file_permissions_key(self):
-		pass
+		user_key = ndb.Key("uk","gpbk")
+		file_key = ndb.Key("fk","gpbk")
+		perms = Permissions(True,True,True)
+		key = ps.add_file_permissions(file_key,user_key,perms)
+		self.assertEqual(key,ps.get_user_file_permissions_key(file_key,user_key))
 
 	def test_permissions_get_file_permissions_list(self):
-		pass
+		fk = ndb.Key("fk","gfpl")
+		ps.add_file_permissions(fk,ndb.Key("uk","gfpl1"),Permissions(True,True,True))
+		ps.add_file_permissions(fk,ndb.Key("uk","gfpl2"),Permissions(True,True,True))
+		ps.add_file_permissions(fk,ndb.Key("uk","gfpl3"),Permissions(True,True,True))
+
+		permissions = ps.get_file_permissions_list(fk)
+
+		for permission in permissions:
+			self.assertEqual(permission.file_key, fk)
+
 
 	def test_permissions_get_user_permissions_list(self):
-		pass
+		uk = ndb.Key("uk","gupl")
+		ps.add_file_permissions(ndb.Key("fk","gupl1"),uk,Permissions(True,True,True))
+		ps.add_file_permissions(ndb.Key("fk","gupl2"),uk,Permissions(True,True,True))
+		ps.add_file_permissions(ndb.Key("fk","gupl3"),uk,Permissions(True,True,True))
+
+		permissions = ps.get_file_permissions_list(uk)
+
+		for permission in permissions:
+			self.assertEqual(permission.user_key, uk)

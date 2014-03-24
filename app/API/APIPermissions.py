@@ -220,7 +220,7 @@ def revoke_all_by_user_key(user_key):
 ## \todo Stub - needs testing
 ###########################################################################
 def revoke_permissions_by_key(permissions_key):
-	return PAL.revoke_permissions_by_ker(permissions_key)
+	return PAL.revoke_permissions_by_key(permissions_key)
 
 ###########################################################################
 ## \brief removes a file permissions

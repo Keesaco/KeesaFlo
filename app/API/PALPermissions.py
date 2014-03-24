@@ -429,8 +429,8 @@ def get_file_permissions_list(file_key):
 ## \todo Stub - needs testing
 ###########################################################################
 def get_user_permissions_list(user_key):
-	if(isinstance(file_key,ndb.Key)):
-		query = FilePermissions.query(FilePermissions.file_key == file_key)
+	if(isinstance(user_key,ndb.Key)):
+		query = FilePermissions.query(FilePermissions.user_key == user_key)
 		return query.iter()
 	else:
 		return False
