@@ -1,1 +1,2 @@
-$("#help-force-start").click(function () { help_force_start(); } );
+$("#help-force-start").click(function () { helpForceStart(); } );
+$("#file-selector-open").click(function () { fileSelector(); } );
