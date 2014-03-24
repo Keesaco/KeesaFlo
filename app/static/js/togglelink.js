@@ -1,39 +1,69 @@
-function ksfToogleLink() {
+/*
+ * \file app/static/js/togglelink.js
+ * \brief JavaScript library to manage toggling the file selector panel
+ * \author mrudelle@keesaco.com of Keesaco
+ * \author hdoughty@keesaco.com of Keesaco
+ */
+
+/*
+* \fn ksfGraphTools()
+* \brief ksfToggleLink constructor used for namespace
+* \author mrudelle@keesaco.com of Keesaco
+* \note This constructor currently (intentionally) does not have any effect
+*/
+function ksfToggleLink() {
 }
 
 FILE_SIDE_BAR = '#sidebar';
 
-ksfToogleLink.fileSelector;
+ksfToggleLink.fileSelector;
 
-ksfToogleLink.fileSelector = function()
+/*
+* \fn ksfToggleLink.fileSelector
+* \brief Oppens the file selector panel
+* \author swhitehouse@keesaco.com of Keesaco
+*/
+ksfToggleLink.fileSelector = function()
 {
-    ksfToogleLink.fileSelector.animate({
+    ksfToggleLink.fileSelector.animate({
         marginRight: 0
     });
 }
 
-ksfToogleLink.toogleFileSelector = function()
+/*
+* \fn ksfToggleLink.toggleFileSelector
+* \brief Toggle the file selector panel
+* \author hdoughty@keesaco.com of Keesaco
+* \author mrudelle@keesaco.com of Keesaco
+*/
+ksfToggleLink.toggleFileSelector = function()
 {
-    ksfToogleLink.fileSelector.animate({
-        marginRight: parseInt(ksfToogleLink.fileSelector.css('marginRight'), 10) == 0 ?
-        -ksfToogleLink.fileSelector.outerWidth() : 0
+    ksfToggleLink.fileSelector.animate({
+        marginRight: parseInt(ksfToggleLink.fileSelector.css('marginRight'), 10) == 0 ?
+        -ksfToggleLink.fileSelector.outerWidth() : 0
     });
     var browserWidth = $(window).width();
-    if(browserWidth <= 767 && parseInt(ksfToogleLink.fileSelector.css('marginRight'), 10) < 0) {
+    if(browserWidth <= 767 && parseInt(ksfToggleLink.fileSelector.css('marginRight'), 10) < 0) {
         $('#dropdownmenu').toggleClass('collapse');
         $('#dropdownmenu').toggleClass('in');
     }
 }
 
-ksfToogleLink.addToogleFilesListener = function() 
+/*
+* \fn ksfToggleLink.addToggleFilesListener
+* \brief Adds the listener to toggle the file selector panel 
+* \author hdoughty@keesaco.com of Keesaco
+* \author mrudelle@keesaco.com of Keesaco
+*/
+ksfToggleLink.addToggleFilesListener = function() 
 {
-    ksfToogleLink.fileSelector = $(FILE_SIDE_BAR);
-    $('.togglefiles').click(ksfToogleLink.toogleFileSelector);
+    ksfToggleLink.fileSelector = $(FILE_SIDE_BAR);
+    $('.togglefiles').click(ksfToggleLink.toggleFileSelector);
 
     $(window).resize(function() {
-        if(parseInt(ksfToogleLink.fileSelector.css('marginRight'), 10) < 0) {
-            ksfToogleLink.fileSelector.css({
-                marginRight: -ksfToogleLink.fileSelector.outerWidth()
+        if(parseInt(ksfToggleLink.fileSelector.css('marginRight'), 10) < 0) {
+            ksfToggleLink.fileSelector.css({
+                marginRight: -ksfToggleLink.fileSelector.outerWidth()
             });
         }
     });
