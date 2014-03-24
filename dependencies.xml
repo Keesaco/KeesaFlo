@@ -77,11 +77,11 @@
 			</move>
 		</package>
 		<package name="djangoappengine">
-			<uri>https://github.com/django-nonrel/djangoappengine/archive/master.zip</uri>
+			<uri>https://github.com/django-nonrel/djangoappengine/archive/88cd09754544bbd71727fd533ab4640e96b1b584.zip</uri>
 			<unzip>1</unzip>
 			<move>
 				<mkdir>app/djangoappengine</mkdir>
-				<innersource dir="1">djangoappengine-master/djangoappengine</innersource>
+				<innersource dir="1">djangoappengine-88cd09754544bbd71727fd533ab4640e96b1b584/djangoappengine</innersource>
 				<destination>app/djangoappengine</destination>
 			</move>
 		</package>
