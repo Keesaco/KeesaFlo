@@ -94,7 +94,6 @@
 
 .bottom-nav > li + li { /* used to overlap bootstrap style */
 	margin-left: 0;
-	border-left: 1px solid #3D3D3D;
 }
 
 .list-group 
@@ -276,11 +275,18 @@ html, body, .row
 
 /* allows a link into a label to show nicely */
 .label > a {
-color: #fff;
-cursor: pointer;
+	color: #fff;
+	cursor: pointer;
 }
 
 /* fix a weird padding on the welcome jumbotron */
 .jumbotron > h2 {
-margin-bottom: 30px;
+	margin-bottom: 30px;
+}
+
+/* truncate the name of the files, inserting dots */
+.file-list-item {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
