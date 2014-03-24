@@ -7,7 +7,7 @@
 
 $(function()
 {
-	$("#help-force-start").click(helpForceStart);
+	$("#help-force-start").click(appstart.toggleFileSelector);
 	appstart.addToggleHook();
 });
 
