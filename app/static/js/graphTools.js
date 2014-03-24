@@ -240,7 +240,8 @@ ksfGraphTools.OvalGating = {
 function ksfGraphTools_sendGatingRequest(gatingURL) {
 	// allows to fetch the name correctly. In the future (final release) this should be replace by a json file fetched from the server containing all the file's data
 	
-	var filename = $("#filename").text();
+	$("#filesize").remove();
+	var filename = $("#filename").text().trim();
 	
 	ksfTools.CurrentTool.resetTool();
 	ksfCanvas.toolText("Loading graph...");
