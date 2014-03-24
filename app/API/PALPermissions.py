@@ -297,7 +297,7 @@ def modify_file_permissions_by_key(permissions_key, new_permissions):
 ## \author cwike@keesaco.com of Keesaco
 ## \todo Stub - needs testing
 ###########################################################################
-def modify_file_permissions_by_keys(file_key, user_key, permissions):
+def modify_file_permissions_by_keys(file_key, user_key, new_permissions):
 	if (isinstance(user_key,ndb.Key)) and (isinstance(file_key,ndb.Key)):
 		query = FilePermissions.query(ndb.AND(FilePermissions.user_key == user_key,
 											 FilePermissions.file_key == file_key))
@@ -321,7 +321,7 @@ def modify_file_permissions_by_keys(file_key, user_key, permissions):
 ###########################################################################
 def revoke_all_by_file_key(file_key):
 	if(isinstance(file_key,ndb.Key)):
-		query = Permissions.query(Permissions.file_key == file_key)
+		query = FilePermissions.query(FilePermissions.file_key == file_key)
 		iterator = query.iter()
 		for entry in iterator:
 			entry.key.delete()
@@ -339,7 +339,7 @@ def revoke_all_by_file_key(file_key):
 ###########################################################################
 def revoke_all_by_user_key(user_key):
 	if(isinstance(user_key,ndb.Key)):
-		query = Permissions.query(Permissions.user_key == user_key)
+		query = FilePermissions.query(FilePermissions.user_key == user_key)
 		iterator = query.iter()
 		for entry in iterator:
 			entry.key.delete()
@@ -398,9 +398,9 @@ def get_user_file_permissions(file_key, user_key):
 		return False
 
 def get_permissions_by_key(permissions_key):
-	if isinstance(file_key,ndb.Key):
-		files = file_key.get()
-		return files
+	if isinstance(permissions_key,ndb.Key):
+		permissions = permissions_key.get()
+		return permissions
 	else:
 		return None
 
@@ -415,7 +415,7 @@ def get_permissions_by_key(permissions_key):
 ###########################################################################
 def get_file_permissions_list(file_key):
 	if(isinstance(file_key,ndb.Key)):
-		query = Permissions.query(Permissions.file_key == file_key)
+		query = FilePermissions.query(FilePermissions.file_key == file_key)
 		return query.iter()
 	else:
 		return False
@@ -430,7 +430,7 @@ def get_file_permissions_list(file_key):
 ###########################################################################
 def get_user_permissions_list(user_key):
 	if(isinstance(file_key,ndb.Key)):
-		query = Permissions.query(Permissions.file_key == file_key)
+		query = FilePermissions.query(FilePermissions.file_key == file_key)
 		return query.iter()
 	else:
 		return False
