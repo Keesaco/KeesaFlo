@@ -17,6 +17,7 @@ from oauth2client.file import Storage
 from oauth2client import tools
 from oauth2client.tools import run_flow
 from apiclient.discovery import build
+from uuid import uuid1
 
 ###########################################################################
 ## \brief Authenticates an http connection for use with Google APIs.
@@ -25,7 +26,7 @@ from apiclient.discovery import build
 ###########################################################################
 def auth():
 	# Open private key file and read in private key
-	f = file(PRIVATE_KEY, 'rb')
+	f = file(PRIVATE_KEY_URL, 'rb')
 	key = f.read()
 	f.close()
 	# Uses the service account email and private key to verify credentials
@@ -48,38 +49,23 @@ def build_api():
 ## \author rmurley@keesaco.com of Keesaco
 ###########################################################################
 def count():
-	gce_api = instances.build_api()
-	resp = gce_api.aggregatedList(project = PROJECT_NAME, key = ZONE).execute()
-	instance_info = resp['items'][ZONE]
+	gce_api = build_api()
+	resp = gce_api.aggregatedList(project = PROJECT_ID, key = DEFAULT_ZONE).execute()
+	instance_info = resp['items']['zones/' + DEFAULT_ZONE]
 	if 'warning' in instance_info:
 		return 0
 	else:
 		return len(instance_info['instances'])
 
 ###########################################################################
-## \brief Starts a new Compute Engine Instance.
-## \param type - type of instance to spin up.
-## \return returns True if successful, false otherwise.
-## \author rmurley@keesaco.com of Keesaco
-###########################################################################
-def start(	type	):
-	gce_api = instances.build_api()
-	resp = gce_api.aggregatedList(project = PROJECT_NAME, key = ZONE).execute()
-	instance_info = resp['items'][ZONE]
-	if 'warning' in instance_info:
-		return 0
-	else:
-		return len(instance_info['instances'])
-
-###########################################################################
-## \brief Builds JSON for an instance request.
+## \brief Builds JSON body for an instance request.
 ## \param pd_name - the persistent disk to create the instance on.
 ## \param instance_name - the name of the instance to be created
-## \param file_location - the location of the file to be analysed
 ## \return Returns the JSON for the request body of the new instance.
 ## \author swhitehouse@keesaco.com of Keesaco
+## \author rmurley@keesaco.com of Keesaco
 ###########################################################################		
-def build_request(pd_name, instance_name, file_location):
+def build_request_body(pd_name, instance_name):
 	return {
 		'name': instance_name,
 		'machineType': MACHINE_TYPE_URL,
@@ -106,9 +92,18 @@ def build_request(pd_name, instance_name, file_location):
 				},{
 				'key': 'instance_name',
 				'value': instance_name
-				},{
-				'key': 'file_location',
-				'value': file_location
 				}]
 			}]	
 		}
+
+###########################################################################
+## \brief Starts a new Compute Engine Instance.
+## \param pd_name - name of persistent disk to use.
+## \return returns True if successful, false otherwise.
+## \author rmurley@keesaco.com of Keesaco
+###########################################################################
+def start(pd_name):
+	gce_api = build_api()
+	instance_name = str(uuid1())
+	body = build_request_body(pd_name, instance_name)
+	return gce_api.insert(project = PROJECT_ID, body = body, zone = DEFAULT_ZONE).execute()
