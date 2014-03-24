@@ -4,6 +4,7 @@
 ## \author mrudelle@keesaco.com of Keesaco
 ## \author rmurley@keesaco.com of Keesaco
 ## \author jmccrea@keesaco.com
+## \author hdoughty@keesaco.com of Keesaco
 ###########################################################################
 
 from django.http import HttpResponse
@@ -22,6 +23,7 @@ import API.APIQueue as queue
 
 DATA_BUCKET = '/fc-raw-data'
 GRAPH_BUCKET = '/fc-vis-data'
+INFO_BUCKET = '/fc-info-data'
 
 def login(request):
 	link = auth.create_login_url('app/')
@@ -161,6 +163,15 @@ def get_graph(request, graph):
 ###########################################################################
 def get_dataset(request, dataset):
 	return fetch_file(DATA_BUCKET + '/' + dataset, 'application/vnd.isac.fcs')
+
+###########################################################################
+## \brief Is called when a info is requested
+## \param request - Django variable defining the request that triggered the generation of this page
+## \param dataset - the name of the file to be downloaded
+## \return the file requested
+###########################################################################
+def get_info(request, infofile):
+	return fetch_file(INFO_BUCKET + '/' + infofile, 'text/plain')
 
 ###########################################################################
 ## \brief Return a response containing the file
