@@ -1,14 +1,16 @@
+TOOLBAR_WIDTH = '50px';
+
 $(function() {
     var $marginLefty = $('#sidebar2');
     var $marginPanel = $('.apppanel');
     $('.toggletools').click(function() {
         $marginLefty.animate({
             marginLeft: parseInt($marginLefty.css('marginLeft'), 10) == 0 ?
-                -50 : 0
+                ("-" + TOOLBAR_WIDTH) : 0
         });
         $marginPanel.animate({
             marginLeft: parseInt($marginPanel.css('marginLeft'), 10) == 0 ?
-                50 : 0
+                TOOLBAR_WIDTH : 0
         });
     });
     $(window).resize(function() {
@@ -25,7 +27,7 @@ $(function() {
         }
         else {
             $marginLefty.css({
-                marginLeft: -50
+                marginLeft: ("-" + TOOLBAR_WIDTH)
             });
         }
     });
