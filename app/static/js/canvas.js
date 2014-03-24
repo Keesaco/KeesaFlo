@@ -215,6 +215,12 @@ ksfCanvas.enableBtn = function(btn, enable){
     }
 }
 
+/*
+* \fn ksfCanvas.setLoading()
+* \brief Replace the image of the graph by a spinner or the opposit
+* \param enable - [boolean] define if we replace the image by a spinner or not
+* \author mrudelle@keesaco.com of Keesaco
+*/
 ksfCanvas.setLoading = function(enable) {
     if (enable) {
         $(GRAPH_ID).addClass("loading");

@@ -291,6 +291,7 @@ html, body, .row
 	text-overflow: ellipsis;
 }
 
+/* puts a spinner in the middle of the element */
 .loading {
 	background-image: url('../images/spinner.gif');
 	background-repeat: no-repeat;
