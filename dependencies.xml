@@ -14,6 +14,13 @@
 				<destination rename="1">app/static/js/jquery.js</destination>
 			</move>
 		</package>
+		<package name="jQuery-Color">
+			<uri>http://code.jquery.com/color/jquery.color-2.1.2.min.js</uri>
+			<unzip>0</unzip>
+			<move>
+				<destination rename="1">app/static/js/jquery.color.js</destination>
+			</move>
+		</package>
 		<package name="bootstrap">
 			<uri>https://github.com/twbs/bootstrap/releases/download/v3.1.1/bootstrap-3.1.1-dist.zip</uri>
 			<unzip>1</unzip>

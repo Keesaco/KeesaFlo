@@ -78,7 +78,7 @@ def app(request):
 		form = forms.UploadFile(request.POST, request.FILES)
 		if form.is_valid():
 			cd = form.cleaned_data
-			return redirect('app')
+			return redirect('#!/preview/' + request.FILES['file'].name)
 		else:
 			return render(request, 'app.html', {'form': form, 'files' : lst , 'current_file' : file_info, 'authed_user_nick' : authed_user_nick})
 	else:
@@ -113,8 +113,11 @@ def file_preview(request, file = None):
 		authed_user_nick = authed_user.nickname()
 	## Graph visualisation.
 	file_name_without_extension = file
-	if not ds.check_exists(GRAPH_BUCKET + '/' + file_name_without_extension + '.png', None):
-		file_name_without_extension = None
+
+	# Replaced by a spinning canvas on the clientside
+	# if not ds.check_exists(GRAPH_BUCKET + '/' + file_name_without_extension + '.png', None):
+	# 	file_name_without_extension = None
+
 	#TODO: Might need to be simplified or moved to a function in fileinfo
 	# TODO the folowing should be replaced by a method in the APIDatastore
 	lst = ds.list(DATA_BUCKET)

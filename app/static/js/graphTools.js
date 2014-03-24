@@ -232,13 +232,12 @@ ksfGraphTools.OvalGating = {
 }
 
 /*
-* \fn ksfGraphTools.sendGatingRequest()
-* \brief Perform a gating request and update the view correspondingly
+* Perform a gating request and update the view correspondingly
 * \param gatingURL - [String] url of the gating command
 * \author mrudelle@keesaco.com of Keesaco
 * \note This might be moved to views.js in the future
 */
-ksfGraphTools.sendGatingRequest = function(gatingURL) {
+function ksfGraphTools_sendGatingRequest(gatingURL) {
 	// allows to fetch the name correctly. In the future (final release) this should be replace by a json file fetched from the server containing all the file's data
 	
 	$("#filesize").remove();
@@ -263,40 +262,43 @@ ksfGraphTools.sendGatingRequest = function(gatingURL) {
 							 ksfGraphTools.showFeedback(FEEDBACK_DANGER, "fail", "The server failed to respond to the gating request");
 						} );
 }
+ksfGraphTools.sendGatingRequest = ksfGraphTools_sendGatingRequest;
 
 /*
-* \fn ksfGraphTools.setGraphUrl()
-* \brief Change properly the graph image
+* Change properly the graph image
 * \param url - [String] url of the new graph
 * \author mrudelle@keesaco.com of Keesaco
 * \note If the link throw an error it will enter a loop to reload the image
 */
-ksfGraphTools.setGraphUrl = function(url) {
+function ksfGraphTools_setGraphUrl(url) {
+	
 	$("#graph-img").off('error');
 	$("#graph-img").on('error', function()
 		{
+			ksfCanvas.setLoading(true);
 			setTimeout(ksfGraphTools.reloadImage, 1000);
 		});
 	$("#graph-img").attr("src", url);
 }
+ksfGraphTools.setGraphUrl = ksfGraphTools_setGraphUrl;
 
 /*
-* \fn ksfGraphTools.reloadImage()
-* \brief Allows one to reload properly the image of the graph
+* Allows one to reload properly the image of the graph
 * \author mrudelle@keesaco.com of Keesaco
 */
-ksfGraphTools.reloadImage = function() {
+function ksfGraphTools_reloadImage() {
+	ksfCanvas.setLoading(false);
 	$("#graph-img").attr("src", $("#graph-img").attr("src"));
 }
+ksfGraphTools.reloadImage = ksfGraphTools_reloadImage;
 
 /*
-* \fn ksfGraphTools.mesureAngle()
-* \brief Calculate the angle to the horizontal of a vector
+* Calculate the angle to the horizontal of a vector
 * \param tx - [int] x coordinate of the vector
 * \param ty - [int] y coordinate of the vector
 * \author mrudelle@keesaco.com of Keesaco
 */
-ksfGraphTools.mesureAngle = function(tx, ty) {
+function ksfGraphTools_mesureAngle(tx, ty) {
 	var angle;
 	if (tx === 0) {
 		angle = ty > 0 ? Math.PI/2 : -Math.PI/2;
@@ -307,16 +309,16 @@ ksfGraphTools.mesureAngle = function(tx, ty) {
 	}
 	return angle
 }
+ksfGraphTools.mesureAngle = ksfGraphTools_mesureAngle;
 
 /*
-* \fn ksfGraphTools.showFeedback()
-* \brief Popup a feedback on the app panel
+* Popup a feedback on the app panel
 * \param type - [String] type of the alert: FEEDBACK_[INFO|WARNING|DANGER|SUCCESS]
 * \param title - [String] title of the message
 * \param message - [String] message of the alert
 * \author mrudelle@keesaco.com of Keesaco
 */
-ksfGraphTools.showFeedback = function(type, title, message) {
+function ksfGraphTools_showFeedback(type, title, message) {
 	$(".alert").remove();
 	var alert = "<div class=\"alert "+type+" alert-dismissable\"> " +
 	"<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button> "+ 
@@ -324,3 +326,4 @@ ksfGraphTools.showFeedback = function(type, title, message) {
 	"</div>";
 	$(CONTENT_AREA).prepend(alert);
 }
+ksfGraphTools.showFeedback = ksfGraphTools_showFeedback;
