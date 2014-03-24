@@ -6,8 +6,7 @@
  */
 
 /*
-* \fn ksfGraphTools()
-* \brief ksfToggleLink constructor used for namespace
+* constructor used for namespace
 * \author mrudelle@keesaco.com of Keesaco
 * \note This constructor currently (intentionally) does not have any effect
 */
@@ -19,24 +18,24 @@ FILE_SIDE_BAR = '#sidebar';
 ksfToggleLink.fileSelector;
 
 /*
-* \fn ksfToggleLink.fileSelector
-* \brief Oppens the file selector panel
+* Oppens the file selector panel
 * \author swhitehouse@keesaco.com of Keesaco
 */
-ksfToggleLink.fileSelector = function()
+ksfToggleLink_fileSelector = function()
 {
     ksfToggleLink.fileSelector.animate({
         marginRight: 0
     });
 }
+ksfToggleLink.fileSelector = ksfToggleLink_fileSelector;
+
 
 /*
-* \fn ksfToggleLink.toggleFileSelector
-* \brief Toggle the file selector panel
+* Toggle the file selector panel
 * \author hdoughty@keesaco.com of Keesaco
 * \author mrudelle@keesaco.com of Keesaco
 */
-ksfToggleLink.toggleFileSelector = function()
+ksfToggleLink_toggleFileSelector = function()
 {
     ksfToggleLink.fileSelector.animate({
         marginRight: parseInt(ksfToggleLink.fileSelector.css('marginRight'), 10) == 0 ?
@@ -48,14 +47,15 @@ ksfToggleLink.toggleFileSelector = function()
         $('#dropdownmenu').toggleClass('in');
     }
 }
+ksfToggleLink.toggleFileSelector = ksfToggleLink_toggleFileSelector;
+
 
 /*
-* \fn ksfToggleLink.addToggleFilesListener
-* \brief Adds the listener to toggle the file selector panel 
+* Adds the listener to toggle the file selector panel 
 * \author hdoughty@keesaco.com of Keesaco
 * \author mrudelle@keesaco.com of Keesaco
 */
-ksfToggleLink.addToggleFilesListener = function() 
+ksfToggleLink_addToggleFilesListener = function() 
 {
     ksfToggleLink.fileSelector = $(FILE_SIDE_BAR);
     $('.togglefiles').click(ksfToggleLink.toggleFileSelector);
@@ -68,4 +68,5 @@ ksfToggleLink.addToggleFilesListener = function()
         }
     });
 }
+ksfToggleLink.addToggleFilesListener = ksfToggleLink_addToggleFilesListener;
 
