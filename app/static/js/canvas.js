@@ -230,3 +230,20 @@ ksfCanvas.setLoading = function(enable) {
         $("#graph-img").css("display", "");
     }
 }
+
+ksfCanvas.blinkButton = function(btn) {
+    var resetBackColor = $(btn).css('background-color');
+    var resetColor = $(btn).css('color');
+    $(btn).animate(
+        {
+            "background-color": "#FF8500",
+            "color": "#fff"
+        }, 500, function()
+        {
+            $(btn).animate(
+            {
+              "background-color": resetBackColor,
+              "color": resetColor
+            }, 500);
+        });
+}
