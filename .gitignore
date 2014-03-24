@@ -33,11 +33,11 @@ app/httplib2/
 app/oauth2client/
 app/static/css/bootstrap.css
 app/static/js/bootstrap.js
-app/static/js/jquery-2.1.0.js
 app/uritemplate/
 tmp-packages/
 app/static/fonts/
 app/static/js/jquery.js
+app/static/js/jquery.color.js
 app/Analysis/ComputeEngine/Assets/private_key.pem
 js2doxy.pl
 app/uneedtest.py
