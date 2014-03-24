@@ -1,2 +1,2 @@
-$("#help-force-start").click(function () { helpForceStart(); } );
-$("#file-selector-open").click(function () { fileSelector(); } );
+$("#help-force-start").click(helpForceStart);
+$("#file-selector-open").click(ksfToogleLink.toogleFileSelector);
