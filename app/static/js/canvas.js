@@ -197,6 +197,13 @@ ksfCanvas.addListener = function(argument) {
 	$(REQUEST_GATING_BTN).click(function(){
 		ksfTools.CurrentTool.requestGating();
 	})
+
+    $("#graph-img").off('error');
+    $("#graph-img").on('error', function()
+        {
+            ksfCanvas.setLoading(true);
+            setTimeout(ksfGraphTools.reloadImage, 1000);
+        });
 }
 
 /*
