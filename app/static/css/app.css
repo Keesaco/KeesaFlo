@@ -57,13 +57,17 @@
 	position: absolute;
 	top: 50px; /* height of the navbar */
 	overflow: auto;
-	/*width: 100%;*/
 }
 
 .navpanel, .filepanel
 {
 	bottom: 0px;
 	background-color: #222222;
+}
+
+.filepanel
+{
+	width: 100%;	
 }
 
 .apppanel

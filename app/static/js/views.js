@@ -217,7 +217,7 @@ ksfViews.showToolSelector = ksfViews_showToolSelector;
  */
 function ksfViews_loadPreview(filename)
 {
-	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/main/file' + encodeURIComponent('=' + filename), CONTENT_AREA, filePreviewStart);
+	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/main/file' + encodeURIComponent('=' + filename), CONTENT_AREA, appstart.filePreviewStart);
 	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/right/file_list/', FILE_SELECTOR, null);
 }
 ksfViews.loadPreview = ksfViews_loadPreview;
