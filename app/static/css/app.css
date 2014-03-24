@@ -62,7 +62,7 @@
 
 .apppanel
 {
-		left: 20%;
+	//left: 20%;
 	bottom: 0;
 	padding: 20px;
 	background-color: #E6E6E6;
@@ -77,7 +77,7 @@
 
 .bottom-nav li {
 	margin-left: 0;
-	width: 33.33333333333334%;
+	width: 100%;
 	text-align: center;
 	border-top: 1px solid #3D3D3D;
 }
@@ -126,6 +126,18 @@ a.list-group-item
 	word-wrap: break-word;
 }
 
+.toolbutton
+{
+	font-size: 200%;
+	padding: 0;
+	text-align: center;
+}
+
+.dropdown-pad
+{
+	padding-right: 12px;
+}
+
 a.list-group-item:hover {
 	background-color: #333333;
 }
@@ -151,7 +163,7 @@ html, body, .row
 		padding: 20px;
 }
 	
-	.navbar-togglel {
+	.navbar-toggle {
 	position: relative;
 	float: right;
 	padding: 9px 10px;
@@ -161,6 +173,11 @@ html, body, .row
 	background-color: transparent;
 	border: 1px solid transparent;
 	border-radius: 4px;
+}
+
+.toggletools
+{
+	margin-left: 15px;
 }
 
 	.sidebar-offcanvas {
@@ -174,7 +191,6 @@ html, body, .row
 	} 
 	
 	.toolbar-offcanvas{
-		position: fixed;
 		top: 0;
 		left: 0;
 		height:100%;

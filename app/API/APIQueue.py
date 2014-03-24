@@ -48,6 +48,13 @@ def gate_circle(	filename, coords, gatename):
 	queue.add_task('jobs', 'gate_cir;' + filename + ';' + coords + ';' + gatename)
 
 ###########################################################################
+## \brief Adds a task to perform a circular gate on fcs data.
+## \author hdoughty@keesaco.com of Keesaco
+###########################################################################
+def change_axis(	filename, x_axis, y_axis):
+	queue.add_task('jobs', 'change_axis;' + filename + ';' + x_axis + ';' + y_axis)
+
+###########################################################################
 ## \brief Counts the number of tasks in the queue.
 ## \return number of tasks in queue.
 ## \author rmurley@keesaco.com of Keesaco
