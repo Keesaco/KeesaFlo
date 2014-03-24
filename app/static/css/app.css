@@ -289,3 +289,9 @@ cursor: pointer;
 .jumbotron > h2 {
 margin-bottom: 30px;
 }
+
+.large-name
+{
+	font-size:		130%;
+	font-weight:	bold;
+}

@@ -122,6 +122,7 @@ var keesafloTour = new Tour
 						prev:		7,
 						onShow:		function()
 									{
+										setDropDown(false);
 										setToolBar(true);
 									},
 						onNext:		function()
@@ -138,7 +139,11 @@ var keesafloTour = new Tour
 						content:	"We hope you enjoy using Keesaflo. If you have any questions, check the FAQ in the bottom left corner.",
 						orphan:		true,
 						next:		-1,
-						prev:		8
+						prev:		8,
+						onNext:		function()
+									{
+										keesafloTour.end();
+									}
 					},
 					{
 						title:		"The End",
@@ -222,24 +227,26 @@ function helpTourBegin(force)
 // Updated the help tour when the window is resized.
 $(function(){
 	$(window).resize(function() {
-		var $browserWidth = $(window).width();
-		currentStep = keesafloTour.getCurrentStep();
-		if($browserWidth <= 767)
+		if(keesafloTour.ended() == false)
 		{
-			if((currentStep % 2) == 0)
+			var $browserWidth = $(window).width();
+			currentStep = keesafloTour.getCurrentStep();
+			if($browserWidth <= 767)
 			{
-				currentStep += 1;
-				keesafloTour.setCurrentStep(currentStep);
-				keesafloTour.goTo(currentStep);
+				if((currentStep % 2) == 0)
+				{
+					currentStep += 1;
+					
+				}
 			}
-		}
-		else{
-			if((currentStep % 2) == 1)
-			{
-				currentStep -= 1;
-				keesafloTour.setCurrentStep(currentStep);
-				keesafloTour.goTo(currentStep);
+			else{
+				if((currentStep % 2) == 1)
+				{
+					currentStep -= 1;
+				}
 			}
+			keesafloTour.setCurrentStep(currentStep);
+			keesafloTour.goTo(currentStep);
 		}
 	});
 });
