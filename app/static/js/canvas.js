@@ -214,3 +214,13 @@ ksfCanvas.enableBtn = function(btn, enable){
         $(btn).attr('disabled','disabled');
     }
 }
+
+ksfCanvas.setLoading = function(enable) {
+    if (enable) {
+        $(GRAPH_ID).addClass("loading");
+        $("#graph-img").css("display", "none");
+    } else {
+        $(GRAPH_ID).removeClass("loading");
+        $("#graph-img").css("display", "");
+    }
+}

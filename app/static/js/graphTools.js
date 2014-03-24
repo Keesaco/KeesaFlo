@@ -272,9 +272,11 @@ ksfGraphTools.sendGatingRequest = function(gatingURL) {
 * \note If the link throw an error it will enter a loop to reload the image
 */
 ksfGraphTools.setGraphUrl = function(url) {
+	
 	$("#graph-img").off('error');
 	$("#graph-img").on('error', function()
 		{
+			ksfCanvas.setLoading(true);
 			setTimeout(ksfGraphTools.reloadImage, 1000);
 		});
 	$("#graph-img").attr("src", url);
@@ -286,6 +288,7 @@ ksfGraphTools.setGraphUrl = function(url) {
 * \author mrudelle@keesaco.com of Keesaco
 */
 ksfGraphTools.reloadImage = function() {
+	ksfCanvas.setLoading(false);
 	$("#graph-img").attr("src", $("#graph-img").attr("src"));
 }
 

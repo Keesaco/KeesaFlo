@@ -290,3 +290,9 @@ html, body, .row
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
+
+.loading {
+	background-image: url('../images/spinner.gif');
+	background-repeat: no-repeat;
+	background-position: center;
+}
