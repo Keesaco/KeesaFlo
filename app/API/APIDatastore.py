@@ -31,6 +31,13 @@ def __check_authentication (	path,
 								permissions = None):
 	return True
 
+###########################################################################
+## \brief add authentication to the datastore
+## \param path - [string] filepath of data to add
+## \param user - [User] user object to add to
+## \param permissions - [Permissions] permissions object
+## \author cwike@keesaco.com of Keesaco
+###########################################################################
 def __add_authentication( path, user, permissions):
 	user_key = ps.get_user_key_by_id(user.user_id())
 	if (user_key is None):
