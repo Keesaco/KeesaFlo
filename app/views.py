@@ -76,7 +76,7 @@ def app(request):
 		form = forms.UploadFile(request.POST, request.FILES)
 		if form.is_valid():
 			cd = form.cleaned_data
-			return redirect('app')
+			return redirect('#!/preview/' + request.FILES['file'].name)
 		else:
 			return render(request, 'app.html', {'form': form, 'files' : lst , 'current_file' : file_info, 'authed_user_nick' : authed_user_nick})
 	else:
