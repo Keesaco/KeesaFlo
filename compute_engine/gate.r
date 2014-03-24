@@ -41,8 +41,10 @@ rgate <- rectangleGate(.gate=mat)
 ## Creating subset of data.
 y <- Subset(x, rgate)
 
-## Calculating proportion
+## Save gate as fcs file
+write.FCS(y, gate_name)
 
+## Calculating proportion
 result <- filter(x, rgate)
 total <- summary(result)$n
 inGate <- summary(result)$true
@@ -52,9 +54,7 @@ info_name <- paste(gate_name, ".txt", sep="")
 write(info, file = info_name)
 
 ## Plotting the gate
-u <- range(tlx, brx)
-v <- range(bry, tly)
 image_name <- paste(gate_name, ".png", sep="")
 png(image_name)
-plot(y,c(a, b), xlim = u, ylim = v)
+plot(y,c(a, b))
 dev.off()
