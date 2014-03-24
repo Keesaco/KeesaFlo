@@ -207,6 +207,11 @@ html, body, .row
 	margin-right: 8px;
 }
 
+.footnav-pad
+{
+padding-bottom: 20px;	
+}
+
 .file-preview {
 		overflow: hidden;
 }
