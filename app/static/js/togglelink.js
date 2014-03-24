@@ -5,18 +5,6 @@ FILE_SIDE_BAR = '#sidebar';
 
 ksfToogleLink.fileSelector;
 
-$(function(){
-    ksfToogleLink.fileSelector = $(FILE_SIDE_BAR);
-    ksfToogleLink.addToogleFilesListener();
-    $(window).resize(function() {
-        if(parseInt(ksfToogleLink.fileSelector.css('marginRight'), 10) < 0) {
-            ksfToogleLink.fileSelector.css({
-                marginRight: -ksfToogleLink.fileSelector.outerWidth()
-            });
-        }
-    });
-});
-
 ksfToogleLink.fileSelector = function()
 {
     ksfToogleLink.fileSelector.animate({
@@ -39,6 +27,15 @@ ksfToogleLink.toogleFileSelector = function()
 
 ksfToogleLink.addToogleFilesListener = function() 
 {
+    ksfToogleLink.fileSelector = $(FILE_SIDE_BAR);
     $('.togglefiles').click(ksfToogleLink.toogleFileSelector);
+
+    $(window).resize(function() {
+        if(parseInt(ksfToogleLink.fileSelector.css('marginRight'), 10) < 0) {
+            ksfToogleLink.fileSelector.css({
+                marginRight: -ksfToogleLink.fileSelector.outerWidth()
+            });
+        }
+    });
 }
 
