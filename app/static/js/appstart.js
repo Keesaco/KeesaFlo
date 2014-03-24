@@ -5,9 +5,10 @@
  * \author hdoughty@keesaco.com of Keesaco
  */
 
+ $("#help-tour-begin").click(function() { helpTourBegin(true); });
+ 
 $(function()
 {
-	$("#help-force-start").click(appstart.toggleFileSelector);
 	appstart.addToggleHook();
 });
 
