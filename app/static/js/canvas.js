@@ -221,7 +221,7 @@ function ksfCanvas_enableBtn(btn, enable){
         $(btn).attr('disabled','disabled');
     }
 
-    if (btn === REQUEST_GATING_BTN) {
+    if (btn === REQUEST_GATING_BTN && enable) {
         ksfCanvas.blinkButton(btn);
     }
 }
