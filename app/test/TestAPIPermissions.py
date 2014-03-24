@@ -23,7 +23,6 @@ class TestAPIPermissions(unittest.TestCase):
 
 	###########################################################################
 	## \brief 	setup method for testing
-	## \note	placeholder 
 	## \author 	cwike@Keesaco.com of Keesaco
 	###########################################################################
 	APP_ID = '_'
@@ -40,7 +39,6 @@ class TestAPIPermissions(unittest.TestCase):
 
 	###########################################################################
 	## \brief 	Teardown method for testing
-	## \note	placeholder
 	## \author 	cwike@Keesaco.com of Keesaco
 	###########################################################################
 	def tearDown(self):
@@ -174,6 +172,12 @@ class TestAPIPermissions(unittest.TestCase):
 
 		self.assertEqual(ps.get_user_by_key(key).email(), usr.email())
 	
+
+	###########################################################################
+	## \brief 	Tests getting user key by id
+	## \note 	depends on functioning add_user function
+	## \author 	cwike@Keesaco.com of Keesaco
+	###########################################################################
 	def test_user_get_user_key_by_id(self):
 		usr = User('somebody@somewhereguki.com')
 		usr.set_nickname('Somebodyguki')
@@ -261,7 +265,7 @@ class TestAPIPermissions(unittest.TestCase):
 			self.assertEqual(fileobj.owner_key, ndb.Key("someKey","gfuks"))
 
 	###########################################################################
-	## \brief 	
+	## \brief 	Tests adding a file permission
 	## \author 	cwike@Keesaco.com of Keesaco
 	###########################################################################
 	def test_permissions_add_file_permissions(self):
@@ -271,6 +275,11 @@ class TestAPIPermissions(unittest.TestCase):
 
 		self.assertTrue(isinstance(ret, ndb.Key))
 
+	###########################################################################
+	## \brief 	Tests modifying a file permission using key
+	## \note 	depends on add_file_permissions, get_permissions_by_key
+	## \author 	cwike@Keesaco.com of Keesaco
+	###########################################################################
 	def test_permissions_modify_file_permissions_by_key(self):
 		permission = Permissions(True,True,True)
 		key = ps.add_file_permissions(ndb.Key("fk","mfpk"),ndb.Key("uk","mfpk"),permission)
@@ -283,6 +292,11 @@ class TestAPIPermissions(unittest.TestCase):
 		self.assertEqual(new_permissions.write, retrieved.write)
 		self.assertEqual(new_permissions.full_control, retrieved.full_control)
 
+	###########################################################################
+	## \brief 	Tests modifying a file permission by file key and user key
+	## \note 	depends add_file_permissions, get_permissions_by_key
+	## \author 	cwike@Keesaco.com of Keesaco
+	###########################################################################
 	def test_permissions_modify_file_permissions_by_keys(self):
 		permission = Permissions(True,True,True)
 		key = ps.add_file_permissions(ndb.Key("fk","mfpks"),ndb.Key("uk","mfpks"),permission)
@@ -296,6 +310,11 @@ class TestAPIPermissions(unittest.TestCase):
 		self.assertEqual(new_permissions.write, retrieved.write)
 		self.assertEqual(new_permissions.full_control, retrieved.full_control)
 
+	###########################################################################
+	## \brief 	Tests revoking all permissions attached to a file
+	## \note 	depends add_file_permissions, get_permissions_by_key
+	## \author 	cwike@Keesaco.com of Keesaco
+	###########################################################################
 	def test_permissions_revoke_all_by_file_key(self):
 		fk = ndb.Key("fk","rafk")
 		ps.add_file_permissions(fk,ndb.Key("uk","rafk1"),Permissions(True,True,True))
@@ -306,7 +325,11 @@ class TestAPIPermissions(unittest.TestCase):
 		with self.assertRaises(StopIteration):
 			ps.get_file_permissions_list(fk).next()
 
-
+	###########################################################################
+	## \brief 	Tests revoking all permissions attached to a user
+	## \note 	depends add_file_permissions, get_user_permissions_list
+	## \author 	cwike@Keesaco.com of Keesaco
+	###########################################################################
 	def test_permissions_revoke_all_by_user_key(self):
 		uk = ndb.Key("uk","rauk")
 		ps.add_file_permissions(ndb.Key("fk","rauk1"),uk,Permissions(True,True,True))
@@ -317,12 +340,22 @@ class TestAPIPermissions(unittest.TestCase):
 		with self.assertRaises(StopIteration):
 			ps.get_user_permissions_list(uk).next()
 
+	###########################################################################
+	## \brief 	Tests revoking a permission by key
+	## \note 	depends add_file_permissions, get_permissions_by_key
+	## \author 	cwike@Keesaco.com of Keesaco
+	###########################################################################
 	def test_permissions_revoke_permissions_by_key(self):
 		key = ps.add_file_permissions(ndb.Key("fk","rpbk"),ndb.Key("uk","rpbk"),Permissions(True,True,True))
 		ps.revoke_permissions_by_key(key)
 
 		self.assertIsNone(ps.get_permissions_by_key(key))
 
+	###########################################################################
+	## \brief 	Tests revoking permission based on user and file
+	## \note 	depends add_file_permissions, get_user_file_permissions
+	## \author 	cwike@Keesaco.com of Keesaco
+	###########################################################################
 	def test_permissions_revoke_user_file_permissions(self):
 		user_key = ndb.Key("uk","rufp")
 		file_key = ndb.Key("fk","rufp")
@@ -330,6 +363,12 @@ class TestAPIPermissions(unittest.TestCase):
 		ps.revoke_user_file_permissions(file_key,user_key)
 		self.assertIsNone(ps.get_user_file_permissions(file_key,user_key))
 
+
+	###########################################################################
+	## \brief 	Tests getting a permission by user and file
+	## \note 	depends add_file_permissions
+	## \author 	cwike@Keesaco.com of Keesaco
+	###########################################################################
 	def test_permissions_get_user_file_permissions(self):
 		user_key = ndb.Key("uk","gufp")
 		file_key = ndb.Key("fk","gufp")
@@ -344,6 +383,11 @@ class TestAPIPermissions(unittest.TestCase):
 		self.assertEqual(obj.write, perms.write)
 		self.assertEqual(obj.full_control, perms.full_control)
 
+	###########################################################################
+	## \brief 	Tests getting permissions by key
+	## \note 	depends add_file_permissions
+	## \author 	cwike@Keesaco.com of Keesaco
+	###########################################################################
 	def test_permissions_get_permissions_by_key(self):
 		user_key = ndb.Key("uk","gpbk")
 		file_key = ndb.Key("fk","gpbk")
@@ -357,6 +401,12 @@ class TestAPIPermissions(unittest.TestCase):
 		self.assertEqual(obj.write, perms.write)
 		self.assertEqual(obj.full_control, perms.full_control)
 
+
+	###########################################################################
+	## \brief 	Tests getting permissions key by user file
+	## \note 	depends add_file_permissions
+	## \author 	cwike@Keesaco.com of Keesaco
+	###########################################################################
 	def test_permissions_get_user_file_permissions_key(self):
 		user_key = ndb.Key("uk","gpbk")
 		file_key = ndb.Key("fk","gpbk")
@@ -364,6 +414,11 @@ class TestAPIPermissions(unittest.TestCase):
 		key = ps.add_file_permissions(file_key,user_key,perms)
 		self.assertEqual(key,ps.get_user_file_permissions_key(file_key,user_key))
 
+	###########################################################################
+	## \brief 	Tests getting all permissions attached to a file
+	## \note 	depends add_file_permissions
+	## \author 	cwike@Keesaco.com of Keesaco
+	###########################################################################
 	def test_permissions_get_file_permissions_list(self):
 		fk = ndb.Key("fk","gfpl")
 		ps.add_file_permissions(fk,ndb.Key("uk","gfpl1"),Permissions(True,True,True))
@@ -375,7 +430,11 @@ class TestAPIPermissions(unittest.TestCase):
 		for permission in permissions:
 			self.assertEqual(permission.file_key, fk)
 
-
+	###########################################################################
+	## \brief 	Tests getting all permissions attached to a user
+	## \note 	depends add_file_permissions
+	## \author 	cwike@Keesaco.com of Keesaco
+	###########################################################################
 	def test_permissions_get_user_permissions_list(self):
 		uk = ndb.Key("uk","gupl")
 		ps.add_file_permissions(ndb.Key("fk","gupl1"),uk,Permissions(True,True,True))
