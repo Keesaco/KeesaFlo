@@ -7,7 +7,7 @@
 ## \package compute_engine.visualise
 ## \brief Visualises flow cytometry data using Google Cloud Storage and Bioconductor. Should be called by the Compute Engine startup sheel script. Depends on AnalysisAPI.
 ###########################################################################
-import os, time
+import os, time, sys
 import API.APIAnalysis as Ana
 import API.APIQueue as Queue
 
@@ -56,8 +56,18 @@ while alive:
 		Ana.rect_gate(name, gate_name, coords[0], coords[1], coords[2], coords[3])
 		## Save visualisation to cloud storage.
 		Ana.save_vis(gate_name + '.png')
+		f = open(gate_name + '.txt', 'r')
+		info = f.readline()
+		f.close()
+		stats = info.split()
+		f2 = open(gate_name + '.html', 'w')
+		f2.write('<link href="{static "css/app.css" %}" rel ="stylesheet"')
+		f2.write('<p>Number of cells in gate: <span class="gating_num">' + stats[0] + '</span></p>')
+		f2.write('<p>Number of cells in total: <span class="gating_num">' + stats[1] + '</span></p>')
+		f2.write('<p>Percentage ratio: <span class="gating_num">' + str(float(stats[2])*100) + '%</span></p>')
+		f2.close()
 		## Saves info about gate to cloud storage
-		Ana.save_info(gate_name + '.txt')
+		Ana.save_info(gate_name + '.html')
 		## Saves gate as fcs file
 		Ana.save_fcs(gate_name)
 		## Clean up.
