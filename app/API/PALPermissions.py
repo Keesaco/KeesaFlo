@@ -79,9 +79,9 @@ def modify_user_by_id(user_id, new_user):
 	if user is None:
 		return False
 	else:
-		user.user_id 	= new_user.user_id()
+		user.unique_id 	= new_user.user_id()
 		user.nickname 	= new_user.nickname()
-		user.email 		= new_user.email()
+		user.email_address		= new_user.email()
 
 		return user.put()
 

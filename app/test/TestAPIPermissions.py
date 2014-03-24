@@ -119,7 +119,6 @@ class TestAPIPermissions(unittest.TestCase):
 	## \note 	depends on functioning add_user, get_user_by_key function
 	## \author 	cwike@Keesaco.com of Keesaco
 	###########################################################################
-	#@unittest.skip("Manually tested to work")
 	def test_user_modify_user_by_id_succeed(self):
 		usr = User('somebody@somewheremids.com')
 		usr.set_nickname('Somebodymids')
