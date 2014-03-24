@@ -1,11 +1,7 @@
 <div class="list-group footnav-pad">
 	{% if files %}
 		{% for file in files %}
-<<<<<<< HEAD
-		<a href="#!/preview/{{file.filename}}" class="list-group-item file-list-item {% if file.filename == current_file.filename %}active{% endif %}" title="{{ file.filename }}"><span class="badge">{{ file.st_size|filesizeformat }}</span>{{ file.filename }}</a>
-=======
-		<a href="#!/preview/{{file.filename}}" class="list-group-item {% if file.filename == current_file.filename %}active{% endif %}">{{ file.filename }}</a>
->>>>>>> origin/development
+		<a href="#!/preview/{{file.filename}}" class="list-group-item file-list-item {% if file.filename == current_file.filename %}active{% endif %}"title="{{ file.filename }}">{{ file.filename }}</a>
 		{% endfor %}
 	{% else %}
 		<a data-toggle="modal" data-target="#uploadModal" class="list-group-item">No files - Click here to upload one</a>
