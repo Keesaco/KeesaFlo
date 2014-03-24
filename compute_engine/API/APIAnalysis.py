@@ -35,7 +35,7 @@ def load_fcs(	name,
 ###########################################################################
 def save_fcs(	name,
 				permissions = None):
-	subprocess.call(['gsutil', 'cp', path_local, DEFAULT_BUCKET])
+	subprocess.call(['gsutil', 'cp', name, RAW_BUCKET])
 
 ###########################################################################
 ## \brief Saves a visualisation of an fcs file
@@ -45,7 +45,20 @@ def save_fcs(	name,
 ## \author rmurley@keesaco.com of Keesaco
 ###########################################################################
 def visualise(	name):
-	subprocess.call(["Rscript", "visualise.r", name, name + '.png'])
+	subprocess.call(["Rscript", "visualise.r", name, name + '.png', name + 'info.txt'])
+
+###########################################################################
+## \brief Saves a visualisation of an fcs file
+## \param name - name of fcs file to visualise
+## \param x_axis - name of x_axis desired
+## \param y_axis - name of y_axis desired
+## \return returns True if successful else False
+## \todo Implement return value.
+## \author hdoughty@keesaco.com of Keesaco
+###########################################################################
+
+def change_axis(name, x_axis, y_axis):
+	subprocess.call(["Rscript", "axis.r", name, name + '1.png', x_axis, y_axis])
 
 ###########################################################################
 ## \brief Saves a visualisation of a gated fcs file
