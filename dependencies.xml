@@ -121,5 +121,21 @@
 				<destination>app/static/js/bootstrap-tour.min.js</destination>
 			</move>
 		</package>
+		<package name="qtip-js">
+			<uri>http://cdn.jsdelivr.net/qtip2/2.2.0/jquery.qtip.min.js</uri>
+			<unzip>0</unzip>
+			<move>
+				<destination rename="1">app/static/js/qtip.min.js</destination>
+			</move>
+		</package>
+		<package name="qtip-css">
+			<uri>http://cdn.jsdelivr.net/qtip2/2.2.0/jquery.qtip.min.css</uri>
+			<unzip>0</unzip>
+			<move>
+				<destination rename="1">app/static/css/qtip.min.css</destination>
+			</move>
+		</package>
 	</packages>
 </dconfig>
+
+
