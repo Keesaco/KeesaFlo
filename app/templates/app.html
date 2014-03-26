@@ -133,19 +133,24 @@
     <!--Placed at the end of the document so the pages load faster but lot of these might not be useful to load-->
     {{ block.super }}
     {% load staticfiles %}
-	<script src="{% static "js/canvas.js" %}"></script>
-	<script src="{% static "js/graphTools.js" %}"></script>
-	<script src="{% static "js/tools.js" %}"></script>
+	<!-- 3rd party libraries -->
+	<script src="{% static "js/jquery.color.js" %}"></script>
+	<script src="{% static "js/bootstrap-tour.min.js" %}"></script>
+    <script src="{% static "js/helptour.js" %}"></script>
 	
+	<!-- KeesaFlo app framework -->
 	<script src="{% static "js/request.js" %}"></script>
 	<script src="{% static "js/data.js" %}"></script>
 	<script src="{% static "js/processing.js" %}"></script>
 	<script src="{% static "js/views.js" %}"></script>
 	
-	<script src="{% static "js/bootstrap-tour.min.js" %}"></script>
-    <script src="{% static "js/helptour.js" %}"></script>
+	<!-- KeesaFlo tools -->
+	<script src="{% static "js/canvas.js" %}"></script>
+	<script src="{% static "js/graphTools.js" %}"></script>
+	<script src="{% static "js/tools.js" %}"></script>
 	
+	<!-- appstart should be last -->
 	<script src="{% static "js/appstart.js" %}"></script>
-
-	<script src="{% static "js/jquery.color.js" %}"></script>
+	
+	
 {% endblock javascriptimport %}
