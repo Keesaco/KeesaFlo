@@ -1,7 +1,30 @@
+/**
+ * \file app/static/js/helptour.js
+ * \brief Bootstrap tour based help tour for the application.
+ * \author swhitehouse@keesaco.com of Keesaco
+ */
+
+/** \package app.static.js.helptour
+ * \brief Provides methods for controlling the help tour.
+ */
+
+
+/**
+ * ksfHelp constructor used for namespace
+ * \author swhitehouse@keesaco.com of Keesaco
+ * \return None
+ * \note This constructor currently (intentionally) does not have any effect
+ */
+function ksfHelp()
+{
+}
+
+var ksfHelp_pathURL = ksfData.baseUrl();
+
 // The bootstrap-tour object which handles the tour.
-var keesafloTour = new Tour
+var ksfHelp_mainTour = new Tour
 ({
-	name:		"keesaflo-tour",
+	name:		"ksfHelp_mainTour",
 	steps:		[
 					{
 						title:		"Welcome to KeesaFlo!",
@@ -81,7 +104,7 @@ var keesafloTour = new Tour
 						onPrev:		function()
 									{
 										setFileBar(false);
-									},
+									}
 					},
 					{
 						element: 	".tour-step.upload",
@@ -142,7 +165,7 @@ var keesafloTour = new Tour
 						prev:		8,
 						onNext:		function()
 									{
-										keesafloTour.end();
+										ksfHelp_mainTour.end();
 									}
 					},
 					{
@@ -164,12 +187,12 @@ function setToolBar(is_out)
 			marginLeft: 0
 		});
 		$('.apppanel').animate({
-			marginLeft: $('#sidebar2').outerWidth()
+			marginLeft: 50
 		});
 	}
 	else{
 		$('#sidebar2').animate({
-			marginLeft: -$('#sidebar2').outerWidth()
+			marginLeft: -50
 		});
 		$('.apppanel').animate({
 			marginLeft: 0
@@ -206,30 +229,44 @@ function setFileBar(is_out)
 }
 
 // Function to begin the help tour.
-function helpTourBegin(force)
+function ksfHelp_mainTourBegin(force)
 {
 	if(force)
 	{
-		keesafloTour.restart();
+		if(ksfHelp_mainTour.ended())
+		{
+			ksfHelp_mainTour.restart();
+		}
 	}
 	else
 	{
-		keesafloTour.start();
+		ksfHelp_mainTour.start();
 	}
-	if($(window).width() <= 767)
+	if(ksfHelp_mainTour.ended() == false)
 	{
-		keesafloTour.setCurrentStep(1);
-		keesafloTour.goTo(1);
+		if($(window).width() <= 767)
+		{
+			ksfHelp_mainTour.setCurrentStep(1);
+			ksfHelp_mainTour.goTo(1);
+		}
 	}
 }
+ksfHelp.mainTourBegin = ksfHelp_mainTourBegin;
+
+//Function to end the help tour.
+function ksfHelp_mainTourEnd()
+{
+	ksfHelp_mainTour.end();
+}
+ksfHelp.mainTourEnd = ksfHelp_mainTourEnd;
 
 // Updated the help tour when the window is resized.
 $(function(){
 	$(window).resize(function() {
-		if(keesafloTour.ended() == false)
+		if(ksfHelp_mainTour.ended() == false)
 		{
 			var $browserWidth = $(window).width();
-			currentStep = keesafloTour.getCurrentStep();
+			currentStep = ksfHelp_mainTour.getCurrentStep();
 			if($browserWidth <= 767)
 			{
 				if((currentStep % 2) == 0)
@@ -244,15 +281,15 @@ $(function(){
 					currentStep -= 1;
 				}
 			}
-			keesafloTour.setCurrentStep(currentStep);
-			keesafloTour.goTo(currentStep);
+			ksfHelp_mainTour.setCurrentStep(currentStep);
+			ksfHelp_mainTour.goTo(currentStep);
 		}
 	});
 });
 
 // Initialize the tour
-keesafloTour.init();
+ksfHelp_mainTour.init();
 
 // Runs the help tour.
-helpTourBegin(false);
+ksfHelp.mainTourBegin(false);
 

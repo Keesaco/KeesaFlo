@@ -5,11 +5,10 @@
  * \author hdoughty@keesaco.com of Keesaco
  */
 
- $("#help-tour-begin").click(function() { helpTourBegin(true); });
- 
+
 $(function()
 {
-	$("#help-force-start").click(helpTourBegin(true));
+	$("#ksf-help-begin").click(function() { ksfHelp.mainTourBegin(true); } );
 	appstart.addToggleHook();
 });
 
@@ -54,7 +53,7 @@ appstart_addToggleHook = function()
 	appstart.appPanel = $(APP_PANEL_ID);
 
     $('.togglefiles').click(appstart.toggleFileSelector);
-    $('.toggletools').click(appstart.toogleToolBar);
+    $('.toggletools').click(appstart.toggleToolBar);
 
     //Handle the filebar behaviour
     $(window).resize(function() {
@@ -87,7 +86,7 @@ appstart_addToggleHook = function()
 }
 appstart.addToggleHook = appstart_addToggleHook;
 
-appstart_toogleToolBar = function()
+appstart_toggleToolBar = function()
 {
 	appstart.toolbarPanel.animate({
         marginLeft: parseInt(appstart.toolbarPanel.css('marginLeft'), 10) == 0 ?
@@ -98,7 +97,7 @@ appstart_toogleToolBar = function()
             TOOLBAR_WIDTH : 0
     });
 }
-appstart.toogleToolBar = appstart_toogleToolBar;
+appstart.toggleToolBar = appstart_toggleToolBar;
 
 /*
 * Toggle the file selector panel
