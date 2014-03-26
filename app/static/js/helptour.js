@@ -10,18 +10,20 @@
 
 
 /**
- * ksfHelp constructor used for namespace
- * \author swhitehouse@keesaco.com of Keesaco
+ * ksfHelp constructor used for namespace.
  * \return None
- * \note This constructor currently (intentionally) does not have any effect
+ * \note This constructor currently (intentionally) does not have any effect.
+ * \author swhitehouse@keesaco.com of Keesaco
  */
 function ksfHelp()
 {
 }
 
-var ksfHelp_pathURL = ksfData.baseUrl();
 
-// The bootstrap-tour object which handles the tour.
+/**
+ * \brief The variable that holds the help tour.
+ * \author swhitehouse@keesaco.com of Keesaco
+ */
 var ksfHelp_mainTour = new Tour
 ({
 	name:		"ksfHelp_mainTour",
@@ -178,7 +180,13 @@ var ksfHelp_mainTour = new Tour
 				]
 });
 
-// Shows the tool bar on true, hides on false.
+
+/**
+ * Sets the position of the toolbar (left).
+ * \param is_out - boolean to determine the position of the toolbar
+ * \note Slides the toolbar out on true, in on false.
+ * \author swhitehouse@keesaco.com of Keesaco
+ */
 function setToolBar(is_out)
 {
 	if(is_out)
@@ -200,7 +208,13 @@ function setToolBar(is_out)
 	}
 }
 
-// Shows the drop down on true, hides on false.
+
+/**
+ * Sets the position of the dropdown menu (top - mobile).
+ * \param is_out - boolean to determine the position of the dropdown menu
+ * \note Sets the dropdown menu to slide out on true, in on false.
+ * \author swhitehouse@keesaco.com of Keesaco
+ */
 function setDropDown(is_out)
 {
 	if(is_out)
@@ -212,7 +226,13 @@ function setDropDown(is_out)
 	}
 }
 
-// Shows the file bar on true, hides on false.
+
+/**
+ * Sets the position of the filebar (right).
+ * \param is_out - boolean to determine the position of the filebar
+ * \note Sets the ilebar to slide out on true, in on false.
+ * \author swhitehouse@keesaco.com of Keesaco
+ */
 function setFileBar(is_out)
 {
 	if(is_out)
@@ -228,6 +248,12 @@ function setFileBar(is_out)
 	}
 }
 
+
+/**
+ * Begins the help tour.
+ * \param force - boolean to determine whether to force start the help tour
+ * \author swhitehouse@keesaco.com of Keesaco
+ */
 // Function to begin the help tour.
 function ksfHelp_mainTourBegin(force)
 {
@@ -253,12 +279,18 @@ function ksfHelp_mainTourBegin(force)
 }
 ksfHelp.mainTourBegin = ksfHelp_mainTourBegin;
 
-//Function to end the help tour.
+
+/**
+ * Ends the help tour.
+ * \author swhitehouse@keesaco.com of Keesaco
+ */
 function ksfHelp_mainTourEnd()
 {
 	ksfHelp_mainTour.end();
 }
 ksfHelp.mainTourEnd = ksfHelp_mainTourEnd;
+
+
 
 // Updated the help tour when the window is resized.
 $(function(){
