@@ -8,11 +8,100 @@
  * \brief Provides methods for controlling the help tour.
  */
 
+ 
+ 
 /**
  * Defines the width at which the layout of the web page changes.
  */
- LAYOUT_WIDTH_THRESHOLD = 767;
+LAYOUT_WIDTH_THRESHOLD = 767;
  
+ 
+function toolSelector(){};
+function fileSelector(){};
+function dropDown(){};
+ 
+ 
+ /**
+ * Sets the position of the tool selector to be in view.
+ * \author swhitehouse@keesaco.com of Keesaco
+ */
+function toolSelector_slideIn()
+{
+		$('#sidebar2').animate({
+			marginLeft: 0
+		});
+		$('.apppanel').animate({
+			marginLeft: 50
+		});
+}
+toolSelector.slideIn = toolSelector_slideIn;
+
+
+/**
+ * Sets the position of the tool selector to be out of view.
+ * \author swhitehouse@keesaco.com of Keesaco
+ */
+function toolSelector_slideOut()
+{
+	$('#sidebar2').animate({
+		marginLeft: -50
+	});
+	$('.apppanel').animate({
+		marginLeft: 0
+	});
+}
+toolSelector.slideOut = toolSelector_slideOut;
+
+
+/**
+ * Sets the position of the dropdown to be in view.
+ * \author swhitehouse@keesaco.com of Keesaco
+ */
+function dropDown_slideIn()
+{
+	$('#dropdownmenu').collapse('show');
+}
+dropDown.slideIn = dropDown_slideIn;
+
+
+/**
+ * Sets the position of the dropdown to be out of view.
+ * \author swhitehouse@keesaco.com of Keesaco
+ */
+function dropDown_slideOut()
+{
+	$('#dropdownmenu').collapse('hide');
+}
+dropDown.slideOut = dropDown_slideOut;
+
+
+/**
+ * Sets the position of the file selector to be in view.
+ * \author swhitehouse@keesaco.com of Keesaco
+ */
+function fileSelector_slideIn()
+{
+	$('#sidebar').animate({
+		marginRight: 0
+	});
+}
+fileSelector.slideIn = fileSelector_slideIn;
+
+
+/**
+ * Sets the position of the file selector to be out of view.
+ * \author swhitehouse@keesaco.com of Keesaco
+ */
+function fileSelector_slideOut()
+{
+	$('#sidebar').animate({
+		marginRight: -$('#sidebar').outerWidth()
+	});
+}
+fileSelector.slideOut = fileSelector_slideOut;
+
+
+
 /**
  * ksfHelp constructor used for namespace.
  * \note This constructor declares the namespace.
@@ -63,7 +152,7 @@ ksfHelp_mainTour = new Tour
 						next:		5,
 						prev:		1,
 						onShow:		dropDown.slideIn,
-						onPrev:		dropdown.slideOut
+						onPrev:		dropDown.slideOut
 					},
 					{
 						element: 	".tour-step.files",
@@ -102,13 +191,13 @@ ksfHelp_mainTour = new Tour
 						prev:		5,
 						onShow:		function()
 									{
-										fileSelector.slideIn;
-										dropDown.slideIn;
+										fileSelector_slideIn();
+										dropDown_slideIn();
 									},
 						onNext:		function()
 									{
-										fileSelector.slideOut;
-										dropDown.slideOut;
+										fileSelector_slideOut();
+										dropDown_slideOut();
 									},
 						onPrev:		fileSelector.slideOut
 					},
@@ -129,8 +218,8 @@ ksfHelp_mainTour = new Tour
 						prev:		7,
 						onShow:		function()
 									{
-										dropDown.slideOut;
-										toolSelector.slideIn;
+										dropDown_slideOut();
+										toolSelector_slideIn();
 									},
 						onNext:		toolSelector.slideOut,
 						onPrev:		toolSelector.slideOut
@@ -167,21 +256,6 @@ ksfHelp.mainTourInit = ksfHelp_mainTourInit;
 
 
 /**
- * Begins the help tour.
- * \author swhitehouse@keesaco.com of Keesaco
- */
-function ksfHelp_mainTourBegin()
-{
-	if(ksfHelp_mainTour.ended())
-	{
-		ksfHelp_mainTour.restart();
-	}
-	ksfHelp.mainTourResize;
-}
-ksfHelp.mainTourBegin = ksfHelp_mainTourBegin;
-
-
-/**
  * Adapts the help tour to the current screen size.
  * \author swhitehouse@keesaco.com of Keesaco
  */
@@ -213,6 +287,21 @@ ksfHelp.mainTourResize = ksfHelp_mainTourResize;
 
 
 /**
+ * Begins the help tour.
+ * \author swhitehouse@keesaco.com of Keesaco
+ */
+function ksfHelp_mainTourBegin()
+{
+	if(ksfHelp_mainTour.ended())
+	{
+		ksfHelp_mainTour.restart();
+	}
+	ksfHelp_mainTourResize();
+}
+ksfHelp.mainTourBegin = ksfHelp_mainTourBegin;
+
+
+/**
  * Ends the help tour.
  * \author swhitehouse@keesaco.com of Keesaco
  */
@@ -224,87 +313,9 @@ ksfHelp.mainTourEnd = ksfHelp_mainTourEnd;
 
 
 
+$(window).resize(ksfHelp.mainTourResize);
 
 
-/**
- * Sets the position of the tool selector to be in view.
- * \author swhitehouse@keesaco.com of Keesaco
- */
-function setToolSelectorIn()
-{
-		$('#sidebar2').animate({
-			marginLeft: 0
-		});
-		$('.apppanel').animate({
-			marginLeft: 50
-		});
-}
-toolSelector.slideIn = setToolSelectorIn;
 
-
-/**
- * Sets the position of the tool selector to be out of view.
- * \author swhitehouse@keesaco.com of Keesaco
- */
-function setToolSelectorOut()
-{
-	$('#sidebar2').animate({
-		marginLeft: -50
-	});
-	$('.apppanel').animate({
-		marginLeft: 0
-	});
-}
-toolSelector.slideOut = setToolSelectorOut;
-
-
-/**
- * Sets the position of the dropdown to be in view.
- * \author swhitehouse@keesaco.com of Keesaco
- */
-function setDropDownIn()
-{
-	$('#dropdownmenu').collapse('show');
-}
-dropDown.slideIn = setDropDownIn;
-
-
-/**
- * Sets the position of the dropdown to be out of view.
- * \author swhitehouse@keesaco.com of Keesaco
- */
-function setDropDownOut()
-{
-	$('#dropdownmenu').collapse('hide');
-}
-dropDown.slideOut = setDropDownOut;
-
-
-/**
- * Sets the position of the file selector to be in view.
- * \author swhitehouse@keesaco.com of Keesaco
- */
-function setFileSelectorIn()
-{
-	$('#sidebar').animate({
-		marginRight: 0
-	});
-}
-fileSelector.slideIn = setFileSelectorIn;
-
-
-/**
- * Sets the position of the file selector to be out of view.
- * \author swhitehouse@keesaco.com of Keesaco
- */
-function setFileSelectorOut()
-{
-	$('#sidebar').animate({
-		marginRight: -$('#sidebar').outerWidth()
-	});
-}
-fileSelector.slideOut = setFileSelectorOut;
-
-
-$(window).resize(ksfmainTourResize);
+ksfHelp_mainTourInit();
 
