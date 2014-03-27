@@ -8,7 +8,7 @@
 ## \brief Contains abstraction layer functions for platform-specific permission table functionality. Results are returned to a calling API in a plaform-independent format
 ###########################################################################
 
-from API.PALDBTables import Users, Files, FilePermissions
+from API.PALDBTables import Users, Files, FilePermissions, Elements, ElementPermissions
 from API.User import User
 from google.appengine.ext import ndb
 from Permissions import Types
@@ -430,3 +430,210 @@ def get_user_permissions_list(user_key):
 		return query.iter()
 	else:
 		return False
+
+
+###########################################################################
+## \brief adds a named element to element table
+## \param ref - [String] reference to named element
+## \return key of new entry
+## \author cwike@keesaco.com of Keesaco
+## \note Untested - Needs testing
+###########################################################################
+def add_element(ref):
+	elem = Element(element_ref = ref)
+	return elem.put()
+
+###########################################################################
+## \brief removes a named element from table by name
+## \param element_ref - [String] name of named element
+## \return True on success, False otherwise
+## \author cwike@keesaco.com of Keesaco
+## \note Untested - Needs testing
+###########################################################################
+def remove_element_by_ref(element_ref):
+	query = Element.query(Element.element_ref = element_ref)
+	elem = query.get()
+
+	if elem is None:
+		return False
+	else:
+		elem.key.delete()
+		return True
+
+###########################################################################
+## \brief removes a named element from table by entry key
+## \param element_key - [Key] key of entry to remove
+## \return True on success, False otherwise
+## \author cwike@keesaco.com of Keesaco
+## \note Untested - Needs testing
+###########################################################################
+def remove_element_by_key(element_key):
+	if isinstance(element_key,ndb.Key):
+		element_key.delete()
+		return True
+	else:
+		return False
+
+###########################################################################
+## \brief renames element reference
+## \param old_ref - [String] named reference to rename
+## \param new_ref - [String] new name for element
+## \return key of element renamed
+## \author cwike@keesaco.com of Keesaco
+## \note Untested - Needs testing
+###########################################################################
+def rename_element(old_ref, new_ref):
+	query = Element.query(Element.element_ref = old_ref)
+	elem = query.get()
+
+	elem.element_ref = new_ref
+	return elem.put()
+
+###########################################################################
+## \brief gets an element by key
+## \param element_key - [Key] key of element to get
+## \return element os success or None
+## \author cwike@keesaco.com of Keesaco
+## \note Untested - Needs testing
+###########################################################################
+def get_element_by_key(element_key):
+	if isinstance(element_key,ndb.Key):
+		element = element_key.get()
+		return element
+	else:
+		return None
+
+###########################################################################
+## \brief gets element key by element reference
+## \param element_ref - [String] named element reference
+## \return key of element on success, None otherwise
+## \author cwike@keesaco.com of Keesaco
+## \note Untested - Needs testing
+###########################################################################
+def get_element_key_by_ref(element_ref):
+	query = Element.query(Element.element_ref = element_ref)
+	elem = query.get()
+	if elem is None:
+		return None
+	else:
+		return elem.key
+
+###########################################################################
+## \brief 
+## \param 
+## \return 
+## \author cwike@keesaco.com of Keesaco
+## \note Stub - needs implementing
+###########################################################################
+def add_element_permissions(user_key,element_key,access):
+	pass
+
+###########################################################################
+## \brief 
+## \param 
+## \return 
+## \author cwike@keesaco.com of Keesaco
+## \note Stub - needs implementing
+###########################################################################
+def modify_element_permissions_by_key(key,new_access):
+	pass
+
+###########################################################################
+## \brief 
+## \param 
+## \return 
+## \author cwike@keesaco.com of Keesaco
+## \note Stub - needs implementing
+###########################################################################
+def modify_user_element_Permissions(user_key,element_key,access):
+	pass
+
+###########################################################################
+## \brief 
+## \param 
+## \return 
+## \author cwike@keesaco.com of Keesaco
+## \note Stub - needs implementing
+###########################################################################
+def revoke_element_permissions_element_key(element_key):
+	pass
+
+###########################################################################
+## \brief 
+## \param 
+## \return 
+## \author cwike@keesaco.com of Keesaco
+## \note Stub - needs implementing
+###########################################################################
+def revoke_element_permissions_user_key(user_key):
+	pass
+
+###########################################################################
+## \brief 
+## \param 
+## \return 
+## \author cwike@keesaco.com of Keesaco
+## \note Stub - needs implementing
+###########################################################################
+def revoke_user_element_permissions(user_key,element_key):
+	pass
+
+###########################################################################
+## \brief 
+## \param 
+## \return 
+## \author cwike@keesaco.com of Keesaco
+## \note Stub - needs implementing
+###########################################################################
+def revoke_element_permissions_by_key(key):
+	pass
+
+###########################################################################
+## \brief 
+## \param 
+## \return 
+## \author cwike@keesaco.com of Keesaco
+## \note Stub - needs implementing
+###########################################################################
+def get_element_permissions_by_element_key(element_key):
+	pass
+
+###########################################################################
+## \brief 
+## \param 
+## \return 
+## \author cwike@keesaco.com of Keesaco
+## \note Stub - needs implementing
+###########################################################################
+def get_element_permissions_by_user_key(user_key):
+	pass
+
+###########################################################################
+## \brief 
+## \param 
+## \return 
+## \author cwike@keesaco.com of Keesaco
+## \note Stub - needs implementing
+###########################################################################
+def get_user_element_permissions(user_key,element_key):
+	pass
+
+###########################################################################
+## \brief 
+## \param 
+## \return 
+## \author cwike@keesaco.com of Keesaco
+## \note Stub - needs implementing
+###########################################################################
+def get_element_permissions_by_key(key):
+	pass
+
+###########################################################################
+## \brief 
+## \param 
+## \return 
+## \author cwike@keesaco.com of Keesaco
+## \note Stub - needs implementing
+###########################################################################
+def get_user_element_permissions_key(user_key, element_key):
+	pass
