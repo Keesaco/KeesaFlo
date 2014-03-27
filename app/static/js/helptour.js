@@ -3,16 +3,19 @@
  * \brief Bootstrap tour based help tour for the application.
  * \author swhitehouse@keesaco.com of Keesaco
  */
-
-/** \package app.static.js.helptour
+/**
+ * \package app.static.js.helptour
  * \brief Provides methods for controlling the help tour.
  */
 
-
+/**
+ * Defines the width at which the layout of the web page changes.
+ */
+ LAYOUT_WIDTH_THRESHOLD = 767;
+ 
 /**
  * ksfHelp constructor used for namespace.
- * \return None
- * \note This constructor currently (intentionally) does not have any effect.
+ * \note This constructor declares the namespace.
  * \author swhitehouse@keesaco.com of Keesaco
  */
 function ksfHelp()
@@ -21,10 +24,10 @@ function ksfHelp()
 
 
 /**
- * \brief The variable that holds the help tour.
+ * The variable that holds the help tour.
  * \author swhitehouse@keesaco.com of Keesaco
  */
-var ksfHelp_mainTour = new Tour
+ksfHelp_mainTour = new Tour
 ({
 	name:		"ksfHelp_mainTour",
 	steps:		[
@@ -59,14 +62,8 @@ var ksfHelp_mainTour = new Tour
 						content: 	"Click here for settings, to logout, or to go through this tour again.",
 						next:		5,
 						prev:		1,
-						onShow:		function(tour)
-									{
-										setDropDown(true);
-									},
-						onPrev:		function()
-									{
-										setDropDown(false);
-									}
+						onShow:		dropDown.slideIn,
+						onPrev:		dropdown.slideOut
 					},
 					{
 						element: 	".tour-step.files",
@@ -83,10 +80,7 @@ var ksfHelp_mainTour = new Tour
 						content: 	"This button shows the file panel, allowing you access to all of your previously uploaded flow cytometry files.",
 						next:		7,
 						prev:		3,
-						onShow:		function(tour)
-									{
-										setDropDown(true);
-									}
+						onShow:		dropDown.slideIn
 					},
 					{
 						element: 	".tour-step.upload",
@@ -95,18 +89,9 @@ var ksfHelp_mainTour = new Tour
 						content: 	"Click this button to upload your new flow cytometry (.fcs) data.",
 						next:		8,
 						prev:		4,
-						onShow:		function()
-									{
-										setFileBar(true);
-									},
-						onNext:		function()
-									{
-										setFileBar(false);
-									},
-						onPrev:		function()
-									{
-										setFileBar(false);
-									}
+						onShow:		fileSelector.slideIn,
+						onNext:		fileSelector.slideOut,
+						onPrev:		fileSelector.slideOut
 					},
 					{
 						element: 	".tour-step.upload",
@@ -117,18 +102,15 @@ var ksfHelp_mainTour = new Tour
 						prev:		5,
 						onShow:		function()
 									{
-										setDropDown(true);
-										setFileBar(true);
+										fileSelector.slideIn;
+										dropDown.slideIn;
 									},
 						onNext:		function()
 									{
-										setFileBar(false);
-										setDropDown(false);
+										fileSelector.slideOut;
+										dropDown.slideOut;
 									},
-						onPrev:		function()
-									{
-										setFileBar(false);
-									}
+						onPrev:		fileSelector.slideOut
 					},
 					{
 						element:	".tour-step.tools",
@@ -147,17 +129,11 @@ var ksfHelp_mainTour = new Tour
 						prev:		7,
 						onShow:		function()
 									{
-										setDropDown(false);
-										setToolBar(true);
+										dropDown.slideOut;
+										toolSelector.slideIn;
 									},
-						onNext:		function()
-									{
-										setToolBar(false);
-									},
-						onPrev:		function()
-									{
-										setToolBar(false);
-									}
+						onNext:		toolSelector.slideOut,
+						onPrev:		toolSelector.slideOut
 					},
 					{
 						title:		"The End",
@@ -165,10 +141,7 @@ var ksfHelp_mainTour = new Tour
 						orphan:		true,
 						next:		-1,
 						prev:		8,
-						onNext:		function()
-									{
-										ksfHelp_mainTour.end();
-									}
+						onNext:		ksfHelp.mainTourEnd
 					},
 					{
 						title:		"The End",
@@ -182,102 +155,61 @@ var ksfHelp_mainTour = new Tour
 
 
 /**
- * Sets the position of the toolbar (left).
- * \param is_out - boolean to determine the position of the toolbar
- * \note Slides the toolbar out on true, in on false.
+ * Initialises the help tour.
  * \author swhitehouse@keesaco.com of Keesaco
  */
-function setToolBar(is_out)
+function ksfHelp_mainTourInit()
 {
-	if(is_out)
-	{
-		$('#sidebar2').animate({
-			marginLeft: 0
-		});
-		$('.apppanel').animate({
-			marginLeft: 50
-		});
-	}
-	else{
-		$('#sidebar2').animate({
-			marginLeft: -50
-		});
-		$('.apppanel').animate({
-			marginLeft: 0
-		});
-	}
+	ksfHelp_mainTour.init();
+	ksfHelp_mainTour.start();
 }
-
-
-/**
- * Sets the position of the dropdown menu (top - mobile).
- * \param is_out - boolean to determine the position of the dropdown menu
- * \note Sets the dropdown menu to slide out on true, in on false.
- * \author swhitehouse@keesaco.com of Keesaco
- */
-function setDropDown(is_out)
-{
-	if(is_out)
-	{
-		$('#dropdownmenu').collapse('show');
-	}
-	else{
-		$('#dropdownmenu').collapse('hide');
-	}
-}
-
-
-/**
- * Sets the position of the filebar (right).
- * \param is_out - boolean to determine the position of the filebar
- * \note Sets the ilebar to slide out on true, in on false.
- * \author swhitehouse@keesaco.com of Keesaco
- */
-function setFileBar(is_out)
-{
-	if(is_out)
-	{
-		$('#sidebar').animate({
-			marginRight: 0
-		});
-	}
-	else{
-		$('#sidebar').animate({
-			marginRight: -$('#sidebar').outerWidth()
-		});
-	}
-}
+ksfHelp.mainTourInit = ksfHelp_mainTourInit;
 
 
 /**
  * Begins the help tour.
- * \param force - boolean to determine whether to force start the help tour
  * \author swhitehouse@keesaco.com of Keesaco
  */
-// Function to begin the help tour.
-function ksfHelp_mainTourBegin(force)
+function ksfHelp_mainTourBegin()
 {
-	if(force)
+	if(ksfHelp_mainTour.ended())
 	{
-		if(ksfHelp_mainTour.ended())
-		{
-			ksfHelp_mainTour.restart();
-		}
+		ksfHelp_mainTour.restart();
 	}
-	else
-	{
-		ksfHelp_mainTour.start();
-	}
-	if(ksfHelp_mainTour.ended() == false)
-	{
-		if($(window).width() <= 767)
-		{
-			ksfHelp_mainTour.setCurrentStep(1);
-			ksfHelp_mainTour.goTo(1);
-		}
-	}
+	ksfHelp.mainTourResize;
 }
 ksfHelp.mainTourBegin = ksfHelp_mainTourBegin;
+
+
+/**
+ * Adapts the help tour to the current screen size.
+ * \author swhitehouse@keesaco.com of Keesaco
+ */
+function ksfHelp_mainTourResize()
+{
+	if(ksfHelp_mainTour.ended() == false)
+	{
+		var browserWidth = $(window).width();
+		var currentStep = ksfHelp_mainTour.getCurrentStep();
+		if(browserWidth <= LAYOUT_WIDTH_THRESHOLD)
+		{
+			if((currentStep % 2) == 0)
+			{
+				currentStep += 1;	
+			}
+		}
+		else
+		{
+			if((currentStep % 2) == 1)
+			{
+				currentStep -= 1;
+			}
+		}
+		ksfHelp_mainTour.setCurrentStep(currentStep);
+		ksfHelp_mainTour.goTo(currentStep);
+	}
+}
+ksfHelp.mainTourResize = ksfHelp_mainTourResize;
 
 
 /**
@@ -292,36 +224,87 @@ ksfHelp.mainTourEnd = ksfHelp_mainTourEnd;
 
 
 
-// Updated the help tour when the window is resized.
-$(function(){
-	$(window).resize(function() {
-		if(ksfHelp_mainTour.ended() == false)
-		{
-			var $browserWidth = $(window).width();
-			currentStep = ksfHelp_mainTour.getCurrentStep();
-			if($browserWidth <= 767)
-			{
-				if((currentStep % 2) == 0)
-				{
-					currentStep += 1;
-					
-				}
-			}
-			else{
-				if((currentStep % 2) == 1)
-				{
-					currentStep -= 1;
-				}
-			}
-			ksfHelp_mainTour.setCurrentStep(currentStep);
-			ksfHelp_mainTour.goTo(currentStep);
-		}
+
+
+/**
+ * Sets the position of the tool selector to be in view.
+ * \author swhitehouse@keesaco.com of Keesaco
+ */
+function setToolSelectorIn()
+{
+		$('#sidebar2').animate({
+			marginLeft: 0
+		});
+		$('.apppanel').animate({
+			marginLeft: 50
+		});
+}
+toolSelector.slideIn = setToolSelectorIn;
+
+
+/**
+ * Sets the position of the tool selector to be out of view.
+ * \author swhitehouse@keesaco.com of Keesaco
+ */
+function setToolSelectorOut()
+{
+	$('#sidebar2').animate({
+		marginLeft: -50
 	});
-});
+	$('.apppanel').animate({
+		marginLeft: 0
+	});
+}
+toolSelector.slideOut = setToolSelectorOut;
 
-// Initialize the tour
-ksfHelp_mainTour.init();
 
-// Runs the help tour.
-ksfHelp.mainTourBegin(false);
+/**
+ * Sets the position of the dropdown to be in view.
+ * \author swhitehouse@keesaco.com of Keesaco
+ */
+function setDropDownIn()
+{
+	$('#dropdownmenu').collapse('show');
+}
+dropDown.slideIn = setDropDownIn;
+
+
+/**
+ * Sets the position of the dropdown to be out of view.
+ * \author swhitehouse@keesaco.com of Keesaco
+ */
+function setDropDownOut()
+{
+	$('#dropdownmenu').collapse('hide');
+}
+dropDown.slideOut = setDropDownOut;
+
+
+/**
+ * Sets the position of the file selector to be in view.
+ * \author swhitehouse@keesaco.com of Keesaco
+ */
+function setFileSelectorIn()
+{
+	$('#sidebar').animate({
+		marginRight: 0
+	});
+}
+fileSelector.slideIn = setFileSelectorIn;
+
+
+/**
+ * Sets the position of the file selector to be out of view.
+ * \author swhitehouse@keesaco.com of Keesaco
+ */
+function setFileSelectorOut()
+{
+	$('#sidebar').animate({
+		marginRight: -$('#sidebar').outerWidth()
+	});
+}
+fileSelector.slideOut = setFileSelectorOut;
+
+
+$(window).resize(ksfmainTourResize);
 
