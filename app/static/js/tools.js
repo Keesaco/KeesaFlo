@@ -17,7 +17,8 @@ ksfTools.CurrentTool = null;
  * \author mrudelle@keesaco.com of Keesaco
  * \note This constructor currently (intentionally) does not have any effect
  */
-function ksfTools(){
+function ksfTools()
+{
 }
 
 /**
@@ -29,9 +30,9 @@ ksfTools.switchTool = function(event)
 {
 	// TODO: Might be replaced by a reversed hash of TOOLS_LIST
 	var i = TOOLS_LIST.length - 1;
-	for (; i >= 0 && TOOLS_LIST[i].ELEMENT_ID !== ("#" + this.id) ; i--) {
-	};
-    if (ksfTools.CurrentTool) {
+	for (; i >= 0 && TOOLS_LIST[i].ELEMENT_ID !== ("#" + this.id) ; i--) {}
+    if (ksfTools.CurrentTool)
+	{
         ksfTools.CurrentTool.resetTool();
     }
     ksfTools.CurrentTool = TOOLS_LIST[i];
@@ -46,7 +47,8 @@ ksfTools.switchTool = function(event)
  */
 ksfTools.addToolsListener = function() 
 {
-	for (var i = TOOLS_LIST.length - 1; i >= 0; i--) {
+	for (var i = TOOLS_LIST.length - 1; i >= 0; i--)
+	{
 		$(TOOLS_LIST[i].ELEMENT_ID).click(ksfTools.switchTool);
-	};
+	}
 }
