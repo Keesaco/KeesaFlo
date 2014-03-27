@@ -1,19 +1,19 @@
-/*
+/**
  * \file app/static/js/graphTools.js
  * \brief JavaScript library to manage graph related tools
  * \author mrudelle@keesaco.com of Keesaco
  */
 
- /* \package app.static.js.graphTools
+/**
+ * \package app.static.js.graphTools
  * \brief Provides methods for triggering tool event
  */
 
-/*
-* \fn ksfGraphTools()
-* \brief ksfTools constructor used for namespace
-* \author mrudelle@keesaco.com of Keesaco
-* \note This constructor currently (intentionally) does not have any effect
-*/
+/**
+ * ksfTools constructor used for namespace
+ * \author mrudelle@keesaco.com of Keesaco
+ * \note This constructor currently (intentionally) does not have any effect
+ */
 function ksfGraphTools() {
 }
 
@@ -231,12 +231,12 @@ ksfGraphTools.OvalGating = {
 	}
 }
 
-/*
-* Perform a gating request and update the view correspondingly
-* \param gatingURL - [String] url of the gating command
-* \author mrudelle@keesaco.com of Keesaco
-* \note This might be moved to views.js in the future
-*/
+/**
+ * Perform a gating request and update the view correspondingly
+ * \param gatingURL - [String] url of the gating command
+ * \author mrudelle@keesaco.com of Keesaco
+ * \note This might be moved to views.js in the future
+ */
 function ksfGraphTools_sendGatingRequest(gatingURL) {
 	// allows to fetch the name correctly. In the future (final release) this should be replace by a json file fetched from the server containing all the file's data
 	
@@ -264,12 +264,12 @@ function ksfGraphTools_sendGatingRequest(gatingURL) {
 }
 ksfGraphTools.sendGatingRequest = ksfGraphTools_sendGatingRequest;
 
-/*
-* Change properly the graph image
-* \param url - [String] url of the new graph
-* \author mrudelle@keesaco.com of Keesaco
-* \note If the link throw an error it will enter a loop to reload the image
-*/
+/**
+ * Change properly the graph image
+ * \param url - [String] url of the new graph
+ * \author mrudelle@keesaco.com of Keesaco
+ * \note If the link throw an error it will enter a loop to reload the image
+ */
 function ksfGraphTools_setGraphUrl(url) {
 	
 	$("#graph-img").off('error');
@@ -282,22 +282,22 @@ function ksfGraphTools_setGraphUrl(url) {
 }
 ksfGraphTools.setGraphUrl = ksfGraphTools_setGraphUrl;
 
-/*
-* Allows one to reload properly the image of the graph
-* \author mrudelle@keesaco.com of Keesaco
-*/
+/**
+ * Allows one to reload properly the image of the graph
+ * \author mrudelle@keesaco.com of Keesaco
+ */
 function ksfGraphTools_reloadImage() {
 	ksfCanvas.setLoading(false);
 	$("#graph-img").attr("src", $("#graph-img").attr("src"));
 }
 ksfGraphTools.reloadImage = ksfGraphTools_reloadImage;
 
-/*
-* Calculate the angle to the horizontal of a vector
-* \param tx - [int] x coordinate of the vector
-* \param ty - [int] y coordinate of the vector
-* \author mrudelle@keesaco.com of Keesaco
-*/
+/**
+ * Calculate the angle to the horizontal of a vector
+ * \param tx - [int] x coordinate of the vector
+ * \param ty - [int] y coordinate of the vector
+ * \author mrudelle@keesaco.com of Keesaco
+ */
 function ksfGraphTools_mesureAngle(tx, ty) {
 	var angle;
 	if (tx === 0) {
@@ -311,13 +311,13 @@ function ksfGraphTools_mesureAngle(tx, ty) {
 }
 ksfGraphTools.mesureAngle = ksfGraphTools_mesureAngle;
 
-/*
-* Popup a feedback on the app panel
-* \param type - [String] type of the alert: FEEDBACK_[INFO|WARNING|DANGER|SUCCESS]
-* \param title - [String] title of the message
-* \param message - [String] message of the alert
-* \author mrudelle@keesaco.com of Keesaco
-*/
+/**
+ * Popup a feedback on the app panel
+ * \param type - [String] type of the alert: FEEDBACK_[INFO|WARNING|DANGER|SUCCESS]
+ * \param title - [String] title of the message
+ * \param message - [String] message of the alert
+ * \author mrudelle@keesaco.com of Keesaco
+ */
 function ksfGraphTools_showFeedback(type, title, message) {
 	$(".alert").remove();
 	var alert = "<div class=\"alert "+type+" alert-dismissable\"> " +
