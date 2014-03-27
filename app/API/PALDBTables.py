@@ -36,3 +36,14 @@ class FilePermissions(ndb.Model):
 	write 			= ndb.BooleanProperty()
 	### - full control
 	full_control 	= ndb.BooleanProperty()
+
+class Element(ndb.Model):
+	element_ref		+ ndb.StringProperty()
+
+class ElementPermissions(ndb.model):
+	
+	user_key		= ndb.KeyProperty()
+	element_key		= ndb.KeyProperty()
+
+	access			= ndb.BooleanProperty()
+	
