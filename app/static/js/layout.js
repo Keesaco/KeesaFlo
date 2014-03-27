@@ -134,6 +134,7 @@ function ksfLayout_initTips()
 	var qTipOptions =
 	{
 		style: 		{ classes: 'qtip-bootstrap qtip-shadow qtip-rounded' },
+		show:		{ delay: 800 },
 		overwrite: 	false,
 	};
 	var tipSelector = $('[title!=""]').not('.notip');
