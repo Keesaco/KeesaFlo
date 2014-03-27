@@ -846,7 +846,9 @@ EXCLUDE                = AppBuild.py \
 						 compute_engine/google-api-python-client-gae-1.2.zip \
 						 compute_engine/httplib2/ \
 						 compute_engine/oauth2client/ \
-						 compute_engine/uritemplate/
+						 compute_engine/uritemplate/ \
+						 app/static/css/qtip.min.css \
+						 app/static/js/qtip.min.js
 
 # The EXCLUDE_SYMLINKS tag can be used to select whether or not files or
 # directories that are symbolic links (a Unix file system feature) are excluded

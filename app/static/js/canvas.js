@@ -11,15 +11,15 @@ var context;
 var canvas;
 var tool_popover;
 
-/*
-* Draw a selection box on the canvas
-* \param ax - x coordinate of the first point
-* \param ay - y coordinate of the first point
-* \param bx - x coordinate of the second point
-* \param by - y coordinate of the second point
-* \param alpha - from 0 to 1, define the tansparency of the box 
-* \author mrudelle@keesaco.com of Keesaco
-*/
+/**
+ * Draw a selection box on the canvas
+ * \param ax - x coordinate of the first point
+ * \param ay - y coordinate of the first point
+ * \param bx - x coordinate of the second point
+ * \param by - y coordinate of the second point
+ * \param alpha - from 0 to 1, define the tansparency of the box
+ * \author mrudelle@keesaco.com of Keesaco
+ */
 function ksfCanvasdrawBox(ax, ay, bx, by, alpha) {
 	this.clear();
     context.save();
@@ -37,15 +37,15 @@ function ksfCanvasdrawBox(ax, ay, bx, by, alpha) {
 ksfCanvas.drawBox = ksfCanvasdrawBox;
 
 
-/*
-* Draw a polygon on the canvas
-* \param xList - x coordinates of the points
-* \param yList - y coordinates of the points
-* \param lastx - x coordinates of the last points (null if no last point)
-* \param lasty - y coordinates of the last points (null if no last point)
-* \param startRadius - radius of the starting point (red area clickable to close the gate) 
-* \author mrudelle@keesaco.com of Keesaco
-*/
+/**
+ * Draw a polygon on the canvas
+ * \param xList - x coordinates of the points
+ * \param yList - y coordinates of the points
+ * \param lastx - x coordinates of the last points (null if no last point)
+ * \param lasty - y coordinates of the last points (null if no last point)
+ * \param startRadius - radius of the starting point (red area clickable to close the gate)
+ * \author mrudelle@keesaco.com of Keesaco
+ */
 function ksfCanvas_drawPolygon(xList, yList, lastx, lasty, startRadius) {
 	this.clear();
 	
@@ -76,15 +76,15 @@ function ksfCanvas_drawPolygon(xList, yList, lastx, lasty, startRadius) {
 }
 ksfCanvas.drawPolygon = ksfCanvas_drawPolygon;
 
-/*
-* Draws an oval on the canvas
-* \param cx - x coordinates of the center points
-* \param cy - y coordinates of the center points
-* \param r1 - first radius of the oval
-* \param p2x - x coordinates of the last point (it belongs to the oval)
-* \param p2y - y coordinates of the last point (it belongs to the oval) 
-* \author mrudelle@keesaco.com of Keesaco
-*/
+/**
+ * Draws an oval on the canvas
+ * \param cx - x coordinates of the center points
+ * \param cy - y coordinates of the center points
+ * \param r1 - first radius of the oval
+ * \param p2x - x coordinates of the last point (it belongs to the oval)
+ * \param p2y - y coordinates of the last point (it belongs to the oval)
+ * \author mrudelle@keesaco.com of Keesaco
+ */
 function ksfCanvas_drawOval(cx, cy, r1, p2x, p2y) {
 	this.clear();
 	
@@ -129,12 +129,12 @@ function ksfCanvas_drawOval(cx, cy, r1, p2x, p2y) {
 }
 ksfCanvas.drawOval = ksfCanvas_drawOval;
 
-/*
-* Set the text shown over the graph 
-* \param msg - [string] text to be shown
-* \note This area is used to provide the user with a short feedback on his actions
-* \author mrudelle@keesaco.com of Keesaco
-*/
+/**
+ * Set the text shown over the graph
+ * \param msg - [string] text to be shown
+ * \note This area is used to provide the user with a short feedback on his actions
+ * \author mrudelle@keesaco.com of Keesaco
+ */
 function ksfCanvas_toolText(msg) {
     if (tool_popover !== null) {
         tool_popover.text(msg);
@@ -142,10 +142,10 @@ function ksfCanvas_toolText(msg) {
 }
 ksfCanvas.toolText = ksfCanvas_toolText;
 
-/*
-* Clear the canvas (erase it's content to make it transparent)
-* \author mrudelle@keesaco.com of Keesaco
-*/
+/**
+ * Clear the canvas (erase it's content to make it transparent)
+ * \author mrudelle@keesaco.com of Keesaco
+ */
 function ksfCanvas_clear() {
     if (context !== null && canvas !== undefined) {
         context.clearRect(0, 0, canvas.width, canvas.height);
@@ -153,22 +153,22 @@ function ksfCanvas_clear() {
 }
 ksfCanvas.clear = ksfCanvas_clear;
 
-/*
-* Set the cursor of the graph 
-* \param cursor - [string] cursor name as defined by css (see http://www.w3schools.com/cssref/pr_class_cursor.asp)
-* \note This area is used to provide the user with a short feedback on his actions
-* \author mrudelle@keesaco.com of Keesaco
-*/
+/**
+ * Set the cursor of the graph
+ * \param cursor - [string] cursor name as defined by css (see http://www.w3schools.com/cssref/pr_class_cursor.asp)
+ * \note This area is used to provide the user with a short feedback on his actions
+ * \author mrudelle@keesaco.com of Keesaco
+ */
 function ksfCanvas_setCursor(cursor) {
 	$(GRAPH_ID).css( 'cursor', cursor );
 }
 ksfCanvas.setCursor = ksfCanvas_setCursor;
 
-/*
-* set a click listener to the graph
-* \author mrudelle@keesaco.com of Keesaco
-* \note The listener triggers the proper tool's onGraphClick() function
-*/
+/**
+ * set a click listener to the graph
+ * \author mrudelle@keesaco.com of Keesaco
+ * \note The listener triggers the proper tool's onGraphClick() function
+ */
 function ksfCanvas_addListener(argument) {
 	$(GRAPH_ID).css('cursor', 'crosshair');
     $(GRAPH_ID).click(function(event) {
@@ -207,13 +207,13 @@ function ksfCanvas_addListener(argument) {
 }
 ksfCanvas.addListener = ksfCanvas_addListener;
 
-/*
-* Set the enbabled status of a button
-* \param btn - [string] jquerry name (#id , .class ... etc) that points to the button
-* \param enable - [boolean] define if we want to enable or not the button
-* \note depending on the string this can applies to multiple buttons
-* \author mrudelle@keesaco.com of Keesaco
-*/
+/**
+ * Set the enbabled status of a button
+ * \param btn - [string] jquerry name (#id , .class ... etc) that points to the button
+ * \param enable - [boolean] define if we want to enable or not the button
+ * \note depending on the string this can applies to multiple buttons
+ * \author mrudelle@keesaco.com of Keesaco
+ */
 function ksfCanvas_enableBtn(btn, enable){
     if (enable) {
         $(btn).removeAttr("disabled");
@@ -227,11 +227,11 @@ function ksfCanvas_enableBtn(btn, enable){
 }
 ksfCanvas.enableBtn = ksfCanvas_enableBtn;
 
-/*
-* Replace the image of the graph by a spinner or the opposit
-* \param enable - [boolean] define if we replace the image by a spinner or not
-* \author mrudelle@keesaco.com of Keesaco
-*/
+/**
+ * Replace the image of the graph by a spinner or the opposit
+ * \param enable - [boolean] define if we replace the image by a spinner or not
+ * \author mrudelle@keesaco.com of Keesaco
+ */
 function ksfCanvas_setLoading(enable) {
     if (enable) {
         $(GRAPH_ID).addClass("loading");
@@ -243,11 +243,11 @@ function ksfCanvas_setLoading(enable) {
 }
 ksfCanvas.setLoading = ksfCanvas_setLoading;
 
-/*
-* Makes an element blink
-* \param btn - element to blink (#id, .class, etc)
-* \author mrudelle@keesaco.com of Keesaco
-*/
+/**
+ * Makes an element blink
+ * \param btn - element to blink (#id, .class, etc)
+ * \author mrudelle@keesaco.com of Keesaco
+ */
 function ksfCanvas_blinkButton(btn) {
     var resetBackColor = $(btn).css('background-color');
     var resetColor = $(btn).css('color');
