@@ -15,7 +15,7 @@ for the project into the Doxygen directory in HTML and LaTeX.
 JavaScript documentation is performed automatically using js2doxy (acquired by AppBuild - see dependencies), therefore perl is required to generate documentation for JavaScript.
 
 For convenience, an HTML copy of the documentation is accessible from keesaco.com using the following link:  
-[Doxygen output](http://keesaco.com/1c314fc722274b40e8600aec4610edf1/Doxygen/html/) (Last updated 12 Mar 14)  
+[Doxygen output](http://keesaco.com/1c314fc722274b40e8600aec4610edf1/Doxygen/html/) (Last updated 25 Mar 14)  
 Please note that this may not reflect all of the latest changes to the project and only shows documentation for
 code on the development branch.
 
