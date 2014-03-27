@@ -57,6 +57,10 @@ function ksfLayout_addToggleHook()
 }
 ksfLayout.addToggleHook = ksfLayout_addToggleHook;
 
+/**
+ * Opens or closes the tool selector depending on its current state
+ * \author jmccrea@keesaco.com of Keesaco
+ */
 function ksfLayout_toggleToolBar()
 {
     var toolbarPanel = $(TOOLBAR_ID);
@@ -107,15 +111,21 @@ function ksfLayout_closeFileSelector()
 }
 ksfLayout.closeFileSelector = ksfLayout_closeFileSelector;
 
-function  ksfLayout_filePreviewStart()
+/**
+ * Sets up file preview view for new file
+ * \author jmccrea@keesaco.com of Keesaco
+ */
+function ksfLayout_filePreviewStart()
 {
 	ksfCanvas.addListener();
 	$("#file-selector-open").click(ksfLayout.toggleFileSelector);
 }
 ksfLayout.filePreviewStart = ksfLayout_filePreviewStart;
 
-
-
+/**
+ * Sets up tooltip classes
+ * \author jmccrea@keesaco.com of Keesaco
+ */
 function ksfLayout_initTips()
 {
 	var qTipOptions =
