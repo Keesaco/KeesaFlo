@@ -1,4 +1,12 @@
-/*
+/**
+ * \file app/static/js/layout.js
+ * \brief Contains code for interacting with UI elements suce as slide-out toolbars
+ * \author jmccrea@keesaco.com of Keesaco
+ * \author mrudelle@keesaco.com of Keesaco
+ * \author hdoughty@keesaco.com of Keesaco
+ */
+
+/**
  * constructor used for namespace
  * \author mrudelle@keesaco.com of Keesaco
  * \note This constructor currently (intentionally) does not have any effect
@@ -11,17 +19,12 @@ TOOLBAR_ID = '#sidebar2';
 APP_PANEL_CLASS = '.apppanel'
 TOOLBAR_WIDTH = '50px';
 
-ksfLayout.fileSelectorPanel;
-ksfLayout.toolbarPanel;
-ksfLayout.appPanel;
-
-
-/*
+/**
  * Adds hook to toggle elements (for the toolbar and the filebar)
  * \author hdoughty@keesaco.com of Keesaco
  * \author mrudelle@keesaco.com of Keesaco
  */
-ksfLayout_addToggleHook = function()
+function ksfLayout_addToggleHook()
 {
     var fileSelectorPanel = $(FILE_SIDEBAR_ID);
     var toolbarPanel = $(TOOLBAR_ID);
@@ -54,7 +57,7 @@ ksfLayout_addToggleHook = function()
 }
 ksfLayout.addToggleHook = ksfLayout_addToggleHook;
 
-ksfLayout_toggleToolBar = function()
+function ksfLayout_toggleToolBar()
 {
     var toolbarPanel = $(TOOLBAR_ID);
 	var appPanel = $(APP_PANEL_CLASS);
@@ -71,12 +74,12 @@ ksfLayout_toggleToolBar = function()
 }
 ksfLayout.toggleToolBar = ksfLayout_toggleToolBar;
 
-/*
+/**
  * Toggle the file selector panel
  * \author hdoughty@keesaco.com of Keesaco
  * \author mrudelle@keesaco.com of Keesaco
  */
-ksfLayout_toggleFileSelector = function()
+function ksfLayout_toggleFileSelector()
 {
 	var fileSelectorPanel = $(FILE_SIDEBAR_ID);
 	
@@ -94,18 +97,38 @@ ksfLayout_toggleFileSelector = function()
 }
 ksfLayout.toggleFileSelector = ksfLayout_toggleFileSelector;
 
-/*
+/**
  * Oppens the file selector panel
  * \author swhitehouse@keesaco.com of Keesaco
  */
-ksfLayout_closeFileSelector = function()
+function ksfLayout_closeFileSelector()
 {
 	$(FILE_SIDEBAR_ID).fileSelectorPanel.animate( { marginRight: 0 } );
 }
 ksfLayout.closeFileSelector = ksfLayout_closeFileSelector;
 
-ksfLayout_filePreviewStart = function() {
+function  ksfLayout_filePreviewStart()
+{
 	ksfCanvas.addListener();
 	$("#file-selector-open").click(ksfLayout.toggleFileSelector);
 }
 ksfLayout.filePreviewStart = ksfLayout_filePreviewStart;
+
+function ksfLayout_initTips()
+{
+	var qTipOptions =
+	{
+		style: 		{ classes: 'qtip-bootstrap qtip-shadow qtip-rounded' },
+		position: 	{ container: $('div.tooltips') }
+	};
+	
+	var tipSelector = $('[title!=""]').not('.notip');
+	
+	[	{ name: '.tip-right',	ext: { position: {my: 'center left', at: 'center right' } } },
+		{ name: '.tip-left', 	ext: { position: {my: 'center right', at: 'center left' } } },
+		{ name: '.tip-top', 	ext: { position: {my: 'bottom center', at: 'top center' } } },
+		{ name: '.tip-bottom', 	ext: { position: {my: 'top center', at: 'bottom center' } } } ]
+		.forEach( function(t) {
+			 tipSelector.filter(t.name).qtip($.extend(true, {}, qTipOptions, t.ext ) );
+		} );
+}
