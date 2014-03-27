@@ -15,7 +15,6 @@ function ksfLayout() {
 }
 
 FILE_SIDEBAR_ID = '#sidebar';
-TOOLBAR_ID = '#sidebar2';
 APP_PANEL_CLASS = '.apppanel'
 TOOLBAR_WIDTH = '50px';
 
@@ -27,7 +26,6 @@ TOOLBAR_WIDTH = '50px';
 function ksfLayout_addToggleHook()
 {
     var fileSelectorPanel = $(FILE_SIDEBAR_ID);
-    var toolbarPanel = $(TOOLBAR_ID);
 	var appPanel = $(APP_PANEL_CLASS);
 	
     //Handle the filebar behaviour
@@ -37,46 +35,8 @@ function ksfLayout_addToggleHook()
 			fileSelectorPanel.css( { marginRight: -fileSelectorPanel.outerWidth() } );
 		}
 	} );
-	
-    //Handle the toolbar behaviour
-    $(window).resize( function() {
-		var browserWidth = $(window).width();
-		if(browserWidth > 767 && parseInt(toolbarPanel.css('marginLeft'), 10) == 0)
-		{
-			toolbarPanel.css( { marginLeft: '0' } );
-		}
-		else if (browserWidth > 767)
-		{
-			toolbarPanel.css( { marginLeft: '0' } );
-		}
-		else
-		{
-			toolbarPanel.css( { marginLeft: ("-" + TOOLBAR_WIDTH) } );
-		}
-	} );
 }
 ksfLayout.addToggleHook = ksfLayout_addToggleHook;
-
-/**
- * Opens or closes the tool selector depending on its current state
- * \author jmccrea@keesaco.com of Keesaco
- */
-function ksfLayout_toggleToolBar()
-{
-    var toolbarPanel = $(TOOLBAR_ID);
-	var appPanel = $(APP_PANEL_CLASS);
-	
-	toolbarPanel.animate( {
-		marginLeft: parseInt(toolbarPanel.css('marginLeft'), 10) == 0
-			? ("-" + TOOLBAR_WIDTH)
-			: 0 });
-	
-    appPanel.animate( {
-		marginLeft: parseInt(appPanel.css('marginLeft'), 10) == 0
-		? TOOLBAR_WIDTH
-		: 0 });
-}
-ksfLayout.toggleToolBar = ksfLayout_toggleToolBar;
 
 /**
  * Toggle the file selector panel

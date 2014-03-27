@@ -6,11 +6,8 @@
  
 $(document).ready(function()
 {
-	ksfViews.loadFromLocation(true)
-				  
-	$("#ksf-help-begin").click(function() { ksfHelp.mainTourBegin(true); } );
 	ksfLayout.addToggleHook();
-
+	ksfViews.loadFromLocation(true);
+	$("#ksf-help-begin").click(ksfHelp.mainTourBegin);
 	$('.togglefiles').click(ksfLayout.toggleFileSelector);
-	$('.toggletools').click(ksfLayout.toggleToolBar);
 });

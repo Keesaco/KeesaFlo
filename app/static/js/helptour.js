@@ -14,43 +14,10 @@
  * Defines the width at which the layout of the web page changes.
  */
 LAYOUT_WIDTH_THRESHOLD = 767;
- 
- 
-function toolSelector(){};
+
+
 function fileSelector(){};
 function dropDown(){};
- 
- 
- /**
- * Sets the position of the tool selector to be in view.
- * \author swhitehouse@keesaco.com of Keesaco
- */
-function toolSelector_slideIn()
-{
-		$('#sidebar2').animate({
-			marginLeft: 0
-		});
-		$('.apppanel').animate({
-			marginLeft: 50
-		});
-}
-toolSelector.slideIn = toolSelector_slideIn;
-
-
-/**
- * Sets the position of the tool selector to be out of view.
- * \author swhitehouse@keesaco.com of Keesaco
- */
-function toolSelector_slideOut()
-{
-	$('#sidebar2').animate({
-		marginLeft: -50
-	});
-	$('.apppanel').animate({
-		marginLeft: 0
-	});
-}
-toolSelector.slideOut = toolSelector_slideOut;
 
 
 /**
@@ -216,13 +183,7 @@ ksfHelp_mainTour = new Tour
 						content:	"Use these tools to gate your flow cytometry files.",
 						next:		11,
 						prev:		7,
-						onShow:		function()
-									{
-										dropDown_slideOut();
-										toolSelector_slideIn();
-									},
-						onNext:		toolSelector.slideOut,
-						onPrev:		toolSelector.slideOut
+						onShow:		dropDown_slideOut()
 					},
 					{
 						title:		"The End",

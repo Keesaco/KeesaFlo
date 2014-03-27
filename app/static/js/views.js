@@ -140,7 +140,6 @@ ksfViews.refreshAll = ksfViews_refreshAll;
 function ksfViews_setupDefault()
 {
 	ksfViews.showFilebar(true);
-	ksfViews.showToolSelector(true);
 	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/left/toolselect/', TOOL_SELECTOR, ksfTools.addToolsListener );
 }
 ksfViews.setupDefault = ksfViews_setupDefault;
@@ -154,7 +153,6 @@ ksfViews.setupDefault = ksfViews_setupDefault;
 function ksfViews_setupSimple()
 {
 	ksfViews.showFilebar(false);
-	ksfViews.showToolSelector(false);
 	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/left/pagenav/', TOOL_SELECTOR, null );
 }
 ksfViews.setupSimple = ksfViews_setupSimple;
@@ -180,26 +178,6 @@ function ksfViewS_showFilebar(show)
 	}
 }
 ksfViews.showFilebar = ksfViewS_showFilebar;
-
-
-/**
- * shows or hides the tool selector
- * \tparam Boolean show - if show evaluates to true then the toolbar is shown, otherwise it is hidden
- * \return None
- * \author jmccrea@keesaco.com of Keesaco
- */
-function ksfViews_showToolSelector(show)
-{
-	if ( show )
-	{
-		$("toolselector-header").show();
-	}
-	else
-	{
-		$("toolselector-header").hide();
-	}
-}
-ksfViews.showToolSelector = ksfViews_showToolSelector;
 
 
 /**
