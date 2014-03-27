@@ -19,7 +19,13 @@ $(document).ready(function()
 	appstart.addToggleHook();
 	
 	tipSelector = $('[title!=""]').not('.notip');
-	tipSelector.filter(".").qtip($(true, {}, qTipOptions, { position: {my: 'top left', at: 'bottom right' } } );
+	[	{ name: '.tip-right',	ext: { position: {my: 'center left', at: 'center right' } } },
+		{ name: '.tip-left', 	ext: { position: {my: 'center right', at: 'center left' } } },
+		{ name: '.tip-top', 	ext: { position: {my: 'bottom center', at: 'top center' } } },
+		{ name: '.tip-bottom', 	ext: { position: {my: 'top center', at: 'bottom center' } } } ]
+		.forEach( function(t) {
+			tipSelector.filter(t.name).qtip($.extend(true, {}, qTipOptions, t.ext ) );
+		} );
 
 });
 
