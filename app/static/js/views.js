@@ -11,13 +11,6 @@
 
 
 
-$(document).ready(
-function()
-{
-	ksfViews.loadFromLocation(true)
-});
-
-
 /**
  *\fn anonymous_window_onhashchange_views
  *\todo This has limited browser compatibility, if this is an issue support for onhashchange could be checked and an alternative timer arrangement provided for older browsers.
@@ -217,7 +210,7 @@ ksfViews.showToolSelector = ksfViews_showToolSelector;
  */
 function ksfViews_loadPreview(filename)
 {
-	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/main/file' + encodeURIComponent('=' + filename), CONTENT_AREA, appstart.filePreviewStart);
+	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/main/file' + encodeURIComponent('=' + filename), CONTENT_AREA, ksfLayout.filePreviewStart);
 	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/right/file_list/', FILE_SELECTOR, null);
 }
 ksfViews.loadPreview = ksfViews_loadPreview;
