@@ -45,6 +45,9 @@ body {
 
 .privacy
 {
-	margin-top:20px;
+	margin-top: 20px;
 }
-
+.privacy-small
+{
+	font-size: 70%;
+}
