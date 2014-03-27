@@ -7,11 +7,22 @@
 
  $("#help-tour-begin").click(function() { helpTourBegin(true); });
  
-$(function()
+
+qTipOptions =
+{
+style: 		{ classes: 'qtip-bootstrap qtip-shadow qtip-rounded' },
+position: 	{ container: $('div.tooltips') }
+};
+$(document).ready(function()
 {
 	$("#help-force-start").click(helpTourBegin(true));
 	appstart.addToggleHook();
+	
+	tipSelector = $('[title!=""]').not('.notip');
+	tipSelector.filter(".").qtip($(true, {}, qTipOptions, { position: {my: 'top left', at: 'bottom right' } } );
+
 });
+
 
 /*
 * constructor used for namespace
