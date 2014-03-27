@@ -6,7 +6,9 @@
  
 $(document).ready(function()
 {
-	ksfViews.loadFromLocation(true)
+	ksfViews.loadFromLocation(true);
+				  
+	ksfLayout.initTips();
 				  
 	$("#ksf-help-begin").click(function() { ksfHelp.mainTourBegin(true); } );
 	ksfLayout.addToggleHook();

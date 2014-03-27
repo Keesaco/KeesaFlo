@@ -128,19 +128,40 @@ ksfLayout.filePreviewStart = ksfLayout_filePreviewStart;
  */
 function ksfLayout_initTips()
 {
+	/**
+	 * Options to be applied to all tooltips
+	 */
 	var qTipOptions =
 	{
 		style: 		{ classes: 'qtip-bootstrap qtip-shadow qtip-rounded' },
-		position: 	{ container: $('div.tooltips') }
+		overwrite: 	false,
 	};
-	
 	var tipSelector = $('[title!=""]').not('.notip');
 	
-	[	{ name: '.tip-right',	ext: { position: {my: 'center left', at: 'center right' } } },
-		{ name: '.tip-left', 	ext: { position: {my: 'center right', at: 'center left' } } },
-		{ name: '.tip-top', 	ext: { position: {my: 'bottom center', at: 'top center' } } },
-		{ name: '.tip-bottom', 	ext: { position: {my: 'top center', at: 'bottom center' } } } ]
+	/* */
+	[	{ name: '.tip-right',	ext: { position: { my: 'center left', at: 'center right' } } },
+		{ name: '.tip-left', 	ext: { position: { my: 'center right', at: 'center left' } } },
+		{ name: '.tip-top', 	ext: { position: { my: 'bottom center', at: 'top center' } } },
+		{ name: '.tip-bottom', 	ext: { position: { my: 'top center', at: 'bottom center' } } } ]
 		.forEach( function(t) {
-			 tipSelector.filter(t.name).qtip($.extend(true, {}, qTipOptions, t.ext ) );
+			$(tipSelector).on('mouseover', t.name,
+			function(event)
+			{
+				var eventExt =
+				{
+					show: {
+						  event: event.type,
+						  ready: true
+					}
+				};
+				$(this).qtip($.extend(true, {}, eventExt, t.ext, qTipOptions), event);
+			} )
+			.each(function(i) {
+				// removed to prevent error, TODO: reinstate and fix
+				  
+				//$.attr(this, 'oldtitle', $.attr(this, 'title'));
+				//this.removeAttribute('title');
+			  });
 		} );
 }
+ksfLayout.initTips = ksfLayout_initTips;
