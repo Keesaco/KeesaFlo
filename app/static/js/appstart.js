@@ -6,8 +6,8 @@
  
 $(document).ready(function()
 {
-	ksfLayout.addToggleHook();
 	ksfViews.loadFromLocation(true);
+	ksfHelp.mainTourInit();
 	$("#ksf-help-begin").click(ksfHelp.mainTourBegin);
-	$('.togglefiles').click(ksfLayout.toggleFileSelector);
+	$('.togglefiles').click(ksfLayout.fileSelectorToggle);
 });
