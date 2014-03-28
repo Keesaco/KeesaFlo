@@ -30,7 +30,8 @@ function ksfViews()
 }
 
 CONTENT_AREA = '#appmain';
-TOOL_SELECTOR = '#toolselector';
+FILES_AREA = '#filelist';
+TOOLS_AREA = '#toolselector';
 
 ksfViews.currentView = null;
 
@@ -137,7 +138,7 @@ ksfViews.refreshAll = ksfViews_refreshAll;
 function ksfViews_setupDefault()
 {
 	ksfLayout.filesButtonShow();
-	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/left/toolselect/', TOOL_SELECTOR, ksfTools.addToolsListener );
+	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/left/toolselect/', TOOLS_AREA, ksfTools.addToolsListener );
 }
 ksfViews.setupDefault = ksfViews_setupDefault;
 
@@ -150,7 +151,7 @@ ksfViews.setupDefault = ksfViews_setupDefault;
 function ksfViews_setupSimple()
 {
 	ksfLayout.filesButtonHide();
-	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/left/pagenav/', TOOL_SELECTOR, null );
+	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/left/pagenav/', TOOLS_AREA, null );
 }
 ksfViews.setupSimple = ksfViews_setupSimple;
 
@@ -164,7 +165,7 @@ ksfViews.setupSimple = ksfViews_setupSimple;
 function ksfViews_loadPreview(filename)
 {
 	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/main/file' + encodeURIComponent('=' + filename), CONTENT_AREA, ksfLayout.filePreviewStart);
-	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/right/file_list/', FILE_SELECTOR_ID, null);
+	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/right/file_list/', FILES_AREA, null);
 }
 ksfViews.loadPreview = ksfViews_loadPreview;
 
