@@ -207,8 +207,7 @@ ksfHelp_mainTour = new Tour
 						next:		-1,
 						prev: 		9
 					}
-				],
-	debug:	true
+				]
 });
 
 

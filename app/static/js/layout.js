@@ -18,9 +18,9 @@
 LAYOUT_WIDTH_THRESHOLD = 767;
 
 /**
- * Defines the id for the file sidebar.
+ * Defines the id for the file selector.
  */
-FILE_SIDEBAR_ID = '#sidebar';
+FILE_SELECTOR_ID = '#sidebar';
 
 /**
  * Defines the id for the drop down menu (small screens only).
@@ -50,7 +50,7 @@ function ksfLayout(){}
  */
 function ksfLayout_fileSelectorToggle()
 {
-	var fileSelector = $(FILE_SIDEBAR_ID);
+	var fileSelector = $(FILE_SELECTOR_ID);
 	fileSelector.animate( {
 		marginRight: parseInt(fileSelector.css('marginRight'), 10) == 0
 			? -fileSelector.outerWidth()
@@ -72,7 +72,7 @@ ksfLayout.fileSelectorToggle = ksfLayout_fileSelectorToggle;
  */
 function ksfLayout_fileSelectorIn()
 {
-	$(FILE_SIDEBAR_ID).animate({
+	$(FILE_SELECTOR_ID).animate({
 		marginRight: 0
 	});
 }
@@ -87,8 +87,8 @@ ksfLayout.fileSelectorIn = ksfLayout_fileSelectorIn;
  */
 function ksfLayout_fileSelectorOut()
 {
-	$(FILE_SIDEBAR_ID).animate({
-		marginRight: -$(FILE_SIDEBAR_ID).outerWidth()
+	$(FILE_SELECTOR_ID).animate({
+		marginRight: -$(FILE_SELECTOR_ID).outerWidth()
 	});
 }
 ksfLayout.fileSelectorOut = ksfLayout_fileSelectorOut;
@@ -102,25 +102,12 @@ ksfLayout.fileSelectorOut = ksfLayout_fileSelectorOut;
  */
 function ksfLayout_fileSelectorResize()
 {
-	if(parseInt($(FILE_SIDEBAR_ID).css('marginRight'), 10) < 0)
+	if(parseInt($(FILE_SELECTOR_ID).css('marginRight'), 10) < 0)
 	{
-		$(FILE_SIDEBAR_ID).css( { marginRight: -$(FILE_SIDEBAR_ID).outerWidth() } );
+		$(FILE_SELECTOR_ID).css( { marginRight: -$(FILE_SELECTOR_ID).outerWidth() } );
 	}
 }
 ksfLayout.fileSelectorResize = ksfLayout_fileSelectorResize;
-
-
-/**
- * Toggles whether the drop down panel is in view.
- * \author swhitehouse@keesaco.com of Keesaco
- * \author mrudelle@keesaco.com of Keesaco
- * \author hdoughty@keesaco.com of Keesaco
- */
-function ksfLayout_dropDownToggle()
-{
-	
-}
-ksfLayout.dropDownToggle = ksfLayout_dropDownToggle;
 
 
 /**
@@ -149,6 +136,26 @@ function ksfLayout_dropDownOut()
 ksfLayout.dropDownOut = ksfLayout_dropDownOut;
 
 
+/**
+ * Shows the 'Files' button on the nav bar.
+ * \author jmccrea@keesaco.com of Keesaco
+ * \author swhitehouse@keesaco.com of Keesaco
+ */
+function ksfLayout_filesButtonShow()
+{
+	$(".togglefiles").show();
+}
+ksfLayout.filesButtonShow = ksfLayout_filesButtonShow;
+
+
+function ksfLayout_filesButtonHide()
+{
+	ksfLayout.fileSelectorOut();
+	$(".togglefiles").hide();
+}
+ksfLayout.filesButtonHide = ksfLayout_filesButtonHide;
+
+
 /*
  * Hooks file selector repositioning to the window being resized.
  */
@@ -157,12 +164,12 @@ $(window).resize(ksfLayout.fileSelectorResize);
 
 /**
  * Sets up file preview view for new file
- * \author jmccrea@keesaco.com of Keesaco
+ * \author mrudelle@keesaco.com of Keesaco
  */
 function ksfLayout_filePreviewStart()
 {
 	ksfCanvas.addListener();
-	$("#file-selector-open").click(ksfLayout.toggleFileSelector);
+	$("#togglefiles").click(ksfLayout.fileSelectorToggle);
 }
 ksfLayout.filePreviewStart = ksfLayout_filePreviewStart;
 

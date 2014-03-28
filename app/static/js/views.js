@@ -10,7 +10,6 @@
  */
 
 
-
 /**
  *\fn anonymous_window_onhashchange_views
  *\todo This has limited browser compatibility, if this is an issue support for onhashchange could be checked and an alternative timer arrangement provided for older browsers.
@@ -19,7 +18,6 @@ window.onhashchange = function ()
 {
 	ksfViews.loadFromLocation();
 }
-
 
 
 /**
@@ -32,7 +30,6 @@ function ksfViews()
 }
 
 CONTENT_AREA = '#appmain';
-FILE_SELECTOR = '#filelist';
 TOOL_SELECTOR = '#toolselector';
 
 ksfViews.currentView = null;
@@ -139,7 +136,7 @@ ksfViews.refreshAll = ksfViews_refreshAll;
  */
 function ksfViews_setupDefault()
 {
-	ksfViews.showFilebar(true);
+	ksfLayout.filesButtonShow();
 	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/left/toolselect/', TOOL_SELECTOR, ksfTools.addToolsListener );
 }
 ksfViews.setupDefault = ksfViews_setupDefault;
@@ -152,32 +149,10 @@ ksfViews.setupDefault = ksfViews_setupDefault;
  */
 function ksfViews_setupSimple()
 {
-	ksfViews.showFilebar(false);
+	ksfLayout.filesButtonHide();
 	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/left/pagenav/', TOOL_SELECTOR, null );
 }
 ksfViews.setupSimple = ksfViews_setupSimple;
-
-
-/**
- * shows or hides the file selector bar
- * \tparam Boolean show - if show evaluates to true then the filebar is shown, otherwise it is hidden
- * \return None
- * \author jmccrea@keesaco.com of Keesaco
- */
-function ksfViewS_showFilebar(show)
-{
-	if ( show )
-	{
-		$(".togglefiles").show();
-	}
-	else
-	{
-		$(".togglefiles").hide();
-		var fl = $("#sidebar");
-		fl.css( { marginRight: -fl.outerWidth() } );
-	}
-}
-ksfViews.showFilebar = ksfViewS_showFilebar;
 
 
 /**
@@ -189,7 +164,7 @@ ksfViews.showFilebar = ksfViewS_showFilebar;
 function ksfViews_loadPreview(filename)
 {
 	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/main/file' + encodeURIComponent('=' + filename), CONTENT_AREA, ksfLayout.filePreviewStart);
-	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/right/file_list/', FILE_SELECTOR, null);
+	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/right/file_list/', FILE_SELECTOR_ID, null);
 }
 ksfViews.loadPreview = ksfViews_loadPreview;
 
@@ -199,11 +174,11 @@ ksfViews.loadPreview = ksfViews_loadPreview;
  * \return None
  * \author jmccrea@keesaco.com of Keesaco
  */
-function ksfViewS_loadFAQ()
+function ksfViews_loadFAQ()
 {
 	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/main/faq/', CONTENT_AREA, null );
 }
-ksfViews.loadFAQ = ksfViewS_loadFAQ;
+ksfViews.loadFAQ = ksfViews_loadFAQ;
 
 
 /**
