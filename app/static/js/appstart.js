@@ -15,4 +15,5 @@ $(document).ready(function()
 
 	$('.togglefiles').click(ksfLayout.toggleFileSelector);
 	$('.toggletools').click(ksfLayout.toggleToolBar);
+
 });

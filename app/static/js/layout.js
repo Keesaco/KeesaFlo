@@ -164,5 +164,42 @@ function ksfLayout_initTips()
 				//this.removeAttribute('title');
 			  });
 		} );
+		
+	$(document).on('mouseover', '.file-list-item',
+		function(event)
+		{
+			var eventExt =
+			{
+				show: {
+					event: event.type,
+					ready: true
+				},
+				position: {
+					//my: 'center right',
+					at: 'center left',
+					viewport: $(window)
+				},
+				content: {
+					text: function(event, api)
+					{
+						$.ajax( {
+							   url: //TODO
+						} )
+						.then(
+							function(content) {
+								api.set('content.text', content);
+							},
+							function(xhr, status, error) {
+								api.set('content.text', status + ': ' + error);
+							});
+					  
+						return 'Loading...'; 
+					}
+				},
+			};
+			$(this).qtip($.extend(true, {}, eventExt, qTipOptions), event);
+		} )
+	
+	
 }
 ksfLayout.initTips = ksfLayout_initTips;
