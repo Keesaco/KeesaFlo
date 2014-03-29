@@ -12,6 +12,7 @@ args <- commandArgs(trailingOnly = TRUE)
 fcs_name <- args[1]
 gate_name <- args[2]
 points <- args[3]
+reverse <- as.integer(args[4])
 
 ## Read fcs data
 x <- read.FCS(fcs_name, transformation = FALSE)
@@ -47,7 +48,13 @@ for(i in s:l)
 rownames <- c(1:r)
 mat <- matrix(point, ncol=2, dimnames=list(rownames, c(a,b)))
 pgate <- polygonGate(.gate=mat)
-y <- Subset(x, pgate)
+if(reverse)
+{
+	y <- Subset(x, !pgate)
+} else
+{
+	y <- Subset(x, pgate)
+}
 
 ## Save gate as fcs file
 write.FCS(y, gate_name)

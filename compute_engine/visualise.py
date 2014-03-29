@@ -80,11 +80,12 @@ while alive:
 		name = commands[1]
 		points = commands[2]
 		gate_name = commands[3]
+		reverse = commands[4]
 		coords = points.split()
 		##Loads raw fcs data from cloud storage
 		Ana.load_fcs(name)
 		##Creates visualisation of gate and text file of gate info
-		Ana.oval_gate(name, gate_name, coords[0], coords[1], coords[2], coords[3], coords[4], coords[5])
+		Ana.oval_gate(name, gate_name, coords[0], coords[1], coords[2], coords[3], coords[4], coords[5], reverse)
 		## Save visualisation to cloud storage.
 		Ana.save_vis(gate_name + '.png')
 		## Saves info about gate to cloud storage
@@ -100,10 +101,11 @@ while alive:
 		name = commands[1]
 		points = commands[2]
 		gate_name = commands[3]
+		reverse = commands[4]
 		##Loads raw fcs data from cloud storage
 		Ana.load_fcs(name)
 		##Creates visualisation of gate and text file of gate info
-		Ana.poly_gate(name, gate_name, points)
+		Ana.poly_gate(name, gate_name, points, reverse)
 		## Save visualisation to cloud storage.
 		Ana.save_vis(gate_name + '.png')
 		## Saves info about gate to cloud storage

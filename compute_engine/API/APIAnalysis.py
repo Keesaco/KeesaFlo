@@ -87,8 +87,8 @@ def rect_gate(  name, gate_name, top_left_x, top_left_y, bottom_right_x, bottom_
 ## \note all parameters should be strings
 ## \author hdoughty@keesaco.com of Keesaco
 ###########################################################################
-def oval_gate(name, gate_name, mean_x, mean_y, a_x, a_y, b_x, b_y):
-	subprocess.call(["Rscript", "ovalgate.r", name, gate_name, mean_x, mean_y, a_x, a_y, b_x, b_y])
+def oval_gate(name, gate_name, mean_x, mean_y, a_x, a_y, b_x, b_y, reverse):
+	subprocess.call(["Rscript", "ovalgate.r", name, gate_name, mean_x, mean_y, a_x, a_y, b_x, b_y, reverse])
 
 ###########################################################################
 ## \brief Saves a visualisation of a gated fcs file
@@ -98,8 +98,8 @@ def oval_gate(name, gate_name, mean_x, mean_y, a_x, a_y, b_x, b_y):
 ## \note all parameters should be strings
 ## \author hdoughty@keesaco.com of Keesaco
 ###########################################################################
-def poly_gate(name, gate_name, points):
-	subprocess.call(["Rscript", "polygate.r", name, gate_name, points])
+def poly_gate(name, gate_name, points, reverse):
+	subprocess.call(["Rscript", "polygate.r", name, gate_name, points, reverse])
 
 ###########################################################################
 ## \brief Saves a visualisation image from local disk to Datastore

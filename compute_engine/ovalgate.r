@@ -17,6 +17,7 @@ ax <- as.integer(args[5])
 ay <- as.integer(args[6])
 bx <- as.integer(args[7])
 by <- as.integer(args[8])
+reverse <- as.integer(args[9])
 
 ## Read fcs data.
 x <- read.FCS(fcs_name, transformation = FALSE)
@@ -57,7 +58,13 @@ mean <- c(a=mx, b=my)
 egate <- ellipsoidGate(.gate = cov, mean = mean)
 
 ## Creating subset of data.
-y <- Subset(x, egate)
+if(reverse)
+{
+	y <- Subset(x, !egate)
+} else
+{
+	y <- Subset(x, egate)
+}
 
 ## Save gate as fcs file
 write.FCS(y, gate_name)
