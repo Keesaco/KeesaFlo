@@ -49,11 +49,12 @@ while alive:
 		name = commands[1]
 		points = commands[2]
 		gate_name = commands[3]
+		reverse = commands[4]
 		coords = points.split()
 		##Loads raw fcs data from cloud storage
 		Ana.load_fcs(name)
 		##Creates visualisation of gate and text file of gate info
-		Ana.rect_gate(name, gate_name, coords[0], coords[1], coords[2], coords[3])
+		Ana.rect_gate(name, gate_name, coords[0], coords[1], coords[2], coords[3], reverse)
 		## Save visualisation to cloud storage.
 		Ana.save_vis(gate_name + '.png')
 		f = open(gate_name + '.txt', 'r')

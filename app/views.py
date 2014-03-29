@@ -225,7 +225,7 @@ def rect_gating(request, params):
 		gatingRequest =" ".join(paramList[0:4])        
 
 		newName = paramList[-1] + "-rectGate";
-		queue.gate_rectangle(paramList[-1], gatingRequest, newName);
+		queue.gate_rectangle(paramList[-1], gatingRequest, newName, "1");
 
 		status = "success"
 		message = "the rectangular gating was performed correctly"
