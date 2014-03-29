@@ -12,8 +12,6 @@ $(document).ready(function()
 				  
 	$("#ksf-help-begin").click(function() { ksfHelp.mainTourBegin(true); } );
 	ksfLayout.addToggleHook();
-
-	$('.togglefiles').click(ksfLayout.toggleFileSelector);
-	$('.toggletools').click(ksfLayout.toggleToolBar);
-
+	ksfHelp.mainTourInit();
+	$('.togglefiles').click(ksfLayout.fileSelectorToggle);
 });

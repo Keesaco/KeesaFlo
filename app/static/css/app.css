@@ -200,11 +200,6 @@ html, body, .row
 	border-radius: 4px;
 }
 
-.toggletools
-{
-	margin-left: 15px;
-}
-
 .sidebar-offcanvas 
 {
 	margin-right: -16.7%;
@@ -216,8 +211,9 @@ html, body, .row
 	z-index: 2;
 }
 
-.toolbar-offcanvas
+.toolselector
 {
+	margin-top: 0;
 	top: 0;
 	left: 0;
 	height:100%;
@@ -252,22 +248,14 @@ html, body, .row
 
 @media screen and (max-width: 767px)
 {
-	.toolbar-offcanvas
+	.apppanel, .navpanel, .filepanel
 	{
-		margin-left: -41.7%;
-		overflow: hidden;
-		position: fixed;
-		z-index: 2;
+		top: 56px; /* height of the navbar */
 	}
-	
+
 	.sidebar-offcanvas
 	{
 		margin-right: -50%;
-	}
-	
-	.apppanel
-	{
-		left: 0;
 	}
 	
 	.col-sm-10
