@@ -129,6 +129,28 @@ def file_preview(request, file = None):
 	return render(request, 'file_preview.html', {'current_file' : file_info, 'authed_user_nick': authed_user_nick, 'file_name_without_extension' : file_name_without_extension})
 
 ###########################################################################
+## \brief 	view for graph preview pagelet
+## \param 	request - Django variable defining the request that triggered
+##			the generation of this page
+## \note 	only the main panel is generated here, see app(request) for
+##			fetching the page's skeleton
+## \return 	the main panel pagelet
+## \todo	use datastore/permissions API for file list lookup
+###########################################################################
+def graph_preview(request, file = None):
+	
+	
+	lst = ds.list(DATA_BUCKET)
+	for temp_file in lst:
+		temp_file.filename = temp_file.filename.rpartition('/')[2]
+		if temp_file.filename == file:
+			file_info = temp_file;
+
+	return render(request, 'graph_preview.html',
+		{'current_file' : file_info, 'file_name_without_extension' : file})
+
+
+###########################################################################
 ## \brief Is called when the pagelet containing the app's main panel is requested.
 ## \param request - Django variable defining the request that triggered the generation of this page
 ## \note only the main panel is generated here, see app(request) for fetching the page's skeleton

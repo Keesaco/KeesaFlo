@@ -175,15 +175,16 @@ function ksfLayout_initTips()
 					ready: true
 				},
 				position: {
-					//my: 'center right',
+					my: 'center right',
 					at: 'center left',
 					viewport: $(window)
 				},
 				content: {
 					text: function(event, api)
 					{
+						var prevUrl = ksfData.baseUrl() + "panels/vol/graph_preview/file=" + api.elements.target.attr('href').split('/preview/')[1];
 						$.ajax( {
-							   url: //TODO
+							   url: prevUrl
 						} )
 						.then(
 							function(content) {
