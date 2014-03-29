@@ -246,8 +246,8 @@ function ksfLayout_initTips()
 							function(xhr, status, error) {
 								api.set('content.text', status + ': ' + error);
 							});
-					  
-						return 'Loading...'; 
+					  	//TODO: refactor
+						return '<div class="loading" style="width: 200px; height:200px">&nbsp</div>';
 					}
 				},
 			};
