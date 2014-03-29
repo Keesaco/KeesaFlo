@@ -175,9 +175,10 @@ function ksfLayout_initTips()
 					ready: true
 				},
 				position: {
-					my: 'center right',
-					at: 'center left',
-					viewport: $(window)
+					my: 'right center',
+					at: 'left center',
+					viewport: $('#appmain'),
+					target: 'event'
 				},
 				content: {
 					text: function(event, api)
