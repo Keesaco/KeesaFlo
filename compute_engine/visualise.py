@@ -90,10 +90,10 @@ while alive:
 		##Creates a visualisation of the graph with different axis
 		Ana.change_axis(name, x_axis, y_axis)
 		##Saves visualisation to loud storage
-		Ana.save_vis(name + '1.png')
+		Ana.save_vis(name + x_axis + y_axis + '.png')
 		## Clean up
 		os.remove(name)
-		os.remove(name + '1.png')
+		os.remove(name + x_axis + y_axis + '.png')
 	# Delete any processed tasks from queue.
 	if task_id is not None:
 		Queue.delete('jobs', task_id)
