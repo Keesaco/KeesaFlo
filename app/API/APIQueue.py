@@ -2,6 +2,7 @@
 ## \file app/API/APIQueue.py
 ## \brief Defines the task queue API for queuing tasks. Built upon PALQueue for cross-platform support.
 ## \author rmurley@keesaco.com of Keesaco
+## \author hdoughty@keesaco.com of Keesaco
 ###########################################################################
 ## \package app.API.APIQueue
 ## \brief Provides an API for accessing the job queue.
