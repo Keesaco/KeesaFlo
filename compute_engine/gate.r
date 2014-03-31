@@ -3,9 +3,8 @@
 ## \brief Gates flow cytometry data.
 ## \author hdoughty@keesaco.com of Keesaco
 ###########################################################################
-library("flowCore")
-library("flowViz")
-library("methods")
+source('rfunctions.r')
+imports()
 
 ## Parse arguments.
 args <- commandArgs(trailingOnly = TRUE)
@@ -28,40 +27,24 @@ b <- colnames(x[,2])
 r1 <- range(x[,1])
 r2 <- range(x[,2])
 
-tlx <- ((tlx-73)/360) * (r1[2,1]-r1[1,1])
-brx <- ((brx-73)/360) * (r1[2,1]-r1[1,1])
+tlx <- imageToGraphCoordx(tlx, r1[1,1], r1[2,1])
+brx <- imageToGraphCoordx(brx, r1[1,1], r1[2,1])
 
-tly <- r2[2,1] - (((tly-61)/332) * (r2[2,1]-r2[1,1]))
-bry <- r2[2,1] - (((bry-61)/332) * (r2[2,1]-r2[1,1]))
-
+tly <- imageToGraphCoordy(tly, r2[1,1], r2[2,1])
+bry <- imageToGraphCoordy(bry, r2[1,1], r2[2,1])
 
 ## Working out gate, need to change values.
-mat <- matrix(c(tlx, brx, bry, tly), ncol=2, dimnames=list(c("min", "max"), c(a, b)))
-rgate <- rectangleGate(.gate=mat)
+gate <- createRectGate(tlx, tly, brx, bry, a, b)
 
 ## Creating subset of data.
-if(reverse)
-{
-	y <- Subset(x, !rgate)
-} else
-{
-	y <- Subset(x, rgate)
-}
+y <- createSubset(x, gate, reverse)
 
 ## Save gate as fcs file
 write.FCS(y, gate_name)
 
 ## Calculating proportion
-result <- filter(x, rgate)
-total <- summary(result)$n
-inGate <- summary(result)$true
-proportion <- summary(result)$p
-info <- c(inGate, total, proportion)
-info_name <- paste(gate_name, ".txt", sep="")
-write(info, file = info_name)
+writeInfo(x, gate)
 
 ## Plotting the gate
 image_name <- paste(gate_name, ".png", sep="")
-png(image_name)
-plot(y,c(a, b))
-dev.off()
+plotGraph(image_name, y, a, b)

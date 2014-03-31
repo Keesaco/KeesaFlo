@@ -14,18 +14,18 @@ imports <- function()
 ## change magic numbers
 imageToGraphCoordx <- function(point, xmin, xmax)
 {
-	return ((point-73)/360) * (xmax-xmin)
+	return(((point-73)/360) * (xmax-xmin))
 }
 
 imageToGraphCoordy <- function(point, ymin, ymax)
 {
-	return ymax - (((point-61)/332) * (ymax-ymin))
+	return(ymax - (((point-61)/332) * (ymax-ymin)))
 }
 
 createRectGate <- function(topLeftx, topLefty, bottomRightx, bottomRighty, x_axis, y_axis)
 {
 	mat <- matrix(c(topLeftx, bottomRightx, bottomRighty, topLefty), ncol=2, dimnames=list(c("min", "max"), c(x_axis, y_axis)))
-	return rectangleGate(.gate=mat)
+	return(rectangleGate(.gate=mat))
 }
 
 createEllipsoidGate <- function(mean_x, mean_y, ax, ay, bx, by, x_axis, y_axis)
@@ -43,17 +43,17 @@ createEllipsoidGate <- function(mean_x, mean_y, ax, ay, bx, by, x_axis, y_axis)
 	cov <- V %*% L %*% solve(V)
 	## Creates the gating parameters
 	mean <- c(a=mx, b=my)
-	return ellipsoidGate(.gate = cov, mean = mean)
+	return(ellipsoidGate(.gate = cov, mean = mean))
 }
 
 createPolyGate <- function(points, n, x_axis, y_axis)
 {
 	rownames <- c(1:r)
 	mat <- matrix(points, ncol=2, dimnames=list(rownames, c(x_axis, y_axis)))
-	return polygonGate(.gate=mat)
+	return(polygonGate(.gate=mat))
 }
 
-createSubset <- function(data, gate)
+createSubset <- function(data, gate, reverse)
 {
 	if(reverse)
 	{
@@ -62,7 +62,7 @@ createSubset <- function(data, gate)
 	{
 		y <- Subset(data, gate)
 	}
-	return y
+	return(y)
 }
 
 writeInfo <- function(data, gate)
