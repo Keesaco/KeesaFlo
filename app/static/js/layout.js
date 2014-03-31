@@ -185,7 +185,7 @@ function ksfLayout_initTips()
 	 */
 	var qTipOptions =
 	{
-		style: 		{ classes: 'qtip-bootstrap qtip-shadow qtip-rounded' },
+		style: 		{ classes: 'qtip-dark qtip-shadow qtip-rounded' },
 		show:		{ delay: 800 },
 		overwrite: 	false,
 	};

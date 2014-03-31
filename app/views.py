@@ -20,6 +20,8 @@ import upload_handling
 import API.APIDatastore as ds
 import API.PALUsers as auth
 import API.APIQueue as queue
+import API.APIPermissions as permissions
+import json
 
 DATA_BUCKET = '/fc-raw-data'
 GRAPH_BUCKET = '/fc-vis-data'
@@ -93,9 +95,52 @@ def app(request):
 ###########################################################################
 def file_list(request):
 	lst = ds.list(DATA_BUCKET)
-	for temp_file in lst: 
+	
+	file_list = []
+	
+	for temp_file in lst:
+		list_entry = {}
+		file_entry = permissions.get_file_by_name(temp_file.filename)
+		if file_entry is not None:
+			list_entry.update({ 'permissions' : 'yes' })
+		else:
+			list_entry.update({ 'permissions' : 'no'  })
+		
 		temp_file.filename = temp_file.filename.rpartition('/')[2]
-	return render(request, 'file_list.html', {'files' : lst})
+		list_entry.update( { 'filestat' : temp_file } )
+
+		file_list.append(list_entry)
+
+	return render(request, 'file_list.html', {'files' : file_list})
+
+###########################################################################
+## \brief returns a JSON representation of a file list
+## \param request - Django variable defining the request that triggered the generation of this page
+## \return the list of files pagelet
+###########################################################################
+def file_list_json(request):
+	lst = ds.list(DATA_BUCKET)
+	
+	file_list = []
+	
+	for temp_file in lst:
+		list_entry = {}
+		file_entry = permissions.get_file_by_name(temp_file.filename)
+		if file_entry is not None:
+			list_entry.update({ 'permissions' : 'yes' })
+		else:
+			list_entry.update({ 'permissions' : 'no'  })
+		
+		temp_file.filename = temp_file.filename.rpartition('/')[2]
+		list_entry.update( {	'filename' 	: temp_file.filename,
+								'size' 		: temp_file.st_size,
+						  		'hash' 		: temp_file.etag,
+						  		'timestamp' : temp_file.st_ctime} )
+
+		file_list.append(list_entry)
+
+
+	return HttpResponse(json.dumps(file_list), content_type="application/json")
 
 ###########################################################################
 ## \brief Is called when the pagelet containing the main content of the page is requested.

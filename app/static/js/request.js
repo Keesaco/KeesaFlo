@@ -35,3 +35,24 @@ function ksfReq_fetch(URI, callback, failcallback)
 	$.get(URI, callback).fail(failcallback);
 }
 ksfReq.fetch = ksfReq_fetch;
+
+/**
+ * Makes an asynchronous request for JSON formatted data
+ * \param String URI - URI to request
+ * \param Function callback - called with received data
+ * \return None
+ * \note App returns JSON with proper headers so no need to call parseJSON
+ * \todo review whether or not (optional or force) conversion to JSON is usefull necessary
+ * \author jmccrea@keesaco.com of Keesaco
+ */
+function ksfReq_fetchJSON(URI, callback)
+{
+	$.ajax( {
+		   		url: URI,
+		} )
+		.done( function(data)
+			{
+			  callback(data); //$.parseJSON(data))
+			} );
+}
+ksfReq.fetchJSON = ksfReq_fetchJSON;
