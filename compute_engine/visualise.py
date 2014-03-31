@@ -45,15 +45,21 @@ while alive:
 		os.remove(name)
 		os.remove(name + '.png')
 		os.remove(name + 'info.txt')
-	elif (commands[0] == 'gate_rec'):
+	elif (commands[0] == 'gate_rec' or commands[0] == 'gate_cir' or commands[0] == 'gate_poly'):
 		name = commands[1]
 		points = commands[2]
 		gate_name = commands[3]
+		reverse = commands[4]
 		coords = points.split()
 		##Loads raw fcs data from cloud storage
 		Ana.load_fcs(name)
 		##Creates visualisation of gate and text file of gate info
-		Ana.rect_gate(name, gate_name, coords[0], coords[1], coords[2], coords[3])
+		if(commands[0] == 'gate_rec'):
+			Ana.rect_gate(name, gate_name, coords[0], coords[1], coords[2], coords[3], reverse)
+		elif(commands[0] == 'gate_cir'):
+			Ana.oval_gate(name, gate_name, coords[0], coords[1], coords[2], coords[3], coords[4], coords[5], reverse)
+		elif(commands[0] == 'gate_poly'):
+			Ana.poly_gate(name, gate_name, points, reverse)
 		## Save visualisation to cloud storage.
 		Ana.save_vis(gate_name + '.png')
 		f = open(gate_name + '.txt', 'r')
@@ -75,45 +81,6 @@ while alive:
 		os.remove(gate_name + '.txt')
 		os.remove(gate_name + '.png')
 		os.remove(gate_name)
-	elif (commands[0] == 'gate_cir'):
-		name = commands[1]
-		points = commands[2]
-		gate_name = commands[3]
-		coords = points.split()
-		##Loads raw fcs data from cloud storage
-		Ana.load_fcs(name)
-		##Creates visualisation of gate and text file of gate info
-		Ana.oval_gate(name, gate_name, coords[0], coords[1], coords[2], coords[3], coords[4], coords[5])
-		## Save visualisation to cloud storage.
-		Ana.save_vis(gate_name + '.png')
-		## Saves info about gate to cloud storage
-		Ana.save_info(gate_name + '.txt')
-		## Saves gate as fcs file
-		Ana.save_fcs(gate_name)
-		## Clean up.
-		os.remove(name)
-		os.remove(gate_name + '.txt')
-		os.remove(gate_name + '.png')
-		os.remove(gate_name)
-	elif (commands[0] == 'gate_poly'):
-		name = commands[1]
-		points = commands[2]
-		gate_name = commands[3]
-		##Loads raw fcs data from cloud storage
-		Ana.load_fcs(name)
-		##Creates visualisation of gate and text file of gate info
-		Ana.poly_gate(name, gate_name, points)
-		## Save visualisation to cloud storage.
-		Ana.save_vis(gate_name + '.png')
-		## Saves info about gate to cloud storage
-		Ana.save_info(gate_name + '.txt')
-		## Saves gate as fcs file
-		Ana.save_fcs(gate_name)
-		## Clean up.
-		os.remove(name)
-		os.remove(gate_name + '.txt')
-		os.remove(gate_name + '.png')
-		os.remove(gate_name)
 	elif (commands[0] == 'change_axis'):
 		name = commands[1]
 		x_axis = commands[2]
@@ -123,10 +90,10 @@ while alive:
 		##Creates a visualisation of the graph with different axis
 		Ana.change_axis(name, x_axis, y_axis)
 		##Saves visualisation to loud storage
-		Ana.save_vis(name + '1.png')
+		Ana.save_vis(name + x_axis + y_axis + '.png')
 		## Clean up
 		os.remove(name)
-		os.remove(name + '1.png')
+		os.remove(name + x_axis + y_axis + '.png')
 	# Delete any processed tasks from queue.
 	if task_id is not None:
 		Queue.delete('jobs', task_id)

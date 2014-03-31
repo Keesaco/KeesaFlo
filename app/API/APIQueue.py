@@ -2,6 +2,7 @@
 ## \file app/API/APIQueue.py
 ## \brief Defines the task queue API for queuing tasks. Built upon PALQueue for cross-platform support.
 ## \author rmurley@keesaco.com of Keesaco
+## \author hdoughty@keesaco.com of Keesaco
 ###########################################################################
 ## \package app.API.APIQueue
 ## \brief Provides an API for accessing the job queue.
@@ -30,22 +31,22 @@ def kill():
 ## \brief Adds a task to perform a rectangle gate on fcs data.
 ## \author rmurley@keesaco.com of Keesaco
 ###########################################################################
-def gate_rectangle(	filename, coords, gatename):
-	queue.add_task('jobs', 'gate_rec;' + filename + ';' + coords + ';' + gatename)
+def gate_rectangle(	filename, coords, gatename, reverse):
+	queue.add_task('jobs', 'gate_rec;' + filename + ';' + coords + ';' + gatename + ';' + reverse)
 
 ###########################################################################
 ## \brief Adds a task to perform a polyagonal gate on fcs data.
 ## \author rmurley@keesaco.com of Keesaco
 ###########################################################################
-def gate_polygon(	filename, coords, gatename):
-	queue.add_task('jobs', 'gate_poly;' + filename + ';' + coords + ';' + gatename)
+def gate_polygon(	filename, coords, gatename, reverse):
+	queue.add_task('jobs', 'gate_poly;' + filename + ';' + coords + ';' + gatename + ';' + reverse)
 
 ###########################################################################
 ## \brief Adds a task to perform a circular gate on fcs data.
 ## \author rmurley@keesaco.com of Keesaco
 ###########################################################################
-def gate_circle(	filename, coords, gatename):
-	queue.add_task('jobs', 'gate_cir;' + filename + ';' + coords + ';' + gatename)
+def gate_circle(	filename, coords, gatename, reverse):
+	queue.add_task('jobs', 'gate_cir;' + filename + ';' + coords + ';' + gatename + ';' + reverse)
 
 ###########################################################################
 ## \brief Adds a task to perform a circular gate on fcs data.

@@ -15,6 +15,7 @@ tlx <- as.integer(args[3])
 tly <- as.integer(args[4])
 brx <- as.integer(args[5])
 bry <- as.integer(args[6])
+reverse <- as.integer(args[7])
 
 ## Read fcs data.
 x <- read.FCS(fcs_name, transformation = FALSE)
@@ -39,7 +40,13 @@ mat <- matrix(c(tlx, brx, bry, tly), ncol=2, dimnames=list(c("min", "max"), c(a,
 rgate <- rectangleGate(.gate=mat)
 
 ## Creating subset of data.
-y <- Subset(x, rgate)
+if(reverse)
+{
+	y <- Subset(x, !rgate)
+} else
+{
+	y <- Subset(x, rgate)
+}
 
 ## Save gate as fcs file
 write.FCS(y, gate_name)
