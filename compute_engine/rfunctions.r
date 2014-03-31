@@ -65,9 +65,15 @@ createSubset <- function(data, gate, reverse)
 	return(y)
 }
 
-writeInfo <- function(data, gate)
+writeInfo <- function(data, gate, reverse)
 {
-	result <- filter(data, gate)
+	if(reverse)
+	{
+		result <- filter(data, !gate)
+	} else
+	{
+		result <- filter(data, gate)
+	}
 	total <- summary(result)$n
 	inGate <- summary(result)$true
 	proportion <- summary(result)$p
