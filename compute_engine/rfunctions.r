@@ -22,6 +22,47 @@ imageToGraphCoordy <- function(point, ymin, ymax)
 	return(ymax - (((point-61)/332) * (ymax-ymin)))
 }
 
+convertRectCoords <- function(tlx, tly, brx, bry, xmin, xmax, ymin, ymax)
+{
+	tlx <- imageToGraphCoordx(tlx, xmin, xmax)
+	brx <- imageToGraphCoordx(brx, xmin, xmax)
+	tly <- imageToGraphCoordy(tly, ymin, ymax)
+	bry <- imageToGraphCoordy(bry, ymin, ymax)
+	return(c(tlx, tly, brx, bry))
+}
+
+convertOvalCoords <- function(mx, my, ax, ay, bx, by, xmin, xmax, ymin, ymax)
+{
+	mx <- imageToGraphCoordx(mx, xmin, xmax)
+	ax <- imageToGraphCoordx(ax, xmin, xmax)
+	bx <- imageToGraphCoordx(bx, xmin, xmax)
+	my <- imageToGraphCoordy(my, ymin, ymax)
+	ay <- imageToGraphCoordy(ay, ymin, ymax)
+	by <- imageToGraphCoordy(by, ymin, ymax)
+	return(c(mx, my, ax, ay, bx, by))
+}
+
+convertPolyCoords <- function(points, len, xmin, xmax, ymin, ymax)
+{
+	point <- 0 ## initialises point
+	for(i in 1:len)
+	{
+		point[i] <- as.numeric(points[[1]][i])
+	}
+	## Convert pixel coordinates to graph coordinates
+	r <- len/2
+	for(i in 1:r)
+	{
+		point[i] <- imageToGraphCoordx(point[i], xmin, xmax)
+	}
+	s <- r+1
+	for(i in s:l)
+	{
+		point[i] <- imageToGraphCoordy(point[i], ymin, ymax)
+	}
+	return(point)
+}
+
 createRectGate <- function(topLeftx, topLefty, bottomRightx, bottomRighty, x_axis, y_axis)
 {
 	mat <- matrix(c(topLeftx, bottomRightx, bottomRighty, topLefty), ncol=2, dimnames=list(c("min", "max"), c(x_axis, y_axis)))
@@ -42,13 +83,13 @@ createEllipsoidGate <- function(mean_x, mean_y, ax, ay, bx, by, x_axis, y_axis)
 	L <- matrix(c(l1, 0, 0, l2), ncol = 2, dimnames=list(c(x_axis, y_axis), c(x_axis, y_axis)))
 	cov <- V %*% L %*% solve(V)
 	## Creates the gating parameters
-	mean <- c(a=mx, b=my)
+	mean <- c(a=mean_x, b=mean_y)
 	return(ellipsoidGate(.gate = cov, mean = mean))
 }
 
 createPolyGate <- function(points, n, x_axis, y_axis)
 {
-	rownames <- c(1:r)
+	rownames <- c(1:n)
 	mat <- matrix(points, ncol=2, dimnames=list(rownames, c(x_axis, y_axis)))
 	return(polygonGate(.gate=mat))
 }
