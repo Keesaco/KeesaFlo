@@ -116,13 +116,16 @@ def file_list(request):
 ###########################################################################
 ## \brief returns a JSON representation of a file list
 ## \param request - Django variable defining the request that triggered the generation of this page
+## \todo move 'no files' link markup somewhere else
 ## \return the list of files pagelet
 ###########################################################################
 def file_list_json(request):
 	lst = ds.list(DATA_BUCKET)
 	
+	# 'your files'
 	file_list = []
 	
+	temp_group = []
 	for temp_file in lst:
 		list_entry = {}
 		file_entry = permissions.get_file_by_name(temp_file.filename)
@@ -136,8 +139,22 @@ def file_list_json(request):
 								'size' 		: temp_file.st_size,
 						  		'hash' 		: temp_file.etag,
 						  		'timestamp' : temp_file.st_ctime} )
+		temp_group.append(list_entry)
 
-		file_list.append(list_entry)
+
+	if len(temp_group) > 0:
+		file_list.append({	'catagory' 	: 'owned',
+							'heading' 	: 'Your Files',
+						 	'type'		: 'files',
+							'data' 		: temp_group })
+						
+	if len(file_list) == 0:
+		file_list.append({	'catagory' 	: 'notice',
+						 	'type'		: 'html',
+						 
+						 	# TODO: move this line out
+						 	'data'		: '<a data-toggle="modal" data-target="#uploadModal" class="list-group-item">No files - Click here to upload one</a>'
+							})
 
 
 	return HttpResponse(json.dumps(file_list), content_type="application/json")
