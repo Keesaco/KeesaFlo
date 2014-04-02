@@ -1,6 +1,6 @@
 ###########################################################################
 ## \file compute_engine/gate.r
-## \brief Gates flow cytometry data.
+## \brief Performs basic gates of flow cytometry data.
 ## \author hdoughty@keesaco.com of Keesaco
 ###########################################################################
 source('rfunctions.r')
@@ -41,22 +41,21 @@ b <- colnames(x[,2])
 ## Calculate graph coordinates from pixel coordinates
 r1 <- range(x[,1])
 r2 <- range(x[,2])
+
+## Creates a gate based on the specified parameters
 if(gate_type == 'rect')
 {
 	points <- convertRectCoords(tlx, tly, brx, bry, r1[1,1], r1[2,1], r2[1,1], r2[2,1])
-	## Working out gate, need to change values.
 	gate <- createRectGate(points[1], points[2], points[3], points[4], a, b)
 } else if(gate_type == 'oval')
 {
 	points <- convertOvalCoords(mx, my, ax, ay, bx, by, r1[1,1], r1[2,1], r2[1,1], r2[2,1])
-
 	gate <- createEllipsoidGate(points[1], points[2], points[3], points[4], points[5], points[6], a, b)
 } else if(gate_type == 'poly')
 {
 	points <- strsplit(points, " ")
 	l <- length(points[[1]])
 	newPoints <- convertPolyCoords(points, l, r1[1,1], r1[2,1], r2[1,1], r2[2,1])
-
 	gate <- createPolyGate(newPoints, l/2, a, b)
 }
 
@@ -66,9 +65,9 @@ y <- createSubset(x, gate, reverse)
 ## Save gate as fcs file
 write.FCS(y, gate_name)
 
-## Calculating proportion
+## Saves gate info in a txt file
 writeInfo(x, gate, reverse)
 
-## Plotting the gate
+## Plots the gate
 image_name <- paste(gate_name, ".png", sep="")
 plotGraph(image_name, y, a, b)

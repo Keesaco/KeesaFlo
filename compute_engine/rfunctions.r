@@ -1,5 +1,5 @@
 ###########################################################################
-## \file compute_engine/visualise.py
+## \file compute_engine/rfunctions.r
 ## \brief Supplies functions to visualise flow cytometry data using Bioconductor.
 ## \author hdoughty@keesaco.com of Keesaco
 ###########################################################################
