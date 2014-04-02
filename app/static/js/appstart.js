@@ -7,7 +7,10 @@
 $(document).ready(function()
 {
 	ksfViews.loadFromLocation(true);
+				  
+	ksfLayout.initTips();
+				  
+	$("#ksf-help-begin").click(function() { ksfHelp.mainTourBegin(true); } );
 	ksfHelp.mainTourInit();
-	$("#ksf-help-begin").click(ksfHelp.mainTourBegin);
 	$('.togglefiles').click(ksfLayout.fileSelectorToggle);
 });

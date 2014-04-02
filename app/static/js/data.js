@@ -89,3 +89,18 @@ function ksfData_baseUrl()
 	return location.href.split("#")[0];
 }
 ksfData.baseUrl = ksfData_baseUrl;
+
+/**
+ * Makes an asynchronous request for JSON formatted data - wrapper around ksfData method
+ * \param String URI - URI to request
+ * \param Function callback - called with received data
+ * \param Function failcallback - called if the request fails
+ * \return return value of ksfReq.fetchJSON - currently None
+ * \note This method is purely a wrapper around the method of the same name in ksfReq
+ * \author jmccrea@keesaco.com of Keesaco
+ */
+function ksfData_fetchJSON(URI, callback, failcallback)
+{
+	return ksfReq.fetchJSON(URI, callback, failcallback);
+}
+ksfData.fetchJSON = ksfData_fetchJSON;

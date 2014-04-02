@@ -165,10 +165,48 @@ ksfViews.setupSimple = ksfViews_setupSimple;
 function ksfViews_loadPreview(filename)
 {
 	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/main/file' + encodeURIComponent('=' + filename), CONTENT_AREA, ksfLayout.filePreviewStart);
-	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/right/file_list/', FILES_AREA, null);
+	ksfViews.makeFileList('/app/data/json/files/', FILES_AREA);
 }
 ksfViews.loadPreview = ksfViews_loadPreview;
 
+/**
+ * Uses the JSON files source to construct the file selector
+ * \return None
+ * \author jmccrea@keesaco.com of Keesaco
+ */
+function ksfViews_makeFileList(datasource, target)
+{
+	ksfData.fetchJSON(datasource,
+		function(data)
+		{
+			//destroy old file previews
+			$('.file-preview-tip').remove();
+			var tdiv = $(target);
+			tdiv.empty();
+			data.forEach(
+				function (d)
+				{
+					if (d.type == 'html')
+					{
+						tdiv.append(d.data)
+					}
+					else if (d.type = 'files')
+					{
+						d.data.forEach(
+							function(e)
+							{
+								var newElem = document.createElement('a');
+								newElem.className = 'list-group-item file-list-item';
+								newElem.href = '#!/preview/' + e.filename;
+								newElem.innerHTML = e.filename
+								tdiv.append(newElem);
+							} );
+					}
+				} );
+			
+		} );
+}
+ksfViews.makeFileList = ksfViews_makeFileList;
 
 /**
  * Downloads and displays the panels for the FAQ page

@@ -180,20 +180,83 @@ ksfLayout.filePreviewStart = ksfLayout_filePreviewStart;
  */
 function ksfLayout_initTips()
 {
+	/**
+	 * Options to be applied to all tooltips
+	 */
 	var qTipOptions =
 	{
-		style: 		{ classes: 'qtip-bootstrap qtip-shadow qtip-rounded' },
-		position: 	{ container: $('div.tooltips') }
+		style: 		{ classes: 'qtip-dark qtip-shadow qtip-rounded' },
+		show:		{ delay: 800 },
+		overwrite: 	false,
 	};
-	
 	var tipSelector = $('[title!=""]').not('.notip');
 	
-	[	{ name: '.tip-right',	ext: { position: {my: 'center left', at: 'center right' } } },
-		{ name: '.tip-left', 	ext: { position: {my: 'center right', at: 'center left' } } },
-		{ name: '.tip-top', 	ext: { position: {my: 'bottom center', at: 'top center' } } },
-		{ name: '.tip-bottom', 	ext: { position: {my: 'top center', at: 'bottom center' } } } ]
+	/* */
+	[	{ name: '.tip-right',	ext: { position: { my: 'center left', at: 'center right' } } },
+		{ name: '.tip-left', 	ext: { position: { my: 'center right', at: 'center left' } } },
+		{ name: '.tip-top', 	ext: { position: { my: 'bottom center', at: 'top center' } } },
+		{ name: '.tip-bottom', 	ext: { position: { my: 'top center', at: 'bottom center' } } } ]
 		.forEach( function(t) {
-			 tipSelector.filter(t.name).qtip($.extend(true, {}, qTipOptions, t.ext ) );
+			$(tipSelector).on('mouseover', t.name,
+			function(event)
+			{
+				var eventExt =
+				{
+					show: {
+						  event: event.type,
+						  ready: true
+					}
+				};
+				$(this).qtip($.extend(true, {}, eventExt, t.ext, qTipOptions), event);
+			} )
+			.each(function(i) {
+				// removed to prevent error, TODO: reinstate and fix
+				  
+				//$.attr(this, 'oldtitle', $.attr(this, 'title'));
+				//this.removeAttribute('title');
+			  });
 		} );
+		
+	$(document).on('mouseover', '.file-list-item',
+		function(event)
+		{
+			var eventExt =
+			{
+				show: {
+					event: event.type,
+					ready: true
+				},
+				position: {
+					my: 'right center',
+					at: 'left center',
+					viewport: $('#appmain'),
+					target: 'event'
+				},
+				style : {
+				   classes: 'file-preview-tip qtip-bootstrap qtip-shadow qtip-rounded'
+				},
+				content: {
+					text: function(event, api)
+					{
+						var prevUrl = ksfData.baseUrl() + "panels/vol/graph_preview/file=" + api.elements.target.attr('href').split('/preview/')[1];
+						$.ajax( {
+							   url: prevUrl
+						} )
+						.then(
+							function(content) {
+								api.set('content.text', content);
+							},
+							function(xhr, status, error) {
+								api.set('content.text', status + ': ' + error);
+							});
+					  	//TODO: refactor
+						return '<div class="loading" style="width: 200px; height:200px">&nbsp</div>';
+					}
+				},
+			};
+			$(this).qtip($.extend(true, {}, qTipOptions, eventExt), event);
+		} )
+	
+	
 }
-
+ksfLayout.initTips = ksfLayout_initTips;

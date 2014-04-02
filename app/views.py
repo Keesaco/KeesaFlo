@@ -20,6 +20,8 @@ import upload_handling
 import API.APIDatastore as ds
 import API.PALUsers as auth
 import API.APIQueue as queue
+import API.APIPermissions as permissions
+import json
 
 DATA_BUCKET = '/fc-raw-data'
 GRAPH_BUCKET = '/fc-vis-data'
@@ -93,9 +95,69 @@ def app(request):
 ###########################################################################
 def file_list(request):
 	lst = ds.list(DATA_BUCKET)
-	for temp_file in lst: 
+	
+	file_list = []
+	
+	for temp_file in lst:
+		list_entry = {}
+		file_entry = permissions.get_file_by_name(temp_file.filename)
+		if file_entry is not None:
+			list_entry.update({ 'permissions' : 'yes' })
+		else:
+			list_entry.update({ 'permissions' : 'no'  })
+		
 		temp_file.filename = temp_file.filename.rpartition('/')[2]
-	return render(request, 'file_list.html', {'files' : lst})
+		list_entry.update( { 'filestat' : temp_file } )
+
+		file_list.append(list_entry)
+
+	return render(request, 'file_list.html', {'files' : file_list})
+
+###########################################################################
+## \brief returns a JSON representation of a file list
+## \param request - Django variable defining the request that triggered the generation of this page
+## \todo move 'no files' link markup somewhere else
+## \return the list of files pagelet
+###########################################################################
+def file_list_json(request):
+	lst = ds.list(DATA_BUCKET)
+	
+	# 'your files'
+	file_list = []
+	
+	temp_group = []
+	for temp_file in lst:
+		list_entry = {}
+		file_entry = permissions.get_file_by_name(temp_file.filename)
+		if file_entry is not None:
+			list_entry.update({ 'permissions' : 'yes' })
+		else:
+			list_entry.update({ 'permissions' : 'no'  })
+		
+		temp_file.filename = temp_file.filename.rpartition('/')[2]
+		list_entry.update( {	'filename' 	: temp_file.filename,
+								'size' 		: temp_file.st_size,
+						  		'hash' 		: temp_file.etag,
+						  		'timestamp' : temp_file.st_ctime} )
+		temp_group.append(list_entry)
+
+
+	if len(temp_group) > 0:
+		file_list.append({	'catagory' 	: 'owned',
+							'heading' 	: 'Your Files',
+						 	'type'		: 'files',
+							'data' 		: temp_group })
+						
+	if len(file_list) == 0:
+		file_list.append({	'catagory' 	: 'notice',
+						 	'type'		: 'html',
+						 
+						 	# TODO: move this line out
+						 	'data'		: '<a data-toggle="modal" data-target="#uploadModal" class="list-group-item">No files - Click here to upload one</a>'
+							})
+
+
+	return HttpResponse(json.dumps(file_list), content_type="application/json")
 
 ###########################################################################
 ## \brief Is called when the pagelet containing the main content of the page is requested.
@@ -127,6 +189,28 @@ def file_preview(request, file = None):
 		if temp_file.filename == file:
 			file_info = temp_file;
 	return render(request, 'file_preview.html', {'current_file' : file_info, 'authed_user_nick': authed_user_nick, 'file_name_without_extension' : file_name_without_extension})
+
+###########################################################################
+## \brief 	view for graph preview pagelet
+## \param 	request - Django variable defining the request that triggered
+##			the generation of this page
+## \note 	only the main panel is generated here, see app(request) for
+##			fetching the page's skeleton
+## \return 	the main panel pagelet
+## \todo	use datastore/permissions API for file list lookup
+###########################################################################
+def graph_preview(request, file = None):
+	
+	
+	lst = ds.list(DATA_BUCKET)
+	for temp_file in lst:
+		temp_file.filename = temp_file.filename.rpartition('/')[2]
+		if temp_file.filename == file:
+			file_info = temp_file;
+
+	return render(request, 'graph_preview.html',
+		{'current_file' : file_info, 'file_name_without_extension' : file})
+
 
 ###########################################################################
 ## \brief Is called when the pagelet containing the app's main panel is requested.
