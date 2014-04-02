@@ -179,6 +179,8 @@ function ksfViews_makeFileList(datasource, target)
 	ksfData.fetchJSON(datasource,
 		function(data)
 		{
+			//destroy old file previews
+			$('.file-preview-tip').remove();
 			var tdiv = $(target);
 			tdiv.empty();
 			data.forEach(

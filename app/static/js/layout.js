@@ -232,6 +232,9 @@ function ksfLayout_initTips()
 					viewport: $('#appmain'),
 					target: 'event'
 				},
+				style : {
+				   classes: 'file-preview-tip qtip-bootstrap qtip-shadow qtip-rounded'
+				},
 				content: {
 					text: function(event, api)
 					{
@@ -251,7 +254,7 @@ function ksfLayout_initTips()
 					}
 				},
 			};
-			$(this).qtip($.extend(true, {}, eventExt, qTipOptions), event);
+			$(this).qtip($.extend(true, {}, qTipOptions, eventExt), event);
 		} )
 	
 	
