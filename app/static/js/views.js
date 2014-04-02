@@ -74,6 +74,10 @@ ksfViews.setupView = ksfViews_setupViews;
  */
 function ksfViews_loadFromLocation(force)
 {
+	//invalidate current file information
+	ksfViews.currentFile = null;
+	ksfViews.currentFileName = null;
+	
 	var urlVals = ksfData.urlValues();
 	if ( urlVals !== null )
 	{
@@ -164,6 +168,7 @@ ksfViews.setupSimple = ksfViews_setupSimple;
  */
 function ksfViews_loadPreview(filename)
 {
+	ksfViews.currentFileName = filename;
 	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/main/file' + encodeURIComponent('=' + filename), CONTENT_AREA, ksfLayout.filePreviewStart);
 	ksfViews.makeFileList('/app/data/json/files/', FILES_AREA);
 }
@@ -179,6 +184,9 @@ function ksfViews_makeFileList(datasource, target)
 	ksfData.fetchJSON(datasource,
 		function(data)
 		{
+			//clear out file list
+			ksfViews.files = [];
+					  
 			//destroy old file previews
 			$('.file-preview-tip').remove();
 			var tdiv = $(target);
@@ -195,6 +203,15 @@ function ksfViews_makeFileList(datasource, target)
 						d.data.forEach(
 							function(e)
 							{
+								//Add file info to file list
+								ksfViews.files.push(e);
+								   
+								//if it's the currently selected file then store a reference in .currentFile
+								if (ksfViews.currentFileName == e.filename && e.filename)
+								{
+									ksfViews.currentFile = e;
+								}
+									   
 								var newElem = document.createElement('a');
 								newElem.className = 'list-group-item file-list-item';
 								newElem.href = '#!/preview/' + e.filename;
@@ -203,10 +220,24 @@ function ksfViews_makeFileList(datasource, target)
 							} );
 					}
 				} );
-			
+	
 		} );
 }
 ksfViews.makeFileList = ksfViews_makeFileList;
+
+function ksfViews_getFileInfoByName(probe)
+{
+	ksfViews.files.forEach(
+		function (file)
+		{
+			if (file.filename == probe)
+			{
+				return file;
+			}
+		} );
+	return null;
+}
+ksfViews.getFileInfoByName = ksfViews_getFileInfoByName;
 
 /**
  * Downloads and displays the panels for the FAQ page
