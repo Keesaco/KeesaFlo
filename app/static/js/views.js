@@ -225,6 +225,12 @@ function ksfViews_makeFileList(datasource, target)
 }
 ksfViews.makeFileList = ksfViews_makeFileList;
 
+/**
+ * Searches the most recent file list available and returns a file by a given name if found
+ * \param String probe - name of file to search for
+ * \return null if not found, otherwise a file information object as defined by the JSON datasource
+ * \author jmccrea@keesaco.com of Keesaco
+ */
 function ksfViews_getFileInfoByName(probe)
 {
 	ksfViews.files.forEach(
