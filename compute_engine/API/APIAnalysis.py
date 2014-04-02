@@ -72,7 +72,7 @@ def change_axis(name, x_axis, y_axis):
 ## \author hdoughty@keesaco.com of Keesaco
 ###########################################################################
 def rect_gate(  name, gate_name, top_left_x, top_left_y, bottom_right_x, bottom_right_y, reverse):
-	subprocess.call(["Rscript", "gate.r", name, gate_name, top_left_x, top_left_y, bottom_right_x, bottom_right_y, reverse])
+	subprocess.call(["Rscript", "gate.r", name, gate_name, "rect", reverse, top_left_x, top_left_y, bottom_right_x, bottom_right_y])
 
 ###########################################################################
 ## \brief Saves a visualisation of a gated fcs file
@@ -88,7 +88,7 @@ def rect_gate(  name, gate_name, top_left_x, top_left_y, bottom_right_x, bottom_
 ## \author hdoughty@keesaco.com of Keesaco
 ###########################################################################
 def oval_gate(name, gate_name, mean_x, mean_y, a_x, a_y, b_x, b_y, reverse):
-	subprocess.call(["Rscript", "ovalgate.r", name, gate_name, mean_x, mean_y, a_x, a_y, b_x, b_y, reverse])
+	subprocess.call(["Rscript", "gate.r", name, gate_name, "oval", reverse, mean_x, mean_y, a_x, a_y, b_x, b_y])
 
 ###########################################################################
 ## \brief Saves a visualisation of a gated fcs file
@@ -99,7 +99,7 @@ def oval_gate(name, gate_name, mean_x, mean_y, a_x, a_y, b_x, b_y, reverse):
 ## \author hdoughty@keesaco.com of Keesaco
 ###########################################################################
 def poly_gate(name, gate_name, points, reverse):
-	subprocess.call(["Rscript", "polygate.r", name, gate_name, points, reverse])
+	subprocess.call(["Rscript", "gate.r", name, gate_name, "poly", reverse, points])
 
 ###########################################################################
 ## \brief Saves a visualisation image from local disk to Datastore
