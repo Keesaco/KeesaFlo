@@ -140,11 +140,12 @@ def file_list_json(request):
 		file_entry = ps.get_file_by_name(temp_file.filename)
 		if file_entry is not None:
 			user_permissions = ps.get_user_file_permissions(file_entry.key, user_key)
-			list_entry.update({ 'permissions' 	: 'yes',
-								'friendlyName'	: file_entry.friendly_name,
-							  	'colour'		: user_permissions.colour,
-							  	'starred'		: user_permissions.starred
-							} )
+			if user_permissions is not None:
+				list_entry.update({ 'permissions' 	: 'yes',
+									'friendlyName'	: file_entry.friendly_name,
+								  	'colour'		: user_permissions.colour,
+								  	'starred'		: user_permissions.starred
+								} )
 							  
 			
 		else:

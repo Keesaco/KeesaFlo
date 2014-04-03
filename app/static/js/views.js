@@ -215,7 +215,19 @@ function ksfViews_makeFileList(datasource, target)
 								var newElem = document.createElement('a');
 								newElem.className = 'list-group-item file-list-item';
 								newElem.href = '#!/preview/' + e.filename;
-								newElem.innerHTML = e.filename
+								if (e.colour)
+								{
+									newElem.style.borderRight='10px solid #'+e.colour;
+								}
+									   
+								starSpan = document.createElement('span');
+								starSpan.className = 'glyphicon ' + (e.starred ? 'glyphicon-star' : 'glyphicon-star-empty');
+								newElem.appendChild(starSpan);
+									   
+								nameSpan = document.createElement('span');
+								nameSpan.innerHTML = ' ' + (e.friendlyName ? e.friendlyName : e.filename);
+								newElem.appendChild(nameSpan);
+									   
 								tdiv.append(newElem);
 							} );
 					}
