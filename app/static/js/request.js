@@ -40,20 +40,26 @@ ksfReq.fetch = ksfReq_fetch;
  * Makes an asynchronous request for JSON formatted data
  * \param String URI - URI to request
  * \param Function callback - called with received data
- * \param Function failcallback - called if the request fails
+ * \param Function failCallback - called if the request fails
  * \return None
  * \author jmccrea@keesaco.com of Keesaco
  */
-function ksfReq_fetchJSON(URI, callback, failcallback)
+function ksfReq_fetchJSON(URI, callback, failCallback)
 {
 	$.getJSON(URI)
 	.done( function(data)
 	{
-		callback(data);
+		if (callback)
+		{
+			callback(data);
+		}
 	} )
 	.fail( function(jqxhr, textStatus, error)
 	{
-		failcallback(jqxhr, textStatus, error);
+		if (failCallback)
+		{
+			failCallback(jqxhr, textStatus, error);
+		}
 	} );
 }
 ksfReq.fetchJSON = ksfReq_fetchJSON;
