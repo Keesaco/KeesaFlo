@@ -312,13 +312,16 @@ ksfGraphTools.sendGatingRequest = ksfGraphTools_sendGatingRequest;
  */
 function ksfGraphTools_setGraphUrl(url)
 {
-	
 	$("#graph-img").off('error');
 	$("#graph-img").on('error', function()
 		{
 			ksfCanvas.setLoading(true);
 			setTimeout(ksfGraphTools.reloadImage, 1000);
 		} );
+	$("#graph-img").on('load', function()
+		{
+			ksfCanvas.setLoading(false);
+		});
 	$("#graph-img").attr("src", url);
 }
 ksfGraphTools.setGraphUrl = ksfGraphTools_setGraphUrl;
@@ -329,7 +332,6 @@ ksfGraphTools.setGraphUrl = ksfGraphTools_setGraphUrl;
  */
 function ksfGraphTools_reloadImage()
 {
-	ksfCanvas.setLoading(false);
 	$("#graph-img").attr("src", $("#graph-img").attr("src"));
 }
 ksfGraphTools.reloadImage = ksfGraphTools_reloadImage;
