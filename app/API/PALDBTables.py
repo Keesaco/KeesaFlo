@@ -16,8 +16,6 @@ class Files(ndb.Model):
 
 
 	###	User-set information
-	###	The colour which the user has given to the file
-	colour			= ndb.StringProperty()
 	### Allows a (potentially non-unique) name which does not relate to the actual file name
 	friendly_name	= ndb.StringProperty()
 
@@ -46,4 +44,7 @@ class FilePermissions(ndb.Model):
 
 	### Not permissions related
 	### These properties store user-specific information about a file
+	### True if the user has starred the file
 	starred 		= ndb.BooleanProperty()
+	###	The colour which the user has given to the file
+	colour			= ndb.StringProperty()

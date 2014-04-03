@@ -20,7 +20,7 @@ import upload_handling
 import API.APIDatastore as ds
 import API.PALUsers as auth
 import API.APIQueue as queue
-import API.APIPermissions as permissions
+import API.APIPermissions as ps
 import json
 
 DATA_BUCKET = '/fc-raw-data'
@@ -122,23 +122,41 @@ def file_list(request):
 def file_list_json(request):
 	lst = ds.list(DATA_BUCKET)
 	
+	authed_user = auth.get_current_user()
+	if authed_user is None:
+		pass
+		#TODO: deal with unauthed users
+	else:
+		user_key = ps.get_user_key_by_id(authed_user.user_id())
+		#TODO: This shouldn't be here - a generic method in APIPermissions would be nice.
+
+
 	# 'your files'
 	file_list = []
 	
 	temp_group = []
 	for temp_file in lst:
 		list_entry = {}
-		file_entry = permissions.get_file_by_name(temp_file.filename)
+		file_entry = ps.get_file_by_name(temp_file.filename)
 		if file_entry is not None:
-			list_entry.update({ 'permissions' : 'yes' })
+			user_permissions = ps.get_user_file_permissions(file_entry.key, user_key)
+			list_entry.update({ 'permissions' 	: 'yes',
+								'friendlyName'	: file_entry.friendly_name,
+							  	'colour'		: user_permissions.colour,
+							  	'starred'		: user_permissions.starred
+							} )
+							  
+			
 		else:
 			list_entry.update({ 'permissions' : 'no'  })
 		
+		
 		temp_file.filename = temp_file.filename.rpartition('/')[2]
-		list_entry.update( {	'filename' 	: temp_file.filename,
-								'size' 		: temp_file.st_size,
-						  		'hash' 		: temp_file.etag,
-						  		'timestamp' : temp_file.st_ctime} )
+		list_entry.update( {	'filename' 		: temp_file.filename,
+								'size' 			: temp_file.st_size,
+						  		'hash' 			: temp_file.etag,
+						  		'timestamp' 	: temp_file.st_ctime
+						  })
 		temp_group.append(list_entry)
 
 

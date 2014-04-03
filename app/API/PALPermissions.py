@@ -169,10 +169,11 @@ def get_user_by_key(user_key):
 ## \author cwike@keesaco.com of Keesaco
 ## \todo Currently this does not check if the file exists or if there is already an entry for it - consider reviewing this and implementing some checking
 ###########################################################################
-def add_file(new_file_name, new_file_owner_key):
+def add_file(new_file_name, new_file_owner_key, new_friendly_name = ""):
 	new_file = Files(	parent = ndb.Key("FileTable", "*notitle*"),
 					 	file_name = new_file_name,
-					 	owner_key = new_file_owner_key );
+					 	owner_key = new_file_owner_key,
+					 	friendly_name = new_friendly_name);
 						
 	return new_file.put();
 
@@ -257,13 +258,15 @@ def get_file_by_owner_key(owner_key):
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
 ###########################################################################
-def add_file_permissions(permissions_file_key,permissions_user_key, permissions):
+def add_file_permissions(permissions_file_key,permissions_user_key, permissions, new_colour = '000000', new_starred = False):
 	new_permission = FilePermissions( 	parent = ndb.Key("PermissionsTable", "*notitle*"),
 										user_key = permissions_user_key,
 										file_key = permissions_file_key,
 										read = permissions.read,
 										write = permissions.write,
-										full_control = permissions.full_control );
+										full_control = permissions.full_control,
+									 	colour = new_colour,
+									 	starred = new_starred );
 	return new_permission.put()
 
 ###########################################################################
