@@ -220,10 +220,14 @@ function ksfViews_makeFileList(datasource, target)
 									newElem.style.borderRight='10px solid #'+e.colour;
 								}
 									   
-								starSpan = document.createElement('span');
-								starSpan.className = 'glyphicon ' + (e.starred ? 'glyphicon-star' : 'glyphicon-star-empty');
-								newElem.appendChild(starSpan);
-									   
+								//TODO: remove this when permissions are set for all files
+								if (e.permissions == 'yes')
+								{
+									starSpan = document.createElement('span');
+									starSpan.className = 'glyphicon ' + (e.starred ? 'glyphicon-star' : 'glyphicon-star-empty');
+									newElem.appendChild(starSpan);
+								}
+								
 								nameSpan = document.createElement('span');
 								nameSpan.innerHTML = ' ' + (e.friendlyName ? e.friendlyName : e.filename);
 								newElem.appendChild(nameSpan);
