@@ -209,6 +209,8 @@ def file_list_edit(request):
 		#We can't do anything without a filename
 		if 'filename' not in a:
 			continue
+		else:
+			filename = a['filename']
 		
 		res_fragment = {
 			'filename' 	: a['filename'],
@@ -216,20 +218,35 @@ def file_list_edit(request):
 		}
 		
 		if a['action'] == 'delete':
-			file_entry = ps.get_file_by_name('/fc-raw-data/' + a['filename'])
-			if file_entry is not  None:
+			file_entry = ps.get_file_by_name('/fc-raw-data/' + filename)
+			if file_entry is not None:
 				ps.remove_file_by_key(file_entry.key)
 			
-			ds.delete('/fc-raw-data/' + a['filename'])
-			ds.delete('/fc-info-data/' + a['filename'] + 'info.txt')
-			ds.delete('/fc-info-data/' + a['filename'] + '.html')
-			ds.delete('/fc-vis-data/' + a['filename'] + '.png')
-			res_fragment.update( { 'success' : True } )
+				ds.delete('/fc-raw-data/' + filename)
+				ds.delete('/fc-info-data/' + filename + 'info.txt')
+				ds.delete('/fc-info-data/' + filename + '.html')
+				ds.delete('/fc-vis-data/' + filename + '.png')
+				
+				res_fragment.update( { 'success' : True } )
+			else:
+				res_fragment.update( { 'success' : False, 'error' : 'File does not exist.' } )
+	
 		elif a['action'] == 'rename':
-			pass
+			if 'newname' not in a:
+				res_fragment.update( { 'success' : false, 'error' : 'New name not specified' } )
+			else:
+				file_entry = ps.get_file_by_name('/fc-raw-data/' + filename)
+				if file_entry is None:
+					res_fragment.update( { 'success' : False, 'error' : 'File does not exist.' } )
+				else:
+					file_entry.friendly_name = a['newname']
+					if ps.update_file(file_entry):
+						res_fragment.update( { 'success' : True } )
+					else:
+						res_fragment.update( { 'success' : False, 'error' : 'Could not rename file' } )
 		else:
-			pass
-
+			res_fragment.update( { 'success' : False, 'error' : 'Action not recognised' } )
+						
 		res.append(res_fragment)
 		
 	

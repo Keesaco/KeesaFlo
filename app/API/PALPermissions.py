@@ -229,7 +229,7 @@ def rename_file_by_key(file_key, new_file_name):
 ###########################################################################
 def update_file(new_file):
 	if isinstance(new_file.key ,ndb.Key):
-		file = file_key.get()
+		file = new_file.key.get()
 	else:
 		file = get_file_by_name(new_file.file_name)
 
