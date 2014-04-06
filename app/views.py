@@ -216,6 +216,10 @@ def file_list_edit(request):
 		}
 		
 		if a['action'] == 'delete':
+			file_entry = ps.get_file_by_name('/fc-raw-data/' + a['filename'])
+			if file_entry is not None:
+				ps.remove_file_by_key(file_entry.key)
+			
 			ds.delete('/fc-raw-data/' + a['filename'])
 			ds.delete('/fc-info-data/' + a['filename'] + 'info.txt')
 			ds.delete('/fc-info-data/' + a['filename'] + '.html')

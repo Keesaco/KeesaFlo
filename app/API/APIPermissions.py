@@ -108,7 +108,10 @@ def add_file(new_file_name, new_file_owner_key):
 ## \author cwike@keesaco.com of Keesaco
 ###########################################################################
 def remove_file_by_key(file_key):
-	return PAL.remove_file_by_key(file_key)
+	if PAL.revoke_all_by_file_key(file_key):
+		return PAL.remove_file_by_key(file_key)
+
+	return False
 
 ###########################################################################
 ## \brief Renames a file stored in a Files object, via Files table key lookup
