@@ -89,6 +89,15 @@ function ksfFilebar_update(data)
 }
 ksfFilebar.update = ksfFilebar_update;
 
+
+/**
+ * Sends a request to rename a given file
+ * \param File file - file object for file to rename (used for .filename)
+ * \param String newName - the new name for the given file
+ * \author jmccrea@keesaco.com of Keesaco
+ * \note If the request is successful, a redraw of the file selector is forced
+ * \return None
+ */
 function ksfFilebar_renameFile(file, newName)
 {
 	actionObj = [{
@@ -105,6 +114,13 @@ function ksfFilebar_renameFile(file, newName)
 }
 ksfFilebar.renameFile = ksfFilebar_renameFile;
 
+/**
+ * Sends a request to delete a given file
+ * \param File file - file object for file to delete (used for .filename)
+ * \author jmccrea@keesaco.com of Keesaco
+ * \return None
+ * \note If the request is successful, a redraw of the file selector is forced
+ */
 function ksfFilebar_deleteFile(file)
 {
 	actionObj = [{
