@@ -178,6 +178,57 @@ def file_list_json(request):
 
 	return HttpResponse(json.dumps(file_list), content_type="application/json")
 
+
+###########################################################################
+## \brief 	Takes a JSON file list edit object and performs the requested
+##			action on the specified file. Returns JSON status.
+## \param 	request - Django variable defining the request that triggered
+##			the generation of this page
+## \todo 	Review permissions in this section - correct checking here is
+##			vital as edit actions are potentially destructive.
+## \todo	Refactor bucket names for deletion
+## \return 	JSON response which indicates whether the requested action(s)
+##			were performed successfully.
+###########################################################################
+def file_list_edit(request):
+	authed_user = auth.get_current_user()
+	if authed_user is None:
+		return HttpResponse(json.dumps({'error' : 'Unauthenticated request'}), content_type="application/json")
+
+	try:
+		actions = json.loads(request.raw_post_data)
+	except ValueError:
+		return HttpResponse(json.dumps({'error' : 'invalid request payload'}), content_type="application/json")
+
+	res = []
+	for a in actions:
+		
+		#We can't do anything without a filename
+		if 'filename' not in a:
+			continue
+		
+		res_fragment = {
+			'filename' 	: a['filename'],
+			'action'	: a['action']
+		}
+		
+		if a['action'] == 'delete':
+			ds.delete('/fc-raw-data/' + a['filename'])
+			ds.delete('/fc-info-data/' + a['filename'] + 'info.txt')
+			ds.delete('/fc-info-data/' + a['filename'] + '.html')
+			ds.delete('/fc-vis-data/' + a['filename'] + '.png')
+			res_fragment.update( { 'success' : True } )
+		elif a['action'] == 'rename':
+			pass
+		else:
+			pass
+
+		res.append(res_fragment)
+		
+	
+	
+	return HttpResponse(json.dumps(res), content_type="application/json")
+
 ###########################################################################
 ## \brief Is called when the pagelet containing the main content of the page is requested.
 ## \param request - Django variable defining the request that triggered the generation of this page
