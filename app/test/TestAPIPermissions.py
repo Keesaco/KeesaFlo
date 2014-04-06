@@ -13,7 +13,7 @@ from google.appengine.ext import testbed, ndb
 import API.APIPermissions as ps
 
 from API.User import User
-from Permissions.Types import Permissions
+from Permissions.Types import Permissions, FileInfo
 
 ###########################################################################
 ## \brief 	Testing for Permissions table PAL
@@ -191,7 +191,7 @@ class TestAPIPermissions(unittest.TestCase):
 	## \author 	cwike@Keesaco.com of Keesaco
 	###########################################################################
 	def test_file_add_file(self):
-		ret = ps.add_file("testFileaf",ndb.Key("someKey","af"))
+		ret = ps.add_file( FileInfo("testFileaf",ndb.Key("someKey","af") ) )
 
 		self.assertTrue(isinstance(ret, ndb.Key))
 
@@ -201,7 +201,7 @@ class TestAPIPermissions(unittest.TestCase):
 	## \author 	cwike@Keesaco.com of Keesaco
 	###########################################################################
 	def test_file_remove_file_by_key_success(self):
-		key = ps.add_file("testFilerfks",ndb.Key("someKey","rfks"))
+		key = ps.add_file( FileInfo("testFilerfks",ndb.Key("someKey","rfks") ) )
 
 		self.assertTrue(ps.remove_file_by_key(key))
 
@@ -211,7 +211,7 @@ class TestAPIPermissions(unittest.TestCase):
 	## \author 	cwike@Keesaco.com of Keesaco
 	###########################################################################
 	def test_file_rename_file_by_key_success(self):
-		key = ps.add_file("testFilernfks",ndb.Key("someKey","rnfks"))
+		key = ps.add_file( FileInfo("testFilernfks",ndb.Key("someKey","rnfks") ) )
 
 		self.assertTrue(ps.rename_file_by_key(key,"testFilernfks2"))
 
@@ -225,7 +225,7 @@ class TestAPIPermissions(unittest.TestCase):
 	## \author 	cwike@Keesaco.com of Keesaco
 	###########################################################################
 	def test_file_get_file_by_key_success(self):
-		key = ps.add_file("testFilegfks",ndb.Key("someKey","gfks"))
+		key = ps.add_file( FileInfo( "testFilegfks",ndb.Key("someKey","gfks") ) )
 		fileobj = ps.get_file_by_key(key)
 
 		self.assertEqual(fileobj.file_name,"testFilegfks")
@@ -243,7 +243,7 @@ class TestAPIPermissions(unittest.TestCase):
 	## \author 	cwike@Keesaco.com of Keesaco
 	###########################################################################
 	def test_file_get_file_by_name_success(self):
-		ps.add_file("testFilegfns",ndb.Key("someKey","gfns"))
+		ps.add_file( FileInfo("testFilegfns",ndb.Key("someKey","gfns") ) )
 		fileobj = ps.get_file_by_name("testFilegfns")
 
 		self.assertEqual(fileobj.owner_key,ndb.Key("someKey","gfns" ))
@@ -254,10 +254,10 @@ class TestAPIPermissions(unittest.TestCase):
 	## \author 	cwike@Keesaco.com of Keesaco
 	###########################################################################
 	def test_file_get_files_by_owner_key_sucess(self):
-		ps.add_file("testFile1",ndb.Key("someKey","gfuks"))
-		ps.add_file("testFile2",ndb.Key("someKey","gfuks"))
-		ps.add_file("testFile3",ndb.Key("someKey","gfuks"))
-		ps.add_file("testFile4",ndb.Key("someKey","gfuks"))
+		ps.add_file( FileInfo("testFile1",ndb.Key("someKey","gfuks") ) )
+		ps.add_file( FileInfo("testFile2",ndb.Key("someKey","gfuks") ) )
+		ps.add_file( FileInfo("testFile3",ndb.Key("someKey","gfuks") ) )
+		ps.add_file( FileInfo("testFile4",ndb.Key("someKey","gfuks") ) )
 		
 		iterate = ps.get_file_by_owner_key(ndb.Key("someKey","gfuks"))
 
