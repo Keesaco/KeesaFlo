@@ -229,8 +229,7 @@ function ksfLayout_initTips()
 				position: {
 					my: 'right center',
 					at: 'left center',
-					viewport: $('#appmain'),
-					target: 'event'
+					viewport: $('#appmain')
 				},
 				style : {
 				   classes: 'file-preview-tip qtip-bootstrap qtip-shadow qtip-rounded'
