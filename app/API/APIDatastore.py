@@ -13,7 +13,7 @@
 import PALDatastore
 import APIPermissions as ps
 import PALUsers as users
-from Permissions.Types import Permissions
+from Permissions.Types import Permissions, FileInfo
 
 ## \brief second tier API for data access - utilises PAL for low level file access
 
@@ -33,19 +33,22 @@ def __check_authentication (	path,
 
 ###########################################################################
 ## \brief add authentication to the datastore
-## \param path - [string] filepath of data to add
-## \param user - [User] user object to add to
-## \param permissions - [Permissions] permissions object
+## \param String path - filepath of data to add
+## \param User user -  user object to add to
+## \param Permissions permissions - permissions object
 ## \author cwike@keesaco.com of Keesaco
+## \author jmccrea@keesaco.com of Keesaco
 ###########################################################################
 def __add_authentication( path, user, permissions):
 	user_key = ps.get_user_key_by_id(user.user_id())
 	if (user_key is None):
 		user_key = ps.add_user(user)
-	file_key = ps.add_file(path,user_key)
+	file_key = ps.add_file( FileInfo(
+						   		file_name 		= path,
+								owner_key 		= user_key
+						   	) )
 
 	ps.add_file_permissions(file_key,user_key,permissions)
-
 
 
 ###########################################################################

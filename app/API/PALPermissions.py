@@ -11,7 +11,7 @@
 from API.PALDBTables import Users, Files, FilePermissions
 from API.User import User
 from google.appengine.ext import ndb
-from Permissions import Types
+from Permissions.Types import FileInfo
 
 ###########################################################################
 ## \brief Adds a new user entry to the Users table
@@ -161,21 +161,30 @@ def get_user_by_key(user_key):
 		return False
 
 ###########################################################################
-## \brief Add a file to the file table with a given name and owner
-## \param new_file_name - [String] name of file to add
-## \param new_file_owner_key - [Key] key of user which owns the new file
-## \return key of new file
-## \author jmccrea@keesaco.com of Keesaco
-## \author cwike@keesaco.com of Keesaco
-## \todo Currently this does not check if the file exists or if there is already an entry for it - consider reviewing this and implementing some checking
+## \brief 	Add a file to the file table with a given name and owner
+## \param	FileInfo new_file - the file to be added to the datastore
+## \param	Bool return_updated -  (= False) if true the return value the
+##			original file with its key property updated
+## \return 	If return_updated is true the returns the original file
+##			argument with an updated key property. Otherwise returns the
+##			key of the new Files entry as it was inserted.
+## \author 	jmccrea@keesaco.com of Keesaco
+## \author 	cwike@keesaco.com of Keesaco
+## \todo 	Currently this does not check if the file exists or if there is
+##			already an entry for it - consider reviewing this and
+##			implementing some checking
 ###########################################################################
-def add_file(new_file_name, new_file_owner_key, new_friendly_name = ""):
+def add_file(new_file, return_updated = False):
 	new_file = Files(	parent = ndb.Key("FileTable", "*notitle*"),
-					 	file_name = new_file_name,
-					 	owner_key = new_file_owner_key,
-					 	friendly_name = new_friendly_name);
-						
-	return new_file.put();
+					 	file_name = new_file.file_name,
+					 	owner_key = new_file.owner_key,
+					 	friendly_name = new_file.friendly_name);
+	new_key = new_file.put();
+
+	if return_updated:
+		new_file.key = new_key
+	else:
+		return new_key
 
 ###########################################################################
 ## \brief Removes a file object from the Files table
@@ -198,6 +207,7 @@ def remove_file_by_key(file_key):
 ## \return true on aparrent success, false otherwise
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
+## \note This action can be performed using update_file
 ###########################################################################
 def rename_file_by_key(file_key, new_file_name):
 	if isinstance(file_key,ndb.Key):
@@ -209,6 +219,30 @@ def rename_file_by_key(file_key, new_file_name):
 		return False
 
 ###########################################################################
+## \brief 	Updates a file using a given FileInfo object.
+##			To locate the entry to update, the key property of the given
+##			FileInfo object is checked. If one is not found, the file_name
+##			property will be used instead.
+## \param 	FileInfo new_file - updated file information to be stored
+## \return 	True on aparrent success, False otherwise
+## \author 	jmccrea@keesaco.com of Keesaco
+###########################################################################
+def update_file(new_file):
+	if isinstance(new_file.key ,ndb.Key):
+		file = file_key.get()
+	else:
+		file = get_file_by_name(new_file.file_name)
+
+	if file is None:
+		return False
+	else:
+		file.file_name 		= new_file.file_name
+		file.owner_key		= new_file.owner_key
+		file.friendly_name 	= new_file.friendly_name
+		file.put()
+		return True
+
+###########################################################################
 ## \brief gets a file object from its key
 ## \param file_key - [Key] key of file object
 ## \return returns file object on success or None
@@ -217,8 +251,15 @@ def rename_file_by_key(file_key, new_file_name):
 ###########################################################################
 def get_file_by_key(file_key):
 	if isinstance(file_key,ndb.Key):
-		files = file_key.get()
-		return files
+		file = file_key.get()
+
+		if file is None:
+			return None
+		else:
+			return FileInfo(	file_name 		= file.file_name,
+								owner_key 		= file.owner_key,
+								friendly_name 	= file.friendly_name,
+								key				= file.key)
 	else:
 		return None
 		
@@ -232,8 +273,15 @@ def get_file_by_key(file_key):
 ###########################################################################
 def get_file_by_name(file_name):
 	query = Files.query(Files.file_name == file_name)
-	files = query.get()
-	return files
+	file = query.get()
+	
+	if file is None:
+		return None
+	else:
+		return FileInfo(	file_name 		= file.file_name,
+					   		owner_key 		= file.owner_key,
+					   		friendly_name 	= file.friendly_name,
+					   		key				= file.key)
 	
 ###########################################################################
 ## \brief gets list of files by owner key
