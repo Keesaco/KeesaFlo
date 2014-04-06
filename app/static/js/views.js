@@ -30,7 +30,6 @@ function ksfViews()
 }
 
 CONTENT_AREA = '#appmain';
-FILES_AREA = '#filelist';
 TOOLS_AREA = '#toolselector';
 
 ksfViews.currentView = null;
@@ -170,7 +169,7 @@ function ksfViews_loadPreview(filename)
 {
 	ksfViews.currentFileName = filename;
 	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/main/file' + encodeURIComponent('=' + filename), CONTENT_AREA, ksfLayout.filePreviewStart);
-	ksfViews.makeFileList('/app/data/json/files/', FILES_AREA);
+	ksfViews.makeFileList('/app/data/json/files/');
 }
 ksfViews.loadPreview = ksfViews_loadPreview;
 
@@ -179,65 +178,9 @@ ksfViews.loadPreview = ksfViews_loadPreview;
  * \return None
  * \author jmccrea@keesaco.com of Keesaco
  */
-function ksfViews_makeFileList(datasource, target)
+function ksfViews_makeFileList(datasource)
 {
-	ksfData.fetchJSON(datasource,
-		function(data)
-		{
-			//clear out file list
-			ksfViews.files = [];
-					  
-			//destroy old file previews
-			$('.file-preview-tip').remove();
-			var tdiv = $(target);
-			tdiv.empty();
-			data.forEach(
-				function (d)
-				{
-					if (d.type == 'html')
-					{
-						tdiv.append(d.data)
-					}
-					else if (d.type = 'files')
-					{
-						d.data.forEach(
-							function(e)
-							{
-								//Add file info to file list
-								ksfViews.files.push(e);
-								   
-								//if it's the currently selected file then store a reference in .currentFile
-								if (ksfViews.currentFileName == e.filename && e.filename)
-								{
-									ksfViews.currentFile = e;
-								}
-									   
-								var newElem = document.createElement('a');
-								newElem.className = 'list-group-item file-list-item';
-								newElem.href = '#!/preview/' + e.filename;
-								if (e.colour)
-								{
-									newElem.style.borderRight='10px solid #'+e.colour;
-								}
-									   
-								//TODO: remove this when permissions are set for all files
-								if (e.permissions == 'yes')
-								{
-									starSpan = document.createElement('span');
-									starSpan.className = 'glyphicon ' + (e.starred ? 'glyphicon-star' : 'glyphicon-star-empty');
-									newElem.appendChild(starSpan);
-								}
-								
-								nameSpan = document.createElement('span');
-								nameSpan.innerHTML = ' ' + (e.friendlyName ? e.friendlyName : e.filename);
-								newElem.appendChild(nameSpan);
-									   
-								tdiv.append(newElem);
-							} );
-					}
-				} );
-	
-		} );
+	ksfData.fetchJSON(datasource, ksfFilebar.update);
 }
 ksfViews.makeFileList = ksfViews_makeFileList;
 
