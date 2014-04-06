@@ -200,6 +200,9 @@ def file_list_edit(request):
 	except ValueError:
 		return HttpResponse(json.dumps({'error' : 'invalid request payload'}), content_type="application/json")
 
+	if not isinstance(actions, list):
+		return HttpResponse(json.dumps({'error' : 'Payload is not a list'}), content_type="application/json")
+
 	res = []
 	for a in actions:
 		

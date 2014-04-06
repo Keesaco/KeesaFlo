@@ -32,6 +32,8 @@ function ksfViews()
 CONTENT_AREA = '#appmain';
 TOOLS_AREA = '#toolselector';
 
+FILE_LIST_DATASORUCE = '/app/data/json/files/';
+
 ksfViews.currentView = null;
 
 /**
@@ -169,7 +171,7 @@ function ksfViews_loadPreview(filename)
 {
 	ksfViews.currentFileName = filename;
 	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/main/file' + encodeURIComponent('=' + filename), CONTENT_AREA, ksfLayout.filePreviewStart);
-	ksfViews.makeFileList('/app/data/json/files/');
+	ksfViews.makeFileList();
 }
 ksfViews.loadPreview = ksfViews_loadPreview;
 
@@ -178,9 +180,9 @@ ksfViews.loadPreview = ksfViews_loadPreview;
  * \return None
  * \author jmccrea@keesaco.com of Keesaco
  */
-function ksfViews_makeFileList(datasource)
+function ksfViews_makeFileList()
 {
-	ksfData.fetchJSON(datasource, ksfFilebar.update);
+	ksfData.fetchJSON(FILE_LIST_DATASORUCE, ksfFilebar.update);
 }
 ksfViews.makeFileList = ksfViews_makeFileList;
 

@@ -7,6 +7,8 @@
 /** \package app.static.js.data
  * \brief Provives methods used when interacting with and displaying the file selector */
 
+FILES_AREA = '#filelist';
+ACTION_URI = '/app/data/edit/files/';
 
 /**
  * ksfFilebar constructor used for namespace
@@ -14,13 +16,16 @@
  * \return None
  * \note This constructor currently (intentionally) does not have any effect
  */
-
-FILES_AREA = '#filelist';
-
 function ksfFilebar()
 {
 }
 
+/**
+ * updates the filebar given a file list object
+ * \author jmccrea@keesaco.com of Keesaco
+ * \return None
+ * \todo
+ */
 function ksfFilebar_update(data)
 {
 	//clear out file list
@@ -71,6 +76,11 @@ function ksfFilebar_update(data)
 						nameSpan.innerHTML = ' ' + (e.friendlyName ? e.friendlyName : e.filename);
 						newElem.appendChild(nameSpan);
 								
+						delSpan = document.createElement('span');
+						delSpan.className = 'glyphicon glyphicon-trash';
+						$(delSpan).click(function () { ksfFilebar.deleteFile(e); });
+						newElem.appendChild(delSpan);
+							   
 						tdiv.append(newElem);
 					} );
 			}
@@ -78,3 +88,18 @@ function ksfFilebar_update(data)
 	
 }
 ksfFilebar.update = ksfFilebar_update;
+
+function ksfFilebar_deleteFile(file)
+{
+	actionObj = [{
+		'action' 		: 'delete',
+		'filename'		: file.filename
+	}];
+	ksfReq.postJSON(ACTION_URI, actionObj,
+		function (response)
+		{
+			ksfViews.makeFileList();
+		}
+	);
+}
+ksfFilebar.deleteFile = ksfFilebar_deleteFile;
