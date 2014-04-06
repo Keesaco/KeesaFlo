@@ -89,6 +89,22 @@ function ksfFilebar_update(data)
 }
 ksfFilebar.update = ksfFilebar_update;
 
+function ksfFilebar_renameFile(file, newName)
+{
+	actionObj = [{
+		'action' 		: 'rename',
+		'filename'		: file.filename,
+		'newname'		: newName
+	}];
+	ksfReq.postJSON(ACTION_URI, actionObj,
+		function (response)
+		{
+			ksfViews.makeFileList();
+		}
+	);
+}
+ksfFilebar.renameFile = ksfFilebar_renameFile;
+
 function ksfFilebar_deleteFile(file)
 {
 	actionObj = [{
