@@ -63,3 +63,40 @@ function ksfReq_fetchJSON(URI, callback, failCallback)
 	} );
 }
 ksfReq.fetchJSON = ksfReq_fetchJSON;
+
+/**
+ * Sends JSON in a POST request and gets a response
+ * \param String URI - URI to request
+ * \payload Object - object to be serialised (JSON) and sent with the request
+ * \param Function callback - called with response data
+ * \param Function failCallBack - called if the request fails
+ * \return None
+ * \author jmccrea@keesaco.com of Keesaco
+ */
+function ksfReq_postJSON(URI, payload, callback, failCallBack)
+{
+	$.ajax( {
+		url: URI,
+		data: JSON.stringify(payload),
+		contentType: 'application/json',
+		dataType: 'json',
+		type: 'POST'
+	} ).done(
+		function (response)
+		{
+			if (callback)
+			{
+				callback(response);
+			}
+		}
+	).fail(
+		function (jqXHR, textStatus, error)
+		{
+			if (failCallBack)
+			{
+				failCallBack(jqXHR, textStatus, error);
+			}
+		}
+	);
+}
+ksfReq.postJSON = ksfReq_postJSON;
