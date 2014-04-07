@@ -91,7 +91,7 @@ function ksfFilebar_update(data)
 						//delete button
 						editDiv.appendChild( ksfFilebar.newEditButton(
 							'span', 'glyphicon glyphicon-trash',
-							function () { ksfFilebar.deleteFile(e); }));
+							function () { ksfFilebar.deleteFile(e, newElem); }));
 							  
 						var confirmSpan = ksfFilebar.newEditButton('span', 'nameedit-confirm', null);
 						confirmSpan.style.display = 'none';
@@ -268,11 +268,11 @@ ksfFilebar.renameFile = ksfFilebar_renameFile;
 /**
  * Sends a request to delete a given file
  * \param File file - file object for file to delete (used for .filename)
+ * \param Element removeDiv - file div to be removed on successful deletion - if deletion succeeds, the div is removed from the DOM
  * \author jmccrea@keesaco.com of Keesaco
  * \return None
- * \note If the request is successful, a redraw of the file selector is forced
  */
-function ksfFilebar_deleteFile(file)
+function ksfFilebar_deleteFile(file, removeDiv)
 {
 	actionObj = [{
 		'action' 		: 'delete',
@@ -281,7 +281,10 @@ function ksfFilebar_deleteFile(file)
 	ksfReq.postJSON(ACTION_URI, actionObj,
 		function (response)
 		{
-			ksfViews.makeFileList();
+			if (response[0].success)
+			{
+				$(removeDiv).remove();
+			}
 		}
 	);
 }
