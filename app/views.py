@@ -222,14 +222,16 @@ def file_list_edit(request):
 			if file_entry is not None:
 				ps.remove_file_by_key(file_entry.key)
 			
-				ds.delete('/fc-raw-data/' + filename)
-				ds.delete('/fc-info-data/' + filename + 'info.txt')
-				ds.delete('/fc-info-data/' + filename + '.html')
-				ds.delete('/fc-vis-data/' + filename + '.png')
+			ds.delete('/fc-raw-data/' + filename)
+			ds.delete('/fc-info-data/' + filename + 'info.txt')
+			ds.delete('/fc-info-data/' + filename + '.html')
+			ds.delete('/fc-vis-data/' + filename + '.png')
 				
-				res_fragment.update( { 'success' : True } )
-			else:
-				res_fragment.update( { 'success' : False, 'error' : 'File does not exist.' } )
+			res_fragment.update( { 'success' : True } )
+
+			#Reinstate this when CE PAL is available	
+			#else:
+				#res_fragment.update( { 'success' : False, 'error' : 'File does not exist.' } )
 	
 		elif a['action'] == 'rename':
 			if 'newname' not in a:
