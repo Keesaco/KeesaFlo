@@ -164,6 +164,15 @@ function ksfFilebar_editName(fileDiv, file)
 }
 ksfFilebar.editName = ksfFilebar_editName;
 
+/**
+ * Handles key events in editable link - moved out of file selector generation for clarity
+ * \param Event event - the event which triggered the call
+ * \param Element $confirmButton - the click handler is called to confirm edit
+ * \param Element $cancelButton - the click handler is called to cancel the rename
+ * \param Element $linkElem - the editable link, the text of this element will be validated
+ * \author jmccrea@keesaco.com of Keesaco
+ * \return None
+ */
 function ksfFilebar_renameKeyHandle(event, $confirmButton, $cancelButton, $linkElem)
 {
 	//Since the tick and cross buttons have all the information in their click methods, it's easiest to trigger their events
@@ -182,7 +191,7 @@ function ksfFilebar_renameKeyHandle(event, $confirmButton, $cancelButton, $linkE
 	else
 	{
 		//Remove line breaks
-		linkElem.attr('innerHTML', $(this).text().replace(/(\r\n|\n|\r)/gm,""));
+		$linkElem.attr('innerHTML', $(this).text().replace(/(\r\n|\n|\r)/gm,""));
 	}
 }
 ksfFilebar.renameKeyHandle = ksfFilebar_renameKeyHandle;
