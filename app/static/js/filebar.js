@@ -102,7 +102,31 @@ function ksfFilebar_update(data)
 						var confirmCross = document.createElement('span');
 						confirmCross.className = 'glyphicon glyphicon-remove nameedit-cross';
 						confirmSpan.appendChild(confirmCross);
-			
+
+						$(nameSpan).on('keypress keyup',
+							function(event)
+							{
+								//Since the tick and cross buttons have all the information in their click methods, it's easiest to trigger their events
+								//Return key
+								if (event.which == 13)
+								{
+									//prevent inserting a line break
+									event.preventDefault();
+									$(confirmTick).trigger('click');
+								}
+								//Escape key
+								else if (event.which == 27)
+								{
+									$(confirmCross).trigger('click');
+								}
+								else
+								{
+									//Remove line breaks
+									$(this).attr('innerHTML', $(this).text().replace(/(\r\n|\n|\r)/gm,""));
+								}
+							} );
+							   
+
 						newElem.appendChild(editDiv);
 							   
 						renameSpan = document.createElement('span');
@@ -130,44 +154,42 @@ ksfFilebar.update = ksfFilebar_update;
  */
 function ksfFilebar_editName(fileDiv, file)
 {
-	var link = $(fileDiv).children('.filenameedit').first()
-	var prevHref = link.href;
-	link.href = ''
-	var oldText = link.text();
-	link.className = 'filenameedit';
+	var $link = $(fileDiv).children('.filenameedit').first()
+	var prevHref = $link.href;
+	$link.href = ''
+	var oldText = $link.text();
+	$link.className = 'filenameedit';
 	
-	var confirmSpan = $(fileDiv).children('.dropdown-file-options').children('.nameedit-confirm');
-	confirmSpan.first().css('display', ' inline');
-	confirmSpan.children('.nameedit-tick').click( function() { ksfFilebar.doneEditName(fileDiv, file, prevHref, true); } );
-	confirmSpan.children('.nameedit-cross').click( function() { ksfFilebar.doneEditName(fileDiv, file, prevHref, false, oldText); } );
+	var $confirmSpan = $(fileDiv).children('.dropdown-file-options').children('.nameedit-confirm');
+	$confirmSpan.first().css('display', ' inline');
+	$confirmSpan.children('.nameedit-tick').click(  function() { ksfFilebar.doneEditName(fileDiv, file, prevHref, true); } );
+	$confirmSpan.children('.nameedit-cross').click( function() { ksfFilebar.doneEditName(fileDiv, file, prevHref, false, oldText); } );
 	
-	link.attr('contenteditable', 'true');
-	link.trigger('focus');
-	
-	
-	
+	$link.attr('contenteditable', 'true');
+	$link.trigger('focus');
 }
 ksfFilebar.editName = ksfFilebar_editName;
 
 function ksfFilebar_doneEditName(fileDiv, file, newHref, update, oldText)
 {
-	var link = $(fileDiv).children('.filenameedit').first()
-	link.href = newHref
-	link.attr('contenteditable', 'false');
-	link.className = 'filenameedit file-list-link';
+	var $link = $(fileDiv).children('.filenameedit').first()
+	$link.href = newHref
+	$link.attr('contenteditable', 'false');
+	$link.className = 'filenameedit file-list-link';
+	$link.trigger('blur');
 	
-	var confirmSpan = $(fileDiv).children('.dropdown-file-options').children('.nameedit-confirm');
-	confirmSpan.first().css('display', 'none');
+	var $confirmSpan = $(fileDiv).children('.dropdown-file-options').children('.nameedit-confirm');
+	$confirmSpan.first().css('display', 'none');
 	
 	if (!update)
 	{
-		link.text(oldText);
+		$link.text(oldText);
 	}
 	else
 	{
-		ksfFilebar.renameFile(file, link.text());
+		ksfFilebar.renameFile(file, $link.text());
 	}
-
+	
 }
 ksfFilebar.doneEditName = ksfFilebar_doneEditName;
 
