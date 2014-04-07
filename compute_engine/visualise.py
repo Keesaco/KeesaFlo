@@ -36,15 +36,16 @@ while alive:
 		## Load raw fcs data from cloud storage.
 		Ana.load_fcs(name)
 		## Create visualisation of raw fcs data.
-		Ana.visualise(name)
-		## Save visualisation to cloud storage.
-		Ana.save_vis(name + '.png')
-		## Saves info about fcs file to cloud storage
-		Ana.save_info(name + 'info.txt')
-		## Clean up.
-		os.remove(name)
-		os.remove(name + '.png')
-		os.remove(name + 'info.txt')
+		exitcode = Ana.visualise(name)
+		if(exitcode == 0):
+			## Save visualisation to cloud storage.
+			Ana.save_vis(name + '.png')
+			## Saves info about fcs file to cloud storage
+			Ana.save_info(name + 'info.txt')
+			## Clean up.
+			os.remove(name)
+			os.remove(name + '.png')
+			os.remove(name + 'info.txt')
 	elif (commands[0] == 'gate_rec' or commands[0] == 'gate_cir' or commands[0] == 'gate_poly'):
 		name = commands[1]
 		points = commands[2]
@@ -89,12 +90,13 @@ while alive:
 		##Loads raw fcs data from cloud storage
 		Ana.load_fcs(name)
 		##Creates a visualisation of the graph with different axis
-		Ana.change_axis(name, x_axis, y_axis)
-		##Saves visualisation to loud storage
-		Ana.save_vis(name + x_axis + y_axis + '.png')
-		## Clean up
-		os.remove(name)
-		os.remove(name + x_axis + y_axis + '.png')
+		exitcode = Ana.change_axis(name, x_axis, y_axis)
+		if(exitcode == 0):
+			##Saves visualisation to loud storage
+			Ana.save_vis(name + x_axis + y_axis + '.png')
+			## Clean up
+			os.remove(name)
+			os.remove(name + x_axis + y_axis + '.png')
 	# Delete any processed tasks from queue.
 	if task_id is not None:
 		Queue.delete('jobs', task_id)

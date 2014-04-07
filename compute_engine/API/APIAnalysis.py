@@ -45,7 +45,7 @@ def save_fcs(	name,
 ## \author rmurley@keesaco.com of Keesaco
 ###########################################################################
 def visualise(	name):
-	subprocess.call(["Rscript", "visualise.r", name, name + '.png', name + 'info.txt'])
+	return subprocess.call(["Rscript", "visualise.r", name, name + '.png', name + 'info.txt'])
 
 ###########################################################################
 ## \brief Saves a visualisation of an fcs file
@@ -57,7 +57,7 @@ def visualise(	name):
 ## \author hdoughty@keesaco.com of Keesaco
 ###########################################################################
 def change_axis(name, x_axis, y_axis):
-	subprocess.call(["Rscript", "axis.r", name, name + x_axis + y_axis + '.png', x_axis, y_axis])
+	return subprocess.call(["Rscript", "axis.r", name, name + x_axis + y_axis + '.png', x_axis, y_axis])
 
 ###########################################################################
 ## \brief Saves a visualisation of a gated fcs file

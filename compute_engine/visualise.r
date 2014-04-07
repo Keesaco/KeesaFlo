@@ -15,6 +15,8 @@ vis_name <- args[2]
 info_name <- args[3]
 
 ## Read fcs data.
+if(file.exists(fcs_name) == FALSE)
+	quit("no", 1)
 x <- read.FCS(fcs_name, transformation = FALSE)
 
 ## Finding first two observables.
@@ -29,3 +31,4 @@ write(c, file = info_name)
 png(vis_name)
 plot(x, c(a, b))
 dev.off()
+quit("no", 0)
