@@ -170,6 +170,17 @@ function ksfFilebar_editName(fileDiv, file)
 }
 ksfFilebar.editName = ksfFilebar_editName;
 
+/**
+ * Cleans up the file selector and optionally requests a file rename once editing has finished
+ * \param Element fileDiv - the div element for the file's row in the file selector
+ * \param File file - file object for file to rename (used for .filename)
+ * \param String newHref - the link's HREF gets this value
+ * \param Bool update - if true a file rename request is sent, otherwise oldText replaces the current link text and no request is sent
+ * \param String oldText - old link text - if update is false, this replaces the link's text
+ * \author jmccrea@keesaco.com of Keesaco
+ * \note If the request is successful, a redraw of the file selector is forced
+ * \return None
+ */
 function ksfFilebar_doneEditName(fileDiv, file, newHref, update, oldText)
 {
 	var $link = $(fileDiv).children('.filenameedit').first()
