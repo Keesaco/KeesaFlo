@@ -87,7 +87,9 @@ ksfGraphTools.RectangularGating = {
 	{
 		var posX = event.pageX - $(GRAPH_ID).offset().left,
 		posY = event.pageY - $(GRAPH_ID).offset().top;
-		if (((this.endx === null) || (this.endy === null)) && ((this.startx !== null) || (this.starty !== null))) {
+		if (   ( (this.endx === null)   || (this.endy === null) )
+			&& ( (this.startx !== null) || (this.starty !== null) ) )
+		{
 			ksfCanvas.drawBox(this.startx, this.starty, posX-this.startx, posY-this.starty, 0.5);
 		}
 	},
@@ -348,10 +350,13 @@ ksfGraphTools.setGraphUrl = ksfGraphTools_setGraphUrl;
 function ksfGraphTools_reloadImage()
 {
 	ksfGraphTools.timeoutCounter--;
-	if (ksfGraphTools.timeoutCounter === 0) {
+	if (ksfGraphTools.timeoutCounter === 0)
+	{
 		ksfCanvas.setLoading(false);
 		ksfGraphTools.showFeedback(FEEDBACK_DANGER, "Timeout", "Graph loading failed, try refreshing the page")
-	} else {
+	}
+	else
+	{
 		$("#graph-img").attr("src", $("#graph-img").attr("src"));
 	}
 }
