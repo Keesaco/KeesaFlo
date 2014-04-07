@@ -194,15 +194,17 @@ def file_list_edit(request):
 	authed_user = auth.get_current_user()
 	if authed_user is None:
 		return HttpResponse(json.dumps({'error' : 'Unauthenticated request'}), content_type="application/json")
-
+	
+	user_key = ps.get_user_key_by_id(authed_user.user_id())
+	
 	try:
 		actions = json.loads(request.raw_post_data)
 	except ValueError:
 		return HttpResponse(json.dumps({'error' : 'invalid request payload'}), content_type="application/json")
-
+	
 	if not isinstance(actions, list):
 		return HttpResponse(json.dumps({'error' : 'Payload is not a list'}), content_type="application/json")
-
+	
 	res = []
 	for a in actions:
 		
@@ -212,12 +214,17 @@ def file_list_edit(request):
 		else:
 			filename = a['filename']
 		
+		if 'action' not in a:
+			continue
+		else:
+			action = a['action']
+		
 		res_fragment = {
 			'filename' 	: a['filename'],
 			'action'	: a['action']
 		}
 		
-		if a['action'] == 'delete':
+		if action == 'delete':
 			file_entry = ps.get_file_by_name('/fc-raw-data/' + filename)
 			if file_entry is not None:
 				ps.remove_file_by_key(file_entry.key)
@@ -226,14 +233,14 @@ def file_list_edit(request):
 			ds.delete('/fc-info-data/' + filename + 'info.txt')
 			ds.delete('/fc-info-data/' + filename + '.html')
 			ds.delete('/fc-vis-data/' + filename + '.png')
-				
+			
 			res_fragment.update( { 'success' : True } )
-
-			#Reinstate this when CE PAL is available	
-			#else:
-				#res_fragment.update( { 'success' : False, 'error' : 'File does not exist.' } )
-	
-		elif a['action'] == 'rename':
+		
+		#Reinstate this when CE PAL is available
+		#else:
+		#res_fragment.update( { 'success' : False, 'error' : 'File does not exist.' } )
+		
+		elif action == 'rename':
 			if 'newname' not in a:
 				res_fragment.update( { 'success' : false, 'error' : 'New name not specified' } )
 			else:
@@ -246,14 +253,31 @@ def file_list_edit(request):
 						res_fragment.update( { 'success' : True } )
 					else:
 						res_fragment.update( { 'success' : False, 'error' : 'Could not rename file' } )
+		
+		elif action == 'star' or action == 'unstar':
+			file_entry = ps.get_file_by_name('/fc-raw-data/' + filename)
+			if file_entry is None:
+				res_fragment.update( { 'success' : False, 'error' : 'File does not exist.' } )
+			else:
+				fp_entry = ps.get_user_file_permissions(file_entry.key, user_key)
+				if fp_entry is None:
+					res_fragment.update( { 'success' : False, 'error' : 'Permissions entry not found' } )
+				else:
+					fp_entry.starred = (action == 'star')
+					if ps.modify_file_permissions_by_key(fp_entry.key, fp_entry):
+						res_fragment.update( { 'success' : True } )
+					else:
+						res_fragment.update( { 'success' : False, 'error' : 'Could not update file' } )
+		
 		else:
 			res_fragment.update( { 'success' : False, 'error' : 'Action not recognised' } )
-						
-		res.append(res_fragment)
 		
+		res.append(res_fragment)
+	
 	
 	
 	return HttpResponse(json.dumps(res), content_type="application/json")
+
 
 ###########################################################################
 ## \brief Is called when the pagelet containing the main content of the page is requested.

@@ -230,6 +230,22 @@ function ksfFilebar_doneEditName(fileDiv, file, newHref, update, oldText)
 }
 ksfFilebar.doneEditName = ksfFilebar_doneEditName;
 
+/**
+ * Sends a request to star or unstar a given file
+ * \param File file - file object for file to modify (used for .filename)
+ * \param Bool star - If true the file is starred, if false the file is unstarred
+ * \author jmccrea@keesaco.com of Keesaco
+ * \return None
+ */
+function ksfFilebar_starFile(file, star)
+{
+	actionObj = [{
+		'action' 		: star ? 'star' : 'unstar',
+		'filename'		: file.filename
+	}];
+	ksfReq.postJSON(ACTION_URI, actionObj);
+}
+ksfFilebar.starFile = ksfFilebar_starFile;
 
 /**
  * Sends a request to rename a given file
