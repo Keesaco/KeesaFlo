@@ -24,7 +24,6 @@ function ksfFilebar()
  * updates the filebar given a file list object
  * \author jmccrea@keesaco.com of Keesaco
  * \return None
- * \todo remove checking for permissions entries once CE PAL has been implemented
  * \todo refactor
  */
 function ksfFilebar_update(data)
@@ -68,14 +67,10 @@ function ksfFilebar_update(data)
 						editDiv.style.display = 'none';
 						editDiv.className = 'dropdown-file-options';
 								
-						//TODO: remove this when permissions are set for all files
-						if (e.permissions == 'yes')
-						{
-							//star
-							editDiv.appendChild( ksfFilebar.newEditButton(
-								'span', 'glyphicon ' + (e.starred ? 'glyphicon-star' : 'glyphicon-star-empty'),
-								null ));
-						}
+						//star
+						starSpan = ksfFilebar.newEditButton('span', 'glyphicon ' + (e.starred ? 'glyphicon-star' : 'glyphicon-star-empty'), null);
+						$(starSpan).click( function () { ksfFilebar.starFile(e, starSpan); } );
+						editDiv.appendChild(starSpan);
 
 						//button to drop down/hide file edit buttons
 						newElem.appendChild( ksfFilebar.newEditButton(
@@ -232,18 +227,29 @@ ksfFilebar.doneEditName = ksfFilebar_doneEditName;
 
 /**
  * Sends a request to star or unstar a given file
- * \param File file - file object for file to modify (used for .filename)
+ * \param File file - file object for file to modify (used for .filename, .starred)
  * \param Bool star - If true the file is starred, if false the file is unstarred
  * \author jmccrea@keesaco.com of Keesaco
  * \return None
  */
-function ksfFilebar_starFile(file, star)
+function ksfFilebar_starFile(file, starSpan)
 {
 	actionObj = [{
-		'action' 		: star ? 'star' : 'unstar',
+		'action' 		: file.starred ? 'unstar' : 'star',
 		'filename'		: file.filename
 	}];
-	ksfReq.postJSON(ACTION_URI, actionObj);
+	ksfReq.postJSON(ACTION_URI, actionObj,
+		function (reponse)
+		{
+			if (reponse[0].success)
+			{
+				file.starred = (!file.starred);
+				if (starSpan)
+				{
+					starSpan.className = 'glyphicon ' + (file.starred ? 'glyphicon-star' : 'glyphicon-star-empty');
+				}
+			}
+		} );
 }
 ksfFilebar.starFile = ksfFilebar_starFile;
 
