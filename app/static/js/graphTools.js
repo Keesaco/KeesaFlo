@@ -32,7 +32,7 @@ GRAPH_POLL_INTERVAL = 1000;
 /**
  *	Number of times to attempt to get a new graph before giving up and requiring a manual refresh
  */
-GRAPH_LOAD_MAX_ATTEMPTS = 10;
+GRAPH_LOAD_MAX_ATTEMPTS = 20;
 
 ksfGraphTools.timeoutCounter = GRAPH_LOAD_MAX_ATTEMPTS;
 
@@ -325,7 +325,7 @@ ksfGraphTools.sendGatingRequest = ksfGraphTools_sendGatingRequest;
  */
 function ksfGraphTools_setGraphUrl(url)
 {
-	// we let 10 sec for the graph to appear
+	// we let 20 sec for the graph to appear
 	ksfGraphTools.timeoutCounter = GRAPH_LOAD_MAX_ATTEMPTS;
 	$("#graph-img").off('error');
 	$("#graph-img").on('error', function()
