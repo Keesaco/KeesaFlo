@@ -24,7 +24,8 @@ function ksfFilebar()
  * updates the filebar given a file list object
  * \author jmccrea@keesaco.com of Keesaco
  * \return None
- * \todo
+ * \todo remove checking for permissions entries once CE PAL has been implemented
+ * \todo refactor
  */
 function ksfFilebar_update(data)
 {
@@ -58,7 +59,6 @@ function ksfFilebar_update(data)
 								
 						var newElem = document.createElement('a');
 						newElem.className = 'list-group-item file-list-item';
-						newElem.href = '#!/preview/' + e.filename;
 						if (e.colour)
 						{
 							newElem.style.borderRight='10px solid #'+e.colour;
@@ -66,6 +66,7 @@ function ksfFilebar_update(data)
 							   
 						var editDiv = document.createElement('div');
 						editDiv.style.display = 'none';
+						editDiv.className = 'dropdown-file-options';
 								
 						//TODO: remove this when permissions are set for all files
 						if (e.permissions == 'yes')
@@ -74,13 +75,16 @@ function ksfFilebar_update(data)
 							starSpan.className = 'glyphicon ' + (e.starred ? 'glyphicon-star' : 'glyphicon-star-empty');
 							editDiv.appendChild(starSpan);
 						}
-						
+
 						var editDrop = document.createElement('span');
 						$(editDrop).click( function() { editDiv.style.display = editDiv.style.display == 'none' ? 'block' : 'none'; } );
 						editDrop.className = 'glyphicon glyphicon-cog';
 						newElem.appendChild(editDrop);
 							   
 						var nameSpan = document.createElement('span');
+						nameSpan = document.createElement('a');
+						nameSpan.className = 'filenameedit file-list-link'
+						nameSpan.href = '#!/preview/' + e.filename;
 						nameSpan.innerHTML = ' ' + (e.friendlyName ? e.friendlyName : e.filename);
 						newElem.appendChild(nameSpan);
 								
@@ -89,8 +93,25 @@ function ksfFilebar_update(data)
 						$(delSpan).click(function () { ksfFilebar.deleteFile(e); });
 						editDiv.appendChild(delSpan);
 							   
+						var confirmSpan = document.createElement('span');
+						confirmSpan.className = 'nameedit-confirm';
+						confirmSpan.style.display = 'none';
+						var confirmTick = document.createElement('span');
+						confirmTick.className = 'glyphicon glyphicon-ok nameedit-tick';
+						confirmSpan.appendChild(confirmTick);
+						var confirmCross = document.createElement('span');
+						confirmCross.className = 'glyphicon glyphicon-remove nameedit-cross';
+						confirmSpan.appendChild(confirmCross);
+			
 						newElem.appendChild(editDiv);
 							   
+						renameSpan = document.createElement('span');
+						renameSpan.className = 'glyphicon glyphicon-pencil';
+						$(renameSpan).click(function () { ksfFilebar.editName(newElem, e); } );
+						editDiv.appendChild(renameSpan);
+							   
+						editDiv.appendChild(confirmSpan);
+							
 						tdiv.append(newElem);
 					} );
 			}
@@ -99,13 +120,63 @@ function ksfFilebar_update(data)
 }
 ksfFilebar.update = ksfFilebar_update;
 
+/**
+ * Makes a filename editable as a single line
+ * \param File file - file object for file to rename (used for .filename)
+ * \param String newName - the new name for the given file
+ * \author jmccrea@keesaco.com of Keesaco
+ * \note If the request is successful, a redraw of the file selector is forced
+ * \return None
+ */
+function ksfFilebar_editName(fileDiv, file)
+{
+	var link = $(fileDiv).children('.filenameedit').first()
+	var prevHref = link.href;
+	link.href = ''
+	var oldText = link.text();
+	link.className = 'filenameedit';
+	
+	var confirmSpan = $(fileDiv).children('.dropdown-file-options').children('.nameedit-confirm');
+	confirmSpan.first().css('display', ' inline');
+	confirmSpan.children('.nameedit-tick').click( function() { ksfFilebar.doneEditName(fileDiv, file, prevHref, true); } );
+	confirmSpan.children('.nameedit-cross').click( function() { ksfFilebar.doneEditName(fileDiv, file, prevHref, false, oldText); } );
+	
+	link.attr('contenteditable', 'true');
+	link.trigger('focus');
+	
+	
+	
+}
+ksfFilebar.editName = ksfFilebar_editName;
+
+function ksfFilebar_doneEditName(fileDiv, file, newHref, update, oldText)
+{
+	var link = $(fileDiv).children('.filenameedit').first()
+	link.href = newHref
+	link.attr('contenteditable', 'false');
+	link.className = 'filenameedit file-list-link';
+	
+	var confirmSpan = $(fileDiv).children('.dropdown-file-options').children('.nameedit-confirm');
+	confirmSpan.first().css('display', 'none');
+	
+	if (!update)
+	{
+		link.text(oldText);
+	}
+	else
+	{
+		ksfFilebar.renameFile(file, link.text());
+	}
+
+}
+ksfFilebar.doneEditName = ksfFilebar_doneEditName;
+
 
 /**
  * Sends a request to rename a given file
  * \param File file - file object for file to rename (used for .filename)
  * \param String newName - the new name for the given file
  * \author jmccrea@keesaco.com of Keesaco
- * \note If the request is successful, a redraw of the file selector is forced
  * \return None
  */
 function ksfFilebar_renameFile(file, newName)
@@ -115,12 +186,7 @@ function ksfFilebar_renameFile(file, newName)
 		'filename'		: file.filename,
 		'newname'		: newName
 	}];
-	ksfReq.postJSON(ACTION_URI, actionObj,
-		function (response)
-		{
-			ksfViews.makeFileList();
-		}
-	);
+	ksfReq.postJSON(ACTION_URI, actionObj);
 }
 ksfFilebar.renameFile = ksfFilebar_renameFile;
 
