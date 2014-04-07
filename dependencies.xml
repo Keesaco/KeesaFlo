@@ -14,6 +14,13 @@
 				<destination rename="1">app/static/js/jquery.js</destination>
 			</move>
 		</package>
+		<package name="jQuery-Color">
+			<uri>http://code.jquery.com/color/jquery.color-2.1.2.min.js</uri>
+			<unzip>0</unzip>
+			<move>
+				<destination rename="1">app/static/js/jquery.color.js</destination>
+			</move>
+		</package>
 		<package name="bootstrap">
 			<uri>https://github.com/twbs/bootstrap/releases/download/v3.1.1/bootstrap-3.1.1-dist.zip</uri>
 			<unzip>1</unzip>
@@ -70,11 +77,11 @@
 			</move>
 		</package>
 		<package name="djangoappengine">
-			<uri>https://github.com/django-nonrel/djangoappengine/archive/master.zip</uri>
+			<uri>https://github.com/django-nonrel/djangoappengine/archive/88cd09754544bbd71727fd533ab4640e96b1b584.zip</uri>
 			<unzip>1</unzip>
 			<move>
 				<mkdir>app/djangoappengine</mkdir>
-				<innersource dir="1">djangoappengine-master/djangoappengine</innersource>
+				<innersource dir="1">djangoappengine-88cd09754544bbd71727fd533ab4640e96b1b584/djangoappengine</innersource>
 				<destination>app/djangoappengine</destination>
 			</move>
 		</package>
@@ -114,5 +121,21 @@
 				<destination>app/static/js/bootstrap-tour.min.js</destination>
 			</move>
 		</package>
+		<package name="qtip-js">
+			<uri>http://cdn.jsdelivr.net/qtip2/2.2.0/jquery.qtip.min.js</uri>
+			<unzip>0</unzip>
+			<move>
+				<destination rename="1">app/static/js/qtip.min.js</destination>
+			</move>
+		</package>
+		<package name="qtip-css">
+			<uri>http://cdn.jsdelivr.net/qtip2/2.2.0/jquery.qtip.min.css</uri>
+			<unzip>0</unzip>
+			<move>
+				<destination rename="1">app/static/css/qtip.min.css</destination>
+			</move>
+		</package>
 	</packages>
 </dconfig>
+
+

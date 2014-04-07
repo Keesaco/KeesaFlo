@@ -10,14 +10,6 @@
  */
 
 
-
-$(document).ready(
-function()
-{
-	ksfViews.loadFromLocation(true)
-});
-
-
 /**
  *\fn anonymous_window_onhashchange_views
  *\todo This has limited browser compatibility, if this is an issue support for onhashchange could be checked and an alternative timer arrangement provided for older browsers.
@@ -26,7 +18,6 @@ window.onhashchange = function ()
 {
 	ksfViews.loadFromLocation();
 }
-
 
 
 /**
@@ -39,8 +30,8 @@ function ksfViews()
 }
 
 CONTENT_AREA = '#appmain';
-FILE_SELECTOR = '#filelist';
-TOOL_SELECTOR = '#toolselector';
+FILES_AREA = '#filelist';
+TOOLS_AREA = '#toolselector';
 
 ksfViews.currentView = null;
 
@@ -146,9 +137,8 @@ ksfViews.refreshAll = ksfViews_refreshAll;
  */
 function ksfViews_setupDefault()
 {
-	ksfViews.showFilebar(true);
-	ksfViews.showToolSelector(true);
-	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/left/toolselect/', TOOL_SELECTOR, ksfTools.addToolsListener );
+	ksfLayout.filesButtonShow();
+	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/left/toolselect/', TOOLS_AREA, ksfTools.addToolsListener );
 }
 ksfViews.setupDefault = ksfViews_setupDefault;
 
@@ -160,53 +150,10 @@ ksfViews.setupDefault = ksfViews_setupDefault;
  */
 function ksfViews_setupSimple()
 {
-	ksfViews.showFilebar(false);
-	ksfViews.showToolSelector(false);
-	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/left/pagenav/', TOOL_SELECTOR, null );
+	ksfLayout.filesButtonHide();
+	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/left/pagenav/', TOOLS_AREA, null );
 }
 ksfViews.setupSimple = ksfViews_setupSimple;
-
-
-/**
- * shows or hides the file selector bar
- * \tparam Boolean show - if show evaluates to true then the filebar is shown, otherwise it is hidden
- * \return None
- * \author jmccrea@keesaco.com of Keesaco
- */
-function ksfViewS_showFilebar(show)
-{
-	if ( show )
-	{
-		$(".togglefiles").show();
-	}
-	else
-	{
-		$(".togglefiles").hide();
-		var fl = $("#sidebar");
-		fl.css( { marginRight: -fl.outerWidth() } );
-	}
-}
-ksfViews.showFilebar = ksfViewS_showFilebar;
-
-
-/**
- * shows or hides the tool selector
- * \tparam Boolean show - if show evaluates to true then the toolbar is shown, otherwise it is hidden
- * \return None
- * \author jmccrea@keesaco.com of Keesaco
- */
-function ksfViews_showToolSelector(show)
-{
-	if ( show )
-	{
-		$("toolselector-header").show();
-	}
-	else
-	{
-		$("toolselector-header").hide();
-	}
-}
-ksfViews.showToolSelector = ksfViews_showToolSelector;
 
 
 /**
@@ -217,22 +164,60 @@ ksfViews.showToolSelector = ksfViews_showToolSelector;
  */
 function ksfViews_loadPreview(filename)
 {
-	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/main/file' + encodeURIComponent('=' + filename), CONTENT_AREA, ksfCanvas.addListener );
-	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/right/file_list/', FILE_SELECTOR, null);
+	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/main/file' + encodeURIComponent('=' + filename), CONTENT_AREA, ksfLayout.filePreviewStart);
+	ksfViews.makeFileList('/app/data/json/files/', FILES_AREA);
 }
 ksfViews.loadPreview = ksfViews_loadPreview;
 
+/**
+ * Uses the JSON files source to construct the file selector
+ * \return None
+ * \author jmccrea@keesaco.com of Keesaco
+ */
+function ksfViews_makeFileList(datasource, target)
+{
+	ksfData.fetchJSON(datasource,
+		function(data)
+		{
+			//destroy old file previews
+			$('.file-preview-tip').remove();
+			var tdiv = $(target);
+			tdiv.empty();
+			data.forEach(
+				function (d)
+				{
+					if (d.type == 'html')
+					{
+						tdiv.append(d.data)
+					}
+					else if (d.type = 'files')
+					{
+						d.data.forEach(
+							function(e)
+							{
+								var newElem = document.createElement('a');
+								newElem.className = 'list-group-item file-list-item';
+								newElem.href = '#!/preview/' + e.filename;
+								newElem.innerHTML = e.filename
+								tdiv.append(newElem);
+							} );
+					}
+				} );
+			
+		} );
+}
+ksfViews.makeFileList = ksfViews_makeFileList;
 
 /**
  * Downloads and displays the panels for the FAQ page
  * \return None
  * \author jmccrea@keesaco.com of Keesaco
  */
-function ksfViewS_loadFAQ()
+function ksfViews_loadFAQ()
 {
 	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/main/faq/', CONTENT_AREA, null );
 }
-ksfViews.loadFAQ = ksfViewS_loadFAQ;
+ksfViews.loadFAQ = ksfViews_loadFAQ;
 
 
 /**

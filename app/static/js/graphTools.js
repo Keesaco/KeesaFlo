@@ -1,20 +1,21 @@
-/*
+/**
  * \file app/static/js/graphTools.js
  * \brief JavaScript library to manage graph related tools
  * \author mrudelle@keesaco.com of Keesaco
  */
 
- /* \package app.static.js.graphTools
+/**
+ * \package app.static.js.graphTools
  * \brief Provides methods for triggering tool event
  */
 
-/*
-* \fn ksfGraphTools()
-* \brief ksfTools constructor used for namespace
-* \author mrudelle@keesaco.com of Keesaco
-* \note This constructor currently (intentionally) does not have any effect
-*/
-function ksfGraphTools() {
+/**
+ * ksfTools constructor used for namespace
+ * \author mrudelle@keesaco.com of Keesaco
+ * \note This constructor currently (intentionally) does not have any effect
+ */
+function ksfGraphTools()
+{
 }
 
 FEEDBACK_SUCCESS = "alert-success";
@@ -42,28 +43,35 @@ ksfGraphTools.RectangularGating = {
 
 	ELEMENT_ID : "#tool_rectangular_gating",
 
-	onGraphClick : function(event) {
+	onGraphClick : function(event)
+	{
 		var posX = event.pageX - $(GRAPH_ID).offset().left,
 		posY = event.pageY - $(GRAPH_ID).offset().top;
 
-		if ((this.startx === null) || (this.starty === null)) {
+		if ((this.startx === null) || (this.starty === null))
+		{
 			this.startx = posX;
 			this.starty = posY;
 			ksfCanvas.toolText("You just started with the rectangle tool " + (posX) + ' , ' + (posY));
-		} else if ((this.endx === null) || (this.endy === null)){
+		}
+		else if ((this.endx === null) || (this.endy === null))
+		{
 			this.endx = posX;
 			this.endy = posY;
 			ksfCanvas.drawBox(this.startx, this.starty, this.endx-this.startx, this.endy-this.starty, 1);
 			ksfCanvas.toolText("You just finished with the rectangle tool [" + "(" + this.startx + "," + this.starty + ")"  + ' , ' + "(" + this.endx + "," + this.endy + ")" + ']');
 			ksfCanvas.enableBtn(REQUEST_GATING_BTN, true);
-		} else {
+		}
+		else
+		{
 			this.resetTool();
 			ksfCanvas.clear();
 			ksfCanvas.toolText("The rectangle has been reset.");
 		}
 	},
 
-	onGraphMouseMove : function(event) {
+	onGraphMouseMove : function(event)
+	{
 		var posX = event.pageX - $(GRAPH_ID).offset().left,
 		posY = event.pageY - $(GRAPH_ID).offset().top;
 		if (((this.endx === null) || (this.endy === null)) && ((this.startx !== null) || (this.starty !== null))) {
@@ -71,7 +79,8 @@ ksfGraphTools.RectangularGating = {
 		}
 	},
 
-	resetTool : function() {
+	resetTool : function()
+	{
 		this.starty = null;
 		this.startx = null;
 		this.endy = null;
@@ -80,7 +89,8 @@ ksfGraphTools.RectangularGating = {
 		ksfCanvas.enableBtn(REQUEST_GATING_BTN, false);
 	},
 	
-	requestGating : function() {
+	requestGating : function()
+	{
 		ksfGraphTools.sendGatingRequest('gating/rectangular/' + this.startx + "," + this.starty + "," + this.endx + "," + this.endy);
 	}
 }
@@ -96,8 +106,10 @@ ksfGraphTools.PolygonGating = {
 	ELEMENT_ID : "#tool_polygon_gating",
 	START_RADIUS : 10,
 
-	onGraphClick : function(event) {
-		if (this.SelectionDone) {
+	onGraphClick : function(event)
+	{
+		if (this.SelectionDone)
+		{
 			return;
 		}
 		
@@ -107,12 +119,15 @@ ksfGraphTools.PolygonGating = {
 		posY = event.pageY - $(GRAPH_ID).offset().top;
 
 		// Triggered when the path is closed
-		if (this.distanceToStart(posX, posY) < this.START_RADIUS){
+		if (this.distanceToStart(posX, posY) < this.START_RADIUS)
+		{
 			ksfCanvas.drawPolygon(this.xList, this.yList, this.xList[0], this.yList[0], this.START_RADIUS);
 			this.SelectionDone = true;
 			ksfCanvas.toolText("Selection is finished: "+ (this.xList.length) + " points");
 			ksfCanvas.enableBtn(REQUEST_GATING_BTN, true);
-		} else {
+		}
+		else
+		{
 			this.xList.push(posX);
 			this.yList.push(posY);
 			ksfCanvas.drawPolygon(this.xList, this.yList, null, null, this.START_RADIUS);
@@ -120,7 +135,8 @@ ksfGraphTools.PolygonGating = {
 		}
 	},
 
-	resetTool : function() {
+	resetTool : function()
+	{
 		this.xList = [];
 		this.yList = [];
 		this.SelectionDone = false;
@@ -128,25 +144,32 @@ ksfGraphTools.PolygonGating = {
 		ksfCanvas.enableBtn(REQUEST_GATING_BTN, false);
 	},
 
-	onGraphMouseMove : function(event) {
+	onGraphMouseMove : function(event)
+	{
 		ksfCanvas.setCursor('crosshair');
-		if (this.SelectionDone) {
+		if (this.SelectionDone)
+		{
 			ksfCanvas.drawPolygon(this.xList, this.yList, this.xList[0], this.yList[0], this.START_RADIUS);
 			ksfCanvas.toolText("selection is finished: "+ (this.xList.length) + "points");
-		} else {
+		}
+		else
+		{
 			var posX = event.pageX - $(GRAPH_ID).offset().left,
 			posY = event.pageY - $(GRAPH_ID).offset().top;
 			ksfCanvas.drawPolygon(this.xList, this.yList, posX, posY, this.START_RADIUS);
-			if (this.distanceToStart(posX, posY) < this.START_RADIUS){
+			if (this.distanceToStart(posX, posY) < this.START_RADIUS)
+			{
 				ksfCanvas.setCursor('pointer');
 			}
 		}
 	},
 
 	//return the distance to the starting point
-	distanceToStart : function(posx, posy){
+	distanceToStart : function(posx, posy)
+	{
 		var x, y;
-		if (this.xList.length >= 1) {
+		if (this.xList.length >= 1)
+		{
 			x = this.xList[0]-posx;
 			y = this.yList[0]-posy;
 			return Math.sqrt(Math.pow(x,2)+Math.pow(y,2));
@@ -154,7 +177,8 @@ ksfGraphTools.PolygonGating = {
 		return Math.MAX;
 	},
 	
-	requestGating : function() {
+	requestGating : function()
+	{
 		var URL = "gating/polygon/" + this.xList.concat(this.yList).join(",");
 		ksfGraphTools.sendGatingRequest(URL);
 	}
@@ -173,45 +197,59 @@ ksfGraphTools.OvalGating = {
 
 	ELEMENT_ID : "#tool_oval_gating",
 
-	onGraphClick : function(event) {
+	onGraphClick : function(event)
+	{
 		var posX = event.pageX - $(GRAPH_ID).offset().left,
 		posY = event.pageY - $(GRAPH_ID).offset().top;
 		
-		if (this.centerx === null || this.centery === null) {
+		if (this.centerx === null || this.centery === null)
+		{
 			this.centerx = posX;
 			this.centery = posY;
 			ksfCanvas.toolText("Select the smaller radius");
-		} else if (this.r1 === null) {
+		}
+		else if (this.r1 === null)
+		{
 			this.r1 = Math.sqrt(Math.pow(this.centerx-posX,2)+Math.pow(this.centery-posY,2));
 			ksfCanvas.toolText("Select the oval\'s last point")
-		} else if (this.pointx === null || this.pointy === null) {
+		}
+		else if (this.pointx === null || this.pointy === null)
+		{
 			this.pointx = posX;
 			this.pointy = posY;
 			ksfCanvas.drawOval(this.centerx, this.centery, this.r1, this.pointx, this.pointy);
 			ksfCanvas.toolText("Oval correctly selected");
 			ksfCanvas.enableBtn(REQUEST_GATING_BTN, true);
-		} else {
+		}
+		else
+		{
 			this.resetTool();
 			ksfCanvas.toolText("Select oval\'s center");
 		}
 		
 	},
 	
-	onGraphMouseMove : function(event) {
+	onGraphMouseMove : function(event)
+	{
 		var posX = event.pageX - $(GRAPH_ID).offset().left,
 		posY = event.pageY - $(GRAPH_ID).offset().top;
 
-		if (this.centerx !== null || this.centery !== null) {
-			if (this.r1 === null) {
+		if (this.centerx !== null || this.centery !== null)
+		{
+			if (this.r1 === null)
+			{
 				var r = Math.sqrt(Math.pow(this.centerx-posX,2)+Math.pow(this.centery-posY,2));
 				ksfCanvas.drawOval(this.centerx, this.centery, r, null, null);
-			} else if (this.pointx === null || this.pointy === null) {
+			}
+			else if (this.pointx === null || this.pointy === null)
+			{
 				ksfCanvas.drawOval(this.centerx, this.centery, this.r1, posX, posY);
 			} 
 		}
 	},
 
-	resetTool : function() {
+	resetTool : function()
+	{
 		this.centerx = null; 
 		this.centery = null; 
 		this.r1 = null; 
@@ -221,7 +259,8 @@ ksfGraphTools.OvalGating = {
 		ksfCanvas.enableBtn(REQUEST_GATING_BTN, false);
 	},
 	
-	requestGating : function() {
+	requestGating : function()
+	{
 		var tx = this.centerx-this.pointx,
 			ty = this.centery-this.pointy;
 		var angle = ksfGraphTools.mesureAngle(tx, ty);
@@ -231,92 +270,105 @@ ksfGraphTools.OvalGating = {
 	}
 }
 
-/*
-* \fn ksfGraphTools.sendGatingRequest()
-* \brief Perform a gating request and update the view correspondingly
-* \param gatingURL - [String] url of the gating command
-* \author mrudelle@keesaco.com of Keesaco
-* \note This might be moved to views.js in the future
-*/
-ksfGraphTools.sendGatingRequest = function(gatingURL) {
+/**
+ * Perform a gating request and update the view correspondingly
+ * \param gatingURL - [String] url of the gating command
+ * \author mrudelle@keesaco.com of Keesaco
+ * \note This might be moved to views.js in the future
+ */
+function ksfGraphTools_sendGatingRequest(gatingURL)
+{
 	// allows to fetch the name correctly. In the future (final release) this should be replace by a json file fetched from the server containing all the file's data
 	
 	$("#filesize").remove();
-	var filename = $("#filename").text();
+	var filename = $("#filename").text().trim();
 	
 	ksfTools.CurrentTool.resetTool();
 	ksfCanvas.toolText("Loading graph...");
 
 	ksfReq.fetch(   gatingURL + "," + filename, 
 					function(response)
-						{
-							ksfGraphTools.showFeedback(
-								response.status === "success" ? FEEDBACK_SUCCESS :
-								response.status === "fail" ? FEEDBACK_DANGER: FEEDBACK_INFO,
-								response.status, response.message);
-							ksfCanvas.toolText("");
-							$("#filename").text(filename);
-							ksfGraphTools.setGraphUrl(response.imgUrl);
-						},
+					{
+						ksfGraphTools.showFeedback(
+							response.status === "success" ? FEEDBACK_SUCCESS :
+							response.status === "fail" ? FEEDBACK_DANGER: FEEDBACK_INFO,
+							response.status, response.message);
+						ksfCanvas.toolText("");
+						$("#filename").text(filename);
+						ksfGraphTools.setGraphUrl(response.imgUrl);
+					},
 					function()
-						{
-							 ksfGraphTools.showFeedback(FEEDBACK_DANGER, "fail", "The server failed to respond to the gating request");
-						} );
+					{
+						ksfGraphTools.showFeedback(FEEDBACK_DANGER, "fail", "The server failed to respond to the gating request");
+					} );
 }
+ksfGraphTools.sendGatingRequest = ksfGraphTools_sendGatingRequest;
 
-/*
-* \fn ksfGraphTools.setGraphUrl()
-* \brief Change properly the graph image
-* \param url - [String] url of the new graph
-* \author mrudelle@keesaco.com of Keesaco
-* \note If the link throw an error it will enter a loop to reload the image
-*/
-ksfGraphTools.setGraphUrl = function(url) {
+/**
+ * Change properly the graph image
+ * \param url - [String] url of the new graph
+ * \author mrudelle@keesaco.com of Keesaco
+ * \note If the link throw an error it will enter a loop to reload the image
+ */
+function ksfGraphTools_setGraphUrl(url)
+{
+	
 	$("#graph-img").off('error');
 	$("#graph-img").on('error', function()
 		{
+			ksfCanvas.setLoading(true);
 			setTimeout(ksfGraphTools.reloadImage, 1000);
-		});
+		} );
 	$("#graph-img").attr("src", url);
 }
+ksfGraphTools.setGraphUrl = ksfGraphTools_setGraphUrl;
 
-/*
-* \fn ksfGraphTools.reloadImage()
-* \brief Allows one to reload properly the image of the graph
-* \author mrudelle@keesaco.com of Keesaco
-*/
-ksfGraphTools.reloadImage = function() {
+/**
+ * Allows one to reload properly the image of the graph
+ * \author mrudelle@keesaco.com of Keesaco
+ */
+function ksfGraphTools_reloadImage()
+{
+	ksfCanvas.setLoading(false);
 	$("#graph-img").attr("src", $("#graph-img").attr("src"));
 }
+ksfGraphTools.reloadImage = ksfGraphTools_reloadImage;
 
-/*
-* \fn ksfGraphTools.mesureAngle()
-* \brief Calculate the angle to the horizontal of a vector
-* \param tx - [int] x coordinate of the vector
-* \param ty - [int] y coordinate of the vector
-* \author mrudelle@keesaco.com of Keesaco
-*/
-ksfGraphTools.mesureAngle = function(tx, ty) {
+/**
+ * Calculate the angle to the horizontal of a vector
+ * \param tx - [int] x coordinate of the vector
+ * \param ty - [int] y coordinate of the vector
+ * \author mrudelle@keesaco.com of Keesaco
+ */
+function ksfGraphTools_mesureAngle(tx, ty)
+{
 	var angle;
-	if (tx === 0) {
+	if (tx === 0)
+	{
 		angle = ty > 0 ? Math.PI/2 : -Math.PI/2;
-	} else if (ty === 0) {
+	}
+	else if (ty === 0)
+	{
 		angle = tx > 0 ? 0 : Math.PI;
-	} else {
+	}
+	else
+	{
 		angle = tx > 0 ? Math.atan(ty/tx) : Math.atan(ty/tx)-Math.PI;
 	}
+	
 	return angle
 }
+ksfGraphTools.mesureAngle = ksfGraphTools_mesureAngle;
 
-/*
-* \fn ksfGraphTools.showFeedback()
-* \brief Popup a feedback on the app panel
-* \param type - [String] type of the alert: FEEDBACK_[INFO|WARNING|DANGER|SUCCESS]
-* \param title - [String] title of the message
-* \param message - [String] message of the alert
-* \author mrudelle@keesaco.com of Keesaco
-*/
-ksfGraphTools.showFeedback = function(type, title, message) {
+/**
+ * Popup a feedback on the app panel
+ * \param type - [String] type of the alert: FEEDBACK_[INFO|WARNING|DANGER|SUCCESS]
+ * \param title - [String] title of the message
+ * \param message - [String] message of the alert
+ * \author mrudelle@keesaco.com of Keesaco
+ */
+function ksfGraphTools_showFeedback(type, title, message)
+{
 	$(".alert").remove();
 	var alert = "<div class=\"alert "+type+" alert-dismissable\"> " +
 	"<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button> "+ 
@@ -324,3 +376,4 @@ ksfGraphTools.showFeedback = function(type, title, message) {
 	"</div>";
 	$(CONTENT_AREA).prepend(alert);
 }
+ksfGraphTools.showFeedback = ksfGraphTools_showFeedback;

@@ -820,25 +820,35 @@ RECURSIVE              = YES
 # run.
 
 EXCLUDE                = AppBuild.py \
-                         app/apiclient/ \
-                         app/autoload/ \
-                         app/cloudstorage/ \
-                         app/dbindexer/ \
-                         app/djangoappengine/ \
-                         app/djangotoolbox/ \
-                         app/google-api-python-client-gae-1.2.zip \
-                         app/googleAPI/ \
-                         app/httplib2/ \
-                         app/oauth2client/ \
-                         app/static/css/bootstrap.css \
-                         app/static/js/bootstrap.js \
-                         app/static/js/jquery-2.1.0.js \
-                         app/uritemplate/ \
-                         tmp-packages/ \
-                         app/static/fonts/ \
-                         app/static/js/jquery.js \
-                         app/Analysis/ComputeEngine/Assets/private_key.pem \
-						 app/uneedtest.py
+						 app/apiclient/ \
+						 app/autoload/ \
+						 app/cloudstorage/ \
+						 app/dbindexer/ \
+						 app/djangoappengine/ \
+						 app/djangotoolbox/ \
+						 app/google-api-python-client-gae-1.2.zip \
+						 app/googleAPI/ \
+						 app/httplib2/ \
+						 app/oauth2client/ \
+						 app/static/css/bootstrap.css \
+						 app/static/js/bootstrap.js \
+						 app/uritemplate/ \
+						 tmp-packages/ \
+						 app/static/fonts/ \
+						 app/static/js/jquery.js \
+						 app/static/js/jquery.color.js \
+						 app/Analysis/ComputeEngine/Assets/private_key.pem \
+						 js2doxy.pl \
+						 app/uneedtest.py \
+						 app/static/css/bootstrap-tour.min.css \
+						 app/static/js/bootstrap-tour.min.js \
+						 compute_engine/apiclient/ \
+						 compute_engine/google-api-python-client-gae-1.2.zip \
+						 compute_engine/httplib2/ \
+						 compute_engine/oauth2client/ \
+						 compute_engine/uritemplate/ \
+						 app/static/css/qtip.min.css \
+						 app/static/js/qtip.min.js
 
 # The EXCLUDE_SYMLINKS tag can be used to select whether or not files or
 # directories that are symbolic links (a Unix file system feature) are excluded

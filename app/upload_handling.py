@@ -46,7 +46,7 @@ class fcsUploadHandler(FileUploadHandler):
         ## Setup file handle.
         self.file_handle = ds.add_file(self.path, 'raw_data', 'w')
         ## Setup uploaded file.
-        self.upload = fcsUploadedFile(self.path, file_name, content_type, charset)
+        self.upload = fcsUploadedFile(self.path, self.name, content_type, charset)
         return None
 
     ###########################################################################
