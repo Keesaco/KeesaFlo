@@ -306,7 +306,7 @@ def get_file_by_owner_key(owner_key):
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
 ###########################################################################
-def add_file_permissions(permissions_file_key,permissions_user_key, permissions, new_colour = '000000', new_starred = False):
+def add_file_permissions(permissions_file_key,permissions_user_key, permissions):
 	new_permission = FilePermissions( 	parent = ndb.Key("PermissionsTable", "*notitle*"),
 										user_key = permissions_user_key,
 										file_key = permissions_file_key,
