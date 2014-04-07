@@ -89,16 +89,21 @@ def get_user_by_key(user_key):
 	return PAL.get_user_by_key(user_key)
 
 ###########################################################################
-## \brief Add a file to the file table with a given name and owner
-## \param new_file_name - [String] name of file to add
-## \param new_file_owner_key - [Key] key of user which owns the new file
-## \return key of new file
-## \author jmccrea@keesaco.com of Keesaco
-## \author cwike@keesaco.com of Keesaco
-## \todo Currently this does not check if the file exists or if there is already an entry for it - consider reviewing this and implementing some checking
+## \brief 	Add a file to the file table with a given name and owner
+## \param	FileInfo new_file - the file to be added to the datastore
+## \param	Bool return_updated -  (= False) if true the return value the
+##			original file with its key property updated
+## \return 	If return_updated is true the returns the original file
+##			argument with an updated key property. Otherwise returns the
+##			key of the new Files entry as it was inserted.
+## \author 	jmccrea@keesaco.com of Keesaco
+## \author 	cwike@keesaco.com of Keesaco
+## \todo 	Currently this does not check if the file exists or if there is
+##			already an entry for it - consider reviewing this and
+##			implementing some checking
 ###########################################################################
-def add_file(new_file_name, new_file_owner_key):
-	return PAL.add_file(new_file_name, new_file_owner_key)
+def add_file(new_file, return_updated = False):
+	return PAL.add_file(new_file, return_updated)
 
 ###########################################################################
 ## \brief Removes a file object from the Files table
@@ -108,7 +113,10 @@ def add_file(new_file_name, new_file_owner_key):
 ## \author cwike@keesaco.com of Keesaco
 ###########################################################################
 def remove_file_by_key(file_key):
-	return PAL.remove_file_by_key(file_key)
+	if PAL.revoke_all_by_file_key(file_key):
+		return PAL.remove_file_by_key(file_key)
+
+	return False
 
 ###########################################################################
 ## \brief Renames a file stored in a Files object, via Files table key lookup
@@ -120,6 +128,18 @@ def remove_file_by_key(file_key):
 ###########################################################################
 def rename_file_by_key(file_key, new_file_name):
 	return PAL.rename_file_by_key(file_key, new_file_name)
+
+###########################################################################
+## \brief 	Updates a file using a given FileInfo object.
+##			To locate the entry to update, the key property of the given
+##			FileInfo object is checked. If one is not found, the file_name
+##			property will be used instead.
+## \param 	FileInfo new_file - updated file information to be stored
+## \return 	True on aparrent success, False otherwise
+## \author 	jmccrea@keesaco.com of Keesaco
+###########################################################################
+def update_file(new_file):
+	return PAL.update_file(new_file)
 
 ###########################################################################
 ## \brief gets a file object from its key

@@ -246,6 +246,23 @@ html, body, .row
 	color: #ffffff;
 }
 
+a.filenameedit, a.file-list-link
+{
+	color: #AAAAAA;
+}
+a.filenameedit:hover
+{
+	text-decoration: none;
+}
+a.file-list-link:hover
+{
+	color: #E6E6E6;
+}
+
+.nameedit-confirm
+{
+	right: 0px;
+}
 @media screen and (max-width: 767px)
 {
 	.apppanel, .navpanel, .filepanel

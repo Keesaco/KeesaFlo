@@ -30,8 +30,9 @@ function ksfViews()
 }
 
 CONTENT_AREA = '#appmain';
-FILES_AREA = '#filelist';
 TOOLS_AREA = '#toolselector';
+
+FILE_LIST_DATASORUCE = '/app/data/json/files/';
 
 ksfViews.currentView = null;
 
@@ -74,6 +75,10 @@ ksfViews.setupView = ksfViews_setupViews;
  */
 function ksfViews_loadFromLocation(force)
 {
+	//invalidate current file information
+	ksfViews.currentFile = null;
+	ksfViews.currentFileName = null;
+	
 	var urlVals = ksfData.urlValues();
 	if ( urlVals !== null )
 	{
@@ -164,8 +169,9 @@ ksfViews.setupSimple = ksfViews_setupSimple;
  */
 function ksfViews_loadPreview(filename)
 {
+	ksfViews.currentFileName = filename;
 	ksfData.copyPageletInto( ksfData.baseUrl() + 'panels/main/file' + encodeURIComponent('=' + filename), CONTENT_AREA, ksfLayout.filePreviewStart);
-	ksfViews.makeFileList('/app/data/json/files/', FILES_AREA);
+	ksfViews.makeFileList();
 }
 ksfViews.loadPreview = ksfViews_loadPreview;
 
@@ -174,39 +180,31 @@ ksfViews.loadPreview = ksfViews_loadPreview;
  * \return None
  * \author jmccrea@keesaco.com of Keesaco
  */
-function ksfViews_makeFileList(datasource, target)
+function ksfViews_makeFileList()
 {
-	ksfData.fetchJSON(datasource,
-		function(data)
-		{
-			//destroy old file previews
-			$('.file-preview-tip').remove();
-			var tdiv = $(target);
-			tdiv.empty();
-			data.forEach(
-				function (d)
-				{
-					if (d.type == 'html')
-					{
-						tdiv.append(d.data)
-					}
-					else if (d.type = 'files')
-					{
-						d.data.forEach(
-							function(e)
-							{
-								var newElem = document.createElement('a');
-								newElem.className = 'list-group-item file-list-item';
-								newElem.href = '#!/preview/' + e.filename;
-								newElem.innerHTML = e.filename
-								tdiv.append(newElem);
-							} );
-					}
-				} );
-			
-		} );
+	ksfData.fetchJSON(FILE_LIST_DATASORUCE, ksfFilebar.update);
 }
 ksfViews.makeFileList = ksfViews_makeFileList;
+
+/**
+ * Searches the most recent file list available and returns a file by a given name if found
+ * \param String probe - name of file to search for
+ * \return null if not found, otherwise a file information object as defined by the JSON datasource
+ * \author jmccrea@keesaco.com of Keesaco
+ */
+function ksfViews_getFileInfoByName(probe)
+{
+	ksfViews.files.forEach(
+		function (file)
+		{
+			if (file.filename == probe)
+			{
+				return file;
+			}
+		} );
+	return null;
+}
+ksfViews.getFileInfoByName = ksfViews_getFileInfoByName;
 
 /**
  * Downloads and displays the panels for the FAQ page

@@ -229,8 +229,7 @@ function ksfLayout_initTips()
 				position: {
 					my: 'right center',
 					at: 'left center',
-					viewport: $('#appmain'),
-					target: 'event'
+					viewport: $('#appmain')
 				},
 				style : {
 				   classes: 'file-preview-tip qtip-bootstrap qtip-shadow qtip-rounded'
@@ -238,7 +237,7 @@ function ksfLayout_initTips()
 				content: {
 					text: function(event, api)
 					{
-						var prevUrl = ksfData.baseUrl() + "panels/vol/graph_preview/file=" + api.elements.target.attr('href').split('/preview/')[1];
+						var prevUrl = ksfData.baseUrl() + "panels/vol/graph_preview/file=" + api.elements.target.children('.file-list-link').first().attr('href').split('/preview/')[1];
 						$.ajax( {
 							   url: prevUrl
 						} )
