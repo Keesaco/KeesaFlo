@@ -63,23 +63,33 @@ function ksfFilebar_update(data)
 						{
 							newElem.style.borderRight='10px solid #'+e.colour;
 						}
+							   
+						var editDiv = document.createElement('div');
+						editDiv.style.display = 'none';
 								
 						//TODO: remove this when permissions are set for all files
 						if (e.permissions == 'yes')
 						{
 							starSpan = document.createElement('span');
 							starSpan.className = 'glyphicon ' + (e.starred ? 'glyphicon-star' : 'glyphicon-star-empty');
-							newElem.appendChild(starSpan);
+							editDiv.appendChild(starSpan);
 						}
-								
-						nameSpan = document.createElement('span');
+						
+						var editDrop = document.createElement('span');
+						$(editDrop).click( function() { editDiv.style.display = editDiv.style.display == 'none' ? 'block' : 'none'; } );
+						editDrop.className = 'glyphicon glyphicon-cog';
+						newElem.appendChild(editDrop);
+							   
+						var nameSpan = document.createElement('span');
 						nameSpan.innerHTML = ' ' + (e.friendlyName ? e.friendlyName : e.filename);
 						newElem.appendChild(nameSpan);
 								
-						delSpan = document.createElement('span');
+						var delSpan = document.createElement('span');
 						delSpan.className = 'glyphicon glyphicon-trash';
 						$(delSpan).click(function () { ksfFilebar.deleteFile(e); });
-						newElem.appendChild(delSpan);
+						editDiv.appendChild(delSpan);
+							   
+						newElem.appendChild(editDiv);
 							   
 						tdiv.append(newElem);
 					} );
