@@ -71,68 +71,46 @@ function ksfFilebar_update(data)
 						//TODO: remove this when permissions are set for all files
 						if (e.permissions == 'yes')
 						{
-							starSpan = document.createElement('span');
-							starSpan.className = 'glyphicon ' + (e.starred ? 'glyphicon-star' : 'glyphicon-star-empty');
-							editDiv.appendChild(starSpan);
+							//star
+							editDiv.appendChild( ksfFilebar.newEditButton(
+								'span', 'glyphicon ' + (e.starred ? 'glyphicon-star' : 'glyphicon-star-empty'),
+								null ));
 						}
 
-						var editDrop = document.createElement('span');
-						$(editDrop).click( function() { editDiv.style.display = editDiv.style.display == 'none' ? 'block' : 'none'; } );
-						editDrop.className = 'glyphicon glyphicon-cog';
-						newElem.appendChild(editDrop);
+						//button to drop down/hide file edit buttons
+						newElem.appendChild( ksfFilebar.newEditButton(
+							'span', 'glyphicon glyphicon-cog',
+							function() { editDiv.style.display = editDiv.style.display == 'none' ? 'block' : 'none'; } ) );
 							   
-						var nameSpan = document.createElement('span');
-						nameSpan = document.createElement('a');
-						nameSpan.className = 'filenameedit file-list-link'
+						var nameSpan = ksfFilebar.newEditButton(
+							'a', 'filenameedit file-list-link');
 						nameSpan.href = '#!/preview/' + e.filename;
 						nameSpan.innerHTML = ' ' + (e.friendlyName ? e.friendlyName : e.filename);
 						newElem.appendChild(nameSpan);
 								
-						var delSpan = document.createElement('span');
-						delSpan.className = 'glyphicon glyphicon-trash';
-						$(delSpan).click(function () { ksfFilebar.deleteFile(e); });
-						editDiv.appendChild(delSpan);
-							   
-						var confirmSpan = document.createElement('span');
-						confirmSpan.className = 'nameedit-confirm';
+						//delete button
+						editDiv.appendChild( ksfFilebar.newEditButton(
+							'span', 'glyphicon glyphicon-trash',
+							function () { ksfFilebar.deleteFile(e); }));
+							  
+						var confirmSpan = ksfFilebar.newEditButton('span', 'nameedit-confirm', null);
 						confirmSpan.style.display = 'none';
-						var confirmTick = document.createElement('span');
-						confirmTick.className = 'glyphicon glyphicon-ok nameedit-tick';
+						//confirm rename - tick
+						var confirmTick = ksfFilebar.newEditButton('span', 'glyphicon glyphicon-ok nameedit-tick', null);
 						confirmSpan.appendChild(confirmTick);
-						var confirmCross = document.createElement('span');
-						confirmCross.className = 'glyphicon glyphicon-remove nameedit-cross';
+						//cancel rename - cross
+						var confirmCross = ksfFilebar.newEditButton('span', 'glyphicon glyphicon-remove nameedit-cross', null);
 						confirmSpan.appendChild(confirmCross);
 
 						$(nameSpan).on('keypress keyup',
-							function(event)
-							{
-								//Since the tick and cross buttons have all the information in their click methods, it's easiest to trigger their events
-								//Return key
-								if (event.which == 13)
-								{
-									//prevent inserting a line break
-									event.preventDefault();
-									$(confirmTick).trigger('click');
-								}
-								//Escape key
-								else if (event.which == 27)
-								{
-									$(confirmCross).trigger('click');
-								}
-								else
-								{
-									//Remove line breaks
-									$(this).attr('innerHTML', $(this).text().replace(/(\r\n|\n|\r)/gm,""));
-								}
-							} );
-							   
+							function(event) { ksfFilebar.renameKeyHandle(event, $(confirmTick), $(confirmCross), $(this))});
 
 						newElem.appendChild(editDiv);
-							   
-						renameSpan = document.createElement('span');
-						renameSpan.className = 'glyphicon glyphicon-pencil';
-						$(renameSpan).click(function () { ksfFilebar.editName(newElem, e); } );
-						editDiv.appendChild(renameSpan);
+						
+
+						editDiv.appendChild( ksfFilebar.newEditButton(
+							'span', 'glyphicon glyphicon-pencil',
+							function () { ksfFilebar.editName(newElem, e); } ));
 							   
 						editDiv.appendChild(confirmSpan);
 							
@@ -145,11 +123,27 @@ function ksfFilebar_update(data)
 ksfFilebar.update = ksfFilebar_update;
 
 /**
+ * Makes a new element of a give type, class and hooks a click handler (used to simplify filebar generation)
+ * \param String elemType - the type of element to create
+ * \param String className - the class name for the new element
+ * \param Function click - this is hooked to handle click events on the element
+ * \author jmccrea@keesaco.com of Keesaco
+ * \return New element
+ */
+function ksfFilebar_newEditButton(elemType, className, click)
+{
+	var newElem = document.createElement(elemType);
+	newElem.className = className;
+	$(newElem).click(click);
+	return newElem;
+}
+ksfFilebar.newEditButton = ksfFilebar_newEditButton;
+
+/**
  * Makes a filename editable as a single line
  * \param File file - file object for file to rename (used for .filename)
  * \param String newName - the new name for the given file
  * \author jmccrea@keesaco.com of Keesaco
- * \note If the request is successful, a redraw of the file selector is forced
  * \return None
  */
 function ksfFilebar_editName(fileDiv, file)
@@ -169,6 +163,29 @@ function ksfFilebar_editName(fileDiv, file)
 	$link.trigger('focus');
 }
 ksfFilebar.editName = ksfFilebar_editName;
+
+function ksfFilebar_renameKeyHandle(event, $confirmButton, $cancelButton, $linkElem)
+{
+	//Since the tick and cross buttons have all the information in their click methods, it's easiest to trigger their events
+	//Return key
+	if (event.which == 13)
+	{
+		//prevent inserting a line break
+		event.preventDefault();
+		$confirmButton.trigger('click');
+	}
+	//Escape key
+	else if (event.which == 27)
+	{
+		$cancelButton.trigger('click');
+	}
+	else
+	{
+		//Remove line breaks
+		linkElem.attr('innerHTML', $(this).text().replace(/(\r\n|\n|\r)/gm,""));
+	}
+}
+ksfFilebar.renameKeyHandle = ksfFilebar_renameKeyHandle;
 
 /**
  * Cleans up the file selector and optionally requests a file rename once editing has finished
