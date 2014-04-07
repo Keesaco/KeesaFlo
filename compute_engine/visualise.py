@@ -51,16 +51,18 @@ while alive:
 		points = commands[2]
 		gate_name = commands[3]
 		reverse = commands[4]
+		x_axis = commands[5]
+		y_axis = commands[6]
 		coords = points.split()
 		##Loads raw fcs data from cloud storage
 		Ana.load_fcs(name)
 		##Creates visualisation of gate and text file of gate info
 		if(commands[0] == 'gate_rec'):
-			exitcode = Ana.rect_gate(name, gate_name, coords[0], coords[1], coords[2], coords[3], reverse)
+			exitcode = Ana.rect_gate(name, gate_name, coords[0], coords[1], coords[2], coords[3], reverse, x_axis, y_axis)
 		elif(commands[0] == 'gate_cir'):
-			exitcode = Ana.oval_gate(name, gate_name, coords[0], coords[1], coords[2], coords[3], coords[4], coords[5], reverse)
+			exitcode = Ana.oval_gate(name, gate_name, coords[0], coords[1], coords[2], coords[3], coords[4], coords[5], reverse, x_axis, y_axis)
 		elif(commands[0] == 'gate_poly'):
-			exitcode = Ana.poly_gate(name, gate_name, points, reverse)
+			exitcode = Ana.poly_gate(name, gate_name, points, reverse, x_axis, y_axis)
 		if(exitcode == 0):
 			## Save visualisation to cloud storage.
 			Ana.save_vis(gate_name + '.png')

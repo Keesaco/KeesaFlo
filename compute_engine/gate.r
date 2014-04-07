@@ -18,6 +18,8 @@ if(gate_type == 'rect')
 	tly <- as.integer(args[6])
 	brx <- as.integer(args[7])
 	bry <- as.integer(args[8])
+	x_axis <- args[9]
+	y_axis <- args[10]
 } else if(gate_type == 'oval')
 {
 	mx <- as.integer(args[5])
@@ -26,19 +28,19 @@ if(gate_type == 'rect')
 	ay <- as.integer(args[8])
 	bx <- as.integer(args[9])
 	by <- as.integer(args[10])
+	x_axis <- args[11]
+	y_axis <- args[12]
 } else if(gate_type == 'poly')
 {
 	points <- args[5]
+	x_axis <- args[6]
+	y_axis <- args[7]
 }
 
 ## Read fcs data.
 if(file.exists(fcs_name) == FALSE)
 	quit("no", 1)
 x <- read.FCS(fcs_name, transformation = FALSE)
-
-## Finding first two observables.
-a <- colnames(x[,1])
-b <- colnames(x[,2])
 
 ## Find range of relevant observables
 r1 <- range(x[,1])
@@ -48,17 +50,17 @@ r2 <- range(x[,2])
 if(gate_type == 'rect')
 {
 	points <- convertRectCoords(tlx, tly, brx, bry, r1[1,1], r1[2,1], r2[1,1], r2[2,1])
-	gate <- createRectGate(points[1], points[2], points[3], points[4], a, b)
+	gate <- createRectGate(points[1], points[2], points[3], points[4], x_axis, y_axis)
 } else if(gate_type == 'oval')
 {
 	points <- convertOvalCoords(mx, my, ax, ay, bx, by, r1[1,1], r1[2,1], r2[1,1], r2[2,1])
-	gate <- createEllipsoidGate(points[1], points[2], points[3], points[4], points[5], points[6], a, b)
+	gate <- createEllipsoidGate(points[1], points[2], points[3], points[4], points[5], points[6], x_axis, y_axis)
 } else if(gate_type == 'poly')
 {
 	points <- strsplit(points, " ")
 	l <- length(points[[1]])
 	newPoints <- convertPolyCoords(points, l, r1[1,1], r1[2,1], r2[1,1], r2[2,1])
-	gate <- createPolyGate(newPoints, l/2, a, b)
+	gate <- createPolyGate(newPoints, l/2, x_axis, y_axis)
 }
 
 ## Creating subset of data.
@@ -72,5 +74,5 @@ writeInfo(x, gate, reverse)
 
 ## Plots the gate
 image_name <- paste(gate_name, ".png", sep="")
-plotGraph(image_name, y, a, b)
+plotGraph(image_name, y, x_axis, y_axis)
 quit("no", 0)

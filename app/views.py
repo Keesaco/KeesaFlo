@@ -309,7 +309,7 @@ def rect_gating(request, params):
 		gatingRequest =" ".join(paramList[0:4])        
 
 		newName = paramList[-1] + "-rectGate";
-		queue.gate_rectangle(paramList[-1], gatingRequest, newName, "1");
+		queue.gate_rectangle(paramList[-1], gatingRequest, newName, "1", "FSC-A", "PE-A");
 
 		status = "success"
 		message = "the rectangular gating was performed correctly"
@@ -334,7 +334,7 @@ def poly_gating(request, params):
 		gatingRequest = " ".join(paramList[0:-1])        
 
 		newName = paramList[-1] + "-polyGate";
-		queue.gate_polygon(paramList[-1], gatingRequest, newName, "0");
+		queue.gate_polygon(paramList[-1], gatingRequest, newName, "0", "FSC-A", "PE-A");
 
 		status = "success"
 		message = "the polygonal gating was performed correctly"
@@ -359,7 +359,7 @@ def oval_gating(request, params):
 		gatingRequest = " ".join(paramList[0:-1])        
 
 		newName = paramList[-1] + "-ovalGate";
-		queue.gate_circle(paramList[-1], gatingRequest, newName, "0");
+		queue.gate_circle(paramList[-1], gatingRequest, newName, "0", "FSC-A", "PE-A");
 
 		status = "success"
 		message = "the oval gating was performed correctly"
