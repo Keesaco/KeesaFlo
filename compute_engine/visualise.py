@@ -55,32 +55,33 @@ while alive:
 		Ana.load_fcs(name)
 		##Creates visualisation of gate and text file of gate info
 		if(commands[0] == 'gate_rec'):
-			Ana.rect_gate(name, gate_name, coords[0], coords[1], coords[2], coords[3], reverse)
+			exitcode = Ana.rect_gate(name, gate_name, coords[0], coords[1], coords[2], coords[3], reverse)
 		elif(commands[0] == 'gate_cir'):
-			Ana.oval_gate(name, gate_name, coords[0], coords[1], coords[2], coords[3], coords[4], coords[5], reverse)
+			exitcode = Ana.oval_gate(name, gate_name, coords[0], coords[1], coords[2], coords[3], coords[4], coords[5], reverse)
 		elif(commands[0] == 'gate_poly'):
-			Ana.poly_gate(name, gate_name, points, reverse)
-		## Save visualisation to cloud storage.
-		Ana.save_vis(gate_name + '.png')
-		f = open(gate_name + '.txt', 'r')
-		info = f.readline()
-		f.close()
-		stats = info.split()
-		f2 = open(gate_name + '.html', 'w')
-		f2.write('<link href="{static "css/app.css" %}" rel ="stylesheet"')
-		f2.write('<p>Number of cells in gate: <span class="gating_num">' + stats[0] + '</span></p>')
-		f2.write('<p>Number of cells in total: <span class="gating_num">' + stats[1] + '</span></p>')
-		f2.write('<p>Percentage ratio: <span class="gating_num">' + str(float(stats[2])*100) + '%</span></p>')
-		f2.close()
-		## Saves info about gate to cloud storage
-		Ana.save_info(gate_name + '.html')
-		## Saves gate as fcs file
-		Ana.save_fcs(gate_name)
-		## Clean up.
-		os.remove(name)
-		os.remove(gate_name + '.txt')
-		os.remove(gate_name + '.png')
-		os.remove(gate_name)
+			exitcode = Ana.poly_gate(name, gate_name, points, reverse)
+		if(exitcode == 0):
+			## Save visualisation to cloud storage.
+			Ana.save_vis(gate_name + '.png')
+			f = open(gate_name + '.txt', 'r')
+			info = f.readline()
+			f.close()
+			stats = info.split()
+			f2 = open(gate_name + '.html', 'w')
+			f2.write('<link href="{static "css/app.css" %}" rel ="stylesheet"')
+			f2.write('<p>Number of cells in gate: <span class="gating_num">' + stats[0] + '</span></p>')
+			f2.write('<p>Number of cells in total: <span class="gating_num">' + stats[1] + '</span></p>')
+			f2.write('<p>Percentage ratio: <span class="gating_num">' + str(float(stats[2])*100) + '%</span></p>')
+			f2.close()
+			## Saves info about gate to cloud storage
+			Ana.save_info(gate_name + '.html')
+			## Saves gate as fcs file
+			Ana.save_fcs(gate_name)
+			## Clean up.
+			os.remove(gate_name + '.txt')
+			os.remove(gate_name + '.png')
+			os.remove(gate_name)
+			os.remove(name)
 	elif (commands[0] == 'change_axis'):
 		name = commands[1]
 		x_axis = commands[2]

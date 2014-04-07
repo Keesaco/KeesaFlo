@@ -32,17 +32,19 @@ if(gate_type == 'rect')
 }
 
 ## Read fcs data.
+if(file.exists(fcs_name) == FALSE)
+	quit("no", 1)
 x <- read.FCS(fcs_name, transformation = FALSE)
 
 ## Finding first two observables.
 a <- colnames(x[,1])
 b <- colnames(x[,2])
 
-## Calculate graph coordinates from pixel coordinates
+## Find range of relevant observables
 r1 <- range(x[,1])
 r2 <- range(x[,2])
 
-## Creates a gate based on the specified parameters
+## Creates a gate object based on the specified parameters
 if(gate_type == 'rect')
 {
 	points <- convertRectCoords(tlx, tly, brx, bry, r1[1,1], r1[2,1], r2[1,1], r2[2,1])
@@ -71,3 +73,4 @@ writeInfo(x, gate, reverse)
 ## Plots the gate
 image_name <- paste(gate_name, ".png", sep="")
 plotGraph(image_name, y, a, b)
+quit("no", 0)
