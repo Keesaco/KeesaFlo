@@ -23,7 +23,18 @@ FEEDBACK_INFO = "alert-info";
 FEEDBACK_WARING = "alert-warning";
 FEEDBACK_DANGER = "alert-danger";
 
-ksfGraphTools.timeoutCounter = 10;
+
+/**
+ *	Milliseconds between requests for new graphs
+ */
+GRAPH_POLL_INTERVAL = 1000;
+
+/**
+ *	Number of times to attempt to get a new graph before giving up and requiring a manual refresh
+ */
+GRAPH_LOAD_MAX_ATTEMPTS = 10;
+
+ksfGraphTools.timeoutCounter = GRAPH_LOAD_MAX_ATTEMPTS;
 
 /*
 	Each of the folowing elements represent a graph related tool
@@ -315,12 +326,12 @@ ksfGraphTools.sendGatingRequest = ksfGraphTools_sendGatingRequest;
 function ksfGraphTools_setGraphUrl(url)
 {
 	// we let 10 sec for the graph to appear
-	ksfGraphTools.timeoutCounter = 10;
+	ksfGraphTools.timeoutCounter = GRAPH_LOAD_MAX_ATTEMPTS;
 	$("#graph-img").off('error');
 	$("#graph-img").on('error', function()
 		{
 			ksfCanvas.setLoading(true);
-			setTimeout(ksfGraphTools.reloadImage, 1000);
+			setTimeout(ksfGraphTools.reloadImage, GRAPH_POLL_INTERVAL);
 		} );
 	$("#graph-img").on('load', function()
 		{
