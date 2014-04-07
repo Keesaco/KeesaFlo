@@ -38,6 +38,15 @@ Running with Local Dev Server:
 2. Acquire dependencies using AppBuild as described above.
 3. Add an (existing) application to the dev_appserver using the 'app' directory as the path.
 
+Running with Vagrant:
+---------------------
+1. Install [Vagrant](https://www.vagrantup.com/downloads.html)
+2. Install [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
+3. From the repository folder, provision and start the VM with 'vagrant up'
+4. SSH into the VM with 'vagrant ssh'
+5. Start the app server with './start.sh&'
+6. The application can now be accessed from the host machine at localhost:28080 and the administation pages can be accessed at localhost:28000
+
 Contact:
 --------
 **All members** - info@keesaco.com
