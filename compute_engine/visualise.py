@@ -64,7 +64,7 @@ while alive:
 		elif(commands[0] == 'gate_poly'):
 			exitcode = Ana.poly_gate(name, gate_name, points, reverse, x_axis, y_axis)
 		elif(commands[0] == 'gate_bool'):
-			exitcode =Ana.bool_gate(name, gate_name, commands[7], commands[8], points, reverse, commands[9], commands[10], commands[11])
+			exitcode =Ana.bool_gate(name, gate_name, commands[7], commands[8], points, reverse, commands[9], commands[10], commands[11], x_axis, y_axis)
 		if(exitcode == 0):
 			## Save visualisation to cloud storage.
 			Ana.save_vis(gate_name + '.png')

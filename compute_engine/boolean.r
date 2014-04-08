@@ -17,15 +17,13 @@ reverse1 <- as.integer(args[6])
 gate2_type <- args[7]
 points2 <- args[8]
 reverse2 <- as.integer(args[9])
+x_axis <- args[10]
+y_axis <- args[11]
 
 ## Read fcs data.
 if(file.exists(fcs_name) == FALSE)
 	quit("no", 1)
 x <- read.FCS(fcs_name, transformation = FALSE)
-
-## Finding first two observables.
-a <- colnames(x[,1])
-b <- colnames(x[,2])
 
 ## Find range of relevant observables
 r1 <- range(x[,1])
@@ -47,7 +45,7 @@ if(gate1_type == 'rect')
 	points <- strsplit(points1, " ")
 	l <- length(points[[1]])
 	newPoints <- convertPolyCoords(points, l, r1[1,1], r1[2,1], r2[1,1], r2[2,1])
-	gate1 <- createPolyGate(newPoints, l/2, a, b)
+	gate1 <- createPolyGate(newPoints, l/2, x_axis, y_axis)
 }
 
 ## Creates a second gate object based on the specified parameters
@@ -66,7 +64,7 @@ if(gate2_type == 'rect')
 	points <- strsplit(points2, " ")
 	l <- length(points[[1]])
 	newPoints <- convertPolyCoords(points, l, r1[1,1], r1[2,1], r2[1,1], r2[2,1])
-	gate2 <- createPolyGate(newPoints, l/2, a, b)
+	gate2 <- createPolyGate(newPoints, l/2, x_axis, y_axis)
 }
 
 ## Creates subset of data based on gates and boolean operator
@@ -98,5 +96,5 @@ writeInfo(x, gate, 0)
 
 ## Plots the gate
 image_name <- paste(gate_name, ".png", sep="")
-plotGraph(image_name, y, a, b)
+plotGraph(image_name, y, x_axis, y_axis)
 quit("no", 0)
