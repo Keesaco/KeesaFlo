@@ -42,10 +42,10 @@ Running with Vagrant:
 ---------------------
 1. Install [Vagrant](https://www.vagrantup.com/downloads.html)
 2. Install [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
-3. From the repository folder, provision and start the VM with 'vagrant up'
+3. From the repository folder, provision and start the VM with 'vagrant up'  (This will take several minutes)
 4. SSH into the VM with 'vagrant ssh'
 5. Start the app server with './start.sh&'
-6. The application can now be accessed from the host machine at localhost:28080 and the administation pages can be accessed at localhost:28000
+6. The application can now be accessed from the host machine at localhost:28080 and the administration pages can be accessed at localhost:28000
 
 Contact:
 --------
