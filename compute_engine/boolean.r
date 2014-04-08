@@ -19,6 +19,8 @@ points2 <- args[8]
 reverse2 <- as.integer(args[9])
 
 ## Read fcs data.
+if(file.exists(fcs_name) == FALSE)
+	quit("no", 1)
 x <- read.FCS(fcs_name, transformation = FALSE)
 
 ## Finding first two observables.
@@ -97,3 +99,4 @@ writeInfo(x, gate, 0)
 ## Plots the gate
 image_name <- paste(gate_name, ".png", sep="")
 plotGraph(image_name, y, a, b)
+quit("no", 0)
