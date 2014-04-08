@@ -46,7 +46,7 @@ while alive:
 			os.remove(name)
 			os.remove(name + '.png')
 			os.remove(name + 'info.txt')
-	elif (commands[0] == 'gate_rec' or commands[0] == 'gate_cir' or commands[0] == 'gate_poly'):
+	elif (commands[0] == 'gate_rec' or commands[0] == 'gate_cir' or commands[0] == 'gate_poly' or commands[0] == 'gate_bool'):
 		name = commands[1]
 		points = commands[2]
 		gate_name = commands[3]
@@ -57,12 +57,15 @@ while alive:
 		##Loads raw fcs data from cloud storage
 		Ana.load_fcs(name)
 		##Creates visualisation of gate and text file of gate info
+		exitcode = 0;
 		if(commands[0] == 'gate_rec'):
 			exitcode = Ana.rect_gate(name, gate_name, coords[0], coords[1], coords[2], coords[3], reverse, x_axis, y_axis)
 		elif(commands[0] == 'gate_cir'):
 			exitcode = Ana.oval_gate(name, gate_name, coords[0], coords[1], coords[2], coords[3], coords[4], coords[5], reverse, x_axis, y_axis)
 		elif(commands[0] == 'gate_poly'):
 			exitcode = Ana.poly_gate(name, gate_name, points, reverse, x_axis, y_axis)
+		elif(commands[0] == 'gate_bool'):
+			Ana.bool_gate(name, gate_name, commands[7], commands[8], points, reverse, commands[9], commands[10], commands[11])
 		if(exitcode == 0):
 			## Save visualisation to cloud storage.
 			Ana.save_vis(gate_name + '.png')

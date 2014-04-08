@@ -116,6 +116,18 @@ convertPolyCoords <- function(points, len, xmin, xmax, ymin, ymax)
 	return(point)
 }
 
+pointsStringToVector <- function(points)
+{
+	points <- strsplit(points, " ")
+	len <- length(points[[1]])
+	newPoints <- 0 ## initialises point
+	for(i in 1:len)
+	{
+		newPoints[i] <- as.numeric(points[[1]][i])
+	}
+	return(newPoints)
+}
+
 ###########################################################################
 ## \brief creates a rectangle gate
 ## \param topLeftlx - top left x coordinate of the rectangle
