@@ -1,5 +1,6 @@
 import API.APIQueue as queue
 from django.core.urlresolvers import reverse
+import logging
 
 ###########################################################################
 ## \brief Is called when a rectangular gating is requested.
@@ -88,7 +89,11 @@ def oval_gating(paramList):
 ## \param paramsList - Paramesters that comes with this tool call
 ## \return a dictionary with the status of the tool call
 ###########################################################################
-def no_such_tool(paramList):
+def no_such_tool(paramList, name):
+
+	logging.error('The tool "'+ name +'" is unknown. The known tools are: {' + 
+		', '.join(list(AVAILABLE_TOOLS.keys())) + '}' )
+
 	return {
 			'status': "fail",
 			'message': "The tool you selected is not reconized by the server",
