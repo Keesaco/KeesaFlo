@@ -192,6 +192,16 @@ createPolyGate <- function(points, n, x_axis, y_axis)
 	return(polygonGate(.gate=mat))
 }
 
+###########################################################################
+## \brief creates either rectangle, ellipsoid or polygon gate based on gate_type
+## \param gate_type - string with type of gate to be created
+## \param coords - coordinates of the gate as a string
+## \param range_x - vector containing range of x_axis values
+## \param range_y - vector containing range of y_axis values
+## \param x_axis - name of x_axis
+## \param y_axis - name of y_axis
+## \return returns gating object
+###########################################################################
 createBasicGate <- function(gate_type, coords, range_x, range_y, x_axis, y_axis)
 {
 	if(gate_type == 'rect')
