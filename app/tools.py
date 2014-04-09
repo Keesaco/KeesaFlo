@@ -86,6 +86,13 @@ def oval_gating(paramList):
 				'url': None
 			}
 
+def no_such_tool(paramList):
+	return {
+			'status': "fail",
+			'message': "The tool you selected is not reconized by the server",
+			'url': None
+		}
+
 AVAILABLE_TOOLS = {
 	'rectangular_gating' : rect_gating,
 	'polygon_gating' : poly_gating,
