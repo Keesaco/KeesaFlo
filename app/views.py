@@ -22,6 +22,7 @@ import API.PALUsers as auth
 import API.APIQueue as queue
 import API.APIPermissions as ps
 import json
+import tools
 
 DATA_BUCKET = '/fc-raw-data'
 GRAPH_BUCKET = '/fc-vis-data'
@@ -383,96 +384,16 @@ def settings(request):
 	return render(request, 'settings.html')
 
 ###########################################################################
-## \brief Is called when a rectangular gating is requested.
+## \brief Is called by a tool from the client side
 ## \param request - Django variable defining the request that triggered the generation of this page
+## \param name - name of the tool that triggered this request
 ## \param params - Paramesters of this gating, string of the form: topLeftx,topLefty,bottomRightx,bottomRighty,newFilename
 ## \return a JSON object in a httpresponse, containing the status of the gating, a short message and the link to the newly created graph
 ###########################################################################
-def rect_gating(request, params):
+def tool(request, name, params):
 	paramList = params.split(',')
 
-	if len(paramList) == 5 :
-		#Reoder the point to take the topLeft and bottomRight points of the square 
-		if paramList[0] > paramList[2]:
-			tempcoor = paramList[0]
-			paramList[0] = paramList[2]
-			paramList[2] = tempcoor
-		if paramList[1] > paramList[3]:
-			tempcoor = paramList[1]
-			paramList[1] = paramList[3]
-			paramList[3] = tempcoor
+	tool_response = AVAILABLE_TOOLS[name](paramList)
 
-		gatingRequest =" ".join(paramList[0:4])        
-
-		newName = paramList[-1] + "-rectGate";
-		queue.gate_rectangle(paramList[-1], gatingRequest, newName, "1", "FSC-A", "PE-A");
-
-		status = "success"
-		message = "the rectangular gating was performed correctly"
-		url = reverse('get_graph', args=[newName])
-	else:
-		status = "fail"
-		message = "notcorrect " + params + " length:" + str(len(paramList)) + " is not equal to 4"
-		url = None
-		 
-	return HttpResponse(generate_gating_answer(status, message, url), content_type="application/json")
-
-###########################################################################
-## \brief Is called when a polygonal gating is requested.
-## \param request - Django variable defining the request that triggered the generation of this page
-## \param params - Paramesters of this gating, string of the form: x1,y1,x2,y2,...xn,yn,newFilename
-## \return a JSON object in a httpresponse, containing the status of the gating, a short message and the link to the newly created graph
-###########################################################################
-def poly_gating(request, params):
-	paramList = params.split(',')
-
-	if len(paramList)%2 == 1 :
-		gatingRequest = " ".join(paramList[0:-1])        
-
-		newName = paramList[-1] + "-polyGate";
-		queue.gate_polygon(paramList[-1], gatingRequest, newName, "0", "FSC-A", "PE-A");
-
-		status = "success"
-		message = "the polygonal gating was performed correctly"
-		url = reverse('get_graph', args=[newName]) 
-	else:
-		status = "fail"
-		message = "notcorrect " + params + " #pointCoordinates:" + str(len(paramList))-1 + " is not pair"
-		url = None
-		 
-	return HttpResponse(generate_gating_answer(status, message, url), content_type="application/json")
-
-###########################################################################
-## \brief Is called when an oval gating is requested.
-## \param request - Django variable defining the request that triggered the generation of this page
-## \param params - Paramesters of this gating, string of the form: meanx,meany,point1x,point1y,point2x,point2y,newFilename
-## \return a JSON object in a httpresponse, containing the status of the gating, a short message and the link to the newly created graph
-###########################################################################
-def oval_gating(request, params):
-	paramList = params.split(',')
-
-	if len(paramList) == 7 :
-		gatingRequest = " ".join(paramList[0:-1])        
-
-		newName = paramList[-1] + "-ovalGate";
-		queue.gate_circle(paramList[-1], gatingRequest, newName, "0", "FSC-A", "PE-A");
-
-		status = "success"
-		message = "the oval gating was performed correctly"
-		url = reverse('get_graph', args=[newName])
-	else:
-		status = "fail"
-		message = "notcorrect " + params + " #pointCoordinates:" + str(len(paramList)) + " is not even"
-		url = None
-
-	return HttpResponse(generate_gating_answer(status, message, url), content_type="application/json")
-
-###########################################################################
-## \brief create a JSON string containing the status, message and graph's url of a gating response
-## \param status - Status of the gating (success or fail)
-## \param message - Message containing more information about the gating's status
-## \param url - Url to the new gated dataset's graph
-## \return a JSON object containing the status of the gating, a short message and the link to the newly created graph
-###########################################################################
-def generate_gating_answer(status, message, url):
-	return simplejson.dumps({"status" : status, "message" : message, "imgUrl" : url});
+	json = simplejson.dumps(tool_response);
+	return HttpResponse(json, content_type="application/json")

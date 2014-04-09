@@ -40,7 +40,7 @@ urlpatterns = patterns('',
 	url(r'^app/panels/left/toolselect/$', 'views.toolselect', name='toolselect'),
 	url(r'^app/panels/left/pagenav/$', 'views.pagenav', name='pagenav'),
 	url(r'^app/panels/vol/graph_preview/file=(?P<file>.+)$', 'views.graph_preview', name='pagelet_graph_preview'),
-    url(r'^app/tool/(?P<name>[-_ \d\w]+)/(?P<params>[\.,-_ \d\w()]+)$', 'views.tool', name='tool')
+    url(r'^app/tool/(?P<name>[-_ \d\w]+)/(?P<params>[\.,-_ \d\w()]+)$', 'views.tool', name='tool'),
 	url(r'^login/$', 'views.login', name='login'),
 	url(r'^logout/$', 'views.logout', name='logout'),
     url(r'^settings/$', 'views.settings', name='settings'),
