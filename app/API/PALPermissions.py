@@ -491,7 +491,7 @@ def get_user_permissions_list(user_key):
 ## \note Untested - Needs testing
 ###########################################################################
 def add_element(ref):
-	elem = Element(element_ref = ref)
+	elem = Elements(element_ref = ref)
 	return elem.put()
 
 ###########################################################################
@@ -502,7 +502,7 @@ def add_element(ref):
 ## \note Untested - Needs testing
 ###########################################################################
 def remove_element_by_ref(element_ref):
-	query = Element.query(Element.element_ref = element_ref)
+	query = Elements.query(Elements.element_ref == element_ref)
 	elem = query.get()
 
 	if elem is None:
@@ -534,7 +534,7 @@ def remove_element_by_key(element_key):
 ## \note Untested - Needs testing
 ###########################################################################
 def rename_element(old_ref, new_ref):
-	query = Element.query(Element.element_ref = old_ref)
+	query = Elements.query(Elements.element_ref == old_ref)
 	elem = query.get()
 
 	elem.element_ref = new_ref
@@ -562,7 +562,7 @@ def get_element_by_key(element_key):
 ## \note Untested - Needs testing
 ###########################################################################
 def get_element_key_by_ref(element_ref):
-	query = Element.query(Element.element_ref = element_ref)
+	query = Elements.query(Elements.element_ref == element_ref)
 	elem = query.get()
 	if elem is None:
 		return None
@@ -610,7 +610,7 @@ def modify_element_permissions_by_key(key,new_access):
 ## \author cwike@keesaco.com of Keesaco
 ## \note Untested - Needs testing
 ###########################################################################
-def modify_user_element_Permissions(user_key,element_key,new_access):
+def modify_user_element_permissions(user_key,element_key,new_access):
 	if (isinstance(user_key,ndb.Key)) and (isinstance(element_key,ndb.Key)):
 		query = ElementPermissions.query(ndb.AND(ElementPermissions.user_key == user_key,
 											 ElementPermissions.element_key == element_key))
@@ -697,7 +697,7 @@ def revoke_element_permissions_by_key(key):
 ## \note Untested - Needs testing
 ###########################################################################
 def get_element_permissions_by_element_key(element_key):
-	if(isinstance(user_key,ndb.Key)):
+	if(isinstance(element_key,ndb.Key)):
 		query = ElementPermissions.query(ElementPermissions.element_key == element_key)
 		return query.iter()
 	else:
@@ -741,7 +741,7 @@ def get_user_element_permissions(user_key,element_key):
 ## \note Untested - Needs testing
 ###########################################################################
 def get_element_permissions_by_key(key):
-	if isinstance(user_key,ndb.Key):
+	if isinstance(key,ndb.Key):
 		return key.get()
 	else:
 		return None

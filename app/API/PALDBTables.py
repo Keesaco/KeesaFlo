@@ -52,7 +52,7 @@ class FilePermissions(ndb.Model):
 class Elements(ndb.Model):
 	element_ref		= ndb.StringProperty()
 
-class ElementPermissions(ndb.model):
+class ElementPermissions(ndb.Model):
 	
 	user_key		= ndb.KeyProperty()
 	element_key		= ndb.KeyProperty()

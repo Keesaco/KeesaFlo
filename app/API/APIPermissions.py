@@ -393,8 +393,8 @@ def modify_element_permissions_by_key(key,new_access):
 ## \author cwike@keesaco.com of Keesaco
 ## \note Untested - Needs testing
 ###########################################################################
-def modify_user_element_Permissions(user_key,element_key,new_access):
-	return PAL.modify_user_element_Permissions(user_key,element_key,new_access)
+def modify_user_element_permissions(user_key,element_key,new_access):
+	return PAL.modify_user_element_permissions(user_key,element_key,new_access)
 
 ###########################################################################
 ## \brief revokes all permissions in an element
