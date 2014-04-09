@@ -393,7 +393,7 @@ def settings(request):
 def tool(request, name, params):
 	paramList = params.split(',')
 
-	tool_response = AVAILABLE_TOOLS[name](paramList)
+	tool_response = tools.AVAILABLE_TOOLS[name](paramList)
 
 	json = simplejson.dumps(tool_response);
 	return HttpResponse(json, content_type="application/json")

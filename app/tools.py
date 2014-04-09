@@ -1,3 +1,6 @@
+import API.APIQueue as queue
+from django.core.urlresolvers import reverse
+
 ###########################################################################
 ## \brief Is called when a rectangular gating is requested.
 ## \param request - Django variable defining the request that triggered the generation of this page
