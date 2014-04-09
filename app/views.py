@@ -387,7 +387,7 @@ def settings(request):
 ## \brief Is called by a tool from the client side
 ## \param request - Django variable defining the request that triggered the generation of this page
 ## \param name - name of the tool that triggered this request
-## \param params - Paramesters of this gating, string of the form: topLeftx,topLefty,bottomRightx,bottomRighty,newFilename
+## \param params - Paramesters that comes with the tool's call
 ## \return a JSON object in a httpresponse, containing the status of the gating, a short message and the link to the newly created graph
 ###########################################################################
 def tool(request, name, params):
