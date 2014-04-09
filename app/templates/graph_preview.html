@@ -1,0 +1,14 @@
+{% if current_file %}
+{% if file_name_without_extension %}
+<img id="graph-img" width="200" height="200" src="{% url get_graph file_name_without_extension %}">
+{% else %}
+<div  class="well app-well">
+	<p>Graph preview unavailable at this time</p>
+</div>
+{% endif %}
+
+{% else %}
+<div  class="well app-well">
+	<p>No file selected</p>
+</div>
+{% endif %}

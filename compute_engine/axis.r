@@ -15,9 +15,12 @@ xaxis <- args[3]
 yaxis <- args[4]
 
 ## Read file
+if(file.exists(fcs_name) == FALSE)
+	quit("no", 1)
 x <- read.FCS(fcs_name, transformation = FALSE)
 
 ## Plot graph
 png(vis_name)
 plot(x,c(xaxis, yaxis))
 dev.off()
+quit("no", 0)

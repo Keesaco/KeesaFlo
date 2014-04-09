@@ -6,11 +6,11 @@
  
 $(document).ready(function()
 {
-	ksfViews.loadFromLocation(true)
+	ksfViews.loadFromLocation(true);
+				  
+	ksfLayout.initTips();
 				  
 	$("#ksf-help-begin").click(function() { ksfHelp.mainTourBegin(true); } );
-	ksfLayout.addToggleHook();
-
-	$('.togglefiles').click(ksfLayout.toggleFileSelector);
-	$('.toggletools').click(ksfLayout.toggleToolBar);
+	ksfHelp.mainTourInit();
+	$('.togglefiles').click(ksfLayout.fileSelectorToggle);
 });

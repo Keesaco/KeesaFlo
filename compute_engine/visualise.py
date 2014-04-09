@@ -36,84 +36,55 @@ while alive:
 		## Load raw fcs data from cloud storage.
 		Ana.load_fcs(name)
 		## Create visualisation of raw fcs data.
-		Ana.visualise(name)
-		## Save visualisation to cloud storage.
-		Ana.save_vis(name + '.png')
-		## Saves info about fcs file to cloud storage
-		Ana.save_info(name + 'info.txt')
-		## Clean up.
-		os.remove(name)
-		os.remove(name + '.png')
-		os.remove(name + 'info.txt')
-	elif (commands[0] == 'gate_rec'):
+		exitcode = Ana.visualise(name)
+		if(exitcode == 0):
+			## Save visualisation to cloud storage.
+			Ana.save_vis(name + '.png')
+			## Saves info about fcs file to cloud storage
+			Ana.save_info(name + 'info.txt')
+			## Clean up.
+			os.remove(name)
+			os.remove(name + '.png')
+			os.remove(name + 'info.txt')
+	elif (commands[0] == 'gate_rec' or commands[0] == 'gate_cir' or commands[0] == 'gate_poly'):
 		name = commands[1]
 		points = commands[2]
 		gate_name = commands[3]
+		reverse = commands[4]
+		x_axis = commands[5]
+		y_axis = commands[6]
 		coords = points.split()
 		##Loads raw fcs data from cloud storage
 		Ana.load_fcs(name)
 		##Creates visualisation of gate and text file of gate info
-		Ana.rect_gate(name, gate_name, coords[0], coords[1], coords[2], coords[3])
-		## Save visualisation to cloud storage.
-		Ana.save_vis(gate_name + '.png')
-		f = open(gate_name + '.txt', 'r')
-		info = f.readline()
-		f.close()
-		stats = info.split()
-		f2 = open(gate_name + '.html', 'w')
-		f2.write('<link href="{static "css/app.css" %}" rel ="stylesheet"')
-		f2.write('<p>Number of cells in gate: <span class="gating_num">' + stats[0] + '</span></p>')
-		f2.write('<p>Number of cells in total: <span class="gating_num">' + stats[1] + '</span></p>')
-		f2.write('<p>Percentage ratio: <span class="gating_num">' + str(float(stats[2])*100) + '%</span></p>')
-		f2.close()
-		## Saves info about gate to cloud storage
-		Ana.save_info(gate_name + '.html')
-		## Saves gate as fcs file
-		Ana.save_fcs(gate_name)
-		## Clean up.
-		os.remove(name)
-		os.remove(gate_name + '.txt')
-		os.remove(gate_name + '.png')
-		os.remove(gate_name)
-	elif (commands[0] == 'gate_cir'):
-		name = commands[1]
-		points = commands[2]
-		gate_name = commands[3]
-		coords = points.split()
-		##Loads raw fcs data from cloud storage
-		Ana.load_fcs(name)
-		##Creates visualisation of gate and text file of gate info
-		Ana.oval_gate(name, gate_name, coords[0], coords[1], coords[2], coords[3], coords[4], coords[5])
-		## Save visualisation to cloud storage.
-		Ana.save_vis(gate_name + '.png')
-		## Saves info about gate to cloud storage
-		Ana.save_info(gate_name + '.txt')
-		## Saves gate as fcs file
-		Ana.save_fcs(gate_name)
-		## Clean up.
-		os.remove(name)
-		os.remove(gate_name + '.txt')
-		os.remove(gate_name + '.png')
-		os.remove(gate_name)
-	elif (commands[0] == 'gate_poly'):
-		name = commands[1]
-		points = commands[2]
-		gate_name = commands[3]
-		##Loads raw fcs data from cloud storage
-		Ana.load_fcs(name)
-		##Creates visualisation of gate and text file of gate info
-		Ana.poly_gate(name, gate_name, points)
-		## Save visualisation to cloud storage.
-		Ana.save_vis(gate_name + '.png')
-		## Saves info about gate to cloud storage
-		Ana.save_info(gate_name + '.txt')
-		## Saves gate as fcs file
-		Ana.save_fcs(gate_name)
-		## Clean up.
-		os.remove(name)
-		os.remove(gate_name + '.txt')
-		os.remove(gate_name + '.png')
-		os.remove(gate_name)
+		if(commands[0] == 'gate_rec'):
+			exitcode = Ana.rect_gate(name, gate_name, coords[0], coords[1], coords[2], coords[3], reverse, x_axis, y_axis)
+		elif(commands[0] == 'gate_cir'):
+			exitcode = Ana.oval_gate(name, gate_name, coords[0], coords[1], coords[2], coords[3], coords[4], coords[5], reverse, x_axis, y_axis)
+		elif(commands[0] == 'gate_poly'):
+			exitcode = Ana.poly_gate(name, gate_name, points, reverse, x_axis, y_axis)
+		if(exitcode == 0):
+			## Save visualisation to cloud storage.
+			Ana.save_vis(gate_name + '.png')
+			f = open(gate_name + '.txt', 'r')
+			info = f.readline()
+			f.close()
+			stats = info.split()
+			f2 = open(gate_name + '.html', 'w')
+			f2.write('<link href="{static "css/app.css" %}" rel ="stylesheet"')
+			f2.write('<p>Number of cells in gate: <span class="gating_num">' + stats[0] + '</span></p>')
+			f2.write('<p>Number of cells in total: <span class="gating_num">' + stats[1] + '</span></p>')
+			f2.write('<p>Percentage ratio: <span class="gating_num">' + str(float(stats[2])*100) + '%</span></p>')
+			f2.close()
+			## Saves info about gate to cloud storage
+			Ana.save_info(gate_name + '.html')
+			## Saves gate as fcs file
+			Ana.save_fcs(gate_name)
+			## Clean up.
+			os.remove(gate_name + '.txt')
+			os.remove(gate_name + '.png')
+			os.remove(gate_name)
+			os.remove(name)
 	elif (commands[0] == 'change_axis'):
 		name = commands[1]
 		x_axis = commands[2]
@@ -121,12 +92,13 @@ while alive:
 		##Loads raw fcs data from cloud storage
 		Ana.load_fcs(name)
 		##Creates a visualisation of the graph with different axis
-		Ana.change_axis(name, x_axis, y_axis)
-		##Saves visualisation to loud storage
-		Ana.save_vis(name + '1.png')
-		## Clean up
-		os.remove(name)
-		os.remove(name + '1.png')
+		exitcode = Ana.change_axis(name, x_axis, y_axis)
+		if(exitcode == 0):
+			##Saves visualisation to loud storage
+			Ana.save_vis(name + x_axis + y_axis + '.png')
+			## Clean up
+			os.remove(name)
+			os.remove(name + x_axis + y_axis + '.png')
 	# Delete any processed tasks from queue.
 	if task_id is not None:
 		Queue.delete('jobs', task_id)

@@ -23,6 +23,19 @@ FEEDBACK_INFO = "alert-info";
 FEEDBACK_WARING = "alert-warning";
 FEEDBACK_DANGER = "alert-danger";
 
+
+/**
+ *	Milliseconds between requests for new graphs
+ */
+GRAPH_POLL_INTERVAL = 1000;
+
+/**
+ *	Number of times to attempt to get a new graph before giving up and requiring a manual refresh
+ */
+GRAPH_LOAD_MAX_ATTEMPTS = 20;
+
+ksfGraphTools.timeoutCounter = GRAPH_LOAD_MAX_ATTEMPTS;
+
 /*
 	Each of the folowing elements represent a graph related tool
 	they contains - an ELEMENT_ID that allows one to access the tool's button
@@ -74,7 +87,9 @@ ksfGraphTools.RectangularGating = {
 	{
 		var posX = event.pageX - $(GRAPH_ID).offset().left,
 		posY = event.pageY - $(GRAPH_ID).offset().top;
-		if (((this.endx === null) || (this.endy === null)) && ((this.startx !== null) || (this.starty !== null))) {
+		if (   ( (this.endx === null)   || (this.endy === null) )
+			&& ( (this.startx !== null) || (this.starty !== null) ) )
+		{
 			ksfCanvas.drawBox(this.startx, this.starty, posX-this.startx, posY-this.starty, 0.5);
 		}
 	},
@@ -312,13 +327,18 @@ ksfGraphTools.sendGatingRequest = ksfGraphTools_sendGatingRequest;
  */
 function ksfGraphTools_setGraphUrl(url)
 {
-	
+	// we let 20 sec for the graph to appear
+	ksfGraphTools.timeoutCounter = GRAPH_LOAD_MAX_ATTEMPTS;
 	$("#graph-img").off('error');
 	$("#graph-img").on('error', function()
 		{
 			ksfCanvas.setLoading(true);
-			setTimeout(ksfGraphTools.reloadImage, 1000);
+			setTimeout(ksfGraphTools.reloadImage, GRAPH_POLL_INTERVAL);
 		} );
+	$("#graph-img").on('load', function()
+		{
+			ksfCanvas.setLoading(false);
+		});
 	$("#graph-img").attr("src", url);
 }
 ksfGraphTools.setGraphUrl = ksfGraphTools_setGraphUrl;
@@ -329,8 +349,16 @@ ksfGraphTools.setGraphUrl = ksfGraphTools_setGraphUrl;
  */
 function ksfGraphTools_reloadImage()
 {
-	ksfCanvas.setLoading(false);
-	$("#graph-img").attr("src", $("#graph-img").attr("src"));
+	ksfGraphTools.timeoutCounter--;
+	if (ksfGraphTools.timeoutCounter === 0)
+	{
+		ksfCanvas.setLoading(false);
+		ksfGraphTools.showFeedback(FEEDBACK_DANGER, "Timeout", "Graph loading failed, try refreshing the page")
+	}
+	else
+	{
+		$("#graph-img").attr("src", $("#graph-img").attr("src"));
+	}
 }
 ksfGraphTools.reloadImage = ksfGraphTools_reloadImage;
 

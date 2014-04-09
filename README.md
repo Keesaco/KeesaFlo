@@ -29,14 +29,23 @@ In addition to these dependencies, the application requires [pyopenssl](https://
 
 Testing:
 --------
-Automated unit testing is included in this project. Given that functionality largely relies on the Google Cloud Platform, these tests must be run using the dev_appserver. When the app is being served by the dev server, navigate to http://localhost:8080/_ah/unittest/ (changing the port if necessary).
-New tests can be added by adding additional methods to existing Python files in the app/test directory, or by adding new test files to the app/test directory and then importing them from app/test/__init__.py.
+Automated unit testing is included in this project. Given that functionality largely relies on the Google Cloud Platform, these tests must be run using the dev_appserver. When the app is being served by the dev server, navigate to http://localhost:8080/\_ah/unittest/ (changing the port if necessary).
+New tests can be added by adding additional methods to existing Python files in the app/test directory, or by adding new test files to the app/test directory and then importing them from app/test/\_\_init\_\_.py.
 
 Running with Local Dev Server:
 ------------------------------
 1. Download the [Google App Engine Python SDK](https://developers.google.com/appengine/downloads).
 2. Acquire dependencies using AppBuild as described above.
 3. Add an (existing) application to the dev_appserver using the 'app' directory as the path.
+
+Running with Vagrant:
+---------------------
+1. Install [Vagrant](https://www.vagrantup.com/downloads.html)
+2. Install [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
+3. From the repository folder, provision and start the VM with 'vagrant up'  (This will take several minutes)
+4. SSH into the VM with 'vagrant ssh'
+5. Start the app server with './start.sh&'
+6. The application can now be accessed from the host machine at localhost:28080 and the administration pages can be accessed at localhost:28000
 
 Contact:
 --------

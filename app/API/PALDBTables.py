@@ -14,6 +14,11 @@ class Files(ndb.Model):
 	file_name 		= ndb.StringProperty()
 	owner_key		= ndb.KeyProperty()
 
+
+	###	User-set information
+	### Allows a (potentially non-unique) name which does not relate to the actual file name
+	friendly_name	= ndb.StringProperty()
+
 class Users(ndb.Model):
 	### unique ID of user (does not change)
 	unique_id 		= ndb.StringProperty()
@@ -36,6 +41,13 @@ class FilePermissions(ndb.Model):
 	write 			= ndb.BooleanProperty()
 	### - full control
 	full_control 	= ndb.BooleanProperty()
+
+	### Not permissions related
+	### These properties store user-specific information about a file
+	### True if the user has starred the file
+	starred 		= ndb.BooleanProperty()
+	###	The colour which the user has given to the file
+	colour			= ndb.StringProperty()
 
 class Elements(ndb.Model):
 	element_ref		= ndb.StringProperty()

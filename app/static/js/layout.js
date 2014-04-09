@@ -1,126 +1,178 @@
 /**
  * \file app/static/js/layout.js
- * \brief Contains code for interacting with UI elements suce as slide-out toolbars
+ * \brief Contains code for interacting with panels and other UI elements.
  * \author jmccrea@keesaco.com of Keesaco
  * \author mrudelle@keesaco.com of Keesaco
  * \author hdoughty@keesaco.com of Keesaco
- */
-
-/**
- * constructor used for namespace
- * \author mrudelle@keesaco.com of Keesaco
- * \note This constructor currently (intentionally) does not have any effect
- */
-function ksfLayout() {
-}
-
-FILE_SIDEBAR_ID = '#sidebar';
-TOOLBAR_ID = '#sidebar2';
-APP_PANEL_CLASS = '.apppanel'
-TOOLBAR_WIDTH = '50px';
-
-/**
- * Adds hook to toggle elements (for the toolbar and the filebar)
- * \author hdoughty@keesaco.com of Keesaco
- * \author mrudelle@keesaco.com of Keesaco
- */
-function ksfLayout_addToggleHook()
-{
-    var fileSelectorPanel = $(FILE_SIDEBAR_ID);
-    var toolbarPanel = $(TOOLBAR_ID);
-	var appPanel = $(APP_PANEL_CLASS);
-	
-    //Handle the filebar behaviour
-    $(window).resize( function() {
-		if(parseInt(fileSelectorPanel.css('marginRight'), 10) < 0)
-		{
-			fileSelectorPanel.css( { marginRight: -fileSelectorPanel.outerWidth() } );
-		}
-	} );
-	
-    //Handle the toolbar behaviour
-    $(window).resize( function() {
-		var browserWidth = $(window).width();
-		if(browserWidth > 767 && parseInt(toolbarPanel.css('marginLeft'), 10) == 0)
-		{
-			toolbarPanel.css( { marginLeft: '0' } );
-		}
-		else if (browserWidth > 767)
-		{
-			toolbarPanel.css( { marginLeft: '0' } );
-		}
-		else
-		{
-			toolbarPanel.css( { marginLeft: ("-" + TOOLBAR_WIDTH) } );
-		}
-	} );
-}
-ksfLayout.addToggleHook = ksfLayout_addToggleHook;
-
-/**
- * Opens or closes the tool selector depending on its current state
- * \author jmccrea@keesaco.com of Keesaco
- */
-function ksfLayout_toggleToolBar()
-{
-    var toolbarPanel = $(TOOLBAR_ID);
-	var appPanel = $(APP_PANEL_CLASS);
-	
-	toolbarPanel.animate( {
-		marginLeft: parseInt(toolbarPanel.css('marginLeft'), 10) == 0
-			? ("-" + TOOLBAR_WIDTH)
-			: 0 });
-	
-    appPanel.animate( {
-		marginLeft: parseInt(appPanel.css('marginLeft'), 10) == 0
-		? TOOLBAR_WIDTH
-		: 0 });
-}
-ksfLayout.toggleToolBar = ksfLayout_toggleToolBar;
-
-/**
- * Toggle the file selector panel
- * \author hdoughty@keesaco.com of Keesaco
- * \author mrudelle@keesaco.com of Keesaco
- */
-function ksfLayout_toggleFileSelector()
-{
-	var fileSelectorPanel = $(FILE_SIDEBAR_ID);
-	
-    fileSelectorPanel.animate( {
-		marginRight: parseInt(fileSelectorPanel.css('marginRight'), 10) == 0
-			? -fileSelectorPanel.outerWidth()
-			: 0 } );
-	
-    var browserWidth = $(window).width();
-    if(browserWidth <= 767 && parseInt(fileSelectorPanel.css('marginRight'), 10) < 0)
-	{
-        $('#dropdownmenu').toggleClass('collapse');
-        $('#dropdownmenu').toggleClass('in');
-    }
-}
-ksfLayout.toggleFileSelector = ksfLayout_toggleFileSelector;
-
-/**
- * Oppens the file selector panel
  * \author swhitehouse@keesaco.com of Keesaco
  */
-function ksfLayout_closeFileSelector()
+/**
+ * \package app.static.js.layout
+ * \brief Provides methods for interacting with UI elements.
+ */
+
+ 
+ /**
+ * Defines the width at which the layout of the web page changes.
+ */
+LAYOUT_WIDTH_THRESHOLD = 767;
+
+/**
+ * Defines the id for the file selector.
+ */
+FILE_SELECTOR_ID = '#sidebar';
+
+/**
+ * Defines the id for the drop down menu (small screens only).
+ */
+DROP_DOWN_ID = '#dropdownmenu';
+
+/**
+ * Defines the id for the app panels (used as margins).
+ */
+APP_PANEL_CLASS = '.apppanel';
+
+
+/**
+ * Constructor for the ksfLayout namespace.
+ * \author mrudelle@keesaco.com of Keesaco
+ * \note This constructor does not have any effect and will never be used.
+ */
+function ksfLayout(){}
+
+
+/**
+ * Toggles whether the file selector panel is in view.
+ * \author swhitehouse@keesaco.com of Keesaco
+ * \author mrudelle@keesaco.com of Keesaco
+ * \author hdoughty@keesaco.com of Keesaco
+ * \note If the screen is small enough to have the drop down menu, the menu closes.
+ */
+function ksfLayout_fileSelectorToggle()
 {
-	$(FILE_SIDEBAR_ID).fileSelectorPanel.animate( { marginRight: 0 } );
+	var fileSelector = $(FILE_SELECTOR_ID);
+	fileSelector.animate( {
+		marginRight: parseInt(fileSelector.css('marginRight'), 10) == 0
+			? -fileSelector.outerWidth()
+			: 0 } );
+
+	if($(window).width() <= LAYOUT_WIDTH_THRESHOLD)
+	{
+		ksfLayout.dropDownOut();
+	}
 }
-ksfLayout.closeFileSelector = ksfLayout_closeFileSelector;
+ksfLayout.fileSelectorToggle = ksfLayout_fileSelectorToggle;
+
+
+/**
+ * Sets the position of the file selector to be in view.
+ * \author swhitehouse@keesaco.com of Keesaco
+ * \author hdoughty@keesaco.com of Keesaco
+ * \author mrudelle@keesaco.com of Keesaco
+ */
+function ksfLayout_fileSelectorIn()
+{
+	$(FILE_SELECTOR_ID).animate({
+		marginRight: 0
+	});
+}
+ksfLayout.fileSelectorIn = ksfLayout_fileSelectorIn;
+
+
+/**
+ * Sets the position of the file selector to be out of view.
+ * \author swhitehouse@keesaco.com of Keesaco
+ * \author hdoughty@keesaco.com of Keesaco
+ * \author mrudelle@keesaco.com of Keesaco
+ */
+function ksfLayout_fileSelectorOut()
+{
+	$(FILE_SELECTOR_ID).animate({
+		marginRight: -$(FILE_SELECTOR_ID).outerWidth()
+	});
+}
+ksfLayout.fileSelectorOut = ksfLayout_fileSelectorOut;
+
+
+/**
+ * Repositions the file selector based on its size.
+ * \author swhitehouse@keesaco.com of Keesaco
+ * \author hdoughty@keesaco.com of Keesaco
+ * \author mrudelle@keesaco.com of Keesaco
+ */
+function ksfLayout_fileSelectorResize()
+{
+	if(parseInt($(FILE_SELECTOR_ID).css('marginRight'), 10) < 0)
+	{
+		$(FILE_SELECTOR_ID).css( { marginRight: -$(FILE_SELECTOR_ID).outerWidth() } );
+	}
+}
+ksfLayout.fileSelectorResize = ksfLayout_fileSelectorResize;
+
+
+/**
+ * Sets the position of the dropdown to be in view.
+ * \author swhitehouse@keesaco.com of Keesaco
+ * \author hdoughty@keesaco.com of Keesaco
+ * \author mrudelle@keesaco.com of Keesaco
+ */
+function ksfLayout_dropDownIn()
+{
+	$('#dropdownmenu').collapse('show');
+}
+ksfLayout.dropDownIn = ksfLayout_dropDownIn;
+
+
+/**
+ * Sets the position of the dropdown to be out of view.
+ * \author swhitehouse@keesaco.com of Keesaco
+ * \author hdoughty@keesaco.com of Keesaco
+ * \author mrudelle@keesaco.com of Keesaco
+ */
+function ksfLayout_dropDownOut()
+{
+	$('#dropdownmenu').collapse('hide');
+}
+ksfLayout.dropDownOut = ksfLayout_dropDownOut;
+
+
+/**
+ * Shows the 'Files' button on the nav bar.
+ * \author jmccrea@keesaco.com of Keesaco
+ * \author swhitehouse@keesaco.com of Keesaco
+ */
+function ksfLayout_filesButtonShow()
+{
+	$(".togglefiles").show();
+}
+ksfLayout.filesButtonShow = ksfLayout_filesButtonShow;
+
+
+function ksfLayout_filesButtonHide()
+{
+	ksfLayout.fileSelectorOut();
+	$(".togglefiles").hide();
+}
+ksfLayout.filesButtonHide = ksfLayout_filesButtonHide;
+
+
+/*
+ * Hooks file selector repositioning to the window being resized.
+ */
+$(window).resize(ksfLayout.fileSelectorResize);
+
 
 /**
  * Sets up file preview view for new file
- * \author jmccrea@keesaco.com of Keesaco
+ * \author mrudelle@keesaco.com of Keesaco
  */
 function ksfLayout_filePreviewStart()
 {
 	ksfCanvas.addListener();
-	$("#file-selector-open").click(ksfLayout.toggleFileSelector);
+	$("#togglefiles").click(ksfLayout.fileSelectorToggle);
 }
 ksfLayout.filePreviewStart = ksfLayout_filePreviewStart;
+
 
 /**
  * Sets up tooltip classes
@@ -128,19 +180,82 @@ ksfLayout.filePreviewStart = ksfLayout_filePreviewStart;
  */
 function ksfLayout_initTips()
 {
+	/**
+	 * Options to be applied to all tooltips
+	 */
 	var qTipOptions =
 	{
-		style: 		{ classes: 'qtip-bootstrap qtip-shadow qtip-rounded' },
-		position: 	{ container: $('div.tooltips') }
+		style: 		{ classes: 'qtip-dark qtip-shadow qtip-rounded' },
+		show:		{ delay: 800 },
+		overwrite: 	false,
 	};
-	
 	var tipSelector = $('[title!=""]').not('.notip');
 	
-	[	{ name: '.tip-right',	ext: { position: {my: 'center left', at: 'center right' } } },
-		{ name: '.tip-left', 	ext: { position: {my: 'center right', at: 'center left' } } },
-		{ name: '.tip-top', 	ext: { position: {my: 'bottom center', at: 'top center' } } },
-		{ name: '.tip-bottom', 	ext: { position: {my: 'top center', at: 'bottom center' } } } ]
+	/* */
+	[	{ name: '.tip-right',	ext: { position: { my: 'center left', at: 'center right' } } },
+		{ name: '.tip-left', 	ext: { position: { my: 'center right', at: 'center left' } } },
+		{ name: '.tip-top', 	ext: { position: { my: 'bottom center', at: 'top center' } } },
+		{ name: '.tip-bottom', 	ext: { position: { my: 'top center', at: 'bottom center' } } } ]
 		.forEach( function(t) {
-			 tipSelector.filter(t.name).qtip($.extend(true, {}, qTipOptions, t.ext ) );
+			$(tipSelector).on('mouseover', t.name,
+			function(event)
+			{
+				var eventExt =
+				{
+					show: {
+						  event: event.type,
+						  ready: true
+					}
+				};
+				$(this).qtip($.extend(true, {}, eventExt, t.ext, qTipOptions), event);
+			} )
+			.each(function(i) {
+				// removed to prevent error, TODO: reinstate and fix
+				  
+				//$.attr(this, 'oldtitle', $.attr(this, 'title'));
+				//this.removeAttribute('title');
+			  });
 		} );
+		
+	$(document).on('mouseover', '.file-list-item',
+		function(event)
+		{
+			var eventExt =
+			{
+				show: {
+					event: event.type,
+					ready: true
+				},
+				position: {
+					my: 'right center',
+					at: 'left center',
+					viewport: $('#appmain')
+				},
+				style : {
+				   classes: 'file-preview-tip qtip-bootstrap qtip-shadow qtip-rounded'
+				},
+				content: {
+					text: function(event, api)
+					{
+						var prevUrl = ksfData.baseUrl() + "panels/vol/graph_preview/file=" + api.elements.target.children('.file-list-link').first().attr('href').split('/preview/')[1];
+						$.ajax( {
+							   url: prevUrl
+						} )
+						.then(
+							function(content) {
+								api.set('content.text', content);
+							},
+							function(xhr, status, error) {
+								api.set('content.text', status + ': ' + error);
+							});
+					  	//TODO: refactor
+						return '<div class="loading" style="width: 200px; height:200px">&nbsp</div>';
+					}
+				},
+			};
+			$(this).qtip($.extend(true, {}, qTipOptions, eventExt), event);
+		} )
+	
+	
 }
+ksfLayout.initTips = ksfLayout_initTips;

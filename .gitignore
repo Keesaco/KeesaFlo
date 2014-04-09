@@ -18,6 +18,10 @@ app/Analysis/ComputeEngine/Assets/oauth2.dat
 ehthumbs.db
 Thumbs.db
 
+# Vagrant #
+###########
+.vagrant
+
 # AppBuild tracked dependencies #
 #################################
 AppBuild.py

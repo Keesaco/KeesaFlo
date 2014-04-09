@@ -12,9 +12,9 @@
 	</div>	
 	<div class="well app-well">
 		<h3 id="filename">{{ current_file.filename }}<span id="filesize" class="label label-default">{{ current_file.st_size|filesizeformat }}</span></h3>
-		<div id="gating-stats">
+		<!--<div id="gating-stats">
 			<span>Loading...</span>
-		</div>
+		</div>-->
 		<div class="btn-group btn-group-lg action-btn-group">
 			<button type="button" class="btn btn-defauls btn-download"><a href="{% url get_dataset current_file.filename %}">Download Dataset</a></button>
 		  	<button type="button" class="btn btn-defauls" id="request-gating-btn" disabled>Create gating</button>
@@ -37,7 +37,7 @@
 			</span> !</p>
 		<p>To get started, first select a file in the 
 			<span class="label label-success">
-				<a title="Files" id="file-selector-open">file selector</a>
+				<a title="Files" id="togglefiles">file selector</a>
 			</span> or 
 			<span class="label label-success">
 				<a title="Upload"  data-toggle="modal" data-target="#uploadModal">upload a new file</a>

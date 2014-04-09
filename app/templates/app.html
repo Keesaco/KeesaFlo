@@ -22,9 +22,6 @@
 		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
 			<span class="glyphicon glyphicon-chevron-down white"></span>
 		</button>
-        <button type="button" class="toggletools navbar-toggle pull-left visible-xs" data-toggle="offcanvas">
-			<span class="glyphicon glyphicon-th-list white"></span>
-		</button>
 		<a class="navbar-brand logo" href="#!/"><img src="/static/images/logo.png">KeesaFlo</a>
 	</div>
 	<div class="nav-collapse navbar-collapse collapse" id="dropdownmenu">
@@ -44,31 +41,26 @@
     </div>
 </nav>
 <div class="row row-offcanvas row-offcanvas-left">
-    <!--toolbar-->
-    <div class="toolbar-offcanvas tools-offcanvas" id="sidebar2" role="navigation">
-        <nav class="navbar navbar-inverse navbar-default navbar-static-top" role="navigation">
-			<div class="navbar-header">
-				<a class="navbar-brand" id="toolselector-header">Tools</a>
-			</div>
-		</nav>
-		<div class="navpanel" id="toolselector">
-			<span>Loading...</span>
-		</div>
-    </div>
+    <!--toolselector-->
+	<div class="navpanel" id="toolselector">
+		<span>Loading...</span>
+	</div>
 	<!-- main panel -->
 	<div class="apppanel tools-offcanvas" id="appmain">
 		<span>Loading...</span>
 	</div>
     <!-- file panel -->
-	<div class="col-sm-2 col-xs-5 sidebar-offcanvas" id="sidebar" role="navigation">
+		<div class="col-lg-2 col-md-3 col-sm-4 col-xs-5 sidebar-offcanvas" id="sidebar" role="navigation">
 		<nav class="navbar navbar-inverse navbar-default navbar-static-top" role="navigation">
 			<div class="navbar-header">
 				<a class="navbar-brand togglefiles" href="#">Files</a>
 			</div>
 		</nav>
 		<div class="filepanel">
-			<div class="list-group" id="filelist">
-				<a class="list-group-item">Loading...</a>
+			<div class="list-group">
+				<div class="list-group footnav-pad" id="filelist">
+					<a class="list-group-item">Loading...</a>
+				</div>
 			</div>
 		</div>
 		<ul class="nav nav-pills bottom-nav">
@@ -129,31 +121,35 @@
 {% endblock content %}
 
 {% block javascriptimport %}
-    <!-- Le javascript
-    ================================================== -->
-    <!--Placed at the end of the document so the pages load faster but lot of these might not be useful to load-->
-    {{ block.super }}
-    {% load staticfiles %}
+	<!-- Le javascript
+	================================================== -->
+	<!--Placed at the end of the document so the pages load faster but lot of these might not be useful to load-->
+	{{ block.super }}
+	{% load staticfiles %}
 	<!-- 3rd party libraries -->
 	<script src="{% static "js/jquery.color.js" %}"></script>
 	<script src="{% static "js/bootstrap-tour.min.js" %}"></script>
-    <script src="{% static "js/helptour.js" %}"></script>
 	<script src="{% static "js/qtip.min.js" %}"></script>
-	
+
 	<!-- KeesaFlo app framework -->
 	<script src="{% static "js/request.js" %}"></script>
 	<script src="{% static "js/data.js" %}"></script>
 	<script src="{% static "js/processing.js" %}"></script>
-	<script src="{% static "js/views.js" %}"></script>
-	
-	<!-- KeesaFlo tools/libraries -->
+
+	<!-- KeesaFlo UI -->
 	<script src="{% static "js/layout.js" %}"></script>
+	<script src="{% static "js/filebar.js" %}"></script>
+	<script src="{% static "js/views.js" %}"></script>
+
+	<!-- KeesaFlo tools/libraries -->
 	<script src="{% static "js/canvas.js" %}"></script>
 	<script src="{% static "js/graphTools.js" %}"></script>
 	<script src="{% static "js/tools.js" %}"></script>
-	
-	<!-- appstart should be last -->
+
+	<!-- help and appstart should be last (in this order)-->
+	<script src="{% static "js/help.js" %}"></script>
 	<script src="{% static "js/appstart.js" %}"></script>
-	
-	
+
+
 {% endblock javascriptimport %}
+
