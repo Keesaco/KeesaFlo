@@ -588,18 +588,17 @@ def add_element_permissions(u_key,e_key,set_access):
 ## \brief modifies an element permission by key
 ## \param key - [Key] key of entry
 ## \param new_access - [Boolean] new access 
-## \return key of object ot false on failure
+## \return key of object or None on failure
 ## \author cwike@keesaco.com of Keesaco
 ## \note Untested - Needs testing
 ###########################################################################
 def modify_element_permissions_by_key(key,new_access):
 	obj = key.get()
 
-	if obj is None:
-		return False
-	else:
+	if obj is not None:
 		obj.access = new_access
 		return obj.put()
+	return None
 
 ###########################################################################
 ## \brief modifies an element permission by keys
@@ -616,13 +615,10 @@ def modify_user_element_permissions(user_key,element_key,new_access):
 											 ElementPermissions.element_key == element_key))
 
 		obj = query.get()
-		if obj is None:
-			return False
-		else:
+		if obj is not None:
 			obj.access = new_access
 			return obj.put
-	else:
-		return False
+	return None
 
 ###########################################################################
 ## \brief revokes all permissions in an element
@@ -760,4 +756,4 @@ def get_user_element_permissions_key(user_key, element_key):
 											 ElementPermissions.element_key == element_key))
 		return query.get().key
 	else:
-		return False
+		return None
