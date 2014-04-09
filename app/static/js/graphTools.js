@@ -106,7 +106,7 @@ ksfGraphTools.RectangularGating = {
 	
 	requestGating : function()
 	{
-		ksfGraphTools.sendGatingRequest('gating/rectangular/' + this.startx + "," + this.starty + "," + this.endx + "," + this.endy);
+		ksfGraphTools.sendGatingRequest('tool/rectangular_gating/' + this.startx + "," + this.starty + "," + this.endx + "," + this.endy);
 	}
 }
 
@@ -194,7 +194,7 @@ ksfGraphTools.PolygonGating = {
 	
 	requestGating : function()
 	{
-		var URL = "gating/polygon/" + this.xList.concat(this.yList).join(",");
+		var URL = "tool/polygon_gating/" + this.xList.concat(this.yList).join(",");
 		ksfGraphTools.sendGatingRequest(URL);
 	}
 }
@@ -281,7 +281,7 @@ ksfGraphTools.OvalGating = {
 		var angle = ksfGraphTools.mesureAngle(tx, ty);
 		var p1x=this.centerx+Math.cos(angle-Math.PI/2)*this.r1,
 		p1y=this.centery+Math.sin(angle-Math.PI/2)*this.r1;
-		ksfGraphTools.sendGatingRequest("gating/oval/" + this.centerx + "," + this.centery + "," + p1x + "," + p1y + "," + this.pointx + "," + this.pointy);
+		ksfGraphTools.sendGatingRequest("tool/oval_gating/" + this.centerx + "," + this.centery + "," + p1x + "," + p1y + "," + this.pointx + "," + this.pointy);
 	}
 }
 
