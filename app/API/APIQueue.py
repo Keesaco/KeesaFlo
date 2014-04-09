@@ -49,10 +49,11 @@ def gate_circle(	filename, coords, gatename, reverse, x_axis, y_axis):
 	queue.add_task('jobs', 'gate_cir;' + filename + ';' + coords + ';' + gatename + ';' + reverse + ';' + x_axis + ';' + y_axis)
 
 def gate_boolean(	filename, gatename, boolean_op, gate1_type, gate1_coords, 
-	gate1_reverse, gate2_type, gate2_coords, gate2_reverse, x_axis, y_axis):
+	gate1_reverse, gate2_type, gate2_coords, gate2_reverse, x_axis, y_axis, gate2_x_axis, gate2_y_axis):
 	queue.add_task('jobs', 'gate_bool;' + filename + ';'+ gate1_coords + ';' + gatename +
 		';' + gate1_reverse + ';' + x_axis + ';' + y_axis + ';' + boolean_op + ';' + 
-		gate1_type + ';' + gate2_type + ';' + gate2_coords + ';' + gate2_reverse)
+		gate1_type + ';' + gate2_type + ';' + gate2_coords + ';' + gate2_reverse + ';' +
+		gate2_x_axis + ';' + gate2_y_axis)
 
 ###########################################################################
 ## \brief Adds a task to perform a circular gate on fcs data.

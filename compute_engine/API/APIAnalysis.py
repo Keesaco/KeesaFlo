@@ -101,8 +101,10 @@ def oval_gate(name, gate_name, mean_x, mean_y, a_x, a_y, b_x, b_y, reverse, x_ax
 def poly_gate(name, gate_name, points, reverse, x_axis, y_axis):
 	return subprocess.call(["Rscript", "gate.r", name, gate_name, "poly", reverse, points, x_axis, y_axis])
 
-def bool_gate(name, gate_name, boolean_op, gate1_type, points1, reverse1, gate2_type, points2, reverse2, x_axis, y_axis):
-	return subprocess.call(["Rscript", "boolean.r", name, gate_name, boolean_op, gate1_type, points1, reverse1, gate2_type, points2, reverse2, x_axis, y_axis])
+def bool_gate(name, gate_name, boolean_op, gate1_type, points1, reverse1, gate2_type, 
+	points2, reverse2, gate1_x_axis, gate1_y_axis, gate2_x_axis, gate2_y_axis):
+	return subprocess.call(["Rscript", "boolean.r", name, gate_name, boolean_op, gate1_type, 
+		points1, reverse1, gate2_type, points2, reverse2, gate1_x_axis, gate1_y_axis, gate2_x_axis, gate2_y_axis])
 
 ###########################################################################
 ## \brief Saves a visualisation image from local disk to Datastore

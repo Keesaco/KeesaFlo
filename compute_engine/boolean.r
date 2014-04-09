@@ -19,6 +19,8 @@ points2 <- args[8]
 reverse2 <- as.integer(args[9])
 x_axis <- args[10]
 y_axis <- args[11]
+gate2_x_axis <- args[12]
+gate2_y_axis <- args[13]
 
 ## Read fcs data.
 if(file.exists(fcs_name) == FALSE)
@@ -34,12 +36,12 @@ if(gate1_type == 'rect')
 {
 	points <- pointsStringToVector(points1)
 	points <- convertRectCoords(points[1], points[2], points[3], points[4], r1[1,1], r1[2,1], r2[1,1], r2[2,1])
-	gate1 <- createRectGate(points[1], points[2], points[3], points[4], a, b)
+	gate1 <- createRectGate(points[1], points[2], points[3], points[4], x_axis, y_axis)
 } else if(gate1_type == 'oval')
 {
 	points <- pointsStringToVector(points1)
 	points <- convertOvalCoords(points[1], points[2], points[3], points[4], points[5], points[6], r1[1,1], r1[2,1], r2[1,1], r2[2,1])
-	gate1 <- createEllipsoidGate(points[1], points[2], points[3], points[4], points[5], points[6], a, b)
+	gate1 <- createEllipsoidGate(points[1], points[2], points[3], points[4], points[5], points[6], x_axis, y_axis)
 } else if(gate1_type == 'poly')
 {
 	points <- strsplit(points1, " ")
@@ -53,18 +55,18 @@ if(gate2_type == 'rect')
 {
 	points <- pointsStringToVector(points2)
 	points <- convertRectCoords(points[1], points[2], points[3], points[4], r1[1,1], r1[2,1], r2[1,1], r2[2,1])
-	gate2 <- createRectGate(points[1], points[2], points[3], points[4], a, b)
+	gate2 <- createRectGate(points[1], points[2], points[3], points[4], gate2_x_axis, gate2_y_axis)
 } else if(gate2_type == 'oval')
 {
 	points <- pointsStringToVector(points2)
 	points <- convertOvalCoords(points[1], points[2], points[3], points[4], points[5], points[6], r1[1,1], r1[2,1], r2[1,1], r2[2,1])
-	gate2 <- createEllipsoidGate(points[1], points[2], points[3], points[4], points[5], points[6], a, b)
+	gate2 <- createEllipsoidGate(points[1], points[2], points[3], points[4], points[5], points[6], gate2_x_axis, gate2_y_axis)
 } else if(gate2_type == 'poly')
 {
 	points <- strsplit(points2, " ")
 	l <- length(points[[1]])
 	newPoints <- convertPolyCoords(points, l, r1[1,1], r1[2,1], r2[1,1], r2[2,1])
-	gate2 <- createPolyGate(newPoints, l/2, x_axis, y_axis)
+	gate2 <- createPolyGate(newPoints, l/2, gate2_x_axis, gate2_y_axis)
 }
 
 ## Creates subset of data based on gates and boolean operator
