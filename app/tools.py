@@ -1,3 +1,9 @@
+###########################################################################
+## \file app/tools.py
+## \brief Stores all the available tools and their actions
+## \author mrudelle@keesaco.com of Keesaco
+###########################################################################
+
 import API.APIQueue as queue
 from django.core.urlresolvers import reverse
 import logging
@@ -6,6 +12,7 @@ import logging
 ## \brief Is called when a rectangular gating is requested.
 ## \param params - Paramesters of this gating, string of the form: topLeftx,topLefty,bottomRightx,bottomRighty,newFilename
 ## \return a dictionary with the status of the gating, a short message and the link to the newly created graph
+## \author mrudelle@keesaco.com of Keesaco
 ###########################################################################
 def rect_gating(paramList):
 	if len(paramList) == 5 :
@@ -40,6 +47,7 @@ def rect_gating(paramList):
 ## \brief Is called when a polygonal gating is requested.
 ## \param params - Paramesters of this gating, string of the form: x1,y1,x2,y2,...xn,yn,newFilename
 ## \return a dictionary with the status of the gating, a short message and the link to the newly created graph
+## \author mrudelle@keesaco.com of Keesaco
 ###########################################################################
 def poly_gating(paramList):
 	if len(paramList)%2 == 1 :
@@ -64,6 +72,7 @@ def poly_gating(paramList):
 ## \brief Is called when an oval gating is requested.
 ## \param params - Paramesters of this gating, string of the form: meanx,meany,point1x,point1y,point2x,point2y,newFilename
 ## \return a dictionary with the status of the gating, a short message and the link to the newly created graph
+## \author mrudelle@keesaco.com of Keesaco
 ###########################################################################
 def oval_gating(paramList):
 	if len(paramList) == 7 :
@@ -88,6 +97,7 @@ def oval_gating(paramList):
 ## \brief Is called when the requested tool is not in the dictionary of known tools
 ## \param paramsList - Paramesters that comes with this tool call
 ## \return a dictionary with the status of the tool call
+## \author mrudelle@keesaco.com of Keesaco
 ###########################################################################
 def no_such_tool(paramList, name):
 
