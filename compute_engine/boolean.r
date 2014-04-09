@@ -32,42 +32,10 @@ r1 <- range(x[,1])
 r2 <- range(x[,2])
 
 ## Creates a gate object based on the specified parameters
-if(gate1_type == 'rect')
-{
-	points <- pointsStringToVector(points1)
-	points <- convertRectCoords(points[1], points[2], points[3], points[4], r1[1,1], r1[2,1], r2[1,1], r2[2,1])
-	gate1 <- createRectGate(points[1], points[2], points[3], points[4], x_axis, y_axis)
-} else if(gate1_type == 'oval')
-{
-	points <- pointsStringToVector(points1)
-	points <- convertOvalCoords(points[1], points[2], points[3], points[4], points[5], points[6], r1[1,1], r1[2,1], r2[1,1], r2[2,1])
-	gate1 <- createEllipsoidGate(points[1], points[2], points[3], points[4], points[5], points[6], x_axis, y_axis)
-} else if(gate1_type == 'poly')
-{
-	points <- strsplit(points1, " ")
-	l <- length(points[[1]])
-	newPoints <- convertPolyCoords(points, l, r1[1,1], r1[2,1], r2[1,1], r2[2,1])
-	gate1 <- createPolyGate(newPoints, l/2, x_axis, y_axis)
-}
+gate1 <- createBasicGate(gate1_type, points1, r1, r2, x_axis, y_axis)
 
 ## Creates a second gate object based on the specified parameters
-if(gate2_type == 'rect')
-{
-	points <- pointsStringToVector(points2)
-	points <- convertRectCoords(points[1], points[2], points[3], points[4], r1[1,1], r1[2,1], r2[1,1], r2[2,1])
-	gate2 <- createRectGate(points[1], points[2], points[3], points[4], gate2_x_axis, gate2_y_axis)
-} else if(gate2_type == 'oval')
-{
-	points <- pointsStringToVector(points2)
-	points <- convertOvalCoords(points[1], points[2], points[3], points[4], points[5], points[6], r1[1,1], r1[2,1], r2[1,1], r2[2,1])
-	gate2 <- createEllipsoidGate(points[1], points[2], points[3], points[4], points[5], points[6], gate2_x_axis, gate2_y_axis)
-} else if(gate2_type == 'poly')
-{
-	points <- strsplit(points2, " ")
-	l <- length(points[[1]])
-	newPoints <- convertPolyCoords(points, l, r1[1,1], r1[2,1], r2[1,1], r2[2,1])
-	gate2 <- createPolyGate(newPoints, l/2, gate2_x_axis, gate2_y_axis)
-}
+gate2 <- createBasicGate(gate2_type, points2, r1, r2, gate2_x_axis, gate2_y_axis)
 
 ## Creates subset of data based on gates and boolean operator
 if(reverse1)

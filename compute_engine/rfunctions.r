@@ -140,7 +140,8 @@ pointsStringToVector <- function(points)
 ###########################################################################
 createRectGate <- function(topLeftx, topLefty, bottomRightx, bottomRighty, x_axis, y_axis)
 {
-	mat <- matrix(c(topLeftx, bottomRightx, bottomRighty, topLefty), ncol=2, dimnames=list(c("min", "max"), c(x_axis, y_axis)))
+	mat <- matrix(c(topLeftx, bottomRightx, bottomRighty, topLefty), ncol=2, 
+		dimnames=list(c("min", "max"), c(x_axis, y_axis)))
 	return(rectangleGate(.gate=mat))
 }
 
@@ -166,8 +167,10 @@ createEllipsoidGate <- function(mean_x, mean_y, ax, ay, bx, by, x_axis, y_axis)
 	v21 <- v12 ## This ensures the eigenvectors are perpendicular to each other
 	v22 <- -v11
 	## Calculate covariance matrix
-	V <- matrix(c(v11, v21, v12, v22), ncol = 2, dimnames=list(c(x_axis, y_axis), c(x_axis, y_axis)))
-	L <- matrix(c(l1, 0, 0, l2), ncol = 2, dimnames=list(c(x_axis, y_axis), c(x_axis, y_axis)))
+	V <- matrix(c(v11, v21, v12, v22), ncol = 2, dimnames=list(c(x_axis, y_axis), 
+		c(x_axis, y_axis)))
+	L <- matrix(c(l1, 0, 0, l2), ncol = 2, dimnames=list(c(x_axis, y_axis), 
+		c(x_axis, y_axis)))
 	cov <- V %*% L %*% solve(V)
 	## Creates the gating parameters
 	mean <- c(a=mean_x, b=mean_y)
@@ -187,6 +190,32 @@ createPolyGate <- function(points, n, x_axis, y_axis)
 	rownames <- c(1:n)
 	mat <- matrix(points, ncol=2, dimnames=list(rownames, c(x_axis, y_axis)))
 	return(polygonGate(.gate=mat))
+}
+
+createBasicGate <- function(gate_type, coords, range_x, range_y, x_axis, y_axis)
+{
+	if(gate_type == 'rect')
+	{
+		points <- pointsStringToVector(coords)
+		points <- convertRectCoords(points[1], points[2], points[3], points[4], 
+			range_x[1,1], range_x[2,1], range_y[1,1], range_y[2,1])
+		gate <- createRectGate(points[1], points[2], points[3], points[4], x_axis, y_axis)
+	} else if(gate_type == 'oval')
+	{
+		points <- pointsStringToVector(coords)
+		points <- convertOvalCoords(points[1], points[2], points[3], points[4], 
+			points[5], points[6], range_x[1,1], range_x[2,1], range_y[1,1], range_y[2,1])
+		gate <- createEllipsoidGate(points[1], points[2], points[3], points[4], 
+			points[5], points[6], x_axis, y_axis)
+	} else if(gate_type == 'poly')
+	{
+		points <- strsplit(coords, " ")
+		l <- length(points[[1]])
+		newPoints <- convertPolyCoords(points, l, range_x[1,1], range_x[2,1], 
+			range_y[1,1], range_y[2,1])
+		gate <- createPolyGate(newPoints, l/2, x_axis, y_axis)
+	}
+	return(gate)
 }
 
 ###########################################################################
