@@ -29,6 +29,7 @@ def kill():
 
 ###########################################################################
 ## \brief Adds a task to perform a rectangle gate on fcs data.
+## \author rmurley@keesaco.com of Keesaco
 ## \author hdoughty@keesaco.com of Keesaco
 ###########################################################################
 def gate_rectangle(	filename, coords, gatename, reverse, x_axis, y_axis):
@@ -36,6 +37,7 @@ def gate_rectangle(	filename, coords, gatename, reverse, x_axis, y_axis):
 
 ###########################################################################
 ## \brief Adds a task to perform a polyagonal gate on fcs data.
+## \author rmurley@keesaco.com of Keesaco
 ## \author hdoughty@keesaco.com of Keesaco
 ###########################################################################
 def gate_polygon(	filename, coords, gatename, reverse, x_axis, y_axis):
@@ -43,6 +45,7 @@ def gate_polygon(	filename, coords, gatename, reverse, x_axis, y_axis):
 
 ###########################################################################
 ## \brief Adds a task to perform a circular gate on fcs data.
+## \author rmurley@keesaco.com of Keesaco
 ## \author hdoughty@keesaco.com of Keesaco
 ###########################################################################
 def gate_circle(	filename, coords, gatename, reverse, x_axis, y_axis):
