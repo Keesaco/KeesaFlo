@@ -48,3 +48,14 @@ class FilePermissions(ndb.Model):
 	starred 		= ndb.BooleanProperty()
 	###	The colour which the user has given to the file
 	colour			= ndb.StringProperty()
+
+class Elements(ndb.Model):
+	element_ref		= ndb.StringProperty()
+
+class ElementPermissions(ndb.Model):
+	
+	user_key		= ndb.KeyProperty()
+	element_key		= ndb.KeyProperty()
+
+	access			= ndb.BooleanProperty()
+	

@@ -301,3 +301,192 @@ def get_file_permissions_list(file_key):
 ###########################################################################
 def get_user_permissions_list(user_key):
 	return PAL.get_user_permissions_list(user_key)
+
+###########################################################################
+## \brief adds a named element to element table
+## \param ref - [String] reference to named element
+## \return key of new entry
+## \author cwike@keesaco.com of Keesaco
+## \note Untested - Needs testing
+###########################################################################
+def add_element(ref):
+	return PAL.add_element(ref)
+
+###########################################################################
+## \brief removes a named element from table by name
+## \param element_ref - [String] name of named element
+## \return True on success, False otherwise
+## \author cwike@keesaco.com of Keesaco
+## \note Untested - Needs testing
+###########################################################################
+def remove_element_by_ref(element_ref):
+	return PAL.remove_element_by_ref(element_ref)
+
+###########################################################################
+## \brief removes a named element from table by entry key
+## \param element_key - [Key] key of entry to remove
+## \return True on success, False otherwise
+## \author cwike@keesaco.com of Keesaco
+## \note Untested - Needs testing
+###########################################################################
+def remove_element_by_key(element_key):
+	return PAL.remove_element_by_key(element_key)
+
+###########################################################################
+## \brief renames element reference
+## \param old_ref - [String] named reference to rename
+## \param new_ref - [String] new name for element
+## \return key of element renamed
+## \author cwike@keesaco.com of Keesaco
+## \note Untested - Needs testing
+###########################################################################
+def rename_element(old_ref, new_ref):
+	return PAL.rename_element(old_ref, new_ref)
+
+###########################################################################
+## \brief gets an element by key
+## \param element_key - [Key] key of element to get
+## \return element os success or None
+## \author cwike@keesaco.com of Keesaco
+## \note Untested - Needs testing
+###########################################################################
+def get_element_by_key(element_key):
+	return PAL.get_element_by_key(element_key)
+
+###########################################################################
+## \brief gets element key by element reference
+## \param element_ref - [String] named element reference
+## \return key of element on success, None otherwise
+## \author cwike@keesaco.com of Keesaco
+## \note Untested - Needs testing
+###########################################################################
+def get_element_key_by_ref(element_ref):
+	return PAL.get_element_key_by_ref(element_ref)
+
+###########################################################################
+## \brief adds an element permissions entry
+## \param u_key - [Key] user key of entry
+## \param e_key - [Key] element key of entry
+## \param set_access - [Boolean] permissions
+## \return key of new object
+## \author cwike@keesaco.com of Keesaco
+## \note Untested - Needs testing
+###########################################################################
+def add_element_permissions(u_key,e_key,set_access):
+	return PAL.add_element_permissions(u_key,e_key,set_access)
+
+###########################################################################
+## \brief modifies an element permission by key
+## \param key - [Key] key of entry
+## \param new_access - [Boolean] new access 
+## \return key of object ot false on failure
+## \author cwike@keesaco.com of Keesaco
+## \note Untested - Needs testing
+###########################################################################
+def modify_element_permissions_by_key(key,new_access):
+	return PAL.modify_element_permissions_by_key(key,new_access)
+
+###########################################################################
+## \brief modifies an element permission by keys
+## \param user_key - [Key] key of user
+## \param element_key - [Key] key of element
+## \param new_access - [Boolean] new access perameter
+## \return key or False on failure
+## \author cwike@keesaco.com of Keesaco
+## \note Untested - Needs testing
+###########################################################################
+def modify_user_element_permissions(user_key,element_key,new_access):
+	return PAL.modify_user_element_permissions(user_key,element_key,new_access)
+
+###########################################################################
+## \brief revokes all permissions in an element
+## \param element_key - [Key] key of element to be revoked by
+## \return True on success, False otherwise
+## \author cwike@keesaco.com of Keesaco
+## \note Untested - Needs testing
+###########################################################################
+def revoke_element_permissions_element_key(element_key):
+	return PAL.revoke_element_permissions_element_key(element_key)
+
+###########################################################################
+## \brief revokes all permisions by user
+## \param user_key - [Key] user to revoke on
+## \return True on success, False otherwise
+## \author cwike@keesaco.com of Keesaco
+## \note Untested - Needs testing
+###########################################################################
+def revoke_element_permissions_user_key(user_key):
+	return PAL.revoke_element_permissions_user_key(user_key)
+
+###########################################################################
+## \brief revokes a permission based on user and element
+## \param user_key - [Key] key of user to revoke by
+## \param element_key - [Key] key of element to revoke by
+## \return True on success, False otherwise
+## \author cwike@keesaco.com of Keesaco
+## \note Untested - Needs testing
+###########################################################################
+def revoke_user_element_permissions(user_key,element_key):
+	return PAL.revoke_user_element_permissions(user_key,element_key)
+
+###########################################################################
+## \brief revoke a permission entry by its key
+## \param key - [Key] key to revoke by
+## \return True on success, False otherwise
+## \author cwike@keesaco.com of Keesaco
+## \note Untested - Needs testing
+###########################################################################
+def revoke_element_permissions_by_key(key):
+	return PAL.revoke_element_permissions_by_key(key)
+
+###########################################################################
+## \brief gets all perfmissions attached to an element
+## \param element_key - [Key] key of element to get by
+## \return iterator over all permissions attached to element
+## \author cwike@keesaco.com of Keesaco
+## \note Untested - Needs testing
+###########################################################################
+def get_element_permissions_by_element_key(element_key):
+	return PAL.get_element_permissions_by_element_key(element_key)
+
+###########################################################################
+## \brief gets all perfmissions attached to an user
+## \param user_key - [Key] key of user to get by
+## \return iterator over all permissions attached to user
+## \author cwike@keesaco.com of Keesaco
+## \note Untested - Needs testing
+###########################################################################
+def get_element_permissions_by_user_key(user_key):
+	return PAL.get_element_permissions_by_user_key(user_key)
+
+###########################################################################
+## \brief gets permission attached to user and element
+## \param user_key - [Key] key of user to get by
+## \param element_key - [Key] key of user to get by
+## \return object on success, None otherwise 
+## \author cwike@keesaco.com of Keesaco
+## \note Untested - Needs testing
+###########################################################################
+def get_user_element_permissions(user_key,element_key):
+	return PAL.get_user_element_permissions(user_key,element_key)
+
+###########################################################################
+## \brief gets an element permissions by key
+## \param key - [Key] key of pernissions to get
+## \return object or None
+## \author cwike@keesaco.com of Keesaco
+## \note Untested - Needs testing
+###########################################################################
+def get_element_permissions_by_key(key):
+	return PAL.get_element_permissions_by_key(key)
+
+###########################################################################
+## \brief gets a key of permissions by keys
+## \param user_key - [Key] user entry pertains to
+## \param element_key - [Key] element entry pertains to
+## \return key on success, False otherwise
+## \author cwike@keesaco.com of Keesaco
+## \note Untested - Needs testing
+###########################################################################
+def get_user_element_permissions_key(user_key, element_key):
+	return PAL.get_user_element_permissions_key(user_key, element_key)

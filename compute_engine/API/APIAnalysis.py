@@ -60,13 +60,16 @@ def change_axis(name, x_axis, y_axis):
 	return subprocess.call(["Rscript", "axis.r", name, name + x_axis + y_axis + '.png', x_axis, y_axis])
 
 ###########################################################################
-## \brief Saves a visualisation of a gated fcs file
+## \brief Saves a visualisation of a rectangular gated fcs file
 ## \param name - name of fcs file to gate
+## \param gate_name - name of gate to be created
 ## \param top_left_x - x coordinate of top left corner of rectangular gate
 ## \param top_left_y - y coordinate of top left corner of rectangular gate
 ## \param bottom_right_x - x coordinate of bottom right corner of rectangular gate
 ## \param bottom_right_y - y coordinate of bottom right corner of rectangular gate
-## \param reverse boolean representing whether cells in gate kept or removed
+## \param reverse boolean representing whether cells in gate are kept or removed
+## \param x_axis - name of x_axis desired
+## \param y_axis - name of y_axis desired
 ## \return returns exit code from the subprocess
 ## \note all parameters should be strings
 ## \author hdoughty@keesaco.com of Keesaco
@@ -75,14 +78,18 @@ def rect_gate(  name, gate_name, top_left_x, top_left_y, bottom_right_x, bottom_
 	return subprocess.call(["Rscript", "gate.r", name, gate_name, "rect", reverse, top_left_x, top_left_y, bottom_right_x, bottom_right_y, x_axis, y_axis])
 
 ###########################################################################
-## \brief Saves a visualisation of a gated fcs file
+## \brief Saves a visualisation of an oval gated fcs file
 ## \param name - name of fcs file to gate
+## \param gate_name - name of gate to be created
 ## \param mean_x - x coordinate of the mean of the gate
 ## \param mean_y - y coordinate of the mean of the gate
 ## \param a_x - x coordinate of the point further from the mean
 ## \param a_y - y coordinate of the point further from the mean
 ## \param b_x - x coordinate of the point closest to the mean
 ## \param b_y - y coordinate of the point closest to the mean
+## \param reverse boolean representing whether cells in gate are kept or removed
+## \param x_axis - name of x_axis desired
+## \param y_axis - name of y_axis desired
 ## \return returns exit code from the subprocess
 ## \note all parameters should be strings
 ## \author hdoughty@keesaco.com of Keesaco
@@ -91,15 +98,43 @@ def oval_gate(name, gate_name, mean_x, mean_y, a_x, a_y, b_x, b_y, reverse, x_ax
 	return subprocess.call(["Rscript", "gate.r", name, gate_name, "oval", reverse, mean_x, mean_y, a_x, a_y, b_x, b_y, x_axis, y_axis])
 
 ###########################################################################
-## \brief Saves a visualisation of a gated fcs file
+## \brief Saves a visualisation of a polygon gated fcs file
 ## \param name - name of fcs file to gate
+## \param gate_name - name of gate to be created
 ## \param points - string of all the points which define the polygon gate
+## \param reverse boolean representing whether cells in gate are kept or removed
+## \param x_axis - name of x_axis desired
+## \param y_axis - name of y_axis desired
 ## \return returns exit code from the subprocess
 ## \note all parameters should be strings
 ## \author hdoughty@keesaco.com of Keesaco
 ###########################################################################
 def poly_gate(name, gate_name, points, reverse, x_axis, y_axis):
 	return subprocess.call(["Rscript", "gate.r", name, gate_name, "poly", reverse, points, x_axis, y_axis])
+
+###########################################################################
+## \brief Saves a visualisation of a boolean gated fcs file
+## \param name - name of fcs file to gate
+## \param gate_name - name of gate to be created
+## \param boolean_op - boolean operator to be used to join the two gates: 'and' or 'or'
+## \param gate1_type - type of first gate to be created
+## \param points1 - string of all the points which define the first gate
+## \param reverse1 - boolean representing whether cells in gate 1 are kept or removed
+## \param gate2_type - type of second gate to be created
+## \param points2 - string of all the points which define the second gate
+## \param reverse2 - boolean representing whether cells in gate 2 are kept or removed
+## \param gate1_x_axis - name of x_axis desired for first gate, also used for visualisation
+## \param gate1_y_axis - name of y_axis desired for first gate, also used for visualisation
+## \param gate2_x_axis - name of x_axis desired for second gate
+## \param gate2_y_axis - name of y_axis desired for second gate
+## \return returns exit code from the subprocess
+## \note all parameters should be strings
+## \author hdoughty@keesaco.com of Keesaco
+###########################################################################
+def bool_gate(name, gate_name, boolean_op, gate1_type, points1, reverse1, gate2_type, 
+	points2, reverse2, gate1_x_axis, gate1_y_axis, gate2_x_axis, gate2_y_axis):
+	return subprocess.call(["Rscript", "boolean.r", name, gate_name, boolean_op, gate1_type, 
+		points1, reverse1, gate2_type, points2, reverse2, gate1_x_axis, gate1_y_axis, gate2_x_axis, gate2_y_axis])
 
 ###########################################################################
 ## \brief Saves a visualisation image from local disk to Datastore
