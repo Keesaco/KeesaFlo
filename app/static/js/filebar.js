@@ -76,6 +76,9 @@ function ksfFilebar_update(data)
 						nameSpan.href = '#!/preview/' + e.filename;
 						nameSpan.innerHTML = (e.friendlyName ? e.friendlyName : e.filename);
 						newElem.appendChild(nameSpan);
+						
+						//make the entire list item (but not other components - e.g. the cog - within it) clickable to go to the file view
+						$(newElem).click(function() { window.location.href = '#!/preview/' + e.filename; } );
 							   
 						//button to drop down/hide file edit buttons
 						var editCog = ksfFilebar.newEditElem('a', 'edit-dropdown-button');
