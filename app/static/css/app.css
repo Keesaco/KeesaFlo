@@ -263,6 +263,20 @@ a.file-list-link:hover
 {
 	right: 0px;
 }
+
+.dropdown-file-options
+{
+	border-top: 1px dashed #AAAAAA;
+	padding: 5px 3px 3px 3px;
+	margin-top: 5px;
+	font-size: 120%;
+	letter-spacing: 8px;
+}
+
+.delete-button-container
+{
+	float: right;
+}
 /* end of filebar classes */
 
 @media screen and (max-width: 767px)

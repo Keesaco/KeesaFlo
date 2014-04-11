@@ -82,11 +82,6 @@ function ksfFilebar_update(data)
 						nameSpan.innerHTML = ' ' + (e.friendlyName ? e.friendlyName : e.filename);
 						newElem.appendChild(nameSpan);
 								
-						//delete button
-						editDiv.appendChild( ksfFilebar.newEditElem(
-							'span', 'glyphicon glyphicon-trash',
-							function () { ksfFilebar.deleteFile(e, newElem); }));
-							  
 						var confirmSpan = ksfFilebar.newEditElem('span', 'nameedit-confirm');
 						confirmSpan.style.display = 'none';
 						//confirm rename - tick
@@ -101,10 +96,19 @@ function ksfFilebar_update(data)
 
 						newElem.appendChild(editDiv);
 						
-
+						
+						//rename buttom
 						editDiv.appendChild( ksfFilebar.newEditElem(
 							'span', 'glyphicon glyphicon-pencil',
 							function () { ksfFilebar.editName(newElem, e); } ));
+							   
+						//delete button
+						var deleteButton = ksfFilebar.newEditElem('span', 'delete-button-container');
+						deleteButton.appendChild( ksfFilebar.newEditElem(
+							'span', 'glyphicon glyphicon-trash',
+							function () { ksfFilebar.deleteFile(e, newElem); }));
+						editDiv.appendChild(deleteButton);
+	   
 							   
 						editDiv.appendChild(confirmSpan);
 							
