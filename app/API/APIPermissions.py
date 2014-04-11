@@ -176,12 +176,14 @@ def get_file_by_owner_key(owner_key):
 ## \param permissions_file_key - [Key] key of file to set permissions
 ## \param permissions_user_key - [Key] key of user to assign file permissions to
 ## \param permissions - [Permissions] permissions object setting permissions
+## \param String new_color - the user-defined colour tag for the file
+## \param Bool new_starred - whether or not the user has starred the file
 ## \return entity key
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
 ###########################################################################
-def add_file_permissions(permissions_file_key,permissions_user_key, permissions):
-	return PAL.add_file_permissions(permissions_file_key, permissions_user_key, permissions)
+def add_file_permissions(permissions_file_key,permissions_user_key, permissions, new_colour = '000000', new_starred = False):
+	return PAL.add_file_permissions(permissions_file_key, permissions_user_key, permissions, new_colour, new_starred)
 
 ###########################################################################
 ## \brief modifies permissions on permissions entry 
