@@ -63,38 +63,37 @@ function ksfFilebar_update(data)
 							newElem.style.borderRight='10px solid #'+e.colour;
 						}
 							   
-						var editDiv = document.createElement('div');
+						var editDiv = ksfFilebar.newEditElem('div', 'dropdown-file-options');
 						editDiv.style.display = 'none';
-						editDiv.className = 'dropdown-file-options';
 								
 						//star
-						starSpan = ksfFilebar.newEditButton('span', 'glyphicon ' + (e.starred ? 'glyphicon-star' : 'glyphicon-star-empty'), null);
+						starSpan = ksfFilebar.newEditElem('span', 'glyphicon ' + (e.starred ? 'glyphicon-star' : 'glyphicon-star-empty') );
 						$(starSpan).click( function () { ksfFilebar.starFile(e, starSpan); } );
 						editDiv.appendChild(starSpan);
 
 						//button to drop down/hide file edit buttons
-						newElem.appendChild( ksfFilebar.newEditButton(
+						newElem.appendChild( ksfFilebar.newEditElem(
 							'span', 'glyphicon glyphicon-cog',
 							function() { editDiv.style.display = editDiv.style.display == 'none' ? 'block' : 'none'; } ) );
 							   
-						var nameSpan = ksfFilebar.newEditButton(
+						var nameSpan = ksfFilebar.newEditElem(
 							'a', 'filenameedit file-list-link');
 						nameSpan.href = '#!/preview/' + e.filename;
 						nameSpan.innerHTML = ' ' + (e.friendlyName ? e.friendlyName : e.filename);
 						newElem.appendChild(nameSpan);
 								
 						//delete button
-						editDiv.appendChild( ksfFilebar.newEditButton(
+						editDiv.appendChild( ksfFilebar.newEditElem(
 							'span', 'glyphicon glyphicon-trash',
 							function () { ksfFilebar.deleteFile(e, newElem); }));
 							  
-						var confirmSpan = ksfFilebar.newEditButton('span', 'nameedit-confirm', null);
+						var confirmSpan = ksfFilebar.newEditElem('span', 'nameedit-confirm');
 						confirmSpan.style.display = 'none';
 						//confirm rename - tick
-						var confirmTick = ksfFilebar.newEditButton('span', 'glyphicon glyphicon-ok nameedit-tick', null);
+						var confirmTick = ksfFilebar.newEditElem('span', 'glyphicon glyphicon-ok nameedit-tick');
 						confirmSpan.appendChild(confirmTick);
 						//cancel rename - cross
-						var confirmCross = ksfFilebar.newEditButton('span', 'glyphicon glyphicon-remove nameedit-cross', null);
+						var confirmCross = ksfFilebar.newEditElem('span', 'glyphicon glyphicon-remove nameedit-cross');
 						confirmSpan.appendChild(confirmCross);
 
 						$(nameSpan).on('keypress keyup',
@@ -103,7 +102,7 @@ function ksfFilebar_update(data)
 						newElem.appendChild(editDiv);
 						
 
-						editDiv.appendChild( ksfFilebar.newEditButton(
+						editDiv.appendChild( ksfFilebar.newEditElem(
 							'span', 'glyphicon glyphicon-pencil',
 							function () { ksfFilebar.editName(newElem, e); } ));
 							   
@@ -125,14 +124,17 @@ ksfFilebar.update = ksfFilebar_update;
  * \author jmccrea@keesaco.com of Keesaco
  * \return New element
  */
-function ksfFilebar_newEditButton(elemType, className, click)
+function ksfFilebar_newEditElem(elemType, className, click)
 {
 	var newElem = document.createElement(elemType);
 	newElem.className = className;
-	$(newElem).click(click);
+	if (click)
+	{
+		$(newElem).click(click);
+	}
 	return newElem;
 }
-ksfFilebar.newEditButton = ksfFilebar_newEditButton;
+ksfFilebar.newEditElem = ksfFilebar_newEditElem;
 
 /**
  * Makes a filename editable as a single line
