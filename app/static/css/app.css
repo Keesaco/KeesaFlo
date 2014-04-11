@@ -273,9 +273,20 @@ a.file-list-link:hover
 	letter-spacing: 8px;
 }
 
-.delete-button-container
+.delete-button-container, .edit-dropdown-button
 {
 	float: right;
+}
+
+.edit-dropdown-button
+{
+	color: #AAAAAA;
+	font-size: 120%;
+}
+
+a.edit-dropdown-button:hover
+{
+	color: #E6E6E6;
 }
 /* end of filebar classes */
 

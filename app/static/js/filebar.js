@@ -70,17 +70,20 @@ function ksfFilebar_update(data)
 						starSpan = ksfFilebar.newEditElem('span', 'glyphicon ' + (e.starred ? 'glyphicon-star' : 'glyphicon-star-empty') );
 						$(starSpan).click( function () { ksfFilebar.starFile(e, starSpan); } );
 						editDiv.appendChild(starSpan);
-
-						//button to drop down/hide file edit buttons
-						newElem.appendChild( ksfFilebar.newEditElem(
-							'span', 'glyphicon glyphicon-cog',
-							function() { editDiv.style.display = editDiv.style.display == 'none' ? 'block' : 'none'; } ) );
 							   
 						var nameSpan = ksfFilebar.newEditElem(
 							'a', 'filenameedit file-list-link');
 						nameSpan.href = '#!/preview/' + e.filename;
-						nameSpan.innerHTML = ' ' + (e.friendlyName ? e.friendlyName : e.filename);
+						nameSpan.innerHTML = (e.friendlyName ? e.friendlyName : e.filename);
 						newElem.appendChild(nameSpan);
+							   
+						//button to drop down/hide file edit buttons
+						var editCog = ksfFilebar.newEditElem('a', 'edit-dropdown-button');
+						editCog.appendChild( ksfFilebar.newEditElem(
+							'span', 'glyphicon glyphicon-cog',
+							function() { editDiv.style.display = editDiv.style.display == 'none' ? 'block' : 'none'; } ) );
+						newElem.appendChild(editCog);
+						
 								
 						var confirmSpan = ksfFilebar.newEditElem('span', 'nameedit-confirm');
 						confirmSpan.style.display = 'none';
