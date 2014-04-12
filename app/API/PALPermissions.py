@@ -333,8 +333,6 @@ def modify_file_permissions_by_key(permissions_key, new_permissions):
 		permissions.read = new_permissions.read
 		permissions.write = new_permissions.write
 		permissions.full_control = new_permissions.full_control
-		permissions.colour = new_permissions.colour
-		permissions.starred = new_permissions.starred
 		permissions.put()
 		return True
 	else:
@@ -358,8 +356,6 @@ def modify_file_permissions_by_keys(file_key, user_key, new_permissions):
 		permissions.read = new_permissions.read
 		permissions.write = new_permissions.write
 		permissions.full_control = new_permissions.full_control
-		permissions.colour = new_permissions.colour
-		permissions.starred = new_permissions.starred
 		permissions.put()
 		return True
 	else:
