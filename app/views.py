@@ -396,5 +396,5 @@ def tool(request, name, params):
 	tool = tools.AVAILABLE_TOOLS.get(name, tools.no_such_tool)
 	tool_response = tool(paramList, name)
 
-	json = simplejson.dumps(tool_response);
-	return HttpResponse(json, content_type="application/json")
+	jsonResponse = simplejson.dumps(tool_response);
+	return HttpResponse(jsonResponse, content_type="application/json")
