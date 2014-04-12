@@ -116,6 +116,18 @@ convertPolyCoords <- function(points, len, xmin, xmax, ymin, ymax)
 	return(point)
 }
 
+pointsStringToVector <- function(points)
+{
+	points <- strsplit(points, " ")
+	len <- length(points[[1]])
+	newPoints <- 0 ## initialises point
+	for(i in 1:len)
+	{
+		newPoints[i] <- as.numeric(points[[1]][i])
+	}
+	return(newPoints)
+}
+
 ###########################################################################
 ## \brief creates a rectangle gate
 ## \param topLeftlx - top left x coordinate of the rectangle
@@ -128,7 +140,8 @@ convertPolyCoords <- function(points, len, xmin, xmax, ymin, ymax)
 ###########################################################################
 createRectGate <- function(topLeftx, topLefty, bottomRightx, bottomRighty, x_axis, y_axis)
 {
-	mat <- matrix(c(topLeftx, bottomRightx, bottomRighty, topLefty), ncol=2, dimnames=list(c("min", "max"), c(x_axis, y_axis)))
+	mat <- matrix(c(topLeftx, bottomRightx, bottomRighty, topLefty), ncol=2, 
+		dimnames=list(c("min", "max"), c(x_axis, y_axis)))
 	return(rectangleGate(.gate=mat))
 }
 
@@ -154,8 +167,10 @@ createEllipsoidGate <- function(mean_x, mean_y, ax, ay, bx, by, x_axis, y_axis)
 	v21 <- v12 ## This ensures the eigenvectors are perpendicular to each other
 	v22 <- -v11
 	## Calculate covariance matrix
-	V <- matrix(c(v11, v21, v12, v22), ncol = 2, dimnames=list(c(x_axis, y_axis), c(x_axis, y_axis)))
-	L <- matrix(c(l1, 0, 0, l2), ncol = 2, dimnames=list(c(x_axis, y_axis), c(x_axis, y_axis)))
+	V <- matrix(c(v11, v21, v12, v22), ncol = 2, dimnames=list(c(x_axis, y_axis), 
+		c(x_axis, y_axis)))
+	L <- matrix(c(l1, 0, 0, l2), ncol = 2, dimnames=list(c(x_axis, y_axis), 
+		c(x_axis, y_axis)))
 	cov <- V %*% L %*% solve(V)
 	## Creates the gating parameters
 	mean <- c(a=mean_x, b=mean_y)
@@ -175,6 +190,42 @@ createPolyGate <- function(points, n, x_axis, y_axis)
 	rownames <- c(1:n)
 	mat <- matrix(points, ncol=2, dimnames=list(rownames, c(x_axis, y_axis)))
 	return(polygonGate(.gate=mat))
+}
+
+###########################################################################
+## \brief creates either rectangle, ellipsoid or polygon gate based on gate_type
+## \param gate_type - string with type of gate to be created
+## \param coords - coordinates of the gate as a string
+## \param range_x - vector containing range of x_axis values
+## \param range_y - vector containing range of y_axis values
+## \param x_axis - name of x_axis
+## \param y_axis - name of y_axis
+## \return returns gating object
+###########################################################################
+createBasicGate <- function(gate_type, coords, range_x, range_y, x_axis, y_axis)
+{
+	if(gate_type == 'rect')
+	{
+		points <- pointsStringToVector(coords)
+		points <- convertRectCoords(points[1], points[2], points[3], points[4], 
+			range_x[1,1], range_x[2,1], range_y[1,1], range_y[2,1])
+		gate <- createRectGate(points[1], points[2], points[3], points[4], x_axis, y_axis)
+	} else if(gate_type == 'oval')
+	{
+		points <- pointsStringToVector(coords)
+		points <- convertOvalCoords(points[1], points[2], points[3], points[4], 
+			points[5], points[6], range_x[1,1], range_x[2,1], range_y[1,1], range_y[2,1])
+		gate <- createEllipsoidGate(points[1], points[2], points[3], points[4], 
+			points[5], points[6], x_axis, y_axis)
+	} else if(gate_type == 'poly')
+	{
+		points <- strsplit(coords, " ")
+		l <- length(points[[1]])
+		newPoints <- convertPolyCoords(points, l, range_x[1,1], range_x[2,1], 
+			range_y[1,1], range_y[2,1])
+		gate <- createPolyGate(newPoints, l/2, x_axis, y_axis)
+	}
+	return(gate)
 }
 
 ###########################################################################

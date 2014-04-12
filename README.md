@@ -23,7 +23,8 @@ Dependencies:
 -------------
 This project has a number of dependencies which are not committed to this repository. For convenience, the project has been prepared for automatic dependency acquisition using AppBuild.
 To build the application download [AppBuild.py](http://jpm.im/AppBuild-0-0-1) and place it in the root directory of the project.
-Running ‘python AppBuild.py’ will download and unzip all dependencies into their correct directories for the app to be run/deployed.
+Running `python AppBuild.py` will download and unzip all dependencies into their correct directories for the app to be run/deployed.
+To run `AppBuild.py` you will need [python 2.7](https://www.python.org/download/releases/2.7.6/) but NOT any version superior to this one.
 
 In addition to these dependencies, the application requires [pyopenssl](https://github.com/pyca/pyopenssl) to run locally. As this is not installed into the application's files it is not downloaded by AppBuild.
 
@@ -43,8 +44,8 @@ Running with Vagrant:
 1. Install [Vagrant](https://www.vagrantup.com/downloads.html)
 2. Install [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
 3. From the repository folder, provision and start the VM with 'vagrant up'  (This will take several minutes)
-4. SSH into the VM with 'vagrant ssh'
-5. Start the app server with './start.sh&'
+4. SSH into the VM with `vagrant ssh`
+5. Start the app server with `./start.sh&`
 6. The application can now be accessed from the host machine at localhost:28080 and the administration pages can be accessed at localhost:28000
 
 Contact:

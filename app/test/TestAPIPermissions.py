@@ -445,3 +445,225 @@ class TestAPIPermissions(unittest.TestCase):
 
 		for permission in permissions:
 			self.assertEqual(permission.user_key, uk)
+
+	###########################################################################
+	## \brief 	Tests adding a named element
+	## \author 	cwike@Keesaco.com of Keesaco
+	###########################################################################
+	def test_element_add_element(self):
+		ret = ps.add_element( "someRefae" )
+
+		self.assertTrue(isinstance(ret, ndb.Key))
+
+	###########################################################################
+	## \brief 	Tests removing an element by reference
+	## \note 	depends add_element
+	## \author 	cwike@Keesaco.com of Keesaco
+	###########################################################################
+	def test_element_remove_element_by_ref(self):
+		ps.add_element("someRefRebr")
+
+		self.assertTrue(ps.remove_element_by_ref("someRefRebr"))
+
+	###########################################################################
+	## \brief 	Tests removing an element by key
+	## \note 	depends add_element
+	## \author 	cwike@Keesaco.com of Keesaco
+	###########################################################################
+	def test_element_remove_element_by_key(self):
+		key = ps.add_element("someRefRebk")
+
+		self.assertTrue(ps.remove_element_by_key(key))
+
+	###########################################################################
+	## \brief 	Tests renaming element
+	## \note 	depends add_element, get_element_by_key
+	## \author 	cwike@Keesaco.com of Keesaco
+	###########################################################################
+	def test_element_rename_element(self):
+		key = ps.add_element("someRefRe")
+		ps.rename_element("someRefRe","someNewRefRe")
+
+		self.assertEqual(ps.get_element_by_key(key).element_ref, "someNewRefRe")
+
+	###########################################################################
+	## \brief 	Tests getting an element by key
+	## \note 	depends add_element
+	## \author 	cwike@Keesaco.com of Keesaco
+	###########################################################################
+	def test_element_get_element_by_key(self):
+		key = ps.add_element("someRefGebk")
+
+		self.assertEqual(ps.get_element_by_key(key).element_ref,"someRefGebk" )
+
+	###########################################################################
+	## \brief 	Tests getting an element by reference
+	## \note 	depends add_element
+	## \author 	cwike@Keesaco.com of Keesaco
+	###########################################################################
+	def test_element_get_element_key_by_ref(self):
+		key = ps.add_element("someRefGekbr")
+
+		self.assertEqual(ps.get_element_key_by_ref("someRefGekbr"),key )
+
+	###########################################################################
+	## \brief 	Tests adding element permissions
+	## \author 	cwike@Keesaco.com of Keesaco
+	###########################################################################
+	def test_e_permissions_add_element_permissions(self):
+		ret = ps.add_element_permissions(ndb.Key("uk","aep"),ndb.Key("ek","aep"),True)
+
+		self.assertTrue(isinstance(ret, ndb.Key))
+
+	###########################################################################
+	## \brief 	Tests modifying element permissions by key
+	## \note 	depends add_element_permissions, get_element_permissions_by_key
+	## \author 	cwike@Keesaco.com of Keesaco
+	###########################################################################
+	def test_e_permissions_modify_element_permissions_by_key(self):
+		key = ps.add_element_permissions(ndb.Key("uk","mepk"),ndb.Key("ek","mepk"),True)
+
+		ps.modify_element_permissions_by_key(key, False)
+		retrieved = ps.get_element_permissions_by_key(key)
+
+		self.assertFalse(retrieved.access)
+
+	###########################################################################
+	## \brief 	Tests modifying element permissions by both element and user keys
+	## \note 	depends add_elelemt_permissions, get_element_permissions_by_key
+	## \author 	cwike@Keesaco.com of Keesaco
+	###########################################################################
+	def test_e_permissions_modify_user_element_permissions(self):
+		key = ps.add_element_permissions(ndb.Key("uk","muep"),ndb.Key("ek","muep"),True)
+
+		ps.modify_user_element_permissions(ndb.Key("uk","muep"),ndb.Key("ek","muep"), False)
+		retrieved = ps.get_element_permissions_by_key(key)
+
+		self.assertFalse(retrieved.access)
+
+	###########################################################################
+	## \brief 	Tests revokeing all element permissions by element key
+	## \note 	depends add_element_permissions, get_element_permissions_by_element_key
+	## \author 	cwike@Keesaco.com of Keesaco
+	###########################################################################
+	def test_e_permissions_revoke_element_permissions_element_key(self):
+		ek = ndb.Key("ek","repek")
+		ps.add_element_permissions(ndb.Key("uk","repek1"),ek,True)
+		ps.add_element_permissions(ndb.Key("uk","repek2"),ek,True)
+		ps.add_element_permissions(ndb.Key("uk","repek3"),ek,True)
+
+		ps.revoke_element_permissions_element_key(ek)
+		with self.assertRaises(StopIteration):
+			ps.get_element_permissions_by_element_key(ek).next()
+
+	###########################################################################
+	## \brief 	Tests revokeing element permissions by user key
+	## \note 	depends add_element_permissions, get_element_permissions_by_user_key
+	## \author 	cwike@Keesaco.com of Keesaco
+	###########################################################################
+	def test_e_permissions_revoke_element_permissions_user_key(self):
+		uk = ndb.Key("uk","repuk")
+		ps.add_element_permissions(uk,ndb.Key("ek","repuk1"),True)
+		ps.add_element_permissions(uk,ndb.Key("ek","repuk1"),True)
+		ps.add_element_permissions(uk,ndb.Key("ek","repuk1"),True)
+
+		ps.revoke_element_permissions_user_key(uk)
+		with self.assertRaises(StopIteration):
+			ps.get_element_permissions_by_user_key(uk).next()
+
+	###########################################################################
+	## \brief 	Tests revoking an element permissions by user and element keys
+	## \note 	depends add_element_permissions, get_user_element_permissions
+	## \author 	cwike@Keesaco.com of Keesaco
+	###########################################################################
+	def test_e_permissions_revoke_user_element_permissions(self):
+		user_key = ndb.Key("uk","ruep")
+		element_key = ndb.Key("ek","ruep")
+		ps.add_element_permissions(user_key,element_key,True)
+		ps.revoke_user_element_permissions(user_key,element_key)
+		self.assertIsNone(ps.get_user_element_permissions(user_key,element_key))
+
+	###########################################################################
+	## \brief 	Tests revoking an element permission by its key
+	## \note 	depends add_element_permissions, get_element_permissions_by_key
+	## \author 	cwike@Keesaco.com of Keesaco
+	###########################################################################
+	def test_e_permissions_revoke_element_permissions_by_key(self):
+		key = ps.add_element_permissions(ndb.Key("uk","repk"),ndb.Key("ek","repk"),True)
+		ps.revoke_element_permissions_by_key(key)
+		self.assertIsNone(ps.get_element_permissions_by_key(key))
+
+	###########################################################################
+	## \brief 	Tests getting an element permissions list by element key
+	## \note 	depends add_element_permissions
+	## \author 	cwike@Keesaco.com of Keesaco
+	###########################################################################
+	def test_e_permissions_get_element_permissions_by_element_key(self):
+		ek = ndb.Key("ek","gepek")
+		ps.add_element_permissions(ndb.Key("uk","gepek1"),ek,True)
+		ps.add_element_permissions(ndb.Key("uk","gepek2"),ek,True)
+		ps.add_element_permissions(ndb.Key("uk","gepek3"),ek,True)
+
+		elements = ps.get_element_permissions_by_element_key(ek)
+
+		for element in elements:
+			self.assertEqual(element.element_key, ek)
+
+	###########################################################################
+	## \brief 	Tests getting an elements permissions list by user key
+	## \note 	depends add_element_permissions
+	## \author 	cwike@Keesaco.com of Keesaco
+	###########################################################################
+	def test_e_permissions_get_element_permissions_by_user_key(self):
+		uk = ndb.Key("uk","gepuk")
+		ps.add_element_permissions(uk,ndb.Key("ek","gepuk1"),True)
+		ps.add_element_permissions(uk,ndb.Key("ek","gepuk2"),True)
+		ps.add_element_permissions(uk,ndb.Key("ek","gepuk3"),True)
+
+		elements = ps.get_element_permissions_by_user_key(uk)
+
+		for element in elements:
+			self.assertEqual(element.user_key, uk)
+
+	###########################################################################
+	## \brief 	Tests getting an entry by user and element keys
+	## \note 	depends add_element_permissions
+	## \author 	cwike@Keesaco.com of Keesaco
+	###########################################################################
+	def test_e_permissions_get_user_element_permissions(self):
+		user_key = ndb.Key("uk","guep")
+		element_key = ndb.Key("ek","guep")
+		ps.add_element_permissions(user_key,element_key,True)
+
+		obj = ps.get_user_element_permissions(user_key,element_key)
+
+		self.assertEqual(obj.user_key, user_key)
+		self.assertEqual(obj.element_key, element_key)
+		self.assertEqual(obj.access, True)
+
+	###########################################################################
+	## \brief 	Tests getting element permissions entry by key
+	## \note 	depends add_element_permissions
+	## \author 	cwike@Keesaco.com of Keesaco
+	###########################################################################
+	def test_e_permissions_get_element_permissions_by_key(self):
+		user_key = ndb.Key("uk","gepk")
+		element_key = ndb.Key("ek","gepk")
+		key = ps.add_element_permissions(user_key,element_key,True)
+
+		obj = ps.get_element_permissions_by_key(key)
+
+		self.assertEqual(obj.user_key, user_key)
+		self.assertEqual(obj.element_key, element_key)
+		self.assertEqual(obj.access, True)
+
+	###########################################################################
+	## \brief 	Tests getting key to element permissions entry by user and element keys
+	## \note 	depends add_element_permissions
+	## \author 	cwike@Keesaco.com of Keesaco
+	###########################################################################
+	def test_e_permissions_get_user_element_permissions_key(self):
+		user_key = ndb.Key("uk","guepk")
+		element_key = ndb.Key("ek","guepk")
+		key = ps.add_element_permissions(user_key,element_key,True)
+		self.assertEqual(key,ps.get_user_element_permissions_key(user_key,element_key))
