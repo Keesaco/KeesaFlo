@@ -8,6 +8,13 @@ import API.APIQueue as queue
 from django.core.urlresolvers import reverse
 import API.APILogging as logging
 
+###########################################################################
+## \brief Is called when a gating is requested
+## \param paramsList - Paramesters that comes with this gating tool call
+## \param name - name of the tool that triggered this call
+## \return a dictionary with the status of the tool call
+## \author mrudelle@keesaco.com of Keesaco
+###########################################################################
 def simple_gating(paramList, name):
 	gateName = paramList.pop(0);
 
