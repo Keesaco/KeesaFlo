@@ -116,9 +116,17 @@ function ksfFilebar_update(data)
 						editDiv.appendChild( ksfFilebar.newEditButton( 'glyphicon-pencil',
 							function () { ksfFilebar.editName(newElem, e); }, 'left-button-container' ).outer )
 							   
-							   
+						//delete button
 						editDiv.appendChild(ksfFilebar.newEditButton('glyphicon-trash',
-							function () { ksfFilebar.deleteFile(e, newElem); },
+							function () {
+								bootbox.confirm("Are you sure you want to delete " + (e.friendlyName ? e.friendlyName : e.filename) + "?",
+									function (conf)
+									{
+										if (conf)
+										{
+											ksfFilebar.deleteFile(e, newElem);
+										}
+									} ); },
 							'delete-button-container' ).outer);
 	   
 							   
@@ -264,7 +272,9 @@ function ksfFilebar_doneEditName(fileDiv, file, newHref, update, oldText)
 	}
 	else
 	{
-		ksfFilebar.renameFile(file, $link.text());
+		var newName = $link.text();
+		ksfFilebar.renameFile(file, newName);
+		file.friendlyName = newName;
 	}
 	
 }
