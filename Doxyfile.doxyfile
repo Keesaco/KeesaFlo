@@ -849,7 +849,8 @@ EXCLUDE                = AppBuild.py \
 						 compute_engine/uritemplate/ \
 						 app/static/css/qtip.min.css \
 						 app/static/js/qtip.min.js \
-						 app/static/js/jquery-ui-1.10.4.min.js
+						 app/static/js/jquery-ui-1.10.4.min.js \
+						 app/static/js/bootbox.min.js
 
 # The EXCLUDE_SYMLINKS tag can be used to select whether or not files or
 # directories that are symbolic links (a Unix file system feature) are excluded

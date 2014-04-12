@@ -143,6 +143,13 @@
 				<destination>app/static/js/</destination>
 			</move>
 		</package>
+		<package name="bootbox-js">
+			<uri>https://github.com/makeusabrew/bootbox/releases/download/v4.2.0/bootbox.min.js</uri>
+			<unzip>0</unzip>
+			<move>
+				<destination>app/static/js</destination>
+			</move>
+		</package>
 	</packages>
 </dconfig>
 
