@@ -6,7 +6,7 @@
 
 import API.APIQueue as queue
 from django.core.urlresolvers import reverse
-import logging
+import API.APILogging as logging
 
 def simple_gating(paramList, name):
 	gateName = paramList.pop(0);
@@ -64,7 +64,7 @@ def no_such_tool(paramList, name):
 
 	logging.error('The tool "'+ name +'" is unknown. The known tools are: {' + 
 		', '.join(list(AVAILABLE_TOOLS.keys())) + '}' )
-	return generate_gating_feedback("fail","The tool you selected is not reconized by the server", one)
+	return generate_gating_feedback("fail","The tool you selected is not reconized by the server", None)
 
 
 ## TODO the url should be a redirection in the future
