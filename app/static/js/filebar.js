@@ -67,15 +67,16 @@ function ksfFilebar_update(data)
 						editDiv.style.display = 'none';
 								
 						//star
-						starSpan = ksfFilebar.newEditElem('span', 'glyphicon ' + (e.starred ? 'glyphicon-star' : 'glyphicon-star-empty') );
-						$(starSpan).click( function () { ksfFilebar.starFile(e, starSpan); } );
-						editDiv.appendChild(starSpan);
+						var starSpan = ksfFilebar.newEditButton( e.starred ? 'glyphicon-star' : 'glyphicon-star-empty', null, 'left-button-container');
+						$(starSpan.inner).click( function () { ksfFilebar.starFile(e, starSpan.inner); } );
+						editDiv.appendChild(starSpan.outer);
 							   
 						var nameSpan = ksfFilebar.newEditElem(
-							'a', 'filenameedit file-list-link');
+							'a', 'filenameedit file-list-link', null,
+							(e.friendlyName ? e.friendlyName : e.filename) );
 						nameSpan.href = '#!/preview/' + e.filename;
-						nameSpan.innerHTML = (e.friendlyName ? e.friendlyName : e.filename);
 						newElem.appendChild(nameSpan);
+							   
 						
 						//make the entire list item (but not other components - e.g. the cog - within it) clickable to go to the file view
 						$(newElem).click(function(event)
@@ -112,19 +113,19 @@ function ksfFilebar_update(data)
 						
 						
 						//rename buttom
-						editDiv.appendChild( ksfFilebar.newEditElem(
-							'span', 'glyphicon glyphicon-pencil',
-							function () { ksfFilebar.editName(newElem, e); } ));
+						editDiv.appendChild( ksfFilebar.newEditButton( 'glyphicon-pencil',
+							function () { ksfFilebar.editName(newElem, e); }, 'left-button-container' ).outer )
 							   
-						//delete button
-						var deleteButton = ksfFilebar.newEditElem('span', 'delete-button-container');
-						deleteButton.appendChild( ksfFilebar.newEditElem(
-							'span', 'glyphicon glyphicon-trash',
-							function () { ksfFilebar.deleteFile(e, newElem); }));
-						editDiv.appendChild(deleteButton);
+							   
+						editDiv.appendChild(ksfFilebar.newEditButton('glyphicon-trash',
+							function () { ksfFilebar.deleteFile(e, newElem); },
+							'delete-button-container' ).outer);
 	   
 							   
 						editDiv.appendChild(confirmSpan);
+
+							   //ensures row does not have to resize on animated glyicon grow
+							   editDiv.appendChild(ksfFilebar.newEditElem('span', 'filebar-spacer', null, '&nbsp' ));
 							
 						tdiv.append(newElem);
 					} );
@@ -139,13 +140,19 @@ ksfFilebar.update = ksfFilebar_update;
  * \param String elemType - the type of element to create
  * \param String className - the class name for the new element
  * \param Function click - this is hooked to handle click events on the element
+ * \param inner
  * \author jmccrea@keesaco.com of Keesaco
  * \return New element
  */
-function ksfFilebar_newEditElem(elemType, className, click)
+function ksfFilebar_newEditElem(elemType, className, click, inner)
 {
 	var newElem = document.createElement(elemType);
 	newElem.className = className;
+	if (inner)
+	{
+		newElem.innerHTML = inner;
+	}
+	
 	if (click)
 	{
 		$(newElem).click(click);
@@ -153,6 +160,24 @@ function ksfFilebar_newEditElem(elemType, className, click)
 	return newElem;
 }
 ksfFilebar.newEditElem = ksfFilebar_newEditElem;
+
+/**
+ * Makes a new element of a give type, class and hooks a click handler (used to simplify filebar generation)
+ * \param String glyphClass - this classname is given to the inner section of the button which contains the icon. 'glyphicon' is added automatically so only the second class (e.g. glyphicon-ok') is required
+ * \param Function click - this is hooked to handle click events on the element
+ * \author jmccrea@keesaco.com of Keesaco
+ * \return New button element
+ */
+function ksfFilebar_newEditButton(glyphClass, click, outerClass)
+{
+	var outer = ksfFilebar.newEditElem( 'span', 'file-option-button fbtn-off' + (outerClass ? ' ' + outerClass : '') );
+	var inner = ksfFilebar.newEditElem( 'span', 'glyphicon ' + glyphClass, click);
+	outer.appendChild(inner)
+	$(inner).mouseover(function() { $(outer).switchClass( "fbtn-off", "fbtn-on", 150 ) } )
+			.mouseout (function() { $(outer).switchClass( "fbtn-on", "fbtn-off", 150 ) } );
+	return {'outer' : outer, 'inner' : inner};
+}
+ksfFilebar.newEditButton = ksfFilebar_newEditButton;
 
 /**
  * Makes a filename editable as a single line

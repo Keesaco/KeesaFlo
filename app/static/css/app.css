@@ -267,15 +267,19 @@ a.file-list-link:hover
 .dropdown-file-options
 {
 	border-top: 1px dashed #AAAAAA;
-	padding: 5px 3px 3px 3px;
+	padding: 5px 3px 0px 3px;
 	margin-top: 5px;
-	font-size: 120%;
 	letter-spacing: 8px;
 }
 
 .delete-button-container, .edit-dropdown-button
 {
 	float: right;
+}
+
+.left-button-container
+{
+	float: left;
 }
 
 .edit-dropdown-button
@@ -287,6 +291,22 @@ a.file-list-link:hover
 a.edit-dropdown-button:hover
 {
 	color: #E6E6E6;
+}
+
+.filebar-spacer
+{
+	font-size: 125%;
+}
+
+.file-option-button.fbtn-on
+{
+	font-size: 125%;
+	color: #E6E6E6;
+}
+.file-option-button.fbtn-off
+{
+	font-size: 115%;
+	color: #AAAAAA;
 }
 /* end of filebar classes */
 
