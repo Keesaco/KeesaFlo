@@ -255,6 +255,7 @@ a.filenameedit:hover
 {
 	text-decoration: none;
 }
+
 a.file-list-link:hover
 {
 	color: #E6E6E6;
@@ -267,14 +268,20 @@ a.file-list-link:hover
 .dropdown-file-options
 {
 	border-top: 1px dashed #AAAAAA;
-	padding: 5px 3px 0px 3px;
+	padding: 5px 3px 3px 3px;
 	margin-top: 5px;
 	letter-spacing: 8px;
 }
 
-.delete-button-container, .edit-dropdown-button
+.delete-button-container
 {
 	float: right;
+}
+
+.edit-dropdown-button
+{
+	position: absolute;
+	right: 10px;
 }
 
 .left-button-container
@@ -388,6 +395,7 @@ a.edit-dropdown-button:hover
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	padding-right: 32px;
 }
 
 /* puts a spinner in the middle of the element */
