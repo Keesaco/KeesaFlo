@@ -135,6 +135,14 @@
 				<destination rename="1">app/static/css/qtip.min.css</destination>
 			</move>
 		</package>
+		<package name="jQuery-UI">
+			<uri>http://jqueryui.com/resources/download/jquery-ui-1.10.4.zip</uri>
+			<unzip>1</unzip>
+			<move>
+				<innersource>jquery-ui-1.10.4/js/jquery-ui-1.10.4.min.js</innersource>
+				<destination>app/static/js/</destination>
+			</move>
+		</package>
 	</packages>
 </dconfig>
 
