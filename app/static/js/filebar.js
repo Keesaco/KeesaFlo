@@ -108,7 +108,7 @@ function ksfFilebar_update(data)
 						newElem.appendChild(editCog);
 						editDiv.style.display = editDiv.style.display == 'none' ? 'block' : 'none';
 								
-						var confirmSpan = ksfFilebar.newEditElem('span', 'nameedit-confirm');
+						var confirmSpan = ksfFilebar.newEditElem('span', 'nameedit-confirm left-button-container');
 						confirmSpan.style.display = 'none';
 						//confirm rename - tick
 						var confirmTick = ksfFilebar.newEditElem('span', 'glyphicon glyphicon-ok nameedit-tick');
@@ -122,14 +122,14 @@ function ksfFilebar_update(data)
 
 						newElem.appendChild(editDiv);
 						
-						
+							
+						//colour button
+						editDiv.appendChild( ksfFilebar.newEditButton('glyphicon-tint',
+							function () { ksfFilebar.recolourClickHandler(e, newElem); }, 'left-button-container').outer );
+							   
 						//rename buttom
 						editDiv.appendChild( ksfFilebar.newEditButton( 'glyphicon-pencil',
 							function () { ksfFilebar.editName(newElem, e); }, 'left-button-container' ).outer );
-							   
-						//colour button
-						editDiv.appendChild( ksfFilebar.newEditButton('glyphicon-tint',
-							function () { ksfFilebar.recolourClickHandler(e, newElem); }).outer );
 							   
 						//delete button
 						editDiv.appendChild(ksfFilebar.newEditButton('glyphicon-trash',
