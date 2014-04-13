@@ -63,7 +63,7 @@ function ksfFilebar_update(data)
 							newElem.style.borderRight='10px solid #'+e.colour;
 						}
 							   
-						var editDiv = ksfFilebar.newEditElem('div', 'dropdown-file-options');
+						var editDiv = ksfFilebar.newEditElem('div', 'dropdown-file-options fopts-closed');
 						editDiv.style.display = 'none';
 								
 						//star
@@ -93,9 +93,20 @@ function ksfFilebar_update(data)
 						var editCog = ksfFilebar.newEditElem('a', 'edit-dropdown-button');
 						editCog.appendChild( ksfFilebar.newEditElem(
 							'span', 'glyphicon glyphicon-cog',
-							function() { editDiv.style.display = editDiv.style.display == 'none' ? 'block' : 'none'; } ) );
+							function()
+							{
+								var $div = $(editDiv);
+								if ( $div.hasClass("fopts-open") )
+								{
+									$div.switchClass( "fopts-open", "fopts-closed", 150 );
+								}
+								else
+								{
+									$div.switchClass( "fopts-closed", "fopts-open", 150 );
+								}
+							} ) );
 						newElem.appendChild(editCog);
-						
+						editDiv.style.display = editDiv.style.display == 'none' ? 'block' : 'none';
 								
 						var confirmSpan = ksfFilebar.newEditElem('span', 'nameedit-confirm');
 						confirmSpan.style.display = 'none';
@@ -181,8 +192,8 @@ function ksfFilebar_newEditButton(glyphClass, click, outerClass)
 	var outer = ksfFilebar.newEditElem( 'span', 'file-option-button fbtn-off' + (outerClass ? ' ' + outerClass : '') );
 	var inner = ksfFilebar.newEditElem( 'span', 'glyphicon ' + glyphClass, click);
 	outer.appendChild(inner)
-	$(inner).mouseover(function() { $(outer).switchClass( "fbtn-off", "fbtn-on", 150 ) } )
-			.mouseout (function() { $(outer).switchClass( "fbtn-on", "fbtn-off", 150 ) } );
+	$(inner).mouseover(function() { $(outer).switchClass( "fbtn-off", "fbtn-on", 150 ); } )
+	.mouseout (function() { $(outer).switchClass( "fbtn-on", "fbtn-off", 150 ); } );
 	return {'outer' : outer, 'inner' : inner};
 }
 ksfFilebar.newEditButton = ksfFilebar_newEditButton;
