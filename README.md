@@ -24,7 +24,6 @@ Dependencies:
 This project has a number of dependencies which are not committed to this repository. For convenience, the project has been prepared for automatic dependency acquisition using AppBuild.
 To build the application download [AppBuild.py](http://jpm.im/AppBuild-0-0-1) and place it in the root directory of the project.
 Running `python AppBuild.py` will download and unzip all dependencies into their correct directories for the app to be run/deployed.
-To run `AppBuild.py` you will need [python 2.7](https://www.python.org/download/releases/2.7.6/) but NOT any version superior to this one.
 
 In addition to these dependencies, the application requires [pyopenssl](https://github.com/pyca/pyopenssl) to run locally. As this is not installed into the application's files it is not downloaded by AppBuild.
 
@@ -36,8 +35,9 @@ New tests can be added by adding additional methods to existing Python files in 
 Running with Local Dev Server:
 ------------------------------
 1. Download the [Google App Engine Python SDK](https://developers.google.com/appengine/downloads).
-2. Acquire dependencies using AppBuild as described above.
-3. Add an (existing) application to the dev_appserver using the 'app' directory as the path.
+2. Ensure Python 2.7 and pyOpenSSL are installed.
+3. Acquire dependencies using AppBuild as described above.
+4. Add an (existing) application to the dev_appserver using the 'app' directory as the path.
 
 Running with Vagrant:
 ---------------------
