@@ -125,11 +125,16 @@ function ksfFilebar_update(data)
 						
 						//rename buttom
 						editDiv.appendChild( ksfFilebar.newEditButton( 'glyphicon-pencil',
-							function () { ksfFilebar.editName(newElem, e); }, 'left-button-container' ).outer )
+							function () { ksfFilebar.editName(newElem, e); }, 'left-button-container' ).outer );
+							   
+						//colour button
+						editDiv.appendChild( ksfFilebar.newEditButton('glyphicon-tint',
+							function () { ksfFilebar.recolourClickHandler(e, newElem); }).outer );
 							   
 						//delete button
 						editDiv.appendChild(ksfFilebar.newEditButton('glyphicon-trash',
-							function () {
+							function ()
+							{
 								bootbox.confirm("Are you sure you want to delete " + (e.friendlyName ? e.friendlyName : e.filename) + "?",
 									function (conf)
 									{
@@ -137,9 +142,9 @@ function ksfFilebar_update(data)
 										{
 											ksfFilebar.deleteFile(e, newElem);
 										}
-									} ); },
+							} ); },
 							'delete-button-container' ).outer);
-	   
+	
 							   
 						editDiv.appendChild(confirmSpan);
 
@@ -290,6 +295,29 @@ function ksfFilebar_doneEditName(fileDiv, file, newHref, update, oldText)
 	
 }
 ksfFilebar.doneEditName = ksfFilebar_doneEditName;
+
+/**
+ * Displays a prompt for a new colour choice
+ * \param File file - the file to recolour
+ * \param Element fileDiv - div which displays the file, used to recolour the border
+ * \author jmccrea@keesaco.com of Keesaco
+ * \return None
+ */
+function ksfFilebar_recolourClickHandler(file, fileDiv)
+{
+	var colourInput = document.createElement("input");
+	colourInput.type = "color";
+	var $boxBody = $(bootbox.confirm("Choose a new colour for " + (file.friendlyName ? file.friendlyName : file.filename) + ": ",
+		function (confirm)
+		{
+			if (confirm)
+			{
+				fileDiv.style.borderRightColor = colourInput.value;
+			}
+		})).find('.bootbox-body').first();
+	$boxBody.append(colourInput);
+}
+ksfFilebar.recolourClickHandler = ksfFilebar_recolourClickHandler
 
 /**
  * Sends a request to star or unstar a given file
