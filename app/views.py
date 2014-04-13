@@ -22,6 +22,7 @@ import API.PALUsers as auth
 import API.APIQueue as queue
 import API.APIPermissions as ps
 import json
+import re
 
 DATA_BUCKET = '/fc-raw-data'
 GRAPH_BUCKET = '/fc-vis-data'
@@ -187,6 +188,7 @@ def file_list_json(request):
 ## \todo 	Review permissions in this section - correct checking here is
 ##			vital as edit actions are potentially destructive.
 ## \todo	Refactor bucket names for deletion
+## \todo	Massive refactor is planned
 ## \return 	JSON response which indicates whether the requested action(s)
 ##			were performed successfully.
 ###########################################################################
@@ -242,7 +244,7 @@ def file_list_edit(request):
 		
 		elif action == 'rename':
 			if 'newname' not in a:
-				res_fragment.update( { 'success' : false, 'error' : 'New name not specified' } )
+				res_fragment.update( { 'success' : False, 'error' : 'New name not specified' } )
 			else:
 				file_entry = ps.get_file_by_name('/fc-raw-data/' + filename)
 				if file_entry is None:
@@ -267,7 +269,29 @@ def file_list_edit(request):
 						res_fragment.update( { 'success' : True } )
 					else:
 						res_fragment.update( { 'success' : False, 'error' : 'Could not update file' } )
-		
+
+		elif action == 'recolour':
+			if 'newcolour' not in a:
+				res_fragment.update( { 'success' : False, 'error' : 'New colour not specified' } )
+			else:
+				colour = a['newcolour']
+				chk_string = re.compile("^[A-Fa-f0-9]{6}$")
+				if (chk_string.match(colour)):
+					file_entry = ps.get_file_by_name('/fc-raw-data/' + filename)
+					if file_entry is None:
+						res_fragment.update( { 'success' : False, 'error' : 'File does not exist.' } )
+					else:
+						fp_entry = ps.get_user_file_permissions(file_entry.key, user_key)
+						if fp_entry is None:
+							res_fragment.update( { 'success' : False, 'error' : 'Permissions entry not found' } )
+						else:
+							if ps.modify_file_permissions_by_key(fp_entry.key, new_colour = colour):
+								res_fragment.update( { 'success' : True } )
+							else:
+								res_fragment.update( { 'success' : False, 'error' : 'Could not update file' } )
+				else:
+					res_fragment.update( { 'success' : False, 'error' : 'New colour invalid' } )
+
 		else:
 			res_fragment.update( { 'success' : False, 'error' : 'Action not recognised' } )
 		
