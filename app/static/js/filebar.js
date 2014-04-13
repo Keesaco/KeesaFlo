@@ -297,7 +297,7 @@ function ksfFilebar_doneEditName(fileDiv, file, newHref, update, oldText)
 ksfFilebar.doneEditName = ksfFilebar_doneEditName;
 
 /**
- * Displays a prompt for a new colour choice
+ * Displays a prompt for a new colour choice. Moved from main fiebar draw function for clarity.
  * \param File file - the file to recolour
  * \param Element fileDiv - div which displays the file, used to recolour the border
  * \author jmccrea@keesaco.com of Keesaco
@@ -312,12 +312,20 @@ function ksfFilebar_recolourClickHandler(file, fileDiv)
 		{
 			if (confirm)
 			{
-				fileDiv.style.borderRightColor = colourInput.value;
+				ksfFilebar.recolourFile(file, colourInput.value.substring(1),
+				function ()
+				{
+					fileDiv.style.borderRightColor = colourInput.value;
+				} );
 			}
 		})).find('.bootbox-body').first();
 	$boxBody.append(colourInput);
 }
 ksfFilebar.recolourClickHandler = ksfFilebar_recolourClickHandler
+
+
+
+// TODO: this can probably be refcatored into a single method
 
 /**
  * Sends a request to star or unstar a given file
@@ -346,6 +354,25 @@ function ksfFilebar_starFile(file, starSpan)
 		} );
 }
 ksfFilebar.starFile = ksfFilebar_starFile;
+
+/**
+ * Sends a request to recolour a given file
+ * \param File file - file object for file to recolour (used for .filename)
+ * \param String newColour - new colour for file
+ * \param Function onSuccess - called if the request is successfull
+ * \author jmccrea@keesaco.com of Keesaco
+ * \return None
+ */
+function ksfFilebar_recolourFile(file, newColour, onSuccess)
+{
+	actionObj = [{
+				 'action' 		: 'recolour',
+				 'filename'		: file.filename,
+				 'newcolour'	: newColour
+				 }];
+	ksfReq.postJSON(ACTION_URI, actionObj, onSuccess);
+}
+ksfFilebar.recolourFile = ksfFilebar_recolourFile;
 
 /**
  * Sends a request to rename a given file
