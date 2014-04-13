@@ -189,24 +189,28 @@ def add_file_permissions(permissions_file_key,permissions_user_key, permissions,
 ## \brief modifies permissions on permissions entry 
 ## \param permissions key - [Key] key of permissions entry
 ## \param new_permissions - [Permissions] new permissions to set
+## \param Bool new_starred - (= None) new starred value for entry
+## \param String new_colour - (= None) new colour for file
 ## \return True on success, False otherwise
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
 ###########################################################################
-def modify_file_permissions_by_key(permissions_key, new_permissions):
-	return PAL.modify_file_permissions_by_key(permissions_key,new_permissions)
+def modify_file_permissions_by_key(permissions_key, new_permissions = None, new_starred = None, new_colour = None):
+	return PAL.modify_file_permissions_by_key(permissions_key,new_permissions, new_starred, new_colour)
 
 ###########################################################################
 ## \brief modifies permissions on permissions entry
 ## \param file_key - [Key] key of file entry permissions pertain to
 ## \param user_key - [Key] key of user entry permissions pertain to
 ## \param permissions - [Permissions] new permissions to set
+## \param Bool new_starred - (= None) new starred value for entry
+## \param String new_colour - (= None) new colour for file
 ## \return  True on success, False otherwise
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
 ###########################################################################
-def modify_file_permissions_by_keys(file_key, user_key, permissions):
-	return PAL.modify_file_permissions_by_keys(file_key,user_key, permissions)
+def modify_file_permissions_by_keys(file_key, user_key, permissions = None, new_starred = None, new_colour = None):
+	return PAL.modify_file_permissions_by_keys(file_key,user_key, permissions, new_starred, new_colour)
 
 ###########################################################################
 ## \brief removes all file permissions entries pertaining to file entry

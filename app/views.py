@@ -263,8 +263,7 @@ def file_list_edit(request):
 				if fp_entry is None:
 					res_fragment.update( { 'success' : False, 'error' : 'Permissions entry not found' } )
 				else:
-					fp_entry.starred = (action == 'star')
-					if ps.modify_file_permissions_by_key(fp_entry.key, fp_entry):
+					if ps.modify_file_permissions_by_key(fp_entry.key, new_starred = (action == 'star')):
 						res_fragment.update( { 'success' : True } )
 					else:
 						res_fragment.update( { 'success' : False, 'error' : 'Could not update file' } )
