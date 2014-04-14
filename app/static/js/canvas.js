@@ -143,7 +143,7 @@ function ksfCanvas_toolText(msg) {
 ksfCanvas.toolText = ksfCanvas_toolText;
 
 /**
- * Clear the canvas (erase it's content to make it transparent)
+ * Clear the canvas (erase its content to make it transparent)
  * \author mrudelle@keesaco.com of Keesaco
  */
 function ksfCanvas_clear() {
