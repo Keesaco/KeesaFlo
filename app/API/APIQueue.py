@@ -82,9 +82,17 @@ def gate_boolean(	filename, gatename, boolean_op, gate1_type, gate1_coords,
 def change_axis(	filename, x_axis, y_axis):
 	queue.add_task('jobs', 'change_axis;' + filename + ';' + x_axis + ';' + y_axis)
 
+###########################################################################
+## \brief Adds a task to create a dot plot of fcs data.
+## \author hdoughty@keesaco.com of Keesaco
+###########################################################################
 def dot_plot(	filename, plot_name, x_axis, y_axis):
 	queue.add_task('jobs', 'dot_plot;' + filename + ';' + x_axis + ';' + y_axis + ';' + plot_name)
 
+###########################################################################
+## \brief Adds a task to create a contour plot of fcs data.
+## \author hdoughty@keesaco.com of Keesaco
+###########################################################################
 def contour_plot(	filename, plot_name, x_axis, y_axis):
 	queue.add_task('jobs', 'contour_plot;' + filename + ';' + x_axis + ';' + y_axis + ';' + plot_name)
 
