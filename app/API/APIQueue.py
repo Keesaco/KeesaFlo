@@ -82,6 +82,12 @@ def gate_boolean(	filename, gatename, boolean_op, gate1_type, gate1_coords,
 def change_axis(	filename, x_axis, y_axis):
 	queue.add_task('jobs', 'change_axis;' + filename + ';' + x_axis + ';' + y_axis)
 
+def dot_plot(	filename, plot_name, x_axis, y_axis):
+	queue.add_task('jobs', 'dot_plot;' + filename + ';' + x_axis + ';' + y_axis + ';' + plot_name)
+
+def contour_plot(	filename, plot_name, x_axis, y_axis):
+	queue.add_task('jobs', 'contour_plot;' + filename + ';' + x_axis + ';' + y_axis + ';' + plot_name)
+
 ###########################################################################
 ## \brief Counts the number of tasks in the queue.
 ## \return number of tasks in queue.

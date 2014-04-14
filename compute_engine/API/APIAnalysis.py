@@ -59,6 +59,12 @@ def visualise(	name):
 def change_axis(name, x_axis, y_axis):
 	return subprocess.call(["Rscript", "axis.r", name, name + x_axis + y_axis + '.png', x_axis, y_axis])
 
+def dot_plot(name, plot_name, x_axis, y_axis):
+	return subprocess.call(["Rscript", "graphs.r", name, plot_name, x_axis, y_axis, 'dot'])
+
+def contour_plot(name, plot_name, x_axis, y_axis):
+	return subprocess.call(["Rscript", "graphs.r", name, plot_name, x_axis, y_axis, 'contour'])
+
 ###########################################################################
 ## \brief Saves a visualisation of a rectangular gated fcs file
 ## \param name - name of fcs file to gate
