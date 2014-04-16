@@ -52,12 +52,35 @@ def visualise(	name):
 ## \param name - name of fcs file to visualise
 ## \param x_axis - name of x_axis desired
 ## \param y_axis - name of y_axis desired
-## \return returns True if successful else False
 ## \return returns exit code from the subprocess
 ## \author hdoughty@keesaco.com of Keesaco
 ###########################################################################
 def change_axis(name, x_axis, y_axis):
 	return subprocess.call(["Rscript", "axis.r", name, name + x_axis + y_axis + '.png', x_axis, y_axis])
+
+###########################################################################
+## \brief Saves a visualisation of an fcs file
+## \param name - name of fcs file to visualise
+## \param plot_name - name of image file to be created
+## \param x_axis - name of x_axis desired
+## \param y_axis - name of y_axis desired
+## \return returns exit code from the subprocess
+## \author hdoughty@keesaco.com of Keesaco
+###########################################################################
+def dot_plot(name, plot_name, x_axis, y_axis):
+	return subprocess.call(["Rscript", "graphs.r", name, plot_name, x_axis, y_axis, 'dot'])
+
+###########################################################################
+## \brief Saves a visualisation of an fcs file
+## \param name - name of fcs file to visualise
+## \param plot_name - name of image file to be created
+## \param x_axis - name of x_axis desired
+## \param y_axis - name of y_axis desired
+## \return returns exit code from the subprocess
+## \author hdoughty@keesaco.com of Keesaco
+###########################################################################
+def contour_plot(name, plot_name, x_axis, y_axis):
+	return subprocess.call(["Rscript", "graphs.r", name, plot_name, x_axis, y_axis, 'contour'])
 
 ###########################################################################
 ## \brief Saves a visualisation of a rectangular gated fcs file
