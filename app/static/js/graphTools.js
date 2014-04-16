@@ -310,7 +310,7 @@ function ksfGraphTools_sendGatingRequest(gatingURL)
 							response.status, response.message);
 						ksfCanvas.toolText("");
 						$("#filename").text(filename);
-						ksfGraphTools.setGraphUrl(response.imgUrl);
+						ksfGraphTools.setGraphUrl(response.url);
 					},
 					function()
 					{
