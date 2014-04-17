@@ -32,8 +32,8 @@ class fcsUploadHandler(FileUploadHandler):
 	## \author rmurley@keesaco.com of Keesaco
 	###########################################################################
 	def new_file(self, field_name, file_name, content_type, content_length, charset):
-		## Remove extension from the file name.
-		base_name = splitext(file_name)[0]
+		## clean string for upload.
+		base_name = clean(file_name)
 		self.name = base_name
 		## Generate datastore path.
 		base_path = ds.generate_path(DEFAULT_BUCKET, None, base_name)
@@ -120,3 +120,24 @@ class fcsUploadedFile(UploadedFile):
 	###########################################################################
 	def close(self):
 		ds.close(self.file_handle)
+
+###########################################################################
+## \brief Cleans a string to be upload safe. Strips extensions and removes leading dashes.
+## \param str - string to be cleaned
+## \author rmurley@keesaco.com of Keesaco
+###########################################################################
+def clean(str):
+	## Strip extension.
+	str = splitext(str)[0]
+	return strip_dash(str)
+
+###########################################################################
+## \brief Strips leading dashes from a string.
+## \param str - string to be stripped
+## \author rmurley@keesaco.com of Keesaco
+###########################################################################
+def strip_dash(str):
+	if str[0] == '-':
+		return clean(str[1:])
+	else:
+		return str
