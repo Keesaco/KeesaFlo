@@ -13,16 +13,16 @@ LOG_URL=$(curl http://metadata/computeMetadata/v1/instance/attributes/log_url -H
 ## Move to the analysis directory.
 cd Analysis
 ## Log time instance starts.
-echo "Instance starts: " &>> "$INSTANCE_NAME".log
-date &>> "$INSTANCE_NAME".log
+echo "Instance starts: " &>> "$INSTANCE_NAME".txt
+date &>> "$INSTANCE_NAME".txt
 ## Download analysis scripts from Google Cloud Storage.
-gsutil cp -R gs://"$SCRIPT_URL"/* . &>> "$INSTANCE_NAME".log
+gsutil cp -R gs://"$SCRIPT_URL"/* . &>> "$INSTANCE_NAME".txt
 ## Run and log the visualisation script
-python visualise.py &>> "$INSTANCE_NAME".log
+python visualise.py &>> "$INSTANCE_NAME".txt
 ## Log time instance terminates
-echo "Instance terminates: " &>> "$INSTANCE_NAME".log
-date &>> "$INSTANCE_NAME".log
+echo "Instance terminates: " &>> "$INSTANCE_NAME".txt
+date &>> "$INSTANCE_NAME".txt
 ## Save logs to cloud storage bucket.
-gsutil cp "$INSTANCE_NAME".log gs://"$LOG_URL"/
+gsutil cp "$INSTANCE_NAME".txt gs://"$LOG_URL"/
 ## Shut own instance down.
-gcutil deleteinstance "$INSTANCE_NAME" -f
+gcutil deleteinstance "$INSTANCE_NAME" -f --nodelete_boot_pd

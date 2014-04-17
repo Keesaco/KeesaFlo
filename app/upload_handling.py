@@ -9,7 +9,6 @@
 from django.core.files.uploadhandler import FileUploadHandler
 from django.core.files.uploadedfile import UploadedFile
 import API.APIDatastore as ds
-import API.APIAnalysis as analy
 import API.APIQueue as queue
 import API.APIInstance as instances
 from os.path import splitext

@@ -11,7 +11,7 @@
 
 import API.PALInstance as instances
 import API.APIQueue as queue
-from Analysis.ComputeEngine.ComputeEngineConfig import *
+from ComputeEngine.Config import *
 from uuid import uuid1
 
 ###########################################################################

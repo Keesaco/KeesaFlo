@@ -12,7 +12,7 @@
 from oauth2client.client import SignedJwtAssertionCredentials
 from apiclient.discovery import build
 import httplib2
-from Analysis.ComputeEngine.ComputeEngineConfig import *
+from ComputeEngine.Config import *
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.file import Storage
 from oauth2client import tools
@@ -65,42 +65,61 @@ def count():
 ## \author rmurley@keesaco.com of Keesaco
 ###########################################################################		
 def instance_request_body(pd_name, instance_name):
-	return {
-		'name': instance_name,
-		'machineType': MACHINE_TYPE_URL,
-		'disks': [{
-			'source': '%s/disks/%s' % (ZONE_URL, pd_name),
-			'boot': 'true',
-			'type': 'PERSISTENT',
-			'autoDelete' : 'true'
+	## Persistent disks.
+	disks = [{
+		'source': '%s/disks/%s' % (ZONE_URL, pd_name),
+		'boot': 'true',
+		'type': 'PERSISTENT',
+		'autoDelete' : 'true'
+	}]
+	## Network.
+	networks = [{
+		'accessConfigs': [{
+			'type': 'ONE_TO_ONE_NAT',
+			'name': 'External NAT'
 			}],
-		'networkInterfaces': [{
-			'accessConfigs': [{
-				'type': 'ONE_TO_ONE_NAT',
-				'name': 'External NAT'
-				}],
-			'network': NETWORK_URL
-			}],
-		'serviceAccounts': [{
-			'email': DEFAULT_SERVICE_EMAIL,
-			'scopes': DEFAULT_SCOPES
-			}],
-		'metadata': [{
-			'items': [{
+		'network': NETWORK_URL
+	}]
+	## Service accounts and scopes.
+	service_accounts = [{
+		'email': DEFAULT_SERVICE_EMAIL,
+		'scopes': DEFAULT_SCOPES
+	}]
+	## Metadata that the instance needs to know.
+	## Startup script to run on boot.
+	## Instance name for logging and shutdown purposes.
+	## URL to download analysis scripts from.
+	## URL to upload logs to on termination.
+	metadata = [{
+		'items': [
+			{
 				'key': 'startup-script',
 				'value': open(STARTUP_URL, 'r').read()
-				},{
+			},
+			{
 				'key': 'instance_name',
 				'value': instance_name
-				},{
+			},
+			{
 				'key': 'script_url',
 				'value': SCRIPT_URL
-				},{
+			},
+			{
 				'key': 'log_url',
 				'value': LOG_URL
-				}]
-			}]	
+			}
+			]
+	}]
+	## Main JSON body.
+	body = {
+		'name': instance_name,
+		'machineType': MACHINE_TYPE_URL,
+		'disks': disks,
+		'networkInterfaces': networks,
+		'serviceAccounts': service_accounts,
+		'metadata': metadata
 		}
+	return body
 
 ###########################################################################
 ## \brief Starts a new Compute Engine Instance.
