@@ -10,7 +10,6 @@
 ###########################################################################
 
 import API.PALQueue as queue
-import API.APIInstance as instances
 
 ###########################################################################
 ## \brief Adds a task to visualise fcs data, then performs a load balance.

@@ -71,7 +71,8 @@ def instance_request_body(pd_name, instance_name):
 		'disks': [{
 			'source': '%s/disks/%s' % (ZONE_URL, pd_name),
 			'boot': 'true',
-			'type': 'PERSISTENT'
+			'type': 'PERSISTENT',
+			'autoDelete' : 'true'
 			}],
 		'networkInterfaces': [{
 			'accessConfigs': [{
@@ -91,6 +92,12 @@ def instance_request_body(pd_name, instance_name):
 				},{
 				'key': 'instance_name',
 				'value': instance_name
+				},{
+				'key': 'script_url',
+				'value': SCRIPT_URL
+				},{
+				'key': 'log_url',
+				'value': LOG_URL
 				}]
 			}]	
 		}

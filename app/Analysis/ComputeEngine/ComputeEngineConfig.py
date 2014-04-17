@@ -75,3 +75,8 @@ ASSETS_URL = 'Analysis/ComputeEngine/Assets'
 STARTUP_URL = '%s/%s' % (ASSETS_URL, STARTUP_SCRIPT)
 ## The URL of the private key.
 PRIVATE_KEY_URL = '%s/%s' % (ASSETS_URL, PRIVATE_KEY)
+
+## The URL of the instance scripts.
+SCRIPT_URL = 'keesaco_gce'
+## The URL of the compute engine scripts.
+LOG_URL = 'keesaco_log'
