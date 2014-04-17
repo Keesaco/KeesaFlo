@@ -18,6 +18,7 @@ threadsafe: yes
 # TODO: List any other builtins that you wish to use.
 builtins:
 - remote_api: on
+- deferred: on
 
 # Before an application can receive certain messages, the application must be
 # configured to enable the appropriate service. The 'warmup' service enables
