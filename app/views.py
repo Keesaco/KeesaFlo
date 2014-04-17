@@ -384,7 +384,7 @@ def get_info(request, infofile):
 ###########################################################################
 ## \brief Return a response containing the file
 ## \param path - path to the file to be sent to the client
-## \param type - type of the file sent (it's mime type)
+## \param type - type of the file sent (its mime type)
 ## \return an HttpResponse ccontaining the file to be sent
 ###########################################################################
 def fetch_file(path, type):
