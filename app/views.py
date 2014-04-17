@@ -19,6 +19,7 @@ import upload_handling
 import API.APIDatastore as ds
 import API.PALUsers as auth
 import API.APIQueue as queue
+import API.APIInstance as instances
 
 DATA_BUCKET = '/fc-raw-data'
 GRAPH_BUCKET = '/fc-vis-data'
@@ -210,8 +211,9 @@ def rect_gating(request, params):
 
 		gatingRequest =" ".join(paramList[0:4])        
 
-		newName = paramList[-1] + "-rectGate";
-		queue.gate_rectangle(paramList[-1], gatingRequest, newName);
+		newName = paramList[-1] + "-rectGate"
+		queue.gate_rectangle(paramList[-1], gatingRequest, newName)
+		instances.balance()
 
 		status = "success"
 		message = "the rectangular gating was performed correctly"
@@ -235,8 +237,9 @@ def poly_gating(request, params):
 	if len(paramList)%2 == 1 :
 		gatingRequest = " ".join(paramList[0:-1])        
 
-		newName = paramList[-1] + "-polyGate";
-		queue.gate_polygon(paramList[-1], gatingRequest, newName);
+		newName = paramList[-1] + "-polyGate"
+		queue.gate_polygon(paramList[-1], gatingRequest, newName)
+		instances.balance()
 
 		status = "success"
 		message = "the polygonal gating was performed correctly"
@@ -260,8 +263,9 @@ def oval_gating(request, params):
 	if len(paramList) == 7 :
 		gatingRequest = " ".join(paramList[0:-1])        
 
-		newName = paramList[-1] + "-ovalGate";
-		queue.gate_circle(paramList[-1], gatingRequest, newName);
+		newName = paramList[-1] + "-ovalGate"
+		queue.gate_circle(paramList[-1], gatingRequest, newName)
+		instances.balance()
 
 		status = "success"
 		message = "the oval gating was performed correctly"

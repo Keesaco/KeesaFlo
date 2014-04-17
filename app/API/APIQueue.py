@@ -5,14 +5,15 @@
 ###########################################################################
 ## \package app.API.APIQueue
 ## \brief Provides an API for accessing the job queue.
-## \note Depends on PALQueue
+## \note Depends on PALQueue.
 ## \sa app.API.PALQueue
 ###########################################################################
 
 import API.PALQueue as queue
+import API.APIInstance as instances
 
 ###########################################################################
-## \brief Adds a task to visualise fcs data
+## \brief Adds a task to visualise fcs data, then performs a load balance.
 ## \param filename - filename of fcs data to visualise
 ## \author rmurley@keesaco.com of Keesaco
 ###########################################################################

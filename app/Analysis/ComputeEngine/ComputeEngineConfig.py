@@ -2,6 +2,7 @@
 ## \file app/Analysis/ComputeEngine/ComputeEngineConfig.py
 ## \brief Contains constants which change how instantiations are made on compute engine.
 ## \author swhitehouse@keesaco.com of Keesaco
+## \author rmurley@keesaco.com of Keesaco
 ###########################################################################
 ## \package app.Analysis.ComputeEngine.ComputeEngineConfig
 ## \brief Provides constants to administrate instantiations on compute engine.
@@ -16,10 +17,14 @@ UNIQUE_NAME = 'keesaflo'
 PROJECT_ID = 'keesaco-spe'
 ## The default zone to be used for Google Compute Engine.
 DEFAULT_ZONE = 'europe-west1-a'
+## The minimum number of instances which can exist simultaneously.
+MIN_INSTANCES = 1
 ## The maximum number of instances which can exist simultaneously.
-MAX_INSTANCES = AdminConfig.MAX_TOTAL_TASKS
-## The amount of redundancy on compute engine created while scaling (in lots of 10 percent)
-CE_SCALING = 2
+MAX_INSTANCES = 5
+## The desired ratio of tasks to instances.
+CE_SCALING = 5
+## The slack percentage in the scaling ratio.
+CE_SLACK = 0.3
 
 ## The Compute Engine version.
 API_VERSION = 'v1'
