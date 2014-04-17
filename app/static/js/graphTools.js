@@ -319,13 +319,26 @@ function ksfGraphTools_sendGatingRequest(toolName, gatePoints, params)
 	ksfReq.postJSON(GATING_URI, gateReq,
 			function(response)
 			{
-				ksfGraphTools.showFeedback(
-					response.status === "success" ? FEEDBACK_SUCCESS :
-						(response.status === "fail"|| response.error) ? FEEDBACK_DANGER: FEEDBACK_INFO,
-							response.status + ' ' + response.error, response.message);
-					ksfCanvas.toolText("");
-					$("#filename").text(filename);
-					ksfGraphTools.setGraphUrl(response.imgUrl);
+				var feedbackType;
+				switch (response.status)
+				{
+					case "succcess":
+						feedbackType = FEEDBACK_SUCCESS;
+						break;
+					
+					case "fail":
+						feedbackType = FEEDBACK_DANGER;
+						break;
+					
+					default:
+						feedbackType = FEEDBACK_INFO;
+				}
+					
+				ksfGraphTools.showFeedback(feedbackType, response.status, response.message);
+					
+				ksfCanvas.toolText("");
+				$("#filename").text(filename);
+				ksfGraphTools.setGraphUrl(response.imgUrl);
 			},
 			function()
 			{
