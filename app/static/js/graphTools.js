@@ -301,14 +301,15 @@ function ksfGraphTools_sendGatingRequest(toolName, gatePoints, params)
 	// allows to fetch the name correctly. In the future (final release) this should be replace by a json file fetched from the server containing all the file's data
 	
 	$("#filesize").remove();
-	var filename = $("#filename").text().trim();
+	var currentFile = $("#filename").text().trim();
 	
 	ksfTools.CurrentTool.resetTool();
 	ksfCanvas.toolText("Loading graph...");
 
 	var gateReq = {
 		tool 		: toolName,
-		points 		: gatePoints
+		points 		: gatePoints,
+		filename	: currentFile
 	};
 
 	if (params)
@@ -340,9 +341,10 @@ function ksfGraphTools_sendGatingRequest(toolName, gatePoints, params)
 				$("#filename").text(filename);
 				ksfGraphTools.setGraphUrl(response.imgUrl);
 			},
-			function()
+			function(jqxhr, textStatus, error)
 			{
-				ksfGraphTools.showFeedback(FEEDBACK_DANGER, "fail", "The server failed to respond to the gating request");
+				ksfGraphTools.showFeedback(FEEDBACK_DANGER, textStatus, error);
+				err = [jqxhr, textStatus, error];
 			} );
 }
 ksfGraphTools.sendGatingRequest = ksfGraphTools_sendGatingRequest;
