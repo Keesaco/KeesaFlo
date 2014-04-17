@@ -410,15 +410,40 @@ def settings(request):
 ###########################################################################
 ## \brief Is called by a tool from the client side
 ## \param request - Django variable defining the request that triggered the generation of this page
-## \param name - name of the tool that triggered this request
-## \param params - Paramesters that comes with the tool's call
 ## \return a JSON object in a httpresponse, containing the status of the gating, a short message and the link to the newly created graph
+## \todo Tidy up validation
 ###########################################################################
-def tool(request, name, params):
-	paramList = params.split(',')
+def tool(request):
+	authed_user = auth.get_current_user()
+	if authed_user is None:
+		return HttpResponse(json.dumps({'error' : 'Unauthenticated request'}), content_type="application/json")
 
-	tool = tools.AVAILABLE_TOOLS.get(name, tools.no_such_tool)
-	tool_response = tool(paramList, name)
+
+	try:
+		gateInfo = json.loads(request.raw_post_data)
+	except ValueError:
+		return HttpResponse(json.dumps({'error' : 'invalid request payload'}), content_type="application/json")
+
+
+	## \todo This should probably iterate over list
+	if (('points' 	not in gateInfo) or
+		('params' 	not in gateInfo) or
+		('tool'		not in gateInfo) or
+		('filename' not in gateInfo)):
+
+		return HttpResponse(json.dumps({'error' : 'incomplete gate parameters'}), content_type="application/json")
+
+	if (gateInfo['points']):
+		if not isinstance(gateInfo['points'], list):
+			return HttpResponse(json.dumps({'error' : 'invalid points list'}), content_type="application/json")
+	else:
+		# Normalise false value to None
+		gateInfo.update( { 'points' : None } )
+
+
+	tool = tools.AVAILABLE_TOOLS.get(gateInfo['tool'], tools.no_such_tool)
+	## first two arguments passed for compatibility
+	tool_response = tool(gateInfo['points'], name, gateInfo)
 
 	jsonResponse = simplejson.dumps(tool_response);
 	return HttpResponse(jsonResponse, content_type="application/json")

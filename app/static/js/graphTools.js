@@ -23,6 +23,7 @@ FEEDBACK_INFO = "alert-info";
 FEEDBACK_WARING = "alert-warning";
 FEEDBACK_DANGER = "alert-danger";
 
+GATING_URI		= "/app/gating/tools/";
 
 /**
  *	Milliseconds between requests for new graphs
@@ -281,17 +282,21 @@ ksfGraphTools.OvalGating = {
 		var angle = ksfGraphTools.mesureAngle(tx, ty);
 		var p1x=this.centerx+Math.cos(angle-Math.PI/2)*this.r1,
 		p1y=this.centery+Math.sin(angle-Math.PI/2)*this.r1;
-		ksfGraphTools.sendGatingRequest("tool/gating/oval_gating," + this.centerx + "," + this.centery + "," + p1x + "," + p1y + "," + this.pointx + "," + this.pointy);
+		ksfGraphTools.sendGatingRequest('oval_gating',
+										[this.centerx, this.centery, p1x, p1y, this.pointx, this.pointy] );
 	}
 }
 
 /**
  * Perform a gating request and update the view correspondingly
- * \param gatingURL - [String] url of the gating command
+ * \param String toolName - name of tool to use for gate
+ * \param [Int] gatePoints - list of points which form the gate
+ * \param Object params - Object with other gating parameters - this is used to extend the gating request object before the gating request is sent
  * \author mrudelle@keesaco.com of Keesaco
- * \note This might be moved to views.js in the future
+ * \note This might be moved to views.js in the future //!JPM - might it?
+ * \note deep-extend is not used for params
  */
-function ksfGraphTools_sendGatingRequest(gatingURL)
+function ksfGraphTools_sendGatingRequest(toolName, gatePoints, params)
 {
 	// allows to fetch the name correctly. In the future (final release) this should be replace by a json file fetched from the server containing all the file's data
 	
@@ -301,21 +306,31 @@ function ksfGraphTools_sendGatingRequest(gatingURL)
 	ksfTools.CurrentTool.resetTool();
 	ksfCanvas.toolText("Loading graph...");
 
-	ksfReq.fetch(   gatingURL + "," + filename, 
-					function(response)
-					{
-						ksfGraphTools.showFeedback(
-							response.status === "success" ? FEEDBACK_SUCCESS :
-							response.status === "fail" ? FEEDBACK_DANGER: FEEDBACK_INFO,
-							response.status, response.message);
-						ksfCanvas.toolText("");
-						$("#filename").text(filename);
-						ksfGraphTools.setGraphUrl(response.imgUrl);
-					},
-					function()
-					{
-						ksfGraphTools.showFeedback(FEEDBACK_DANGER, "fail", "The server failed to respond to the gating request");
-					} );
+	var gateReq = {
+		tool 		: toolName,
+		points 		: gatePoints
+	};
+
+	if (params)
+	{
+		$.extend(gateReq, params);
+	}
+
+	ksfReq.postJSON(GATING_URI, gateReq,
+			function(response)
+			{
+				ksfGraphTools.showFeedback(
+					response.status === "success" ? FEEDBACK_SUCCESS :
+						(response.status === "fail"|| response.error) ? FEEDBACK_DANGER: FEEDBACK_INFO,
+							response.status + ' ' + response.error, response.message);
+					ksfCanvas.toolText("");
+					$("#filename").text(filename);
+					ksfGraphTools.setGraphUrl(response.imgUrl);
+			},
+			function()
+			{
+				ksfGraphTools.showFeedback(FEEDBACK_DANGER, "fail", "The server failed to respond to the gating request");
+			} );
 }
 ksfGraphTools.sendGatingRequest = ksfGraphTools_sendGatingRequest;
 
