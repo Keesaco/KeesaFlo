@@ -445,5 +445,5 @@ def tool(request):
 	## first two arguments passed for compatibility
 	tool_response = tool(gateInfo['points'], name, gateInfo)
 
-	jsonResponse = simplejson.dumps(tool_response);
-	return HttpResponse(jsonResponse, content_type="application/json")
+	json_response = simplejson.dumps(tool_response);
+	return HttpResponse(json_response, content_type="application/json")
