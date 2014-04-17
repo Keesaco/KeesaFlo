@@ -22,7 +22,7 @@ import API.PALUsers as auth
 import API.APIQueue as queue
 import API.APIPermissions as ps
 import json
-import tools
+import gating.tools as gt
 
 DATA_BUCKET = '/fc-raw-data'
 GRAPH_BUCKET = '/fc-vis-data'
@@ -416,13 +416,13 @@ def settings(request):
 def tool(request):
 	authed_user = auth.get_current_user()
 	if authed_user is None:
-		return HttpResponse(json.dumps({'error' : 'Unauthenticated request'}), content_type="application/json")
+		return gt.generate_gating_feedback('fail', 'Unauthenticated request')
 
 
 	try:
 		gateInfo = json.loads(request.raw_post_data)
 	except ValueError:
-		return HttpResponse(json.dumps({'error' : 'invalid request payload'}), content_type="application/json")
+		return gt.generate_gating_feedback('fail', 'Invalid request payload')
 
 
 	## \todo This should probably iterate over list
@@ -431,11 +431,11 @@ def tool(request):
 		('tool'		not in gateInfo) or
 		('filename' not in gateInfo)):
 
-		return HttpResponse(json.dumps({'error' : 'incomplete gate parameters'}), content_type="application/json")
+		return gt.generate_gating_feedback('fail', 'Incomplete gate parameters')
 
 	if (gateInfo['points']):
 		if not isinstance(gateInfo['points'], list):
-			return HttpResponse(json.dumps({'error' : 'invalid points list'}), content_type="application/json")
+			return gt.generate_gating_feedback('fail', 'Invalid points list')
 	else:
 		# Normalise false value to None
 		gateInfo.update( { 'points' : None } )
