@@ -456,19 +456,29 @@ def tool(request, name, params):
 ## \todo	Refactor return value creation
 ###########################################################################
 def analysis_status_json(request):
+	
+	response_part = {
+		'backoff' 	: 0,		#tells the client to back off for a given amount of time (milliseconds) (This is added to the client's constant poll interval)
+		'giveup'	: True,		#True instructs the client to stop polling - useful for situations such as unauthed requests where polling will never result in the user being shown a graph
+		'done'		: False		#True indicates that the analysis has finished and that the user can be redirected to the new image
+	}
+	
 	authed_user = auth.get_current_user()
 	if authed_user is None:
-		return HttpResponse(json.dumps({'error' : 'Unauthenticated request.', 'done' : False }), content_type="application/json")
+		response_part.update( { 'error' : 'Unauthenticated request.' } )
+		return HttpResponse(json.dumps(rresponse_part), content_type="application/json")
 		
 	user_key = ps.get_user_key_by_id(authed_user.user_id())
 		
 	try:
 		file_req = json.loads(request.raw_post_data)
 	except ValueError:
-		return HttpResponse(json.dumps({'error' : 'Invalid request payload.', 'done' : False }), content_type="application/json")
+		response_part.update({'error' : 'Invalid request payload.'})
+		return HttpResponse(json.dumps(response_part), content_type="application/json")
 
 	if 'filename' not in file_req:
-		return HttpResponse(json.dumps({'error' : 'Incomplete request.', 'done' : False }), content_type="application/json")
+		response_part.update({'error' : 'Incomplete request.'})
+		return HttpResponse(json.dumps(response_part), content_type="application/json")
 
 	#	This is roughly what permissions checking should probably look like once all files have permissions entries
 	#		Alternatively, a check_exists call may be sufficient if the permissions entry is created before gating is requested,
@@ -483,7 +493,8 @@ def analysis_status_json(request):
 
 
 	is_done = ds.check_exists(GRAPH_BUCKET + '/' + file_req['filename'] + '.png', None)
-	return HttpResponse(json.dumps({'done' : is_done }), content_type="application/json")
+	response_part.update( { 'done' : is_done, 'giveup' : False } )
+	return HttpResponse(json.dumps(response_part), content_type="application/json")
 
 
 
