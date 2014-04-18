@@ -18,6 +18,11 @@ app/Analysis/ComputeEngine/Assets/oauth2.dat
 ehthumbs.db
 Thumbs.db
 
+# Sensitive #
+#############
+app/ComputeEngine/private_key.pem
+
+
 # AppBuild tracked dependencies #
 #################################
 AppBuild.py
