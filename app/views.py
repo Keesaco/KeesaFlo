@@ -20,7 +20,7 @@ import API.APIDatastore as ds
 import API.PALUsers as auth
 import API.APIQueue as queue
 import API.APIInstance as instances
-from google.appengine.ext import deferred
+import API.APIBackground as background
 
 DATA_BUCKET = '/fc-raw-data'
 GRAPH_BUCKET = '/fc-vis-data'
@@ -214,7 +214,8 @@ def rect_gating(request, params):
 
 		newName = paramList[-1] + "-rectGate"
 		queue.gate_rectangle(paramList[-1], gatingRequest, newName)
-		deferred.defer(instances.balance)
+		## Load balance instances in the background.
+		background.run(instances.balance)
 
 		status = "success"
 		message = "the rectangular gating was performed correctly"
@@ -240,7 +241,8 @@ def poly_gating(request, params):
 
 		newName = paramList[-1] + "-polyGate"
 		queue.gate_polygon(paramList[-1], gatingRequest, newName)
-		deferred.defer(instances.balance)
+		## Load balance instances in the background.
+		background.run(instances.balance)
 
 		status = "success"
 		message = "the polygonal gating was performed correctly"
@@ -266,7 +268,8 @@ def oval_gating(request, params):
 
 		newName = paramList[-1] + "-ovalGate"
 		queue.gate_circle(paramList[-1], gatingRequest, newName)
-		deferred.defer(instances.balance)
+		## Load balance instances in the background.
+		background.run(instances.balance)
 
 		status = "success"
 		message = "the oval gating was performed correctly"

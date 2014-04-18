@@ -12,7 +12,7 @@ import API.APIDatastore as ds
 import API.APIQueue as queue
 import API.APIInstance as instances
 from os.path import splitext
-from google.appengine.ext import deferred
+import API.APIBackground as background
 
 ## default upload bucket
 DEFAULT_BUCKET = '/fc-raw-data/'
@@ -70,8 +70,8 @@ class fcsUploadHandler(FileUploadHandler):
 		self.upload.size = file_size
 		## Start analysis.
 		queue.visualise(self.name)
-		## Load balance instances.
-		deferred.defer(instances.balance)
+		## Load balance instances in the background.
+		background.run(instances.balance)
 		return self.upload
 
 ## Custom uploaded file class.
