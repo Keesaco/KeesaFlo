@@ -451,7 +451,7 @@ def tool(request, name, params):
 ##			given file.
 ## \param	request - Django request which resulted in the call
 ## \return	HttpResponse - response to the request as JSON
-## \autohor	jmccrea@kessaco.com of Keesaco
+## \author	jmccrea@kessaco.com of Keesaco
 ## \todo	Consider permissions update after CE/Permissions integration
 ## \todo	Refactor return value creation
 ###########################################################################
@@ -466,7 +466,7 @@ def analysis_status_json(request):
 	authed_user = auth.get_current_user()
 	if authed_user is None:
 		response_part.update( { 'error' : 'Unauthenticated request.' } )
-		return HttpResponse(json.dumps(rresponse_part), content_type="application/json")
+		return HttpResponse(json.dumps(response_part), content_type="application/json")
 		
 	user_key = ps.get_user_key_by_id(authed_user.user_id())
 		
