@@ -1,60 +1,78 @@
 ###########################################################################
 ## \file compute_engine/gate.r
-## \brief Gates flow cytometry data.
+## \brief Performs basic gates of flow cytometry data.
 ## \author hdoughty@keesaco.com of Keesaco
 ###########################################################################
-library("flowCore")
-library("flowViz")
-library("methods")
+source('rfunctions.r')
+imports()
 
 ## Parse arguments.
 args <- commandArgs(trailingOnly = TRUE)
 fcs_name <- args[1]
 gate_name <- args[2]
-tlx <- as.integer(args[3])
-tly <- as.integer(args[4])
-brx <- as.integer(args[5])
-bry <- as.integer(args[6])
+gate_type <- args[3]
+reverse <- as.integer(args[4])
+if(gate_type == 'rect')
+{
+	tlx <- as.integer(args[5])
+	tly <- as.integer(args[6])
+	brx <- as.integer(args[7])
+	bry <- as.integer(args[8])
+	x_axis <- args[9]
+	y_axis <- args[10]
+} else if(gate_type == 'oval')
+{
+	mx <- as.integer(args[5])
+	my <- as.integer(args[6])
+	ax <- as.integer(args[7])
+	ay <- as.integer(args[8])
+	bx <- as.integer(args[9])
+	by <- as.integer(args[10])
+	x_axis <- args[11]
+	y_axis <- args[12]
+} else if(gate_type == 'poly')
+{
+	points <- args[5]
+	x_axis <- args[6]
+	y_axis <- args[7]
+}
 
 ## Read fcs data.
+if(file.exists(fcs_name) == FALSE)
+	quit("no", 1)
 x <- read.FCS(fcs_name, transformation = FALSE)
 
-## Finding first two observables.
-a <- colnames(x[,1])
-b <- colnames(x[,2])
-
-## Calculate graph coordinates from pixel coordinates
+## Find range of relevant observables
 r1 <- range(x[,1])
 r2 <- range(x[,2])
 
-tlx <- ((tlx-73)/360) * (r1[2,1]-r1[1,1])
-brx <- ((brx-73)/360) * (r1[2,1]-r1[1,1])
-
-tly <- r2[2,1] - (((tly-61)/332) * (r2[2,1]-r2[1,1]))
-bry <- r2[2,1] - (((bry-61)/332) * (r2[2,1]-r2[1,1]))
-
-
-## Working out gate, need to change values.
-mat <- matrix(c(tlx, brx, bry, tly), ncol=2, dimnames=list(c("min", "max"), c(a, b)))
-rgate <- rectangleGate(.gate=mat)
+## Creates a gate object based on the specified parameters
+if(gate_type == 'rect')
+{
+	points <- convertRectCoords(tlx, tly, brx, bry, r1[1,1], r1[2,1], r2[1,1], r2[2,1])
+	gate <- createRectGate(points[1], points[2], points[3], points[4], x_axis, y_axis)
+} else if(gate_type == 'oval')
+{
+	points <- convertOvalCoords(mx, my, ax, ay, bx, by, r1[1,1], r1[2,1], r2[1,1], r2[2,1])
+	gate <- createEllipsoidGate(points[1], points[2], points[3], points[4], points[5], points[6], x_axis, y_axis)
+} else if(gate_type == 'poly')
+{
+	points <- strsplit(points, " ")
+	l <- length(points[[1]])
+	newPoints <- convertPolyCoords(points, l, r1[1,1], r1[2,1], r2[1,1], r2[2,1])
+	gate <- createPolyGate(newPoints, l/2, x_axis, y_axis)
+}
 
 ## Creating subset of data.
-y <- Subset(x, rgate)
+y <- createSubset(x, gate, reverse)
 
-## Calculating proportion
+## Save gate as fcs file
+write.FCS(y, gate_name)
 
-result <- filter(x, rgate)
-total <- summary(result)$n
-inGate <- summary(result)$true
-proportion <- summary(result)$p
-info <- c(inGate, total, proportion)
-info_name <- paste(gate_name, ".txt", sep="")
-write(info, file = info_name)
+## Saves gate info in a txt file
+writeInfo(x, gate, reverse)
 
-## Plotting the gate
-u <- range(tlx, brx)
-v <- range(bry, tly)
+## Plots the gate
 image_name <- paste(gate_name, ".png", sep="")
-png(image_name)
-plot(y,c(a, b), xlim = u, ylim = v)
-dev.off()
+plotGraph(image_name, y, x_axis, y_axis)
+quit("no", 0)

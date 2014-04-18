@@ -1,7 +1,6 @@
 ###########################################################################
-## \file compute_engine/visualise.r
-## \brief Visualises flow cytometry data.
-## \author rmurley@keesaco.com of Keesaco
+## \file compute_engine/graphs.r
+## \brief Creates a dot plot of flow cytometry data.
 ## \author hdoughty@keesaco.com of Keesaco
 ###########################################################################
 library("flowCore")
@@ -12,23 +11,26 @@ library("methods")
 args <- commandArgs(trailingOnly = TRUE)
 fcs_name <- args[1]
 vis_name <- args[2]
-info_name <- args[3]
+x_axis <- args[3]
+y_axis <- args[4]
+plot_type <- args[5]
 
 ## Read fcs data.
 if(file.exists(fcs_name) == FALSE)
 	quit("no", 1)
 x <- read.FCS(fcs_name, transformation = FALSE)
 
-## Finding first two observables.
-a <- colnames(x[,1])
-b <- colnames(x[,2])
-
-## Finding list of observables
-c <- colnames(x)
-write(c, file = info_name)
-
 ## Plot data.
 png(vis_name)
-plot(x, c(a, b))
+if(plot_type == 'dot')
+{
+	plot(x, c(x_axis, y_axis), smooth = FALSE)
+} else if(plot_type == 'contour')
+{
+	contour(x, c(x_axis, y_axis))
+} else
+{
+	quit("no", 2)
+}
 dev.off()
 quit("no", 0)

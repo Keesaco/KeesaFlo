@@ -11,6 +11,9 @@
 ###########################################################################
 
 import PALDatastore
+import APIPermissions as ps
+import PALUsers as users
+from Permissions.Types import Permissions, FileInfo
 
 ## \brief second tier API for data access - utilises PAL for low level file access
 
@@ -27,6 +30,26 @@ def __check_authentication (	path,
 							action ='r', #d = delete
 								permissions = None):
 	return True
+
+###########################################################################
+## \brief add authentication to the datastore
+## \param String path - filepath of data to add
+## \param User user -  user object to add to
+## \param Permissions permissions - permissions object
+## \author cwike@keesaco.com of Keesaco
+## \author jmccrea@keesaco.com of Keesaco
+###########################################################################
+def __add_authentication( path, user, permissions):
+	user_key = ps.get_user_key_by_id(user.user_id())
+	if (user_key is None):
+		user_key = ps.add_user(user)
+	file_key = ps.add_file( FileInfo(
+						   		file_name 		= path,
+								owner_key 		= user_key
+						   	) )
+
+	ps.add_file_permissions(file_key,user_key,permissions)
+
 
 ###########################################################################
 ## \brief Checks the existance of file or directory being searched
@@ -83,7 +106,9 @@ def add_file(	path,
 		if blob is not None:
 			file_handle.write(blob)
 		file_handle.close()
-		add_permissions( path, permissions, True)
+		userobj = users.get_current_user()
+		permis = Permissions(True,True,True)
+		__add_authentication(path,userobj,permis)
 		if mode is None:
 			return False
 		else:

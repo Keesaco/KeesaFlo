@@ -18,10 +18,9 @@ app/ComputeEngine/oauth2.dat
 ehthumbs.db
 Thumbs.db
 
-# Sensitive #
-#############
-app/ComputeEngine/private_key.pem
-
+# Vagrant #
+###########
+.vagrant
 
 # AppBuild tracked dependencies #
 #################################
@@ -38,12 +37,12 @@ app/httplib2/
 app/oauth2client/
 app/static/css/bootstrap.css
 app/static/js/bootstrap.js
-app/static/js/jquery-2.1.0.js
 app/uritemplate/
 tmp-packages/
 app/static/fonts/
 app/static/js/jquery.js
-app/ComputeEngine/private_key.pem
+app/static/js/jquery.color.js
+app/Analysis/ComputeEngine/Assets/private_key.pem
 js2doxy.pl
 app/uneedtest.py
 app/static/css/bootstrap-tour.min.css
@@ -53,3 +52,7 @@ compute_engine/google-api-python-client-gae-1.2.zip
 compute_engine/httplib2/
 compute_engine/oauth2client/
 compute_engine/uritemplate/
+app/static/css/qtip.min.css
+app/static/js/qtip.min.js
+app/static/js/jquery-ui-1.10.4.min.js
+app/static/js/bootbox.min.js

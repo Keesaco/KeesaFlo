@@ -4,6 +4,7 @@
 ## \author mrudelle@keesaco.com of Keesaco
 ## \author rmurley@keesaco.com of Keesaco
 ## \author jmccrea@keesaco.com
+## \author hdoughty@keesaco.com of Keesaco
 ###########################################################################
 
 from django.http import HttpResponse
@@ -21,9 +22,13 @@ import API.PALUsers as auth
 import API.APIQueue as queue
 import API.APIInstance as instances
 import API.APIBackground as background
+import API.APIPermissions as ps
+import json
+import tools
 
 DATA_BUCKET = '/fc-raw-data'
 GRAPH_BUCKET = '/fc-vis-data'
+INFO_BUCKET = '/fc-info-data'
 
 def login(request):
 	link = auth.create_login_url('app/')
@@ -78,7 +83,7 @@ def app(request):
 		form = forms.UploadFile(request.POST, request.FILES)
 		if form.is_valid():
 			cd = form.cleaned_data
-			return redirect('app')
+			return redirect('#!/preview/' + request.FILES['file'].name)
 		else:
 			return render(request, 'app.html', {'form': form, 'files' : lst , 'current_file' : file_info, 'authed_user_nick' : authed_user_nick})
 	else:
@@ -93,9 +98,188 @@ def app(request):
 ###########################################################################
 def file_list(request):
 	lst = ds.list(DATA_BUCKET)
-	for temp_file in lst: 
+
+	file_list = []
+	
+	for temp_file in lst:
+		list_entry = {}
+		file_entry = permissions.get_file_by_name(temp_file.filename)
+		if file_entry is not None:
+			list_entry.update({ 'permissions' : 'yes' })
+		else:
+			list_entry.update({ 'permissions' : 'no'  })
+		
 		temp_file.filename = temp_file.filename.rpartition('/')[2]
-	return render(request, 'file_list.html', {'files' : lst})
+		list_entry.update( { 'filestat' : temp_file } )
+
+		file_list.append(list_entry)
+
+	return render(request, 'file_list.html', {'files' : file_list})
+
+###########################################################################
+## \brief returns a JSON representation of a file list
+## \param request - Django variable defining the request that triggered the generation of this page
+## \todo move 'no files' link markup somewhere else
+## \return the list of files pagelet
+###########################################################################
+def file_list_json(request):
+	lst = ds.list(DATA_BUCKET)
+	
+	authed_user = auth.get_current_user()
+	if authed_user is None:
+		pass
+		#TODO: deal with unauthed users
+	else:
+		user_key = ps.get_user_key_by_id(authed_user.user_id())
+		#TODO: This shouldn't be here - a generic method in APIPermissions would be nice.
+
+
+	# 'your files'
+	file_list = []
+	
+	temp_group = []
+	for temp_file in lst:
+		list_entry = {}
+		file_entry = ps.get_file_by_name(temp_file.filename)
+		if file_entry is not None:
+			user_permissions = ps.get_user_file_permissions(file_entry.key, user_key)
+			if user_permissions is not None:
+				list_entry.update({ 'permissions' 	: 'yes',
+									'friendlyName'	: file_entry.friendly_name,
+								  	'colour'		: user_permissions.colour,
+								  	'starred'		: user_permissions.starred
+								} )
+							  
+			
+		else:
+			list_entry.update({ 'permissions' : 'no'  })
+		
+		
+		temp_file.filename = temp_file.filename.rpartition('/')[2]
+		list_entry.update( {	'filename' 		: temp_file.filename,
+								'size' 			: temp_file.st_size,
+						  		'hash' 			: temp_file.etag,
+						  		'timestamp' 	: temp_file.st_ctime
+						  })
+		temp_group.append(list_entry)
+
+
+	if len(temp_group) > 0:
+		file_list.append({	'catagory' 	: 'owned',
+							'heading' 	: 'Your Files',
+						 	'type'		: 'files',
+							'data' 		: temp_group })
+						
+	if len(file_list) == 0:
+		file_list.append({	'catagory' 	: 'notice',
+						 	'type'		: 'html',
+						 
+						 	# TODO: move this line out
+						 	'data'		: '<a data-toggle="modal" data-target="#uploadModal" class="list-group-item">No files - Click here to upload one</a>'
+							})
+
+
+	return HttpResponse(json.dumps(file_list), content_type="application/json")
+
+
+###########################################################################
+## \brief 	Takes a JSON file list edit object and performs the requested
+##			action on the specified file. Returns JSON status.
+## \param 	request - Django variable defining the request that triggered
+##			the generation of this page
+## \todo 	Review permissions in this section - correct checking here is
+##			vital as edit actions are potentially destructive.
+## \todo	Refactor bucket names for deletion
+## \return 	JSON response which indicates whether the requested action(s)
+##			were performed successfully.
+###########################################################################
+def file_list_edit(request):
+	authed_user = auth.get_current_user()
+	if authed_user is None:
+		return HttpResponse(json.dumps({'error' : 'Unauthenticated request'}), content_type="application/json")
+	
+	user_key = ps.get_user_key_by_id(authed_user.user_id())
+	
+	try:
+		actions = json.loads(request.raw_post_data)
+	except ValueError:
+		return HttpResponse(json.dumps({'error' : 'invalid request payload'}), content_type="application/json")
+	
+	if not isinstance(actions, list):
+		return HttpResponse(json.dumps({'error' : 'Payload is not a list'}), content_type="application/json")
+	
+	res = []
+	for a in actions:
+		
+		#We can't do anything without a filename
+		if 'filename' not in a:
+			continue
+		else:
+			filename = a['filename']
+		
+		if 'action' not in a:
+			continue
+		else:
+			action = a['action']
+		
+		res_fragment = {
+			'filename' 	: a['filename'],
+			'action'	: a['action']
+		}
+		
+		if action == 'delete':
+			file_entry = ps.get_file_by_name('/fc-raw-data/' + filename)
+			if file_entry is not None:
+				ps.remove_file_by_key(file_entry.key)
+			
+			ds.delete('/fc-raw-data/' + filename)
+			ds.delete('/fc-info-data/' + filename + 'info.txt')
+			ds.delete('/fc-info-data/' + filename + '.html')
+			ds.delete('/fc-vis-data/' + filename + '.png')
+			
+			res_fragment.update( { 'success' : True } )
+		
+		#Reinstate this when CE PAL is available
+		#else:
+		#res_fragment.update( { 'success' : False, 'error' : 'File does not exist.' } )
+		
+		elif action == 'rename':
+			if 'newname' not in a:
+				res_fragment.update( { 'success' : false, 'error' : 'New name not specified' } )
+			else:
+				file_entry = ps.get_file_by_name('/fc-raw-data/' + filename)
+				if file_entry is None:
+					res_fragment.update( { 'success' : False, 'error' : 'File does not exist.' } )
+				else:
+					file_entry.friendly_name = a['newname']
+					if ps.update_file(file_entry):
+						res_fragment.update( { 'success' : True } )
+					else:
+						res_fragment.update( { 'success' : False, 'error' : 'Could not rename file' } )
+		
+		elif action == 'star' or action == 'unstar':
+			file_entry = ps.get_file_by_name('/fc-raw-data/' + filename)
+			if file_entry is None:
+				res_fragment.update( { 'success' : False, 'error' : 'File does not exist.' } )
+			else:
+				fp_entry = ps.get_user_file_permissions(file_entry.key, user_key)
+				if fp_entry is None:
+					res_fragment.update( { 'success' : False, 'error' : 'Permissions entry not found' } )
+				else:
+					fp_entry.starred = (action == 'star')
+					if ps.modify_file_permissions_by_key(fp_entry.key, fp_entry):
+						res_fragment.update( { 'success' : True } )
+					else:
+						res_fragment.update( { 'success' : False, 'error' : 'Could not update file' } )
+		
+		else:
+			res_fragment.update( { 'success' : False, 'error' : 'Action not recognised' } )
+		
+		res.append(res_fragment)
+	
+	
+	
+	return HttpResponse(json.dumps(res), content_type="application/json")
 
 ###########################################################################
 ## \brief Is called when the pagelet containing the main content of the page is requested.
@@ -113,8 +297,10 @@ def file_preview(request, file = None):
 		authed_user_nick = authed_user.nickname()
 	## Graph visualisation.
 	file_name_without_extension = file
-	if not ds.check_exists(GRAPH_BUCKET + '/' + file_name_without_extension + '.png', None):
-		file_name_without_extension = None
+	# Replaced by a spinning canvas on the clientside
+	# if not ds.check_exists(GRAPH_BUCKET + '/' + file_name_without_extension + '.png', None):
+	# 	file_name_without_extension = None
+
 	#TODO: Might need to be simplified or moved to a function in fileinfo
 	# TODO the folowing should be replaced by a method in the APIDatastore
 	lst = ds.list(DATA_BUCKET)
@@ -124,6 +310,27 @@ def file_preview(request, file = None):
 		if temp_file.filename == file:
 			file_info = temp_file;
 	return render(request, 'file_preview.html', {'current_file' : file_info, 'authed_user_nick': authed_user_nick, 'file_name_without_extension' : file_name_without_extension})
+
+###########################################################################
+## \brief 	view for graph preview pagelet
+## \param 	request - Django variable defining the request that triggered
+##			the generation of this page
+## \note 	only the main panel is generated here, see app(request) for
+##			fetching the page's skeleton
+## \return 	the main panel pagelet
+## \todo	use datastore/permissions API for file list lookup
+###########################################################################
+def graph_preview(request, file = None):
+	
+	
+	lst = ds.list(DATA_BUCKET)
+	for temp_file in lst:
+		temp_file.filename = temp_file.filename.rpartition('/')[2]
+		if temp_file.filename == file:
+			file_info = temp_file;
+
+	return render(request, 'graph_preview.html',
+		{'current_file' : file_info, 'file_name_without_extension' : file})
 
 ###########################################################################
 ## \brief Is called when the pagelet containing the app's main panel is requested.
@@ -165,6 +372,15 @@ def get_dataset(request, dataset):
 	return fetch_file(DATA_BUCKET + '/' + dataset, 'application/vnd.isac.fcs')
 
 ###########################################################################
+## \brief Is called when a info is requested
+## \param request - Django variable defining the request that triggered the generation of this page
+## \param dataset - the name of the file to be downloaded
+## \return the file requested
+###########################################################################
+def get_info(request, infofile):
+	return fetch_file(INFO_BUCKET + '/' + infofile, 'text/html')
+
+###########################################################################
 ## \brief Return a response containing the file
 ## \param path - path to the file to be sent to the client
 ## \param type - type of the file sent (it's mime type)
@@ -191,102 +407,20 @@ def settings(request):
 	return render(request, 'settings.html')
 
 ###########################################################################
-## \brief Is called when a rectangular gating is requested.
+## \brief Is called by a tool from the client side
 ## \param request - Django variable defining the request that triggered the generation of this page
-## \param params - Paramesters of this gating, string of the form: topLeftx,topLefty,bottomRightx,bottomRighty,newFilename
+## \param name - name of the tool that triggered this request
+## \param params - Paramesters that comes with the tool's call
 ## \return a JSON object in a httpresponse, containing the status of the gating, a short message and the link to the newly created graph
 ###########################################################################
-def rect_gating(request, params):
+def tool(request, name, params):
 	paramList = params.split(',')
 
-	if len(paramList) == 5 :
-		#Reoder the point to take the topLeft and bottomRight points of the square 
-		if paramList[0] > paramList[2]:
-			tempcoor = paramList[0]
-			paramList[0] = paramList[2]
-			paramList[2] = tempcoor
-		if paramList[1] > paramList[3]:
-			tempcoor = paramList[1]
-			paramList[1] = paramList[3]
-			paramList[3] = tempcoor
+	tool = tools.AVAILABLE_TOOLS.get(name, tools.no_such_tool)
+	tool_response = tool(paramList, name)
 
-		gatingRequest =" ".join(paramList[0:4])        
+	## Load balance instances in the background.
+	background.run(instances.balance)
 
-		newName = paramList[-1] + "-rectGate"
-		queue.gate_rectangle(paramList[-1], gatingRequest, newName)
-		## Load balance instances in the background.
-		background.run(instances.balance)
-
-		status = "success"
-		message = "the rectangular gating was performed correctly"
-		url = reverse('get_graph', args=[newName])
-	else:
-		status = "fail"
-		message = "notcorrect " + params + " length:" + str(len(paramList)) + " is not equal to 4"
-		url = None
-		 
-	return HttpResponse(generate_gating_answer(status, message, url), content_type="application/json")
-
-###########################################################################
-## \brief Is called when a polygonal gating is requested.
-## \param request - Django variable defining the request that triggered the generation of this page
-## \param params - Paramesters of this gating, string of the form: x1,y1,x2,y2,...xn,yn,newFilename
-## \return a JSON object in a httpresponse, containing the status of the gating, a short message and the link to the newly created graph
-###########################################################################
-def poly_gating(request, params):
-	paramList = params.split(',')
-
-	if len(paramList)%2 == 1 :
-		gatingRequest = " ".join(paramList[0:-1])        
-
-		newName = paramList[-1] + "-polyGate"
-		queue.gate_polygon(paramList[-1], gatingRequest, newName)
-		## Load balance instances in the background.
-		background.run(instances.balance)
-
-		status = "success"
-		message = "the polygonal gating was performed correctly"
-		url = reverse('get_graph', args=[newName]) 
-	else:
-		status = "fail"
-		message = "notcorrect " + params + " #pointCoordinates:" + str(len(paramList))-1 + " is not pair"
-		url = None
-		 
-	return HttpResponse(generate_gating_answer(status, message, url), content_type="application/json")
-
-###########################################################################
-## \brief Is called when an oval gating is requested.
-## \param request - Django variable defining the request that triggered the generation of this page
-## \param params - Paramesters of this gating, string of the form: meanx,meany,point1x,point1y,point2x,point2y,newFilename
-## \return a JSON object in a httpresponse, containing the status of the gating, a short message and the link to the newly created graph
-###########################################################################
-def oval_gating(request, params):
-	paramList = params.split(',')
-
-	if len(paramList) == 7 :
-		gatingRequest = " ".join(paramList[0:-1])        
-
-		newName = paramList[-1] + "-ovalGate"
-		queue.gate_circle(paramList[-1], gatingRequest, newName)
-		## Load balance instances in the background.
-		background.run(instances.balance)
-
-		status = "success"
-		message = "the oval gating was performed correctly"
-		url = reverse('get_graph', args=[newName])
-	else:
-		status = "fail"
-		message = "notcorrect " + params + " #pointCoordinates:" + str(len(paramList)) + " is not even"
-		url = None
-
-	return HttpResponse(generate_gating_answer(status, message, url), content_type="application/json")
-
-###########################################################################
-## \brief create a JSON string containing the status, message and graph's url of a gating response
-## \param status - Status of the gating (success or fail)
-## \param message - Message containing more information about the gating's status
-## \param url - Url to the new gated dataset's graph
-## \return a JSON object containing the status of the gating, a short message and the link to the newly created graph
-###########################################################################
-def generate_gating_answer(status, message, url):
-	return simplejson.dumps({"status" : status, "message" : message, "imgUrl" : url});
+	jsonResponse = simplejson.dumps(tool_response);
+	return HttpResponse(jsonResponse, content_type="application/json")

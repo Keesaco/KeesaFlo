@@ -1,11 +1,13 @@
 {% extends "baselayout.html" %}
 
-{% block title %}APP - Flow cytometry upload tool{% endblock title %}
+{% block title %}KeesaFlo{% endblock title %}
 
 {% block cssimport %}
 {% load staticfiles %}
 <link href="{% static "css/app.css" %}" rel="stylesheet">
 <link href="{% static "css/bootstrap-tour.min.css" %}" rel="stylesheet">
+<link href="{% static "css/vector-glyph-.css" %}" rel="stylesheet">
+<link href="{% static "css/qtip.min.css" %}" rel="stylesheet">
 {% endblock cssimport %}
 
 {% block customstyle %}<!-- no need of a top padding here -->{% endblock customstyle %}
@@ -16,141 +18,138 @@
 
 
 <nav class="navbar navbar-inverse navbar-default navbar-fixed-top" role="navigation">
-    <div class="navbar-header">
+		<div class="navbar-header">
 		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
 			<span class="glyphicon glyphicon-chevron-down white"></span>
 		</button>
-        <button type="button" class="toggletools navbar-toggle pull-left visible-xs" data-toggle="offcanvas">
-			<span class="glyphicon glyphicon-th-list white"></span>
-		</button>
-		<a class="tour-step tour-step-four navbar-brand logo" href="#!/"><img src="/static/images/logo.png">FlowCloud</a>
+		<a class="navbar-brand logo" href="#!/"><img src="/static/images/logo.png">KeesaFlo</a>
 	</div>
 	<div class="nav-collapse navbar-collapse collapse" id="dropdownmenu">
 		<ul class="nav navbar-nav navbar-right">
-			<li><a class="tour-step tour-step-two togglefiles" href="#">Files</a></li>
+			<li><a class="tour-step files togglefiles">Files</a></li>
 			<li class="dropdown">
-                <a href="#" class="tour-step tour-step-five dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user bullet-glyphicon"></span>{{ authed_user_nick }}<b class="caret"></b></a>
-                <ul class="dropdown-menu">
+								<a class="tour-step account dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user bullet-glyphicon"></span>{{ authed_user_nick }}<b class="caret"></b><span class="dropdown-pad"></span></a>
+								<ul class="dropdown-menu">
 					<li><a title="Settings" data-toggle="modal" data-target="#settingsModal">Settings</a></li>
 					<li class="divider"></li>
-					<li><a title="Help" id="help-force-start">Help</a></li>
+					<li><a title="View the tutorial" href="#!/" id="ksf-help-begin">Help</a></li>
 					<li class="divider"></li>
-					<li><a href="{% url logout %}">Logout</a></li>
+					<li><a href="{% url logout %}" title="Log out of KeesaFlo">Logout</a></li>
 				</ul>
 			</li>
 		</ul>
-    </div>
+		</div>
 </nav>
 <div class="row row-offcanvas row-offcanvas-left">
-    <!--toolbar-->
-    <div class="col-sm-2 col-xs-5 toolbar-offcanvas tools-offcanvas" id="sidebar2" role="navigation">
-        <nav class="navbar navbar-inverse navbar-default navbar-static-top" role="navigation">
-			<div class="navbar-header">
-				<a class="navbar-brand" id="toolselector-header">Tools</a>
-			</div>
-		</nav>
-		<div class="tour-step tour-step-six navpanel" id="toolselector">
-			<span>Loading...</span>
-		</div>
-        <ul class="nav nav-pills bottom-nav">
-			<li class="tour-step tour-step-three"><a href="#!/faq/" title="F.A.Q"><span class="glyphicon glyphicon-question-sign" title="Upload"></span></a></li>
-			<li><a href="#!/about/" title="About"><span class="glyphicon glyphicon-info-sign"></span></a></li>
-			<li class="tour-step tour-step-one"><a title="Upload"  data-toggle="modal" data-target="#uploadModal"><span class="glyphicon glyphicon-cloud-upload"></span></a></li>
-		</ul>
-    </div>
-	<!-- main panel -->
-	<div class="col-sm-10">
-		
-		<div class="apppanel tools-offcanvas" id="appmain">
-			<span>Loading...</span>
-		</div>
+		<!--toolselector-->
+	<div class="navpanel" id="toolselector">
+		<span>Loading...</span>
 	</div>
-    <!-- file panel -->
-	<div class="col-sm-2 col-xs-5 sidebar-offcanvas" id="sidebar" role="navigation">
+	<!-- main panel -->
+	<div class="apppanel tools-offcanvas" id="appmain">
+		<span>Loading...</span>
+	</div>
+		<!-- file panel -->
+		<div class="col-lg-2 col-md-3 col-sm-4 col-xs-5 sidebar-offcanvas" id="sidebar" role="navigation">
 		<nav class="navbar navbar-inverse navbar-default navbar-static-top" role="navigation">
 			<div class="navbar-header">
 				<a class="navbar-brand togglefiles" href="#">Files</a>
 			</div>
 		</nav>
-		<div class="navpanel" id="filelist">
+		<div class="filepanel">
 			<div class="list-group">
-				<a class="list-group-item">Loading...</a>
+				<div class="list-group footnav-pad" id="filelist">
+					<a class="list-group-item">Loading...</a>
+				</div>
 			</div>
 		</div>
+		<ul class="nav nav-pills bottom-nav">
+			<li class="tour-step upload"><a title="Upload"  data-toggle="modal" data-target="#uploadModal"><span class="glyphicon glyphicon-cloud-upload"></span> Upload</a></li>
+		</ul>
 	</div>
 </div>
 
 <!-- Modal popup that shows when someone try to upload a file -->
 <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-       	<h4 class="modal-title" id="uploadModalLabel"> Upload a file </h4>
-	      </div>
-		    <form action="" method="post" enctype="multipart/form-data" target="_self">
-	      <div class="modal-body">
-		    {% csrf_token %}
-		    {% for field in form %}
-		        <div class="fieldWrapper">
-		            {{ field.label_tag }} {{ field }}
-		            {{ field.errors }}
-		        </div>
-		    {% endfor %}
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-default" data-dismiss="modal">Dismiss</button>
-	        <button type="submit" value="Upload" class="btn btn-primary">Upload</button>
-	      </div>
-	    </form>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="uploadModalLabel"> Upload a file </h4>
+				</div>
+				<form action="" method="post" enctype="multipart/form-data" target="_self">
+				<div class="modal-body">
+				{% csrf_token %}
+				{% for field in form %}
+						<div class="fieldWrapper">
+								{{ field.label_tag }} {{ field }}
+								{{ field.errors }}
+						</div>
+				{% endfor %}
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Dismiss</button>
+					<button type="submit" value="Upload" class="btn btn-primary">Upload</button>
+				</div>
+			</form>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
 <!-- Modal popup that shows settings -->
 <div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-labelledby="settingsModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-       	<h4 class="modal-title" id="settingsModalLabel"> Settings </h4>
-	      </div>
-		    <form action="" method="post" enctype="multipart/form-data" target="_self">
-	      <div class="modal-body">
-		    
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-	        <button type="submit" value="Upload" class="btn btn-primary">OK</button>
-	      </div>
-	    </form>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="settingsModalLabel"> Settings </h4>
+				</div>
+				<form action="" method="post" enctype="multipart/form-data" target="_self">
+				<div class="modal-body">
+				
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+					<button type="submit" value="Upload" class="btn btn-primary">OK</button>
+				</div>
+			</form>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
 
 {% endblock content %}
 
 {% block javascriptimport %}
-    <!-- Le javascript
-    ================================================== -->
-    <!--Placed at the end of the document so the pages load faster but lot of these might not be useful to load-->
-    {{ block.super }}
-    {% load staticfiles %}
-    <script src="{% static "js/offcanvas.js" %}"></script>
-    <script src="{% static "js/togglelink.js" %}"></script>
+	<!-- Le javascript
+	================================================== -->
+	<!--Placed at the end of the document so the pages load faster but lot of these might not be useful to load-->
+	{{ block.super }}
+	{% load staticfiles %}
+	<!-- 3rd party libraries -->
+	<script src="{% static "js/jquery.color.js" %}"></script>
+	<script src="{% static "js/jquery-ui-1.10.4.min.js" %}"></script>
+	<script src="{% static "js/bootstrap-tour.min.js" %}"></script>
+	<script src="{% static "js/qtip.min.js" %}"></script>
+	<script src="{% static "js/bootbox.min.js" %}"></script>
 
-	<script src="{% static "js/canvas.js" %}"></script>
-	<script src="{% static "js/graphTools.js" %}"></script>
-	<script src="{% static "js/tools.js" %}"></script>
-	
+	<!-- KeesaFlo app framework -->
 	<script src="{% static "js/request.js" %}"></script>
 	<script src="{% static "js/data.js" %}"></script>
 	<script src="{% static "js/processing.js" %}"></script>
+
+	<!-- KeesaFlo UI -->
+	<script src="{% static "js/layout.js" %}"></script>
+	<script src="{% static "js/filebar.js" %}"></script>
 	<script src="{% static "js/views.js" %}"></script>
-	
-	<script src="{% static "js/bootstrap-tour.min.js" %}"></script>
-    <script src="{% static "js/helptour.js" %}"></script>
-	
+
+	<!-- KeesaFlo tools/libraries -->
+	<script src="{% static "js/canvas.js" %}"></script>
+	<script src="{% static "js/graphTools.js" %}"></script>
+	<script src="{% static "js/tools.js" %}"></script>
+
+	<!-- help and appstart should be last (in this order)-->
+	<script src="{% static "js/help.js" %}"></script>
 	<script src="{% static "js/appstart.js" %}"></script>
+
 {% endblock javascriptimport %}

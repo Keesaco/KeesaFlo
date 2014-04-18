@@ -58,7 +58,6 @@ function ksfData_copyPageletInto(URI, targetID, executeOnLoading)
 }
 ksfData.copyPageletInto = ksfData_copyPageletInto;
 
-
 /**
  * gets location after hashbang and splits by slashes
  * \treturn String[] An array of values on the RHS of the hashbang in the URL, values are split by '/'
@@ -78,7 +77,6 @@ function ksfData_urlValues()
 }
 ksfData.urlValues = ksfData_urlValues;
 
-
 /**
  * gets the part of the URL sent to the server (app base URL)
  * \treturn String The base-URL of the application (part preceding the hashbang)
@@ -89,3 +87,18 @@ function ksfData_baseUrl()
 	return location.href.split("#")[0];
 }
 ksfData.baseUrl = ksfData_baseUrl;
+
+/**
+ * Makes an asynchronous request for JSON formatted data - wrapper around ksfData method
+ * \param String URI - URI to request
+ * \param Function callback - called with received data
+ * \param Function failcallback - called if the request fails
+ * \return return value of ksfReq.fetchJSON - currently None
+ * \note This method is purely a wrapper around the method of the same name in ksfReq
+ * \author jmccrea@keesaco.com of Keesaco
+ */
+function ksfData_fetchJSON(URI, callback, failcallback)
+{
+	return ksfReq.fetchJSON(URI, callback, failcallback);
+}
+ksfData.fetchJSON = ksfData_fetchJSON;

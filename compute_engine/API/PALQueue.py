@@ -51,7 +51,7 @@ def lease(	queue_name, leaseTime ):
 		numTasks = 1,
 		taskqueue = queue_name
 		).execute()
-	## Get task if queue is not empty, else return None.
+	## Get task if queue is not empty, else return list containing empty string.
 	if 'items' in response:
 		## Get task from response.
 		task = response['items'][0]

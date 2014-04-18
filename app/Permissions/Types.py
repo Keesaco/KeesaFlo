@@ -155,3 +155,34 @@ class UserAccess:
 		self.user = user
 		## Permissions instnace - the permissions the user has
 		self.permissions = permissions
+
+## \brief Holds information about a file in the datastore
+class FileInfo:
+	
+	###########################################################################
+	## \brief 	Initialises a FileInfo instance with the given file information
+	## \param 	FileInfo self - instance reference
+	## \param 	String file_name - (= None) The name of the file as stored in
+	##			the datastore
+	## \param 	Key owner_key - (= None) the key of the user (as stored in the
+	##			permissions store) who owns the file
+	## \param	String friendly_name - (= "") The name which the user has given
+	##			to the file; usually used for identifying files to users
+	## \param	Key key - (= None) The key of the file as stored in the
+	##			permissions store
+	## \return 	None
+	## \author jmccrea@keesaco.com of Keesaco
+	###########################################################################
+	def __init__(self,
+				 file_name 			= None,
+				 owner_key 			= None,
+				 friendly_name 		= "",
+				 key				= None ):
+		self.file_name 		= file_name
+		self.owner_key 		= owner_key
+		##Force friendly_name to be a string
+		if friendly_name is None:
+			self.friendly_name = ""
+		else:
+			self.friendly_name	= friendly_name
+		self.key 			= key

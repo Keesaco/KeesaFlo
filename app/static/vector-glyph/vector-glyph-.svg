@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg">
+<metadata>Copyright (C) 2014 by original authors @ fontello.com</metadata>
+<defs>
+<font id="vector-glyph-" horiz-adv-x="1000" >
+<font-face font-family="vector-glyph-" font-weight="400" font-stretch="normal" units-per-em="1000" ascent="850" descent="-150" />
+<missing-glyph horiz-adv-x="1000" />
+<glyph glyph-name="circle" unicode="&#xe800;" d="m500 376c-14 0-26-11-26-26c0-14 12-26 26-26c15 0 26 12 26 26c0 15-11 26-26 26z m0 27c29 0 53-24 53-53c0-29-24-53-53-53c-29 0-53 24-53 53c0 29 24 53 53 53z m260-27c-15 0-26-11-26-26c0-14 11-26 26-26c14 0 26 12 26 26c0 15-12 26-26 26z m53-26c0-25-18-46-41-51c-24-128-137-225-272-225c-153 0-276 123-276 276c0 153 123 276 276 276c135 0 248-97 272-225c23-5 41-26 41-51z m-106 0c0 19 10 36 26 45c-21 109-118 192-233 192c-131 0-237-106-237-237c0-131 106-237 237-237c115 0 212 83 233 192c-16 9-26 26-26 45z" horiz-adv-x="1000" />
+<glyph glyph-name="rectangle" unicode="&#xe801;" d="m303 482l0-14l-13 0l0-236l13 0l0-14l394 0l0 14l14 0l0 236l-14 0l0 14l-394 0z m460-250l0-66l-66 0l0 13l-394 0l0-13l-66 0l0 66l13 0l0 236l-13 0l0 66l66 0l0-13l394 0l0 13l66 0l0-66l-13 0l0-236l13 0z m-513 289l0-39l40 0l0 39l-40 0z m461 0l0-39l39 0l0 39l-39 0z m-461-303l0-39l40 0l0 39l-40 0z m461 0l0-39l39 0l0 39l-39 0z" horiz-adv-x="1000" />
+<glyph glyph-name="polygon" unicode="&#xe802;" d="m474 626l0-39l39 0l0 39l-39 0z m-263-197l65 0l0-10l119 16l0 20l31 0l48 119l-13 0l0 66l65 0l0-66l-8 0l57-119l30 0l0-13l132-9l0 9l66 0l0-66l-66 0l0 13l-79-76l0-55l-14 0l30-118l23 0l0-66l-65 0l0 52l-99 53l-46 0l-105-66l0-39l-66 0l0 66l35 0l18 108l-14 0l0 51l-79 66l0-2l-65 0l0 66z m434-158l0 40l-40 0l0-40l40 0z m-237 171l0-37l0-2l39 0l0 39l-39 0z m-40-184l40 0l0 39l-40 0l0-39z m158-66l0 40l-39 0l0-40l39 0z m224 237l0-39l40 0l0 39l-40 0z m-105-303l0-39l39 0l0 39l-39 0z m-316 0l0-39l39 0l0 39l-39 0z m306 36l-24 96l-19 0l0 66l30 0l82 79l-99 7l0-20l-65 0l0 65l0 0l-43 89l-36-90l0-64l-66 0l0 13l-96-13l90-76l32 0l0-66l-20 0l-17-94l90 56l0 35l66 0l0-32l95-51z m-82 241l39 0l0 39l-39 0l0-39z m-329 13l0-40l39 0l0 40l-39 0z" horiz-adv-x="1000" />
+</font>
+</defs>
+</svg>
