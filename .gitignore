@@ -14,7 +14,7 @@ Doxygen/
 .DS_Store?
 .Spotlight-V100
 .Trashes
-app/Analysis/ComputeEngine/Assets/oauth2.dat
+app/ComputeEngine/oauth2.dat
 ehthumbs.db
 Thumbs.db
 
@@ -43,7 +43,7 @@ app/uritemplate/
 tmp-packages/
 app/static/fonts/
 app/static/js/jquery.js
-app/Analysis/ComputeEngine/Assets/private_key.pem
+app/ComputeEngine/private_key.pem
 js2doxy.pl
 app/uneedtest.py
 app/static/css/bootstrap-tour.min.css
