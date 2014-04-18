@@ -30,7 +30,7 @@ y <- createSubset(x, normfilter, reverse)
 write.FCS(y, gate_name)
 
 ## Saves gate info in a txt file
-##writeInfo(x, filter, 0)
+writeInfo(x, n2f, reverse)
 
 ## Plots the gate
 image_name <- paste(gate_name, ".png", sep="")
