@@ -416,34 +416,33 @@ def settings(request):
 def tool(request):
 	authed_user = auth.get_current_user()
 	if authed_user is None:
-		return gt.generate_gating_feedback('fail', 'Unauthenticated request')
+		return HttpResponse(simplejson.dumps(gt.generate_gating_feedback('fail', 'Unauthenticated request')), content_type="application/json")
 
 
 	try:
-		gateInfo = json.loads(request.raw_post_data)
+		gate_info = json.loads(request.raw_post_data)
 	except ValueError:
-		return gt.generate_gating_feedback('fail', 'Invalid request payload')
+		return HttpResponse(simplejson.dumps(gt.generate_gating_feedback('fail', 'Invalid request payload')), content_type="application/json")
 
 
 	## \todo This should probably iterate over list
-	if (('points' 	not in gateInfo) or
-		('params' 	not in gateInfo) or
-		('tool'		not in gateInfo) or
-		('filename' not in gateInfo)):
+	if (('points' 	not in gate_info) or
+		('tool'		not in gate_info) or
+		('filename' not in gate_info)):
 
-		return gt.generate_gating_feedback('fail', 'Incomplete gate parameters')
+		return HttpResponse(simplejson.dumps(gt.generate_gating_feedback('fail', 'Incomplete gate parameters')), content_type="application/json")
 
-	if (gateInfo['points']):
-		if not isinstance(gateInfo['points'], list):
-			return gt.generate_gating_feedback('fail', 'Invalid points list')
+	if (gate_info['points']):
+		if not isinstance(gate_info['points'], list):
+			return HttpResponse(simplejson.dumps(gt.generate_gating_feedback('fail', 'Invalid points list')), content_type="application/json")
 	else:
 		# Normalise false value to None
 		gateInfo.update( { 'points' : None } )
 
 
-	tool = tools.AVAILABLE_TOOLS.get(gateInfo['tool'], tools.no_such_tool)
+	tool = gt.AVAILABLE_TOOLS.get(gate_info['tool'], gt.no_such_tool)
 	## first two arguments passed for compatibility
-	tool_response = tool(gateInfo['points'], name, gateInfo)
+	tool_response = tool(gate_info)
 
 	json_response = simplejson.dumps(tool_response);
 	return HttpResponse(json_response, content_type="application/json")

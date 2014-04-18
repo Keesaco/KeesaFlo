@@ -107,7 +107,7 @@ ksfGraphTools.RectangularGating = {
 	
 	requestGating : function()
 	{
-		ksfGraphTools.sendGatingRequest('tool/gating/rectangular_gating,' + this.startx + "," + this.starty + "," + this.endx + "," + this.endy);
+		ksfGraphTools.sendGatingRequest('rectangular_gating', [this.startx, this.starty, this.endx, this.endy]);
 	}
 }
 
@@ -195,8 +195,7 @@ ksfGraphTools.PolygonGating = {
 	
 	requestGating : function()
 	{
-		var URL = "tool/gating/polygon_gating," + this.xList.concat(this.yList).join(",");
-		ksfGraphTools.sendGatingRequest(URL);
+		ksfGraphTools.sendGatingRequest('polygon_gating', this.xList.concat(this.yList));
 	}
 }
 
@@ -323,7 +322,7 @@ function ksfGraphTools_sendGatingRequest(toolName, gatePoints, params)
 				var feedbackType;
 				switch (response.status)
 				{
-					case "succcess":
+					case "success":
 						feedbackType = FEEDBACK_SUCCESS;
 						break;
 					

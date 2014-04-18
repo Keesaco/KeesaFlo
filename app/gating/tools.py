@@ -10,15 +10,15 @@ import API.APILogging as logging
 
 ###########################################################################
 ## \brief Is called when a gating is requested
-## \param Dictionary params - list of gating parameters
+## \param Dictionary gate_params - list of gating parameters
 ## \author mrudelle@keesaco.com of Keesaco
 ## \todo Does this not want to be multiple tools?
 ###########################################################################
-def simple_gating(gateParams):
-	points = gateParams['points']
+def simple_gating(gate_params):
+	points = gate_params['points']
 
-	if (gateParams['tool'] == "rectangular_gating") :
-		if len(points) == 5 :
+	if (gate_params['tool'] == "rectangular_gating") :
+		if len(points) == 4 :
 			#Reoder the point to take the topLeft and bottomRight points of the square 
 			if points[0] > points[2]:
 				tempcoor = points[0]
@@ -29,47 +29,47 @@ def simple_gating(gateParams):
 				points[1] = points[3]
 				points[3] = tempcoor
 
-			gatingRequest =" ".join(points)
+			gating_request = " ".join(str(p) for p in points)
 
-			newName = gateParams['filename'] + "-rectGate";
-			queue.gate_rectangle(gateParams['filename'], gatingRequest, newName, "1", "FSC-A", "PE-A");
-			return generate_gating_feedback("success", "the rectangular gating was performed correctly", reverse('get_graph', args=[newName]))
+			new_name = gate_params['filename'] + "-rectGate";
+			queue.gate_rectangle(gate_params['filename'], gating_request, new_name, "1", "FSC-A", "PE-A");
+			return generate_gating_feedback("success", "the rectangular gating was performed correctly", reverse('get_graph', args=[new_name]))
 		else:
 			return generate_gating_feedback("fail", "notcorrect " + params + " length:" + str(len(points)) + " is not equal to 4")
 
-	elif (gateParams['tool'] == "polygon_gating") :
+	elif (gate_params['tool'] == "polygon_gating") :
 		if len(points)%2 == 0 :
-			gatingRequest = " ".join(points)
+			gating_request = " ".join(str(p) for p in points)
 
-			newName = gateParams['filename'] + "-polyGate";
-			queue.gate_polygon(gateParams['filename'], gatingRequest, newName, "0", "FSC-A", "PE-A");
-			return generate_gating_feedback("success", "the polygonal gating was performed correctly", reverse('get_graph', args=[newName]))
+			new_name = gate_params['filename'] + "-polyGate";
+			queue.gate_polygon(gate_params['filename'], gating_request, new_name, "0", "FSC-A", "PE-A");
+			return generate_gating_feedback("success", "the polygonal gating was performed correctly", reverse('get_graph', args=[new_name]))
 		else:
 			return generate_gating_feedback("fail", "notcorrect " + params + " #pointCoordinates:" + str(len(points))-1 + " is not pair")
 
-	elif (gateParams['tool'] == "oval_gating") :
+	elif (gate_params['tool'] == "oval_gating") :
 		if len(points) == 6 :
-			gatingRequest = " ".join(points)
+			gating_request = " ".join(str(p) for p in points)
 
-			newName = gateParams['filename'] + "-ovalGate";
-			queue.gate_circle(gateParams['filename'], gatingRequest, newName, "0", "FSC-A", "PE-A");
-			return generate_gating_feedback("success", "the oval gating was performed correctly", reverse('get_graph', args=[newName]))
+			new_name = gate_params['filename'] + "-ovalGate";
+			queue.gate_circle(gate_params['filename'], gating_request, new_name, "0", "FSC-A", "PE-A");
+			return generate_gating_feedback("success", "the oval gating was performed correctly", reverse('get_graph', args=[new_name]))
 		else:
 			return generate_gating_feedback("fail", "notcorrect " + params + " #pointCoordinates:" + str(len(points)) + " is not even")
 		
 	else :
-		return generate_gating_feedback("fail", "The gate " + gateParams['tool'] + " is not known")
+		return generate_gating_feedback("fail", "The gate " + gate_params['tool'] + " is not known")
 
 ###########################################################################
 ## \brief Is called when the requested tool is not in the dictionary of known tools
-## \param Dictionary params - list of gating parameters
+## \param Dictionary gate_params - list of gating parameters
 ## \return a dictionary with the status of the tool call
 ## \author mrudelle@keesaco.com of Keesaco
 ###########################################################################
-def no_such_tool(params):
+def no_such_tool(gate_params):
 
 	## \todo Do we really need to log the entire tool list? It's defined literally.
-	logging.error('The tool "'+ params['tool'] +'" is unknown. The known tools are: {' +
+	logging.error('The tool "'+ gate_params['tool'] +'" is unknown. The known tools are: {' +
 		', '.join(list(AVAILABLE_TOOLS.keys())) + '}' )
 	return generate_gating_feedback("fail","The tool you selected is not reconized by the server")
 
@@ -91,5 +91,7 @@ def generate_gating_feedback(status, message, newgraphurl = None):
 	}
 
 AVAILABLE_TOOLS = {
-	'gating' : simple_gating
+	'oval_gating' 			: simple_gating,
+	'rectangular_gating'	: simple_gating,
+	'polygon_gating'		: simple_gating
 }
