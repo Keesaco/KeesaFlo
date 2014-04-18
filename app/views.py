@@ -445,3 +445,45 @@ def tool(request, name, params):
 
 	jsonResponse = simplejson.dumps(tool_response);
 	return HttpResponse(jsonResponse, content_type="application/json")
+
+###########################################################################
+## \brief	Returns a JSON object representing the analysis status of a
+##			given file.
+## \param	request - Django request which resulted in the call
+## \return	HttpResponse - response to the request as JSON
+## \autohor	jmccrea@kessaco.com of Keesaco
+## \todo	Consider permissions update after CE/Permissions integration
+## \todo	Refactor return value creation
+###########################################################################
+def analysis_status_json(request):
+	authed_user = auth.get_current_user()
+	if authed_user is None:
+		return HttpResponse(json.dumps({'error' : 'Unauthenticated request.', 'done' : False }), content_type="application/json")
+		
+	user_key = ps.get_user_key_by_id(authed_user.user_id())
+		
+	try:
+		file_req = json.loads(request.raw_post_data)
+	except ValueError:
+		return HttpResponse(json.dumps({'error' : 'Invalid request payload.', 'done' : False }), content_type="application/json")
+
+	if 'filename' not in file_req:
+		return HttpResponse(json.dumps({'error' : 'Incomplete request.', 'done' : False }), content_type="application/json")
+
+	#	This is roughly what permissions checking should probably look like once all files have permissions entries
+	#		Alternatively, a check_exists call may be sufficient if the permissions entry is created before gating is requested,
+	#		this will depend on the CE/Permissions integration method
+	#file_entry = ps.get_file_by_name('/fc-raw-data/' + filename + '.fcs')
+	#if file_entry is None:
+	#	return HttpResponse( { 'error' : 'File or gate not recognised.', 'done' : False } ), content_type="application/json")
+	#else:
+	#	fp_entry = ps.get_user_file_permissions(file_entry.key, user_key)
+	#	if fp_entry is None:
+	#		return HttpResponse(json.dumps({update( { 'error' : 'Permission denied.', 'done' : False } ), content_type="application/json")
+
+
+	is_done = ds.check_exists(GRAPH_BUCKET + '/' + file_req['filename'] + '.png', None)
+	return HttpResponse(json.dumps({'done' : is_done }), content_type="application/json")
+
+
+
