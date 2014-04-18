@@ -75,6 +75,9 @@ def gate_boolean(	filename, gatename, boolean_op, gate1_type, gate1_coords,
 		gate1_type + ';' + gate2_type + ';' + gate2_coords + ';' + gate2_reverse + ';' +
 		gate2_x_axis + ';' + gate2_y_axis)
 
+def gate_normal(	filename, gatename, reverse, x_axis, y_axis):
+	queue.add_task('jobs', 'gate_norm;' + filename + ';' + gatename + ';' + reverse + ';' + x_axis + ';' + y_axis)
+
 ###########################################################################
 ## \brief Adds a task to perform a circular gate on fcs data.
 ## \author hdoughty@keesaco.com of Keesaco

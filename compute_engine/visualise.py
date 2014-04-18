@@ -46,7 +46,8 @@ while alive:
 			os.remove(name)
 			os.remove(name + '.png')
 			os.remove(name + 'info.txt')
-	elif (commands[0] == 'gate_rec' or commands[0] == 'gate_cir' or commands[0] == 'gate_poly' or commands[0] == 'gate_bool'):
+	elif (commands[0] == 'gate_rec' or commands[0] == 'gate_cir' or commands[0] == 'gate_poly' or 
+		commands[0] == 'gate_bool'):
 		name = commands[1]
 		points = commands[2]
 		gate_name = commands[3]
@@ -66,7 +67,7 @@ while alive:
 		elif(commands[0] == 'gate_poly'):
 			exitcode = Ana.poly_gate(name, gate_name, points, reverse, x_axis, y_axis)
 		elif(commands[0] == 'gate_bool'):
-			exitcode =Ana.bool_gate(name, gate_name, commands[7], commands[8], points, reverse, commands[9], 
+			exitcode = Ana.bool_gate(name, gate_name, commands[7], commands[8], points, reverse, commands[9], 
 				commands[10], commands[11], x_axis, y_axis, commands[12], commands[13])
 		if(exitcode == 0):
 			## Save visualisation to cloud storage.
@@ -123,6 +124,27 @@ while alive:
 			## Clean up
 			os.remove(name)
 			os.remove(plot_name)
+	elif (commands[0] == 'gate_norm'):
+		name = commands[1]
+		gate_name = commands[2]
+		reverse = commands[3]
+		x_axis = commands[4]
+		y_axis = commands[5]
+		##Loads raw fcs data from cloud storage
+		Ana.load_fcs(name)
+		##Creates visualisation of gate and text file of gate info
+		Ana.norm_gate(name, gate_name, reverse, x_axis, y_axis)
+		## Saves visualisation of gate to cloud storage
+		Ana.save_vis(gate_name + '.png')
+		## Saves info about gate to cloud storage
+		#Ana.save_info(gate_name + '.txt')
+		## Saves gate as fcs file
+		Ana.save_fcs(gate_name)
+		## Clean up.
+		#os.remove(gate_name + '.txt')
+		os.remove(gate_name + '.png')
+		os.remove(gate_name)
+		os.remove(name)
 	# Delete any processed tasks from queue.
 	if task_id is not None:
 		Queue.delete('jobs', task_id)

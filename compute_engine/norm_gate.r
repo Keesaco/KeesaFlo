@@ -10,31 +10,27 @@ imports()
 args <- commandArgs(trailingOnly = TRUE)
 fcs_name <- args[1]
 gate_name <- args[2]
-x_axis <- args[3]
-y_axis <- args[4]
-reverse <- args[5]
+reverse <- as.integer(args[3])
+x_axis <- args[4]
+y_axis <- args[5]
 
 ## Read fcs data.
 if(file.exists(fcs_name) == FALSE)
 	quit("no", 1)
 x <- read.FCS(fcs_name, transformation = FALSE)
 
-## Find range of relevant observables
-r1 <- range(x[,1])
-r2 <- range(x[,2])
-
 ## Create the filter object
 n2f <- norm2Filter(c(x_axis, y_axis))
-filter <- filter(x, n2f)
+normfilter <- filter(x, n2f)
 
 ## Creating subset of data.
-y <- createSubset(x, filter, reverse)
+y <- Subset(x, normfilter)
 
 ## Save gate as fcs file
 write.FCS(y, gate_name)
 
 ## Saves gate info in a txt file
-writeInfo(x, filter, reverse)
+##writeInfo(x, filter, 0)
 
 ## Plots the gate
 image_name <- paste(gate_name, ".png", sep="")

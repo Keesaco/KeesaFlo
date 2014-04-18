@@ -159,6 +159,9 @@ def bool_gate(name, gate_name, boolean_op, gate1_type, points1, reverse1, gate2_
 	return subprocess.call(["Rscript", "boolean.r", name, gate_name, boolean_op, gate1_type, 
 		points1, reverse1, gate2_type, points2, reverse2, gate1_x_axis, gate1_y_axis, gate2_x_axis, gate2_y_axis])
 
+def norm_gate(name, gate_name, reverse, x_axis, y_axis):
+	return subprocess.call(["Rscript", "norm_gate.r", name, gate_name, reverse, x_axis, y_axis])
+
 ###########################################################################
 ## \brief Saves a visualisation image from local disk to Datastore
 ## \param name - name of image file to save
