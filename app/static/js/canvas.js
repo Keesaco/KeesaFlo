@@ -20,7 +20,8 @@ var tool_popover;
  * \param alpha - from 0 to 1, define the tansparency of the box
  * \author mrudelle@keesaco.com of Keesaco
  */
-function ksfCanvasdrawBox(ax, ay, bx, by, alpha) {
+function ksfCanvasdrawBox(ax, ay, bx, by, alpha)
+{
 	this.clear();
     context.save();
     context.fillStyle = "rgba(255, 0, 0, "+alpha/2+")";
@@ -46,10 +47,12 @@ ksfCanvas.drawBox = ksfCanvasdrawBox;
  * \param startRadius - radius of the starting point (red area clickable to close the gate)
  * \author mrudelle@keesaco.com of Keesaco
  */
-function ksfCanvas_drawPolygon(xList, yList, lastx, lasty, startRadius) {
+function ksfCanvas_drawPolygon(xList, yList, lastx, lasty, startRadius)
+{
 	this.clear();
 	
-    if (xList.length < 1) {
+    if (xList.length < 1)
+	{
         return;
     };
 
@@ -59,16 +62,19 @@ function ksfCanvas_drawPolygon(xList, yList, lastx, lasty, startRadius) {
     context.fill();
     context.closePath();
 
-    if (((lastx === null || lasty === null) && xList.length < 2)) {
+    if (((lastx === null || lasty === null) && xList.length < 2))
+	{
         return;
     }
 
 	context.beginPath();
     context.moveTo(xList[0], yList[0]);
-    for (var i = 1; i < xList.length ; i++) {
+    for (var i = 1; i < xList.length ; i++)
+	{
        context.lineTo(xList[i], yList[i]);
-    };
-    if (lastx !== null || lasty !== null){
+    }
+    if (lastx !== null || lasty !== null)
+	{
        context.lineTo(lastx, lasty);
     }
     context.stroke();
@@ -85,18 +91,22 @@ ksfCanvas.drawPolygon = ksfCanvas_drawPolygon;
  * \param p2y - y coordinates of the last point (it belongs to the oval)
  * \author mrudelle@keesaco.com of Keesaco
  */
-function ksfCanvas_drawOval(cx, cy, r1, p2x, p2y) {
+function ksfCanvas_drawOval(cx, cy, r1, p2x, p2y)
+{
 	this.clear();
 	
     var r2, angle, tx, ty;
     //TODO pass alpha as an atribute
 	var alpha = 1;
-	if (p2x !== null && p2y !== null) {
+	if (p2x !== null && p2y !== null)
+	{
 		tx=cx-p2x;
 		ty=cy-p2y;
     	r2 = Math.sqrt(Math.pow(tx,2)+Math.pow(ty,2));
         angle = ksfGraphTools.mesureAngle(tx, ty);
-	} else {
+	}
+	else
+	{
 		r2 = r1;
 		angle = 0;
 	}
@@ -107,7 +117,8 @@ function ksfCanvas_drawOval(cx, cy, r1, p2x, p2y) {
 	context.closePath();
     context.arc(p2x, p2y, 5, 0, Math.PI*2);
 	context.closePath();
-	if (p2x !== null && p2y !== null){
+	if (p2x !== null && p2y !== null)
+	{
 		var p1x=cx+Math.cos(angle-Math.PI/2)*r1,
 		p1y=cy+Math.sin(angle-Math.PI/2)*r1;
 		context.arc(p1x, p1y, 5, 0, Math.PI*2);
@@ -135,8 +146,10 @@ ksfCanvas.drawOval = ksfCanvas_drawOval;
  * \note This area is used to provide the user with a short feedback on his actions
  * \author mrudelle@keesaco.com of Keesaco
  */
-function ksfCanvas_toolText(msg) {
-    if (tool_popover !== null) {
+function ksfCanvas_toolText(msg)
+{
+    if (tool_popover !== null)
+	{
         tool_popover.text(msg);
     }
 }
@@ -146,8 +159,10 @@ ksfCanvas.toolText = ksfCanvas_toolText;
  * Clear the canvas (erase it's content to make it transparent)
  * \author mrudelle@keesaco.com of Keesaco
  */
-function ksfCanvas_clear() {
-    if (context !== null && canvas !== undefined) {
+function ksfCanvas_clear()
+{
+    if (context !== null && canvas !== undefined)
+	{
         context.clearRect(0, 0, canvas.width, canvas.height);
     }
 }
@@ -159,7 +174,8 @@ ksfCanvas.clear = ksfCanvas_clear;
  * \note This area is used to provide the user with a short feedback on his actions
  * \author mrudelle@keesaco.com of Keesaco
  */
-function ksfCanvas_setCursor(cursor) {
+function ksfCanvas_setCursor(cursor)
+{
 	$(GRAPH_ID).css( 'cursor', cursor );
 }
 ksfCanvas.setCursor = ksfCanvas_setCursor;
@@ -172,14 +188,18 @@ ksfCanvas.setCursor = ksfCanvas_setCursor;
 function ksfCanvas_addListener(argument) {
 	$(GRAPH_ID).css('cursor', 'crosshair');
     $(GRAPH_ID).click(function(event) {
-        if (ksfTools.CurrentTool && ksfTools.CurrentTool.onGraphClick) {
+        if (ksfTools.CurrentTool && ksfTools.CurrentTool.onGraphClick)
+		{
             ksfTools.CurrentTool.onGraphClick(event);
-        } else {
+        }
+		else
+		{
             ksfCanvas.toolText("You must choose a tool.");
         }
     });
     $(GRAPH_ID).mousemove(function(event) {
-        if (ksfTools.CurrentTool && ksfTools.CurrentTool.onGraphClick) {
+        if (ksfTools.CurrentTool && ksfTools.CurrentTool.onGraphClick)
+		{
             ksfTools.CurrentTool.onGraphMouseMove(event);
         }
     });
@@ -187,7 +207,8 @@ function ksfCanvas_addListener(argument) {
     tool_popover = $(TOOL_POPOVER_TITLE);
 
     canvas = $(GRAPH_ID)[0];
-    if (canvas !== null && canvas !== undefined){
+    if (canvas !== null && canvas !== undefined)
+	{
         context = canvas.getContext('2d');
     }  
 	
@@ -214,14 +235,19 @@ ksfCanvas.addListener = ksfCanvas_addListener;
  * \note depending on the string this can applies to multiple buttons
  * \author mrudelle@keesaco.com of Keesaco
  */
-function ksfCanvas_enableBtn(btn, enable){
-    if (enable) {
+function ksfCanvas_enableBtn(btn, enable)
+{
+    if (enable)
+	{
         $(btn).removeAttr("disabled");
-    } else {
+    }
+	else
+	{
         $(btn).attr('disabled','disabled');
     }
 
-    if (btn === REQUEST_GATING_BTN && enable) {
+    if (btn === REQUEST_GATING_BTN && enable)
+	{
         ksfCanvas.blinkButton(btn);
     }
 }
@@ -232,11 +258,15 @@ ksfCanvas.enableBtn = ksfCanvas_enableBtn;
  * \param enable - [boolean] define if we replace the image by a spinner or not
  * \author mrudelle@keesaco.com of Keesaco
  */
-function ksfCanvas_setLoading(enable) {
-    if (enable) {
+function ksfCanvas_setLoading(enable)
+{
+    if (enable)
+	{
         $(GRAPH_ID).addClass("loading");
         $("#graph-img").css("display", "none");
-    } else {
+    }
+	else
+	{
         $(GRAPH_ID).removeClass("loading");
         $("#graph-img").css("display", "");
     }
@@ -248,7 +278,8 @@ ksfCanvas.setLoading = ksfCanvas_setLoading;
  * \param btn - element to blink (#id, .class, etc)
  * \author mrudelle@keesaco.com of Keesaco
  */
-function ksfCanvas_blinkButton(btn) {
+function ksfCanvas_blinkButton(btn)
+{
     var resetBackColor = $(btn).css('background-color');
     var resetColor = $(btn).css('color');
     $(btn).animate(
@@ -262,6 +293,6 @@ function ksfCanvas_blinkButton(btn) {
               "background-color": resetBackColor,
               "color": resetColor
             }, 800);
-        });
+        } );
 }
 ksfCanvas.blinkButton = ksfCanvas_blinkButton;

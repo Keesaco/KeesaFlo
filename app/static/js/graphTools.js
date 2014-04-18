@@ -292,7 +292,7 @@ ksfGraphTools.OvalGating = {
  * \param [Int] gatePoints - list of points which form the gate
  * \param Object params - Object with other gating parameters - this is used to extend the gating request object before the gating request is sent
  * \author mrudelle@keesaco.com of Keesaco
- * \note This might be moved to views.js in the future //!JPM - might it?
+ * \note This might be moved to views.js in the future //JPM - might it?
  * \note deep-extend is not used for params
  */
 function ksfGraphTools_sendGatingRequest(toolName, gatePoints, params)
@@ -343,7 +343,6 @@ function ksfGraphTools_sendGatingRequest(toolName, gatePoints, params)
 			function(jqxhr, textStatus, error)
 			{
 				ksfGraphTools.showFeedback(FEEDBACK_DANGER, textStatus, error);
-				err = [jqxhr, textStatus, error];
 			} );
 }
 ksfGraphTools.sendGatingRequest = ksfGraphTools_sendGatingRequest;
