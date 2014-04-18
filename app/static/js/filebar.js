@@ -410,6 +410,7 @@ function ksfFilebar_deleteFile(file, removeDiv)
 		{
 			if (response[0].success)
 			{
+				$(removeDiv).qtip("destroy");
 				$(removeDiv).remove();
 			}
 		}
