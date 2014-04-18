@@ -302,13 +302,16 @@ function ksfGraphTools_sendGatingRequest(toolName, gatePoints, params)
 	$("#filesize").remove();
 	var currentFile = $("#filename").text().trim();
 	
+	var reverseGate = $('#chk_reverse_gate').first().is(':checked');
+	
 	ksfTools.CurrentTool.resetTool();
 	ksfCanvas.toolText("Loading graph...");
 
 	var gateReq = {
 		tool 		: toolName,
 		points 		: gatePoints,
-		filename	: currentFile
+		filename	: currentFile,
+		reverse		: reverseGate
 	};
 
 	if (params)

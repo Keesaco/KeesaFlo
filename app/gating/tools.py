@@ -16,6 +16,11 @@ import API.APILogging as logging
 ###########################################################################
 def simple_gating(gate_params):
 	points = gate_params['points']
+	reverse_gate = '0'
+	
+	if 'reverse' in gate_params:
+		if (gate_params['reverse']):
+			reverse_gate = '1'
 
 	if (gate_params['tool'] == "rectangular_gating") :
 		if len(points) == 4 :
@@ -32,7 +37,7 @@ def simple_gating(gate_params):
 			gating_request = " ".join(str(p) for p in points)
 
 			new_name = gate_params['filename'] + "-rectGate";
-			queue.gate_rectangle(gate_params['filename'], gating_request, new_name, "1", "FSC-A", "PE-A");
+			queue.gate_rectangle(gate_params['filename'], gating_request, new_name, reverse_gate, "FSC-A", "PE-A");
 			return generate_gating_feedback("success", "the rectangular gating was performed correctly", reverse('get_graph', args=[new_name]))
 		else:
 			return generate_gating_feedback("fail", "notcorrect " + params + " length:" + str(len(points)) + " is not equal to 4")
@@ -42,7 +47,7 @@ def simple_gating(gate_params):
 			gating_request = " ".join(str(p) for p in points)
 
 			new_name = gate_params['filename'] + "-polyGate";
-			queue.gate_polygon(gate_params['filename'], gating_request, new_name, "0", "FSC-A", "PE-A");
+			queue.gate_polygon(gate_params['filename'], gating_request, new_name, reverse_gate, "FSC-A", "PE-A");
 			return generate_gating_feedback("success", "the polygonal gating was performed correctly", reverse('get_graph', args=[new_name]))
 		else:
 			return generate_gating_feedback("fail", "notcorrect " + params + " #pointCoordinates:" + str(len(points))-1 + " is not pair")
@@ -52,7 +57,7 @@ def simple_gating(gate_params):
 			gating_request = " ".join(str(p) for p in points)
 
 			new_name = gate_params['filename'] + "-ovalGate";
-			queue.gate_circle(gate_params['filename'], gating_request, new_name, "0", "FSC-A", "PE-A");
+			queue.gate_circle(gate_params['filename'], gating_request, new_name, reverse_gate, "FSC-A", "PE-A");
 			return generate_gating_feedback("success", "the oval gating was performed correctly", reverse('get_graph', args=[new_name]))
 		else:
 			return generate_gating_feedback("fail", "notcorrect " + params + " #pointCoordinates:" + str(len(points)) + " is not even")
