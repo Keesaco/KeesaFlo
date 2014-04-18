@@ -239,7 +239,7 @@ createSubset <- function(data, gate, reverse)
 {
 	if(reverse)
 	{
-			y <- Subset(data, !gate)
+		y <- Subset(data, !gate)
 	} else
 	{
 		y <- Subset(data, gate)
