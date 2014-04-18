@@ -100,11 +100,29 @@ while alive:
 		##Creates a visualisation of the graph with different axis
 		exitcode = Ana.change_axis(name, x_axis, y_axis)
 		if(exitcode == 0):
-			##Saves visualisation to loud storage
+			##Saves visualisation to cloud storage
 			Ana.save_vis(name + x_axis + y_axis + '.png')
 			## Clean up
 			os.remove(name)
 			os.remove(name + x_axis + y_axis + '.png')
+	elif (commands[0] == 'dot_plot' or commands[0] == 'contour_plot'):
+		name = commands[1]
+		x_axis = commands[2]
+		y_axis = commands[3]
+		plot_name = commands[4]
+		##Load raw fcs data from cloud storage
+		Ana.load_fcs(name)
+		##Create visualisation of graph with different plot type
+		if(commands[0] == 'dot_plot'):
+			exitcode = Ana.dot_plot(name, plot_name, x_axis, y_axis)
+		elif(commands[0] == 'contour_plot'):
+			exitcode = Ana.contour_plot(name, plot_name, x_axis, y_axis)
+		if(exitcode == 0):
+			## Saves visualisation to cloud storage
+			Ana.save_vis(plot_name)
+			## Clean up
+			os.remove(name)
+			os.remove(plot_name)
 	# Delete any processed tasks from queue.
 	if task_id is not None:
 		Queue.delete('jobs', task_id)

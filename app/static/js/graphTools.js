@@ -339,7 +339,7 @@ function ksfGraphTools_sendGatingRequest(toolName, gatePoints, params)
 					
 				ksfCanvas.toolText("");
 				$("#filename").text(filename);
-				ksfGraphTools.setGraphUrl(response.imgUrl);
+				ksfGraphTools.setGraphUrl(response.url);
 			},
 			function(jqxhr, textStatus, error)
 			{
