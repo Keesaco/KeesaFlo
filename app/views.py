@@ -492,7 +492,11 @@ def analysis_status_json(request):
 	#		return HttpResponse(json.dumps({update( { 'error' : 'Permission denied.', 'done' : False } ), content_type="application/json")
 
 
-	is_done = ds.check_exists(GRAPH_BUCKET + '/' + file_req['filename'] + '.png', None)
+	is_done =  ds.check_exists(GRAPH_BUCKET + '/' + file_req['filename'] + '.png', None)
+
+	#Prevent redirecting before the view is ready
+	is_done &= ds.check_exists(DATA_BUCKET  + '/' + file_req['filename'] 		 , None)
+
 	response_part.update( { 'done' : is_done, 'giveup' : False } )
 	return HttpResponse(json.dumps(response_part), content_type="application/json")
 

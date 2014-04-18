@@ -24,6 +24,7 @@ FEEDBACK_WARING = "alert-warning";
 FEEDBACK_DANGER = "alert-danger";
 
 ANALYSIS_STATUS_URI = '/app/data/json/analysis_status/';
+FILE_VIEW_HASH		= '#!/preview/';
 
 /**
  *	Milliseconds between requests for new graphs
@@ -347,11 +348,11 @@ function ksfGraphTools_setGraphUrl(url, newFilename, numRetries)
 			}
 			else if (response.done)
 			{
-				ksfCanvas.setLoading(false);
-				$("#graph-img").attr("src", url);
+				window.location.href = ksfData.baseUrl() + FILE_VIEW_HASH + newFilename;
 			}
 			else
 			{
+				//The server may have told the client to give up before finishing its polling cycle
 				if (response.giveup)
 				{
 					ksfCanvas.setLoading(false);
@@ -364,9 +365,10 @@ function ksfGraphTools_setGraphUrl(url, newFilename, numRetries)
 						setTimeout(
 							function()
 							{
-								   ksfGraphTools_setGraphUrl(url, newFilename, (ksfGraphTools.timeoutCounter-1) + response.backoff ? response.backoff : 0 );
+								   ksfGraphTools_setGraphUrl(url, newFilename, ksfGraphTools.timeoutCounter-1);
 							},
-							GRAPH_POLL_INTERVAL);
+							//set adjusted timeout if the server has told the client to back off
+							GRAPH_POLL_INTERVAL + (response.backoff ? response.backoff : 0) );
 					}
 					else
 					{
@@ -376,6 +378,7 @@ function ksfGraphTools_setGraphUrl(url, newFilename, numRetries)
 				}
 			}
 		},
+		//on error getting gating status
 		function(jqxhr, textStatus, error)
 		{
 			ksfGraphTools.showFeedback(FEEDBACK_DANGER, textStatus, error)
