@@ -98,7 +98,7 @@
 			<uri>http://keesaco.com/assets/tFQnippaWvOJB-DucttAksuH5-aUmbTHoRQWX-7mGhlFl_BNWbgdvg/private_key.pem</uri>
 			<unzip>0</unzip>
 			<move>
-				<destination>app/ComputeEngine/Assets</destination>
+				<destination>app/ComputeEngine/</destination>
 			</move>
 		</package>
 		<package name="UneedTest">
