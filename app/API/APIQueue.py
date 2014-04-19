@@ -79,8 +79,8 @@ def gate_boolean(	filename, gatename, boolean_op, gate1_type, gate1_coords,
 ## \brief Adds a task to perform a gate based on a bivariate normal distribution.
 ## \author hdoughty@keesaco.com of Keesaco
 ###########################################################################
-def gate_normal(	filename, gatename, reverse, x_axis, y_axis):
-	queue.add_task('jobs', 'gate_norm;' + filename + ';' + gatename + ';' + reverse + ';' + x_axis + ';' + y_axis)
+def gate_normal(	filename, gatename, reverse, x_axis, y_axis, scale_factor):
+	queue.add_task('jobs', 'gate_norm;' + filename + ';' + gatename + ';' + reverse + ';' + x_axis + ';' + y_axis + ';' + scale_factor)
 
 ###########################################################################
 ## \brief Adds a task to perform a circular gate on fcs data.

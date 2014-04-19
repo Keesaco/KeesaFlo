@@ -13,6 +13,7 @@ gate_name <- args[2]
 reverse <- as.integer(args[3])
 x_axis <- args[4]
 y_axis <- args[5]
+sf <- as.integer(args[6])
 
 ## Read fcs data.
 if(file.exists(fcs_name) == FALSE)
@@ -20,7 +21,7 @@ if(file.exists(fcs_name) == FALSE)
 x <- read.FCS(fcs_name, transformation = FALSE)
 
 ## Create the filter object
-n2f <- norm2Filter(c(x_axis, y_axis))
+n2f <- norm2Filter(c(x_axis, y_axis), scale.factor = sf)
 normfilter <- filter(x, n2f)
 
 ## Creating a subset of data.

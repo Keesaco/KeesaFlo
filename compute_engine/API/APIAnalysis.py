@@ -166,12 +166,13 @@ def bool_gate(name, gate_name, boolean_op, gate1_type, points1, reverse1, gate2_
 ## \param reverse boolean representing whether cells in gate are kept or removed
 ## \param x_axis - name of x_axis desired
 ## \param y_axis - name of y_axis desired
+## \param scale_factor - number of standard deviations used for data selection
 ## \return returns exit code from the subprocess
 ## \note all parameters should be strings
 ## \author hdoughty@keesaco.com of Keesaco
 ###########################################################################
-def norm_gate(name, gate_name, reverse, x_axis, y_axis):
-	return subprocess.call(["Rscript", "norm_gate.r", name, gate_name, reverse, x_axis, y_axis])
+def norm_gate(name, gate_name, reverse, x_axis, y_axis, scale_factor):
+	return subprocess.call(["Rscript", "norm_gate.r", name, gate_name, reverse, x_axis, y_axis, scale_factor])
 
 ###########################################################################
 ## \brief Saves a visualisation image from local disk to Datastore

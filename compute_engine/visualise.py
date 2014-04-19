@@ -130,10 +130,11 @@ while alive:
 		reverse = commands[3]
 		x_axis = commands[4]
 		y_axis = commands[5]
+		scale_factor = commands[6]
 		##Loads raw fcs data from cloud storage
 		Ana.load_fcs(name)
 		##Creates visualisation of gate and text file of gate info
-		exitcode = Ana.norm_gate(name, gate_name, reverse, x_axis, y_axis)
+		exitcode = Ana.norm_gate(name, gate_name, reverse, x_axis, y_axis, scale_factor)
 		if(exitcode == 0):
 			## Saves visualisation of gate to cloud storage
 			Ana.save_vis(gate_name + '.png')
