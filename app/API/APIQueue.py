@@ -83,6 +83,10 @@ def gate_normal(	filename, gatename, reverse, x_axis, y_axis, scale_factor):
 	queue.add_task('jobs', 'gate_norm;' + filename + ';' + gatename + ';' + reverse + ';' + 
 		x_axis + ';' + y_axis + ';' + scale_factor)
 
+###########################################################################
+## \brief Adds a task to split data up into four quadrants based on x and y coordinate.
+## \author hdoughty@keesaco.com of Keesaco
+###########################################################################
 def gate_quadrant(	filename, xcoord, ycoord, quadrant1name, quadrant2name, 
 	quadrant3name, quadrant4name, x_axis, y_axis):
 	queue.add_task('jobs', 'gate_quad;' + filename + ';' + xcoord + ';' + ycoord + ';' + 

@@ -160,7 +160,7 @@ def bool_gate(name, gate_name, boolean_op, gate1_type, points1, reverse1, gate2_
 		points1, reverse1, gate2_type, points2, reverse2, gate1_x_axis, gate1_y_axis, gate2_x_axis, gate2_y_axis])
 
 ###########################################################################
-## \brief Saves a visualisation of a polygon gated fcs file
+## \brief Saves a visualisation of an fcs file gated using a normal distribution
 ## \param name - name of fcs file to gate
 ## \param gate_name - name of gate to be created
 ## \param reverse boolean representing whether cells in gate are kept or removed
@@ -174,6 +174,21 @@ def bool_gate(name, gate_name, boolean_op, gate1_type, points1, reverse1, gate2_
 def norm_gate(name, gate_name, reverse, x_axis, y_axis, scale_factor):
 	return subprocess.call(["Rscript", "norm_gate.r", name, gate_name, reverse, x_axis, y_axis, scale_factor])
 
+###########################################################################
+## \brief Saves a visualisations fcs file split up into four quadrants
+## \param name - name of fcs file to gate
+## \param x_coord - x coordinate the quadrant split is based upon
+## \param y_coord - y coordinate the quadrant split is based upon
+## \param quad1_name - desired name of top right quadrant
+## \param quad2_name - desired name of top left quadrant
+## \param quad3_name - desired name of bottom right quadrant
+## \param quad4_name - desired name of bottom left quadrant
+## \param x_axis - name of x_axis desired
+## \param y_axis - name of y_axis desired
+## \return returns exit code from the subprocess
+## \note all parameters should be strings
+## \author hdoughty@keesaco.com of Keesaco
+###########################################################################
 def quad_gate(name, x_coord, y_coord, quad1_name, quad2_name, quad3_name, quad4_name, x_axis, y_axis):
 	return subprocess.call(["Rscript", "quad_gate.r", name, x_coord, y_coord, quad1_name, quad2_name, 
 		quad3_name, quad4_name, x_axis, y_axis])
