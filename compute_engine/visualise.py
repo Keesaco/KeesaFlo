@@ -133,18 +133,19 @@ while alive:
 		##Loads raw fcs data from cloud storage
 		Ana.load_fcs(name)
 		##Creates visualisation of gate and text file of gate info
-		Ana.norm_gate(name, gate_name, reverse, x_axis, y_axis)
-		## Saves visualisation of gate to cloud storage
-		Ana.save_vis(gate_name + '.png')
-		## Saves info about gate to cloud storage
-		Ana.save_info(gate_name + '.txt')
-		## Saves gate as fcs file
-		Ana.save_fcs(gate_name)
-		## Clean up.
-		os.remove(gate_name + '.txt')
-		os.remove(gate_name + '.png')
-		os.remove(gate_name)
-		os.remove(name)
+		exitcode = Ana.norm_gate(name, gate_name, reverse, x_axis, y_axis)
+		if(exitcode == 0):
+			## Saves visualisation of gate to cloud storage
+			Ana.save_vis(gate_name + '.png')
+			## Saves info about gate to cloud storage
+			Ana.save_info(gate_name + '.txt')
+			## Saves gate as fcs file
+			Ana.save_fcs(gate_name)
+			## Clean up.
+			os.remove(gate_name + '.txt')
+			os.remove(gate_name + '.png')
+			os.remove(gate_name)
+			os.remove(name)
 	# Delete any processed tasks from queue.
 	if task_id is not None:
 		Queue.delete('jobs', task_id)
