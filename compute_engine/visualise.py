@@ -147,6 +147,28 @@ while alive:
 			os.remove(gate_name + '.png')
 			os.remove(gate_name)
 			os.remove(name)
+	elif (commands[0] == 'gate_quad'):
+		name = commands[1]
+		x_coord = commands[2]
+		y_coord = commands[3]
+		x_axis = commands[8]
+		y_axis = commands[9]
+		##Loads raw fcs data from cloud storage
+		Ana.load_fcs(name)
+		## Creates visualisation and .fcs file of gate
+		exitcode = 0;
+		Ana.quad_gate(name, x_coord, y_coord, commands[4], commands[5], commands[6], commands[7], x_axis, y_axis)
+		if(exitcode == 0):
+			for i in range(4, 8):
+				current_gate_name = commands[i]
+				## Saves visualisation of gate to cloud storage
+				Ana.save_vis(current_gate_name + '.png')
+				## Saves gate as fcs file
+				Ana.save_fcs(current_gate_name)
+				## Clean up
+				os.remove(current_gate_name + '.png')
+				os.remove(current_gate_name)
+			os.remove(name)
 	# Delete any processed tasks from queue.
 	if task_id is not None:
 		Queue.delete('jobs', task_id)
