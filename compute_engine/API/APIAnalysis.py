@@ -159,6 +159,17 @@ def bool_gate(name, gate_name, boolean_op, gate1_type, points1, reverse1, gate2_
 	return subprocess.call(["Rscript", "boolean.r", name, gate_name, boolean_op, gate1_type, 
 		points1, reverse1, gate2_type, points2, reverse2, gate1_x_axis, gate1_y_axis, gate2_x_axis, gate2_y_axis])
 
+###########################################################################
+## \brief Saves a visualisation of a polygon gated fcs file
+## \param name - name of fcs file to gate
+## \param gate_name - name of gate to be created
+## \param reverse boolean representing whether cells in gate are kept or removed
+## \param x_axis - name of x_axis desired
+## \param y_axis - name of y_axis desired
+## \return returns exit code from the subprocess
+## \note all parameters should be strings
+## \author hdoughty@keesaco.com of Keesaco
+###########################################################################
 def norm_gate(name, gate_name, reverse, x_axis, y_axis):
 	return subprocess.call(["Rscript", "norm_gate.r", name, gate_name, reverse, x_axis, y_axis])
 

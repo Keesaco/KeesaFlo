@@ -23,7 +23,7 @@ x <- read.FCS(fcs_name, transformation = FALSE)
 n2f <- norm2Filter(c(x_axis, y_axis))
 normfilter <- filter(x, n2f)
 
-## Creating subset of data.
+## Creating a subset of data.
 y <- createSubset(x, normfilter, reverse)
 
 ## Save gate as fcs file
