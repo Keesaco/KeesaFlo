@@ -77,7 +77,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
        	<h4 class="modal-title" id="uploadModalLabel"> Upload a file </h4>
 	      </div>
-		    <form action="" method="post" enctype="multipart/form-data" target="_self">
+		    <form action="" id="frm-new-file-upload" method="post" enctype="multipart/form-data" target="_self">
 	      <div class="modal-body">
 		    {% csrf_token %}
 		    {% for field in form %}
@@ -89,7 +89,7 @@
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Dismiss</button>
-	        <button type="submit" value="Upload" class="btn btn-primary">Upload</button>
+	        <button type="submit" value="upload" class="btn btn-primary" id="btn-new-file-upload-submit">Upload</button>
 	      </div>
 	    </form>
     </div><!-- /.modal-content -->

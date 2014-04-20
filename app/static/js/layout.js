@@ -173,6 +173,18 @@ function ksfLayout_filePreviewStart()
 }
 ksfLayout.filePreviewStart = ksfLayout_filePreviewStart;
 
+/**
+ * Enables or disables the upload button on the upload modal
+ * \param Bool state - true disables the button, false enables
+ * \return None
+ * \author jmccrea@keesaco.com of Keesaco
+ */
+function ksfLayout_setUploadButtonDisabled(state)
+{
+	$('#uploadModal').find('[value="upload"]').prop('disabled', state);
+}
+ksfLayout.setUploadButtonDisabled = ksfLayout_setUploadButtonDisabled;
+
 
 /**
  * Sets up tooltip classes
