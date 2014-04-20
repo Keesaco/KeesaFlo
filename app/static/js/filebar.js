@@ -63,7 +63,7 @@ function ksfFilebar_update(data)
 							newElem.style.borderRight='10px solid #'+e.colour;
 						}
 							   
-						var editDiv = ksfFilebar.newEditElem('div', 'dropdown-file-options');
+						var editDiv = ksfFilebar.newEditElem('div', 'dropdown-file-options fopts-closed');
 						editDiv.style.display = 'none';
 								
 						//star
@@ -93,11 +93,22 @@ function ksfFilebar_update(data)
 						var editCog = ksfFilebar.newEditElem('a', 'edit-dropdown-button');
 						editCog.appendChild( ksfFilebar.newEditElem(
 							'span', 'glyphicon glyphicon-cog',
-							function() { editDiv.style.display = editDiv.style.display == 'none' ? 'block' : 'none'; } ) );
+							function()
+							{
+								var $div = $(editDiv);
+								if ( $div.hasClass("fopts-open") )
+								{
+									$div.switchClass( "fopts-open", "fopts-closed", 150 );
+								}
+								else
+								{
+									$div.switchClass( "fopts-closed", "fopts-open", 150 );
+								}
+							} ) );
 						newElem.appendChild(editCog);
-						
+						editDiv.style.display = editDiv.style.display == 'none' ? 'block' : 'none';
 								
-						var confirmSpan = ksfFilebar.newEditElem('span', 'nameedit-confirm');
+						var confirmSpan = ksfFilebar.newEditElem('span', 'nameedit-confirm left-button-container');
 						confirmSpan.style.display = 'none';
 						//confirm rename - tick
 						var confirmTick = ksfFilebar.newEditElem('span', 'glyphicon glyphicon-ok nameedit-tick');
@@ -111,14 +122,19 @@ function ksfFilebar_update(data)
 
 						newElem.appendChild(editDiv);
 						
-						
+							
+						//colour button
+						editDiv.appendChild( ksfFilebar.newEditButton('glyphicon-tint',
+							function () { ksfFilebar.recolourClickHandler(e, newElem); }, 'left-button-container').outer );
+							   
 						//rename buttom
 						editDiv.appendChild( ksfFilebar.newEditButton( 'glyphicon-pencil',
-							function () { ksfFilebar.editName(newElem, e); }, 'left-button-container' ).outer )
+							function () { ksfFilebar.editName(newElem, e); }, 'left-button-container' ).outer );
 							   
 						//delete button
 						editDiv.appendChild(ksfFilebar.newEditButton('glyphicon-trash',
-							function () {
+							function ()
+							{
 								bootbox.confirm("Are you sure you want to delete " + (e.friendlyName ? e.friendlyName : e.filename) + "?",
 									function (conf)
 									{
@@ -126,9 +142,9 @@ function ksfFilebar_update(data)
 										{
 											ksfFilebar.deleteFile(e, newElem);
 										}
-									} ); },
+							} ); },
 							'delete-button-container' ).outer);
-	   
+	
 							   
 						editDiv.appendChild(confirmSpan);
 
@@ -181,8 +197,8 @@ function ksfFilebar_newEditButton(glyphClass, click, outerClass)
 	var outer = ksfFilebar.newEditElem( 'span', 'file-option-button fbtn-off' + (outerClass ? ' ' + outerClass : '') );
 	var inner = ksfFilebar.newEditElem( 'span', 'glyphicon ' + glyphClass, click);
 	outer.appendChild(inner)
-	$(inner).mouseover(function() { $(outer).switchClass( "fbtn-off", "fbtn-on", 150 ) } )
-			.mouseout (function() { $(outer).switchClass( "fbtn-on", "fbtn-off", 150 ) } );
+	$(inner).mouseover(function() { $(outer).switchClass( "fbtn-off", "fbtn-on", 150 ); } )
+	.mouseout (function() { $(outer).switchClass( "fbtn-on", "fbtn-off", 150 ); } );
 	return {'outer' : outer, 'inner' : inner};
 }
 ksfFilebar.newEditButton = ksfFilebar_newEditButton;
@@ -281,6 +297,37 @@ function ksfFilebar_doneEditName(fileDiv, file, newHref, update, oldText)
 ksfFilebar.doneEditName = ksfFilebar_doneEditName;
 
 /**
+ * Displays a prompt for a new colour choice. Moved from main fiebar draw function for clarity.
+ * \param File file - the file to recolour
+ * \param Element fileDiv - div which displays the file, used to recolour the border
+ * \author jmccrea@keesaco.com of Keesaco
+ * \return None
+ */
+function ksfFilebar_recolourClickHandler(file, fileDiv)
+{
+	var colourInput = document.createElement("input");
+	colourInput.type = "color";
+	var $boxBody = $(bootbox.confirm("Choose a new colour for " + (file.friendlyName ? file.friendlyName : file.filename) + ": ",
+		function (confirm)
+		{
+			if (confirm)
+			{
+				ksfFilebar.recolourFile(file, colourInput.value.substring(1),
+				function ()
+				{
+					fileDiv.style.borderRightColor = colourInput.value;
+				} );
+			}
+		})).find('.bootbox-body').first();
+	$boxBody.append(colourInput);
+}
+ksfFilebar.recolourClickHandler = ksfFilebar_recolourClickHandler
+
+
+
+// TODO: this can probably be refcatored into a single method
+
+/**
  * Sends a request to star or unstar a given file
  * \param File file - file object for file to modify (used for .filename, .starred)
  * \param Bool star - If true the file is starred, if false the file is unstarred
@@ -307,6 +354,25 @@ function ksfFilebar_starFile(file, starSpan)
 		} );
 }
 ksfFilebar.starFile = ksfFilebar_starFile;
+
+/**
+ * Sends a request to recolour a given file
+ * \param File file - file object for file to recolour (used for .filename)
+ * \param String newColour - new colour for file
+ * \param Function onSuccess - called if the request is successfull
+ * \author jmccrea@keesaco.com of Keesaco
+ * \return None
+ */
+function ksfFilebar_recolourFile(file, newColour, onSuccess)
+{
+	actionObj = [{
+				 'action' 		: 'recolour',
+				 'filename'		: file.filename,
+				 'newcolour'	: newColour
+				 }];
+	ksfReq.postJSON(ACTION_URI, actionObj, onSuccess);
+}
+ksfFilebar.recolourFile = ksfFilebar_recolourFile;
 
 /**
  * Sends a request to rename a given file
@@ -344,6 +410,7 @@ function ksfFilebar_deleteFile(file, removeDiv)
 		{
 			if (response[0].success)
 			{
+				$(removeDiv).qtip("destroy");
 				$(removeDiv).remove();
 			}
 		}

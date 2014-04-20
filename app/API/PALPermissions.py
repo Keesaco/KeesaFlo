@@ -323,17 +323,29 @@ def add_file_permissions(permissions_file_key,permissions_user_key, permissions,
 ## \brief modifies permissions on permissions entry 
 ## \param permissions key - [Key] key of permissions entry
 ## \param new_permissions - [Permissions] new permissions to set
+## \param Bool new_starred - (= None) new starred value for entry
+## \param String new_colour - (= None) new colour for file
 ## \return True on success, False otherwise
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
 ###########################################################################
-def modify_file_permissions_by_key(permissions_key, new_permissions):
+def modify_file_permissions_by_key(permissions_key, new_permissions = None, new_starred = None, new_colour = None):
 	if isinstance(permissions_key,ndb.Key):
+
 		permissions = permissions_key.get()
-		permissions.read = new_permissions.read
-		permissions.write = new_permissions.write
-		permissions.full_control = new_permissions.full_control
+		if new_permissions is not None:
+			permissions.read = new_permissions.read
+			permissions.write = new_permissions.write
+			permissions.full_control = new_permissions.full_control
+		
+		if new_starred is not None:
+			permissions.starred = new_starred
+			
+		if new_colour is not None:
+			permissions.colour = new_colour
+		
 		permissions.put()
+		
 		return True
 	else:
 		return False
@@ -343,19 +355,29 @@ def modify_file_permissions_by_key(permissions_key, new_permissions):
 ## \param file_key - [Key] key of file entry permissions pertain to
 ## \param user_key - [Key] key of user entry permissions pertain to
 ## \param permissions - [Permissions] new permissions to set
+## \param Bool new_starred - (= None) new starred value for entry
+## \param String new_colour - (= None) new colour for file
 ## \return  True on success, False otherwise
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
 ###########################################################################
-def modify_file_permissions_by_keys(file_key, user_key, new_permissions):
+def modify_file_permissions_by_keys(file_key, user_key, new_permissions = None, new_starred = None, new_colour = None):
 	if (isinstance(user_key,ndb.Key)) and (isinstance(file_key,ndb.Key)):
 		query = FilePermissions.query(ndb.AND(FilePermissions.user_key == user_key,
 											 FilePermissions.file_key == file_key))
 
 		permissions = query.get()
-		permissions.read = new_permissions.read
-		permissions.write = new_permissions.write
-		permissions.full_control = new_permissions.full_control
+		if new_permissions is not None:
+			permissions.read = new_permissions.read
+			permissions.write = new_permissions.write
+			permissions.full_control = new_permissions.full_control
+
+		if new_starred is not None:
+			permissions.starred = new_starred
+
+		if new_colour is not None:
+			permissions.colour = new_colour
+
 		permissions.put()
 		return True
 	else:

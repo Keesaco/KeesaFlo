@@ -16,9 +16,9 @@
 			<span>Loading...</span>
 		</div>-->
 		<div class="btn-group btn-group-lg action-btn-group">
-			<button type="button" class="btn btn-defauls btn-download"><a href="{% url get_dataset current_file.filename %}">Download Dataset</a></button>
-		  	<button type="button" class="btn btn-defauls" id="request-gating-btn" disabled>Create gating</button>
-		  	<button type="button" class="btn btn-defauls" id="reset-tool-btn">Reset Tool</button>
+			<button type="button" class="btn btn-download"><a href="{% url get_dataset current_file.filename %}">Download Dataset</a></button>
+		  	<button type="button" class="btn" id="request-gating-btn" disabled>Create gating</button>
+		  	<button type="button" class="btn" id="reset-tool-btn">Reset Tool</button>
 		</div>
 	</div>
 	{% else %}
@@ -38,7 +38,8 @@
 		<p>To get started, first select a file in the 
 			<span class="label label-success">
 				<a title="Files" id="togglefiles">file selector</a>
-			</span> or 
+			</span>
+			&nbsp;or&nbsp;
 			<span class="label label-success">
 				<a title="Upload"  data-toggle="modal" data-target="#uploadModal">upload a new file</a>
 			</span>.

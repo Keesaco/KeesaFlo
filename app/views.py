@@ -24,6 +24,7 @@ import API.APIInstance as instances
 import API.APIBackground as background
 import API.APIPermissions as ps
 import json
+import re
 import tools
 
 DATA_BUCKET = '/fc-raw-data'
@@ -190,6 +191,7 @@ def file_list_json(request):
 ## \todo 	Review permissions in this section - correct checking here is
 ##			vital as edit actions are potentially destructive.
 ## \todo	Refactor bucket names for deletion
+## \todo	Massive refactor is planned
 ## \return 	JSON response which indicates whether the requested action(s)
 ##			were performed successfully.
 ###########################################################################
@@ -245,7 +247,7 @@ def file_list_edit(request):
 		
 		elif action == 'rename':
 			if 'newname' not in a:
-				res_fragment.update( { 'success' : false, 'error' : 'New name not specified' } )
+				res_fragment.update( { 'success' : False, 'error' : 'New name not specified' } )
 			else:
 				file_entry = ps.get_file_by_name('/fc-raw-data/' + filename)
 				if file_entry is None:
@@ -266,12 +268,33 @@ def file_list_edit(request):
 				if fp_entry is None:
 					res_fragment.update( { 'success' : False, 'error' : 'Permissions entry not found' } )
 				else:
-					fp_entry.starred = (action == 'star')
-					if ps.modify_file_permissions_by_key(fp_entry.key, fp_entry):
+					if ps.modify_file_permissions_by_key(fp_entry.key, new_starred = (action == 'star')):
 						res_fragment.update( { 'success' : True } )
 					else:
 						res_fragment.update( { 'success' : False, 'error' : 'Could not update file' } )
-		
+
+		elif action == 'recolour':
+			if 'newcolour' not in a:
+				res_fragment.update( { 'success' : False, 'error' : 'New colour not specified' } )
+			else:
+				colour = a['newcolour']
+				chk_string = re.compile("^[A-Fa-f0-9]{6}$")
+				if (chk_string.match(colour)):
+					file_entry = ps.get_file_by_name('/fc-raw-data/' + filename)
+					if file_entry is None:
+						res_fragment.update( { 'success' : False, 'error' : 'File does not exist.' } )
+					else:
+						fp_entry = ps.get_user_file_permissions(file_entry.key, user_key)
+						if fp_entry is None:
+							res_fragment.update( { 'success' : False, 'error' : 'Permissions entry not found' } )
+						else:
+							if ps.modify_file_permissions_by_key(fp_entry.key, new_colour = colour):
+								res_fragment.update( { 'success' : True } )
+							else:
+								res_fragment.update( { 'success' : False, 'error' : 'Could not update file' } )
+				else:
+					res_fragment.update( { 'success' : False, 'error' : 'New colour invalid' } )
+
 		else:
 			res_fragment.update( { 'success' : False, 'error' : 'Action not recognised' } )
 		
@@ -424,3 +447,60 @@ def tool(request, name, params):
 
 	jsonResponse = simplejson.dumps(tool_response);
 	return HttpResponse(jsonResponse, content_type="application/json")
+
+###########################################################################
+## \brief	Returns a JSON object representing the analysis status of a
+##			given file.
+## \param	request - Django request which resulted in the call
+## \return	HttpResponse - response to the request as JSON
+## \author	jmccrea@kessaco.com of Keesaco
+## \todo	Consider permissions update after CE/Permissions integration
+## \todo	Refactor return value creation
+###########################################################################
+def analysis_status_json(request):
+	
+	response_part = {
+		'backoff' 	: 0,		#tells the client to back off for a given amount of time (milliseconds) (This is added to the client's constant poll interval)
+		'giveup'	: True,		#True instructs the client to stop polling - useful for situations such as unauthed requests where polling will never result in the user being shown a graph
+		'done'		: False		#True indicates that the analysis has finished and that the user can be redirected to the new image
+	}
+	
+	authed_user = auth.get_current_user()
+	if authed_user is None:
+		response_part.update( { 'error' : 'Unauthenticated request.' } )
+		return HttpResponse(json.dumps(response_part), content_type="application/json")
+		
+	user_key = ps.get_user_key_by_id(authed_user.user_id())
+		
+	try:
+		file_req = json.loads(request.raw_post_data)
+	except ValueError:
+		response_part.update({'error' : 'Invalid request payload.'})
+		return HttpResponse(json.dumps(response_part), content_type="application/json")
+
+	if 'filename' not in file_req:
+		response_part.update({'error' : 'Incomplete request.'})
+		return HttpResponse(json.dumps(response_part), content_type="application/json")
+
+	#	This is roughly what permissions checking should probably look like once all files have permissions entries
+	#		Alternatively, a check_exists call may be sufficient if the permissions entry is created before gating is requested,
+	#		this will depend on the CE/Permissions integration method
+	#file_entry = ps.get_file_by_name('/fc-raw-data/' + filename + '.fcs')
+	#if file_entry is None:
+	#	return HttpResponse( { 'error' : 'File or gate not recognised.', 'done' : False } ), content_type="application/json")
+	#else:
+	#	fp_entry = ps.get_user_file_permissions(file_entry.key, user_key)
+	#	if fp_entry is None:
+	#		return HttpResponse(json.dumps({update( { 'error' : 'Permission denied.', 'done' : False } ), content_type="application/json")
+
+
+	is_done =  ds.check_exists(GRAPH_BUCKET + '/' + file_req['filename'] + '.png', None)
+
+	#Prevent redirecting before the view is ready
+	is_done &= ds.check_exists(DATA_BUCKET  + '/' + file_req['filename'] 		 , None)
+
+	response_part.update( { 'done' : is_done, 'giveup' : False } )
+	return HttpResponse(json.dumps(response_part), content_type="application/json")
+
+
+
