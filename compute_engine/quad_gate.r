@@ -23,6 +23,12 @@ if(file.exists(fcs_name) == FALSE)
 	quit("no", 1)
 x <- read.FCS(fcs_name, transformation = FALSE)
 
+## Convert image coordinates to graph coordinates
+r1 <- range(x[,1])
+r2 <- range(x[,2])
+x_coord <- imageToGraphCoordx(x_coord, r1[1,1], r1[2,1])
+y_coord <- imageToGraphCoordy(y_coord, r2[1,1], r2[2,1])
+
 ## Creates gate
 boundaries <- setNames(as.list(c(x_coord, y_coord)), c(x_axis, y_axis))
 qg <- quadGate(boundaries)
