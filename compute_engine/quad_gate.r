@@ -45,4 +45,11 @@ for(i in 1:4)
 	image_name <- paste(quadrant_names[i], ".png", sep="")
 	plotGraph(image_name, quadrants[[i]], x_axis, y_axis, nrow(quadrants[[i]]@exprs))
 }
+## Saves gate info in .txt file
+	info_names <- 0 ## Initialises info names
+	for(i in 1:4)
+	{
+		info_names[i] <- paste(quadrant_names[i], '.txt', sep="")
+	}
+	writeInfoMultipleFilters(x, fres, info_names)
 quit("no", 0)

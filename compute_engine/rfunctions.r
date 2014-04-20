@@ -248,7 +248,7 @@ createSubset <- function(data, gate, reverse)
 }
 
 ###########################################################################
-## \brief creates file containing gating data
+## \brief creates file containing gating info data
 ## \param data - orginal flowFrame being gated
 ## \param gate - gate being applied to data
 ## \param reverse - whether the gate being create is a reverse gate
@@ -268,6 +268,26 @@ writeInfo <- function(data, gate, reverse)
 	info <- c(inGate, total, proportion)
 	info_name <- paste(gate_name, ".txt", sep="")
 	write(info, file = info_name)
+}
+
+###########################################################################
+## \brief creates file containing gating info data
+## \param data - orginal flowFrame being gated
+## \param fres - filterResult used to gate data
+## \param info_names - names of the files to write the info to
+###########################################################################
+
+writeInfoMultipleFilters <- function(data, fres, info_names)
+{
+	len <- length(fres)
+	total <- summary(fres)$n
+	for(i in 1:len)
+	{
+		inGate <- (summary(fres)$true)[i]
+		proportion <- (summary(fres)$p)[i]
+		info <- c(inGate, total, proportion)
+		write(info, file = info_names[i])
+	}
 }
 
 ###########################################################################

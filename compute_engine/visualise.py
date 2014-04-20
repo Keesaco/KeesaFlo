@@ -163,10 +163,13 @@ while alive:
 				current_gate_name = commands[i]
 				## Saves visualisation of gate to cloud storage
 				Ana.save_vis(current_gate_name + '.png')
+				## Saves info about gate to cloud storage
+				Ana.save_info(current_gate_name + '.txt')
 				## Saves gate as fcs file
 				Ana.save_fcs(current_gate_name)
 				## Clean up
 				os.remove(current_gate_name + '.png')
+				os.remove(current_gate_name + '.txt')
 				os.remove(current_gate_name)
 			os.remove(name)
 	# Delete any processed tasks from queue.
