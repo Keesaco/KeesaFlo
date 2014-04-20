@@ -22,7 +22,7 @@ x <- read.FCS(fcs_name, transformation = FALSE)
 
 ## Plot data.
 png(vis_name)
-if(plot_type == 'dot')
+if(plot_type == 'dot' || (nrow(x@exprs) == 0))
 {
 	plot(x, c(x_axis, y_axis), smooth = FALSE)
 } else if(plot_type == 'contour')
@@ -30,6 +30,7 @@ if(plot_type == 'dot')
 	contour(x, c(x_axis, y_axis))
 } else
 {
+	dev.off()
 	quit("no", 2)
 }
 dev.off()

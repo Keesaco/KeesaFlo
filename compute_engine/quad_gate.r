@@ -43,14 +43,6 @@ for(i in 1:4)
 	write.FCS(quadrants[[i]], quadrant_names[i])
 	## Plots the gate
 	image_name <- paste(quadrant_names[i], ".png", sep="")
-	if(nrow(quadrants[[i]]@exprs) > 0) 
-	{
-		plotGraph(image_name, quadrants[[i]], x_axis, y_axis)
-	} else 
-	{
-		png(image_name)
-		plot(quadrants[[i]] ,c(x_axis, y_axis), FALSE)
-		dev.off()
-	}
+	plotGraph(image_name, quadrants[[i]], x_axis, y_axis, nrow(quadrants[[i]]@exprs))
 }
 quit("no", 0)

@@ -277,9 +277,15 @@ writeInfo <- function(data, gate, reverse)
 ## \param x_axis - name of x_axis in graph
 ## \param y_axis - name of y_axis in graph
 ###########################################################################
-plotGraph <- function(image_name, data, x_axis, y_axis)
+plotGraph <- function(image_name, data, x_axis, y_axis, number_cells)
 {
 	png(image_name)
-	plot(data,c(x_axis, y_axis))
+	if(number_cells > 0)
+	{
+		plot(data,c(x_axis, y_axis))
+	} else
+	{
+		plot(data, c(x_axis, y_axis), FALSE)
+	}
 	dev.off()
 }
