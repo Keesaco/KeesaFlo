@@ -33,7 +33,7 @@ def simple_gating(paramList, name):
 			gatingRequest =" ".join(paramList[0:4])
 
 			newName = paramList[-1] + "-rectGate";
-			queue.gate_rectangle(paramList[-1], gatingRequest, newName, "1", "FSC-A", "PE-A");
+			queue.gate_rectangle(paramList[-1], gatingRequest, newName, "1", "FSC-A", "SSC-A");
 			return generate_gating_feedback("success", "the rectangular gating was performed correctly", reverse('get_graph', args=[newName]))
 		else:
 			return generate_gating_feedback("fail", "notcorrect " + params + " length:" + str(len(paramList)) + " is not equal to 4", None)
@@ -43,7 +43,7 @@ def simple_gating(paramList, name):
 			gatingRequest = " ".join(paramList[0:-1])        
 
 			newName = paramList[-1] + "-polyGate";
-			queue.gate_polygon(paramList[-1], gatingRequest, newName, "0", "FSC-A", "PE-A");
+			queue.gate_polygon(paramList[-1], gatingRequest, newName, "0", "FSC-A", "SSC-A");
 			return generate_gating_feedback("success", "the polygonal gating was performed correctly", reverse('get_graph', args=[newName]))
 		else:
 			return generate_gating_feedback("fail", "notcorrect " + params + " #pointCoordinates:" + str(len(paramList))-1 + " is not pair", None)
@@ -53,7 +53,7 @@ def simple_gating(paramList, name):
 			gatingRequest = " ".join(paramList[0:-1])        
 
 			newName = paramList[-1] + "-ovalGate";
-			queue.gate_circle(paramList[-1], gatingRequest, newName, "0", "FSC-A", "PE-A");
+			queue.gate_circle(paramList[-1], gatingRequest, newName, "0", "FSC-A", "SSC-A");
 			return generate_gating_feedback("success", "the oval gating was performed correctly", reverse('get_graph', args=[newName]))
 		else:
 			return generate_gating_feedback("fail", "notcorrect " + params + " #pointCoordinates:" + str(len(paramList)) + " is not even", None)
