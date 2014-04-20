@@ -25,6 +25,7 @@ FEEDBACK_DANGER = "alert-danger";
 
 ANALYSIS_STATUS_URI = '/app/data/json/analysis_status/';
 FILE_VIEW_HASH		= '#!/preview/';
+GATING_URI		= "/app/gating/tools/";
 
 /**
  *	Milliseconds between requests for new graphs
@@ -108,7 +109,7 @@ ksfGraphTools.RectangularGating = {
 	
 	requestGating : function()
 	{
-		ksfGraphTools.sendGatingRequest('tool/gating/rectangular_gating,' + this.startx + "," + this.starty + "," + this.endx + "," + this.endy);
+		ksfGraphTools.sendGatingRequest('rectangular_gating', [this.startx, this.starty, this.endx, this.endy]);
 	}
 }
 
@@ -196,8 +197,7 @@ ksfGraphTools.PolygonGating = {
 
 	requestGating : function()
 	{
-		var URL = "tool/gating/polygon_gating," + this.xList.concat(this.yList).join(",");
-		ksfGraphTools.sendGatingRequest(URL);
+		ksfGraphTools.sendGatingRequest('polygon_gating', this.xList.concat(this.yList));
 	}
 }
 
@@ -283,41 +283,72 @@ ksfGraphTools.OvalGating = {
 		var angle = ksfGraphTools.mesureAngle(tx, ty);
 		var p1x=this.centerx+Math.cos(angle-Math.PI/2)*this.r1,
 		p1y=this.centery+Math.sin(angle-Math.PI/2)*this.r1;
-		ksfGraphTools.sendGatingRequest("tool/gating/oval_gating," + this.centerx + "," + this.centery + "," + p1x + "," + p1y + "," + this.pointx + "," + this.pointy);
+		ksfGraphTools.sendGatingRequest('oval_gating',
+										[this.centerx, this.centery, p1x, p1y, this.pointx, this.pointy] );
 	}
 }
 
 /**
  * Perform a gating request and update the view correspondingly
- * \param gatingURL - [String] url of the gating command
+ * \param String toolName - name of tool to use for gate
+ * \param [Int] gatePoints - list of points which form the gate
+ * \param Object params - Object with other gating parameters - this is used to extend the gating request object before the gating request is sent
  * \author mrudelle@keesaco.com of Keesaco
- * \note This might be moved to views.js in the future
+ * \note This might be moved to views.js in the future //JPM - might it?
+ * \note deep-extend is not used for params
  */
-function ksfGraphTools_sendGatingRequest(gatingURL)
+function ksfGraphTools_sendGatingRequest(toolName, gatePoints, params)
 {
 	// allows to fetch the name correctly. In the future (final release) this should be replace by a json file fetched from the server containing all the file's data
 	
 	$("#filesize").remove();
-	var filename = $("#filename").text().trim();
-
+	var currentFile = $("#filename").text().trim();
+	
+	var reverseGate = $('#chk_reverse_gate').first().is(':checked');
+	
 	ksfTools.CurrentTool.resetTool();
 	ksfCanvas.toolText("Loading graph...");
 
-	ksfReq.fetch(   gatingURL + "," + filename, 
-					function(response)
-					{
-						ksfGraphTools.showFeedback(
-							response.status === "success" ? FEEDBACK_SUCCESS :
-							response.status === "fail" ? FEEDBACK_DANGER: FEEDBACK_INFO,
-							response.status, response.message);
-						ksfCanvas.toolText("");
-						$("#filename").text(filename);
-						ksfGraphTools.setGraphUrl(response.url, response.graphName);
-					},
-					function()
-					{
-						ksfGraphTools.showFeedback(FEEDBACK_DANGER, "fail", "The server failed to respond to the gating request");
-					} );
+	var gateReq = {
+		tool 		: toolName,
+		points 		: gatePoints,
+		filename	: currentFile,
+		reverse		: reverseGate
+	};
+
+	if (params)
+	{
+		$.extend(gateReq, params);
+	}
+
+	ksfReq.postJSON(GATING_URI, gateReq,
+			function(response)
+			{
+				var feedbackType;
+				switch (response.status)
+				{
+					case "success":
+						feedbackType = FEEDBACK_SUCCESS;
+						break;
+					
+					case "fail":
+						feedbackType = FEEDBACK_DANGER;
+						break;
+					
+					default:
+						feedbackType = FEEDBACK_INFO;
+				}
+					
+				ksfGraphTools.showFeedback(feedbackType, response.status, response.message);
+					
+				ksfCanvas.toolText("");
+				$("#filename").text(filename);
+				ksfGraphTools.setGraphUrl(response.url, response.graphName);
+			},
+			function(jqxhr, textStatus, error)
+			{
+				ksfGraphTools.showFeedback(FEEDBACK_DANGER, textStatus, error);
+			} );
 }
 ksfGraphTools.sendGatingRequest = ksfGraphTools_sendGatingRequest;
 

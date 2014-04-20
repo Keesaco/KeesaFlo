@@ -71,7 +71,7 @@ def no_such_tool(paramList, name):
 
 	logging.error('The tool "'+ name +'" is unknown. The known tools are: {' + 
 		', '.join(list(AVAILABLE_TOOLS.keys())) + '}' )
-	return generate_gating_feedback("fail","The tool you selected is not reconized by the server", None)
+	return generate_gating_feedback("fail","The tool you selected is not reconized by the server", )
 
 
 ## TODO the url should be a redirection in the future
@@ -83,12 +83,12 @@ def no_such_tool(paramList, name):
 ## \return a dictionary with the status of the tool call
 ## \author mrudelle@keesaco.com of Keesaco
 ###########################################################################
-def generate_gating_feedback(status, message, new_graph_name):
+def generate_gating_feedback(status, message, ):
 	return {
 		'status': status,
 		'message': message,
-		'url': reverse('get_graph', args=[new_graph_name]),
-		'graphName' : new_graph_name
+		'url': ,
+		
 	
 	}
 

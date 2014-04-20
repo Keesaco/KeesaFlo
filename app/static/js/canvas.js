@@ -55,7 +55,7 @@ function ksfCanvas_drawPolygon(xList, yList, lastx, lasty, startRadius)
     if (xList.length < 1)
 	{
         return;
-    };
+    }
 
 	context.beginPath();
 	context.fillStyle = "rgba(255, 0, 0, 0.5)";
@@ -73,7 +73,8 @@ function ksfCanvas_drawPolygon(xList, yList, lastx, lasty, startRadius)
     for (var i = 1; i < xList.length ; i++)
 	{
        context.lineTo(xList[i], yList[i]);
-    };
+    }
+
     if (lastx !== null || lasty !== null)
 	{
        context.lineTo(lastx, lasty);
@@ -251,7 +252,8 @@ ksfCanvas.addListener = ksfCanvas_addListener;
  * \note depending on the string this can applies to multiple buttons
  * \author mrudelle@keesaco.com of Keesaco
  */
-function ksfCanvas_enableBtn(btn, enable){
+function ksfCanvas_enableBtn(btn, enable)
+{
     if (enable)
 	{
         $(btn).removeAttr("disabled");
@@ -308,6 +310,6 @@ function ksfCanvas_blinkButton(btn)
               "background-color": resetBackColor,
               "color": resetColor
             }, 800);
-        });
+        } );
 }
 ksfCanvas.blinkButton = ksfCanvas_blinkButton;

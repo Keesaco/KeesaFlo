@@ -25,7 +25,7 @@ import API.APIBackground as background
 import API.APIPermissions as ps
 import json
 import re
-import tools
+import gating.tools as gt
 
 DATA_BUCKET = '/fc-raw-data'
 GRAPH_BUCKET = '/fc-vis-data'
@@ -406,7 +406,7 @@ def get_info(request, infofile):
 ###########################################################################
 ## \brief Return a response containing the file
 ## \param path - path to the file to be sent to the client
-## \param type - type of the file sent (it's mime type)
+## \param type - type of the file sent (its mime type)
 ## \return an HttpResponse ccontaining the file to be sent
 ###########################################################################
 def fetch_file(path, type):
@@ -432,21 +432,45 @@ def settings(request):
 ###########################################################################
 ## \brief Is called by a tool from the client side
 ## \param request - Django variable defining the request that triggered the generation of this page
-## \param name - name of the tool that triggered this request
-## \param params - Paramesters that comes with the tool's call
 ## \return a JSON object in a httpresponse, containing the status of the gating, a short message and the link to the newly created graph
+## \todo Tidy up validation
 ###########################################################################
-def tool(request, name, params):
-	paramList = params.split(',')
+def tool(request):
+	authed_user = auth.get_current_user()
+	if authed_user is None:
+		return HttpResponse(simplejson.dumps(gt.generate_gating_feedback('fail', 'Unauthenticated request')), content_type="application/json")
 
-	tool = tools.AVAILABLE_TOOLS.get(name, tools.no_such_tool)
-	tool_response = tool(paramList, name)
+
+	try:
+		gate_info = json.loads(request.raw_post_data)
+	except ValueError:
+		return HttpResponse(simplejson.dumps(gt.generate_gating_feedback('fail', 'Invalid request payload')), content_type="application/json")
+
+
+	## \todo This should probably iterate over list
+	if (('points' 	not in gate_info) or
+		('tool'		not in gate_info) or
+		('filename' not in gate_info)):
+
+		return HttpResponse(simplejson.dumps(gt.generate_gating_feedback('fail', 'Incomplete gate parameters')), content_type="application/json")
+
+	if (gate_info['points']):
+		if not isinstance(gate_info['points'], list):
+			return HttpResponse(simplejson.dumps(gt.generate_gating_feedback('fail', 'Invalid points list')), content_type="application/json")
+	else:
+		# Normalise false value to None
+		gateInfo.update( { 'points' : None } )
+
+
+	tool = gt.AVAILABLE_TOOLS.get(gate_info['tool'], gt.no_such_tool)
+	## first two arguments passed for compatibility
+	tool_response = tool(gate_info)
 
 	## Load balance instances in the background.
 	background.run(instances.balance)
 
-	jsonResponse = simplejson.dumps(tool_response);
-	return HttpResponse(jsonResponse, content_type="application/json")
+	json_response = simplejson.dumps(tool_response);
+	return HttpResponse(json_response, content_type="application/json")
 
 ###########################################################################
 ## \brief	Returns a JSON object representing the analysis status of a
@@ -501,6 +525,5 @@ def analysis_status_json(request):
 
 	response_part.update( { 'done' : is_done, 'giveup' : False } )
 	return HttpResponse(json.dumps(response_part), content_type="application/json")
-
 
 

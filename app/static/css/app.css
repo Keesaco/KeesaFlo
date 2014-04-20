@@ -442,3 +442,8 @@ a.edit-dropdown-button:hover
 	font-size:		130%;
 	font-weight:	bold;
 }
+
+.gate-options
+{
+	padding: 0px 20px 20px 20px;
+}
