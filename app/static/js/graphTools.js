@@ -301,7 +301,6 @@ function ksfGraphTools_sendGatingRequest(toolName, gatePoints, params)
 {
 	// allows to fetch the name correctly. In the future (final release) this should be replace by a json file fetched from the server containing all the file's data
 	
-	$("#filesize").remove();
 	var currentFile = $("#filename").text().trim();
 	
 	var reverseGate = $('#chk_reverse_gate').first().is(':checked');
@@ -342,7 +341,6 @@ function ksfGraphTools_sendGatingRequest(toolName, gatePoints, params)
 				ksfGraphTools.showFeedback(feedbackType, response.status, response.message);
 					
 				ksfCanvas.toolText("");
-				$("#filename").text(filename);
 				ksfGraphTools.setGraphUrl(response.url, response.graphName);
 			},
 			function(jqxhr, textStatus, error)
