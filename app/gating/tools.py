@@ -68,7 +68,19 @@ def simple_gating(gate_params):
 
 			new_name = gate_params['filename'] + "-normGate";
 			queue.gate_normal(gate_params['filename'], new_name, reverse_gate, "FSC-A", "SSC-A", gating_request);
-			return generate_gating_feedback("success", "the normal gating was perform correctly", new_name)
+			return generate_gating_feedback("success", "the normal gating was performed correctly", new_name)
+		else:
+			return generate_gating_feedback("fail", "notcorrect, wrong number of arguments")
+
+	elif (gate_params['tool'] == 'quadrant_gating') :
+		if len(points) == 2 :
+			new_name = []
+			for i in range(0, 4):
+				new_name.append(gate_params['filename'] + "-quad" + str(i) + "Gate")
+			x_coord = str(points[0])
+			y_coord = str(points[1])
+			queue.gate_quadrant(gate_params['filename'], x_coord, y_coord, new_name[0], new_name[1], new_name[2], new_name[3], "FSC-A", "SSC-A");
+			return generate_gating_feedback("success", "the quadrant gate was performed correctly", new_name[0])
 		else:
 			return generate_gating_feedback("fail", "notcorrect, wrong number of arguments")
 
@@ -110,5 +122,6 @@ AVAILABLE_TOOLS = {
 	'oval_gating' 			: simple_gating,
 	'rectangular_gating'	: simple_gating,
 	'polygon_gating'		: simple_gating,
-	'normal_gating'			: simple_gating
+	'normal_gating'			: simple_gating,
+	'quadrant_gating'		: simple_gating
 }

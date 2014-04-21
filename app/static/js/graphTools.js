@@ -305,7 +305,7 @@ ksfGraphTools.NormalGating = {
 	resetTool : function()
 	{
 		ksfCanvas.enableBtn(REQUEST_GATING_BTN, true);
-		scale_factor = 1;
+		this.scale_factor = 1;
 	},
 
 	requestGating : function()
