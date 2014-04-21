@@ -16,9 +16,9 @@ cd Analysis
 echo "Instance starts: " &>> "$INSTANCE_NAME".txt
 date &>> "$INSTANCE_NAME".txt
 ## Download analysis scripts from Google Cloud Storage.
-gsutil cp -R gs://"$SCRIPT_URL"/* . &>> "$INSTANCE_NAME".txt
+gsutil cp -R gs://"$SCRIPT_URL"/* . 2>&1 | tee -a "$INSTANCE_NAME".txt
 ## Run and log the visualisation script
-python visualise.py &>> "$INSTANCE_NAME".txt
+python visualise.py 2>&1 | tee -a "$INSTANCE_NAME".txt
 ## Log time instance terminates
 echo "Instance terminates: " &>> "$INSTANCE_NAME".txt
 date &>> "$INSTANCE_NAME".txt
