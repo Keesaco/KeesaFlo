@@ -8,7 +8,7 @@
  * \brief Provides methods for selecting a tool
  */
 
-TOOLS_LIST = [ksfGraphTools.RectangularGating, ksfGraphTools.PolygonGating, ksfGraphTools.OvalGating, ksfGraphTools.NormalGating];
+TOOLS_LIST = [ksfGraphTools.RectangularGating, ksfGraphTools.PolygonGating, ksfGraphTools.OvalGating, ksfGraphTools.NormalGating, ksfGraphTools.QuadrantGating];
 
 ksfTools.CurrentTool = null;
 

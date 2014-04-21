@@ -2,6 +2,7 @@
  * \file app/static/js/graphTools.js
  * \brief JavaScript library to manage graph related tools
  * \author mrudelle@keesaco.com of Keesaco
+ * \author hdoughty@keesaco.com of Keesaco
  */
 /**
  * \package app.static.js.graphTools
@@ -309,7 +310,50 @@ ksfGraphTools.NormalGating = {
 
 	requestGating : function()
 	{
-		ksfGraphTools.sendGatingRequest('normal_gating', [scale_factor]);
+		ksfGraphTools.sendGatingRequest('normal_gating', [this.scale_factor]);
+	}
+}
+
+ksfGraphTools.QuadrantGating = {
+	centre_x : null,
+	centre_y : null,
+
+	ELEMENT_ID : "#tool_quadrant_gating",
+
+	onGraphClick : function(event)
+	{
+		var posX = event.pageX - $(GRAPH_ID).offset().left,
+		posY = event.pageY - $(GRAPH_ID).offset().top;
+
+		if ((this.centre_x === null) || (this.centre_y === null))
+		{
+			this.centre_x = posX;
+			this.centre_y = posY;
+			ksfCanvas.toolText("You just selected a centre for the quadrant tool: " + (posX) + ' , ' + (posY));
+			ksfCanvas.enableBtn(REQUEST_GATING_BTN, true);
+		}
+		else
+		{
+			this.resetTool();
+			ksfCanvas.toolText("The quandrant tool has been reset.");
+		}
+	},
+
+	onGraphMouseMove : function(event)
+	{
+	},
+
+	resetTool : function()
+	{
+		this.centre_x = null; 
+		this.centre_y = null; 
+		ksfCanvas.clear();
+		ksfCanvas.enableBtn(REQUEST_GATING_BTN, false);
+	},
+
+	requestGating : function()
+	{
+		ksfGraphTools.sendGatingRequest('quadrant_gating', [this.centre_x, this.centre_y]);
 	}
 }
 
