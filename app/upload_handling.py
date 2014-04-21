@@ -129,6 +129,9 @@ class fcsUploadedFile(UploadedFile):
 def clean(str):
 	## Strip extension.
 	str = splitext(str)[0]
+	## Strip semicolons.
+	str = str.replace(';', '')
+	## Strip leading dash.
 	return strip_dash(str)
 
 ###########################################################################

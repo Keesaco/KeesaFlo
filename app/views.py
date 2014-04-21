@@ -8,7 +8,7 @@
 ###########################################################################
 
 from django.http import HttpResponse
-from django.http import HttpResponseNotFound  
+from django.http import HttpResponseNotFound
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.utils import simplejson

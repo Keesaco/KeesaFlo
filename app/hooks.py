@@ -3,7 +3,7 @@
 ## \brief Runs app services when webhooks are accessed.
 ## \author rmurley@keesaco.com of Keesaco
 ###########################################################################
-from django.shortcuts import redirect
+from django.http import HttpResponse
 import API.APIInstance as instances
 import API.APIBackground as background
 
@@ -14,4 +14,4 @@ import API.APIBackground as background
 ###########################################################################
 def balance(request):
 	background.run(instances.balance, 30)
-	return redirect('/')
+	return HttpResponse('')
