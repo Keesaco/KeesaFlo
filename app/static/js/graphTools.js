@@ -341,6 +341,12 @@ ksfGraphTools.QuadrantGating = {
 
 	onGraphMouseMove : function(event)
 	{
+		var posX = event.pageX - $(GRAPH_ID).offset().left,
+		posY = event.pageY - $(GRAPH_ID).offset().top;
+		if((this.centre_x === null) || (this.centre_y === null))
+		{
+			ksfCanvas.drawCross(posX, posY);
+		}
 	},
 
 	resetTool : function()

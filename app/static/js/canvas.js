@@ -11,6 +11,23 @@ var context;
 var canvas;
 var tool_popover;
 
+function ksfCanvas_drawCross(x, y)
+{
+	this.clear();
+	context.fillStyle = "rgba(255, 0, 0, 0.5)";
+	context.beginPath();
+	context.moveTo(x, 0);
+	context.lineTo(x, 480);
+	context.moveTo(0, y);
+	context.lineTo(480, y);
+	context.stroke();
+	context.arc(x, y, 5, 0, Math.PI*2);
+	context.fill();
+	context.closePath();
+}
+
+ksfCanvas.drawCross = ksfCanvas_drawCross;
+
 /**
  * Draw a selection box on the canvas
  * \param ax - x coordinate of the first point
