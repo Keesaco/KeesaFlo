@@ -78,3 +78,6 @@ PRIVATE_KEY_URL = '%s/%s' % (ASSETS_URL, PRIVATE_KEY)
 SCRIPT_URL = 'keesaco_gce'
 ## The URL of the compute engine scripts.
 LOG_URL = 'keesaco_log'
+
+## The URL of the instance balancing hook.
+BALANCE_HOOK = "http://www.rogan.keesaco-spe.appspot.com/_ah/balance"

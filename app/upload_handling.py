@@ -71,7 +71,7 @@ class fcsUploadHandler(FileUploadHandler):
 		## Start analysis.
 		queue.visualise(self.name)
 		## Load balance instances in the background.
-		background.run(instances.balance)
+		background.run(instances.balance, 0)
 		return self.upload
 
 ## Custom uploaded file class.

@@ -467,7 +467,7 @@ def tool(request):
 	tool_response = tool(gate_info)
 
 	## Load balance instances in the background.
-	background.run(instances.balance)
+	background.run(instances.balance, 0)
 
 	json_response = simplejson.dumps(tool_response);
 	return HttpResponse(json_response, content_type="application/json")
