@@ -288,6 +288,31 @@ ksfGraphTools.OvalGating = {
 	}
 }
 
+ksfGraphTools.NormalGating = {
+	scale_factor : null,
+
+	ELEMENT_ID : "#tool_normal_gating",
+
+	onGraphClick : function(event)
+	{
+	},
+
+	onGraphMouseMove : function(event)
+	{
+	},
+
+	resetTool : function()
+	{
+		ksfCanvas.enableBtn(REQUEST_GATING_BTN, true);
+		scale_factor = 1;
+	},
+
+	requestGating : function()
+	{
+		ksfGraphTools.sendGatingRequest('normal_gating', [scale_factor]);
+	}
+}
+
 /**
  * Perform a gating request and update the view correspondingly
  * \param String toolName - name of tool to use for gate
