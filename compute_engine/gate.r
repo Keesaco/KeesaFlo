@@ -76,3 +76,4 @@ writeInfo(x, gate, reverse)
 image_name <- paste(gate_name, ".png", sep="")
 plotGraph(image_name, y, x_axis, y_axis, nrow(y@exprs))
 quit("no", 0)
+

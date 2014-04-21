@@ -78,7 +78,7 @@ function ksfViews_loadFromLocation(force)
 	//invalidate current file information
 	ksfViews.currentFile = null;
 	ksfViews.currentFileName = null;
-	
+
 	var urlVals = ksfData.urlValues();
 	if ( urlVals !== null )
 	{
@@ -122,7 +122,6 @@ function ksfViews_loadView(urlVals)
 }
 ksfViews.loadView = ksfViews_loadView;
 
-
 /**
  * reloads the current view
  * \return None
@@ -133,7 +132,6 @@ function ksfViews_refreshAll()
 	ksfProc.loadView();
 }
 ksfViews.refreshAll = ksfViews_refreshAll;
-
 
 /**
  * sets up the default view (file preview/gating)

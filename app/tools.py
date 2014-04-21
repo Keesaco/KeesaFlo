@@ -34,7 +34,7 @@ def simple_gating(paramList, name):
 
 			newName = paramList[-1] + "-rectGate";
 			queue.gate_rectangle(paramList[-1], gatingRequest, newName, "1", "FSC-A", "SSC-A");
-			return generate_gating_feedback("success", "the rectangular gating was performed correctly", reverse('get_graph', args=[newName]))
+			return generate_gating_feedback("success", "the rectangular gating was performed correctly", newName)
 		else:
 			return generate_gating_feedback("fail", "notcorrect " + params + " length:" + str(len(paramList)) + " is not equal to 4", None)
 
@@ -44,7 +44,7 @@ def simple_gating(paramList, name):
 
 			newName = paramList[-1] + "-polyGate";
 			queue.gate_polygon(paramList[-1], gatingRequest, newName, "0", "FSC-A", "SSC-A");
-			return generate_gating_feedback("success", "the polygonal gating was performed correctly", reverse('get_graph', args=[newName]))
+			return generate_gating_feedback("success", "the polygonal gating was performed correctly", newName)
 		else:
 			return generate_gating_feedback("fail", "notcorrect " + params + " #pointCoordinates:" + str(len(paramList))-1 + " is not pair", None)
 
@@ -54,7 +54,7 @@ def simple_gating(paramList, name):
 
 			newName = paramList[-1] + "-ovalGate";
 			queue.gate_circle(paramList[-1], gatingRequest, newName, "0", "FSC-A", "SSC-A");
-			return generate_gating_feedback("success", "the oval gating was performed correctly", reverse('get_graph', args=[newName]))
+			return generate_gating_feedback("success", "the oval gating was performed correctly", newName)
 		else:
 			return generate_gating_feedback("fail", "notcorrect " + params + " #pointCoordinates:" + str(len(paramList)) + " is not even", None)
 		
@@ -71,7 +71,7 @@ def no_such_tool(paramList, name):
 
 	logging.error('The tool "'+ name +'" is unknown. The known tools are: {' + 
 		', '.join(list(AVAILABLE_TOOLS.keys())) + '}' )
-	return generate_gating_feedback("fail","The tool you selected is not reconized by the server", None)
+	return generate_gating_feedback("fail","The tool you selected is not reconized by the server", )
 
 
 ## TODO the url should be a redirection in the future
@@ -83,11 +83,13 @@ def no_such_tool(paramList, name):
 ## \return a dictionary with the status of the tool call
 ## \author mrudelle@keesaco.com of Keesaco
 ###########################################################################
-def generate_gating_feedback(status, message, newgraphurl):
+def generate_gating_feedback(status, message, ):
 	return {
 		'status': status,
 		'message': message,
-		'url': newgraphurl
+		'url': ,
+		
+	
 	}
 
 AVAILABLE_TOOLS = {

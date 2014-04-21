@@ -31,14 +31,14 @@ ksfTools.switchTool = function(event)
 	// TODO: Might be replaced by a reversed hash of TOOLS_LIST
 	var i = TOOLS_LIST.length - 1;
 	for (; i >= 0 && TOOLS_LIST[i].ELEMENT_ID !== ("#" + this.id) ; i--) {}
-    if (ksfTools.CurrentTool)
+	if (ksfTools.CurrentTool)
 	{
-        ksfTools.CurrentTool.resetTool();
-    }
-    ksfTools.CurrentTool = TOOLS_LIST[i];
-    ksfTools.CurrentTool.resetTool();
-    $(ksfTools.CurrentTool.ELEMENT_ID).addClass('active')
-    	.siblings('.active').removeClass('active');
+		ksfTools.CurrentTool.resetTool();
+	}
+	ksfTools.CurrentTool = TOOLS_LIST[i];
+	ksfTools.CurrentTool.resetTool();
+	$(ksfTools.CurrentTool.ELEMENT_ID).addClass('active')
+		.siblings('.active').removeClass('active');
 }
 
 /**

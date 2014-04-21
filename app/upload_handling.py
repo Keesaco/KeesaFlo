@@ -9,112 +9,135 @@
 from django.core.files.uploadhandler import FileUploadHandler
 from django.core.files.uploadedfile import UploadedFile
 import API.APIDatastore as ds
-import API.APIAnalysis as analy
 import API.APIQueue as queue
+import API.APIInstance as instances
 from os.path import splitext
+import API.APIBackground as background
 
 ## default upload bucket
 DEFAULT_BUCKET = '/fc-raw-data/'
 
 ## Custom upload handler class.
 class fcsUploadHandler(FileUploadHandler):
-    def __init__(self):
-        FileUploadHandler.__init__(self)
+	def __init__(self):
+		FileUploadHandler.__init__(self)
 
-    ###########################################################################
-    ## \brief Called when a new upload begins. Creates a file in the Datastore and opens it for writing.
-    ## \param field_name - string name of file <input> field
-    ## \param file_name - unicode filename provided by browser
-    ## \param content_type - MIME type provided by browser
-    ## \param content_length - length of the image provided by the browser (not always provided)
-    ## \param charset - character set provided by browser (not always provided)
-    ## \author rmurley@keesaco.com of Keesaco
-    ###########################################################################
-    def new_file(self, field_name, file_name, content_type, content_length, charset):
-        ## Remove extension from the file name.
-        base_name = splitext(file_name)[0]
-        self.name = base_name
-        ## Generate datastore path.
-        base_path = ds.generate_path(DEFAULT_BUCKET, None, base_name)
-        self.path = base_path
-        ## Check for conflicting names, and if so adjust names.
-        i = 1
-        while ds.check_exists(self.path, None):
-            self.path = base_path + '(' + str(i) + ')'
-            self.name = base_name + '(' + str(i) + ')'
-            i += 1
-        ## Setup file handle.
-        self.file_handle = ds.add_file(self.path, 'raw_data', 'w')
-        ## Setup uploaded file.
-        self.upload = fcsUploadedFile(self.path, self.name, content_type, charset)
-        return None
+	###########################################################################
+	## \brief Called when a new upload begins. Creates a file in the Datastore and opens it for writing.
+	## \param field_name - string name of file <input> field
+	## \param file_name - unicode filename provided by browser
+	## \param content_type - MIME type provided by browser
+	## \param content_length - length of the image provided by the browser (not always provided)
+	## \param charset - character set provided by browser (not always provided)
+	## \author rmurley@keesaco.com of Keesaco
+	###########################################################################
+	def new_file(self, field_name, file_name, content_type, content_length, charset):
+		## clean string for upload.
+		base_name = clean(file_name)
+		self.name = base_name
+		## Generate datastore path.
+		base_path = ds.generate_path(DEFAULT_BUCKET, None, base_name)
+		self.path = base_path
+		## Check for conflicting names, and if so adjust names.
+		i = 1
+		while ds.check_exists(self.path, None):
+			self.path = base_path + '(' + str(i) + ')'
+			self.name = base_name + '(' + str(i) + ')'
+			i += 1
+		## Setup file handle.
+		self.file_handle = ds.add_file(self.path, 'raw_data', 'w')
+		## Setup uploaded file.
+		self.upload = fcsUploadedFile(self.path, file_name, content_type, charset)
+		return None
 
-    ###########################################################################
-    ## \brief Called when the upload handler receives a 'chunk' of data. Writes this chunk to the file opened by new_file.
-    ## \param raw_data - byte string containing the uploaded chunk
-    ## \param start - position where the raw_data chunk begins
-    ## \author rmurley@keesaco.com of Keesaco
-    ###########################################################################
-    def receive_data_chunk(self, raw_data, start):
-        self.file_handle.write(raw_data)
-        return None
+	###########################################################################
+	## \brief Called when the upload handler receives a 'chunk' of data. Writes this chunk to the file opened by new_file.
+	## \param raw_data - byte string containing the uploaded chunk
+	## \param start - position where the raw_data chunk begins
+	## \author rmurley@keesaco.com of Keesaco
+	###########################################################################
+	def receive_data_chunk(self, raw_data, start):
+		self.file_handle.write(raw_data)
+		return None
 
-    ###########################################################################
-    ## \brief Called when a file has finished uploading. Closes the Datastore file and starts an analysis task.
-    ## \param file_size - size of the uploaded file
-    ## \author rmurley@keesaco.com of Keesaco
-    ###########################################################################
-    def file_complete(self, file_size):
-        self.file_handle.close()
-        self.upload.size = file_size
-        ## Start analysis.
-        #analy.add_analysis_task(self.name)
-        queue.visualise(self.name)
-        return self.upload
+	###########################################################################
+	## \brief Called when a file has finished uploading. Closes the Datastore file and starts an analysis task.
+	## \param file_size - size of the uploaded file
+	## \author rmurley@keesaco.com of Keesaco
+	###########################################################################
+	def file_complete(self, file_size):
+		self.file_handle.close()
+		self.upload.size = file_size
+		## Start analysis.
+		queue.visualise(self.name)
+		## Load balance instances in the background.
+		background.run(instances.balance)
+		return self.upload
 
 ## Custom uploaded file class.
 class fcsUploadedFile(UploadedFile):
-    def __init__(self, path, file_name, content_type, charset):
-        UploadedFile.__init__(self)
-        self.path = path
-        self.name = file_name
-        self.content_type = content_type
-        self.charset = charset
-        self.file_handle = None
-        self.mode = None
+	def __init__(self, path, file_name, content_type, charset):
+		UploadedFile.__init__(self)
+		self.path = path
+		self.name = file_name
+		self.content_type = content_type
+		self.charset = charset
+		self.file_handle = None
+		self.mode = None
 
-    ###########################################################################
-    ## \brief Open a datastore file.
-    ## \param mode - mode to open file in. If mode is none, opens in last used mode.
-    ## \author rmurley@keesaco.com of Keesaco
-    ###########################################################################
-    def open(self, mode = None):
-        if mode is not None:
-            self.mode = mode
-        self.file_handle = ds.open(self.path, self.mode)
-        return self.file_handle
+	###########################################################################
+	## \brief Open a datastore file.
+	## \param mode - mode to open file in. If mode is none, opens in last used mode.
+	## \author rmurley@keesaco.com of Keesaco
+	###########################################################################
+	def open(self, mode = None):
+		if mode is not None:
+			self.mode = mode
+		self.file_handle = ds.open(self.path, self.mode)
+		return self.file_handle
 
-    ###########################################################################
-    ## \brief Read from a datastore file.
-    ## \param num_bytes - number of bytes to read, if None read whole file
-    ## \todo Stub: needs implementing
-    ## \author rmurley@keesaco.com of Keesaco
-    ###########################################################################
-    def read(self, num_bytes = None):
-        pass
+	###########################################################################
+	## \brief Read from a datastore file.
+	## \param num_bytes - number of bytes to read, if None read whole file
+	## \todo Stub: needs implementing
+	## \author rmurley@keesaco.com of Keesaco
+	###########################################################################
+	def read(self, num_bytes = None):
+		pass
 
-    ###########################################################################
-    ## \brief Write to a datastore file.
-    ## \param content - content to write to datastore file
-    ## \todo Stub: needs implementing
-    ## \author rmurley@keesaco.com of Keesaco
-    ###########################################################################
-    def write(self, content):
-        pass
+	###########################################################################
+	## \brief Write to a datastore file.
+	## \param content - content to write to datastore file
+	## \todo Stub: needs implementing
+	## \author rmurley@keesaco.com of Keesaco
+	###########################################################################
+	def write(self, content):
+		pass
 
-    ###########################################################################
-    ## \brief Closes a datastore file.
-    ## \author rmurley@keesaco.com of Keesaco
-    ###########################################################################
-    def close(self):
-        ds.close(self.file_handle)
+	###########################################################################
+	## \brief Closes a datastore file.
+	## \author rmurley@keesaco.com of Keesaco
+	###########################################################################
+	def close(self):
+		ds.close(self.file_handle)
+
+###########################################################################
+## \brief Cleans a string to be upload safe. Strips extensions and removes leading dashes.
+## \param str - string to be cleaned
+## \author rmurley@keesaco.com of Keesaco
+###########################################################################
+def clean(str):
+	## Strip extension.
+	str = splitext(str)[0]
+	return strip_dash(str)
+
+###########################################################################
+## \brief Strips leading dashes from a string.
+## \param str - string to be stripped
+## \author rmurley@keesaco.com of Keesaco
+###########################################################################
+def strip_dash(str):
+	if str[0] == '-':
+		return clean(str[1:])
+	else:
+		return str

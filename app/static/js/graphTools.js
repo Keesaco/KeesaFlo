@@ -3,7 +3,6 @@
  * \brief JavaScript library to manage graph related tools
  * \author mrudelle@keesaco.com of Keesaco
  */
-
 /**
  * \package app.static.js.graphTools
  * \brief Provides methods for triggering tool event
@@ -16,6 +15,7 @@
  */
 function ksfGraphTools()
 {
+
 }
 
 FEEDBACK_SUCCESS = "alert-success";
@@ -23,6 +23,9 @@ FEEDBACK_INFO = "alert-info";
 FEEDBACK_WARING = "alert-warning";
 FEEDBACK_DANGER = "alert-danger";
 
+ANALYSIS_STATUS_URI = '/app/data/json/analysis_status/';
+FILE_VIEW_HASH		= '#!/preview/';
+GATING_URI		= "/app/gating/tools/";
 
 /**
  *	Milliseconds between requests for new graphs
@@ -106,7 +109,7 @@ ksfGraphTools.RectangularGating = {
 	
 	requestGating : function()
 	{
-		ksfGraphTools.sendGatingRequest('tool/gating/rectangular_gating,' + this.startx + "," + this.starty + "," + this.endx + "," + this.endy);
+		ksfGraphTools.sendGatingRequest('rectangular_gating', [this.startx, this.starty, this.endx, this.endy]);
 	}
 }
 
@@ -191,11 +194,10 @@ ksfGraphTools.PolygonGating = {
 		}
 		return Math.MAX;
 	},
-	
+
 	requestGating : function()
 	{
-		var URL = "tool/gating/polygon_gating," + this.xList.concat(this.yList).join(",");
-		ksfGraphTools.sendGatingRequest(URL);
+		ksfGraphTools.sendGatingRequest('polygon_gating', this.xList.concat(this.yList));
 	}
 }
 
@@ -243,7 +245,7 @@ ksfGraphTools.OvalGating = {
 		}
 		
 	},
-	
+
 	onGraphMouseMove : function(event)
 	{
 		var posX = event.pageX - $(GRAPH_ID).offset().left,
@@ -273,7 +275,7 @@ ksfGraphTools.OvalGating = {
 		ksfCanvas.clear();
 		ksfCanvas.enableBtn(REQUEST_GATING_BTN, false);
 	},
-	
+
 	requestGating : function()
 	{
 		var tx = this.centerx-this.pointx,
@@ -281,65 +283,136 @@ ksfGraphTools.OvalGating = {
 		var angle = ksfGraphTools.mesureAngle(tx, ty);
 		var p1x=this.centerx+Math.cos(angle-Math.PI/2)*this.r1,
 		p1y=this.centery+Math.sin(angle-Math.PI/2)*this.r1;
-		ksfGraphTools.sendGatingRequest("tool/gating/oval_gating," + this.centerx + "," + this.centery + "," + p1x + "," + p1y + "," + this.pointx + "," + this.pointy);
+		ksfGraphTools.sendGatingRequest('oval_gating',
+										[this.centerx, this.centery, p1x, p1y, this.pointx, this.pointy] );
 	}
 }
 
 /**
  * Perform a gating request and update the view correspondingly
- * \param gatingURL - [String] url of the gating command
+ * \param String toolName - name of tool to use for gate
+ * \param [Int] gatePoints - list of points which form the gate
+ * \param Object params - Object with other gating parameters - this is used to extend the gating request object before the gating request is sent
  * \author mrudelle@keesaco.com of Keesaco
- * \note This might be moved to views.js in the future
+ * \note This might be moved to views.js in the future //JPM - might it?
+ * \note deep-extend is not used for params
  */
-function ksfGraphTools_sendGatingRequest(gatingURL)
+function ksfGraphTools_sendGatingRequest(toolName, gatePoints, params)
 {
 	// allows to fetch the name correctly. In the future (final release) this should be replace by a json file fetched from the server containing all the file's data
 	
-	$("#filesize").remove();
-	var filename = $("#filename").text().trim();
+	var currentFile = $("#filename").text().trim();
+	
+	var reverseGate = $('#chk_reverse_gate').first().is(':checked');
 	
 	ksfTools.CurrentTool.resetTool();
 	ksfCanvas.toolText("Loading graph...");
 
-	ksfReq.fetch(   gatingURL + "," + filename, 
-					function(response)
-					{
-						ksfGraphTools.showFeedback(
-							response.status === "success" ? FEEDBACK_SUCCESS :
-							response.status === "fail" ? FEEDBACK_DANGER: FEEDBACK_INFO,
-							response.status, response.message);
-						ksfCanvas.toolText("");
-						$("#filename").text(filename);
-						ksfGraphTools.setGraphUrl(response.url);
-					},
-					function()
-					{
-						ksfGraphTools.showFeedback(FEEDBACK_DANGER, "fail", "The server failed to respond to the gating request");
-					} );
+	var gateReq = {
+		tool 		: toolName,
+		points 		: gatePoints,
+		filename	: currentFile,
+		reverse		: reverseGate
+	};
+
+	if (params)
+	{
+		$.extend(gateReq, params);
+	}
+
+	ksfReq.postJSON(GATING_URI, gateReq,
+			function(response)
+			{
+				var feedbackType;
+				switch (response.status)
+				{
+					case "success":
+						feedbackType = FEEDBACK_SUCCESS;
+						break;
+					
+					case "fail":
+						feedbackType = FEEDBACK_DANGER;
+						break;
+					
+					default:
+						feedbackType = FEEDBACK_INFO;
+				}
+					
+				ksfGraphTools.showFeedback(feedbackType, response.status, response.message);
+					
+				ksfCanvas.toolText("");
+				ksfGraphTools.setGraphUrl(response.url, response.graphName);
+			},
+			function(jqxhr, textStatus, error)
+			{
+				ksfGraphTools.showFeedback(FEEDBACK_DANGER, textStatus, error);
+			} );
 }
 ksfGraphTools.sendGatingRequest = ksfGraphTools_sendGatingRequest;
 
 /**
  * Change properly the graph image
  * \param url - [String] url of the new graph
+ * \param String newFilename - file name of new gate
+ * \param Int numRetries - the number of times to check the status of the gate before giving up. If undefined defaults to GRAPH_LOAD_MAX_ATTEMPTS.
+ * \author jmccrea@keesaco.com of Keesaco
  * \author mrudelle@keesaco.com of Keesaco
  * \note If the link throw an error it will enter a loop to reload the image
  */
-function ksfGraphTools_setGraphUrl(url)
+function ksfGraphTools_setGraphUrl(url, newFilename, numRetries)
 {
 	// we let 20 sec for the graph to appear
-	ksfGraphTools.timeoutCounter = GRAPH_LOAD_MAX_ATTEMPTS;
-	$("#graph-img").off('error');
-	$("#graph-img").on('error', function()
+	ksfGraphTools.timeoutCounter = typeof numRetries == 'undefined' ? GRAPH_LOAD_MAX_ATTEMPTS : numRetries;
+
+	var gate_req = { filename : newFilename };
+	ksfCanvas.setLoading(true);
+	
+	var gate_status = ksfReq.postJSON(ANALYSIS_STATUS_URI, gate_req,
+		function(response)
 		{
-			ksfCanvas.setLoading(true);
-			setTimeout(ksfGraphTools.reloadImage, GRAPH_POLL_INTERVAL);
-		} );
-	$("#graph-img").on('load', function()
+			if (response.error)
+			{
+				ksfCanvas.setLoading(false);
+				ksfGraphTools.showFeedback(FEEDBACK_DANGER, "Error", response.error)
+			}
+			else if (response.done)
+			{
+				window.location.href = ksfData.baseUrl() + FILE_VIEW_HASH + newFilename;
+			}
+			else
+			{
+				//The server may have told the client to give up before finishing its polling cycle
+				if (response.giveup)
+				{
+					ksfCanvas.setLoading(false);
+					ksfGraphTools.showFeedback(FEEDBACK_DANGER, "Failed", "Something went wrong; the server cannot fulfil the gating request.")
+				}
+				else
+				{
+					if (ksfGraphTools.timeoutCounter != 0)
+					{
+						setTimeout(
+							function()
+							{
+								   ksfGraphTools_setGraphUrl(url, newFilename, ksfGraphTools.timeoutCounter-1);
+							},
+							//set adjusted timeout if the server has told the client to back off
+							GRAPH_POLL_INTERVAL + (response.backoff ? response.backoff : 0) );
+					}
+					else
+					{
+						ksfCanvas.setLoading(false);
+						ksfGraphTools.showFeedback(FEEDBACK_DANGER, "Timeout", "Graph loading failed, try refreshing the page")
+					}
+				}
+			}
+		},
+		//on error getting gating status
+		function(jqxhr, textStatus, error)
 		{
-			ksfCanvas.setLoading(false);
-		});
-	$("#graph-img").attr("src", url);
+			ksfGraphTools.showFeedback(FEEDBACK_DANGER, textStatus, error)
+		}
+	);
 }
 ksfGraphTools.setGraphUrl = ksfGraphTools_setGraphUrl;
 

@@ -2,12 +2,11 @@
 ## \file app/Analysis/ComputeEngine/ComputeEngineConfig.py
 ## \brief Contains constants which change how instantiations are made on compute engine.
 ## \author swhitehouse@keesaco.com of Keesaco
+## \author rmurley@keesaco.com of Keesaco
 ###########################################################################
 ## \package app.Analysis.ComputeEngine.ComputeEngineConfig
 ## \brief Provides constants to administrate instantiations on compute engine.
 ###########################################################################
-
-from Analysis import AdminConfig
 
 ## This avoids naming confusion between separate instances running in the same project by tagging them with a unique, lower-case string.
 UNIQUE_NAME = 'keesaflo'
@@ -16,10 +15,14 @@ UNIQUE_NAME = 'keesaflo'
 PROJECT_ID = 'keesaco-spe'
 ## The default zone to be used for Google Compute Engine.
 DEFAULT_ZONE = 'europe-west1-a'
+## The minimum number of instances which can exist simultaneously.
+MIN_INSTANCES = 1
 ## The maximum number of instances which can exist simultaneously.
-MAX_INSTANCES = AdminConfig.MAX_TOTAL_TASKS
-## The amount of redundancy on compute engine created while scaling (in lots of 10 percent)
-CE_SCALING = 2
+MAX_INSTANCES = 5
+## The desired ratio of tasks to instances.
+CE_SCALING = 5
+## The slack percentage in the scaling ratio.
+CE_SLACK = 0.3
 
 ## The Compute Engine version.
 API_VERSION = 'v1'
@@ -44,7 +47,7 @@ DEFAULT_MACHINE_TYPE = 'f1-micro'
 DEFAULT_NETWORK = 'default'
 ## The default service email.
 DEFAULT_SERVICE_EMAIL = 'default'
-## Tha control scopes of instances.
+## The control scopes of instances.
 DEFAULT_SCOPES = [	'https://www.googleapis.com/auth/devstorage.full_control',
 					'https://www.googleapis.com/auth/compute',
 					'https://www.googleapis.com/auth/taskqueue'	]
@@ -65,8 +68,13 @@ MACHINE_TYPE_URL = '%s/machineTypes/%s' % (ZONE_URL, DEFAULT_MACHINE_TYPE)
 ## The URL of the network to use.
 NETWORK_URL = '%s/global/networks/%s' % (PROJECT_URL, DEFAULT_NETWORK)
 ## The URL of the Assets folder.
-ASSETS_URL = 'Analysis/ComputeEngine/Assets'
+ASSETS_URL = 'ComputeEngine'
 ## The URL of the startup.sh script.
 STARTUP_URL = '%s/%s' % (ASSETS_URL, STARTUP_SCRIPT)
 ## The URL of the private key.
 PRIVATE_KEY_URL = '%s/%s' % (ASSETS_URL, PRIVATE_KEY)
+
+## The URL of the instance scripts.
+SCRIPT_URL = 'keesaco_gce'
+## The URL of the compute engine scripts.
+LOG_URL = 'keesaco_log'

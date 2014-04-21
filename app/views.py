@@ -20,9 +20,12 @@ import upload_handling
 import API.APIDatastore as ds
 import API.PALUsers as auth
 import API.APIQueue as queue
+import API.APIInstance as instances
+import API.APIBackground as background
 import API.APIPermissions as ps
 import json
-import tools
+import re
+import gating.tools as gt
 
 DATA_BUCKET = '/fc-raw-data'
 GRAPH_BUCKET = '/fc-vis-data'
@@ -96,7 +99,7 @@ def app(request):
 ###########################################################################
 def file_list(request):
 	lst = ds.list(DATA_BUCKET)
-	
+
 	file_list = []
 	
 	for temp_file in lst:
@@ -188,6 +191,7 @@ def file_list_json(request):
 ## \todo 	Review permissions in this section - correct checking here is
 ##			vital as edit actions are potentially destructive.
 ## \todo	Refactor bucket names for deletion
+## \todo	Massive refactor is planned
 ## \return 	JSON response which indicates whether the requested action(s)
 ##			were performed successfully.
 ###########################################################################
@@ -243,7 +247,7 @@ def file_list_edit(request):
 		
 		elif action == 'rename':
 			if 'newname' not in a:
-				res_fragment.update( { 'success' : false, 'error' : 'New name not specified' } )
+				res_fragment.update( { 'success' : False, 'error' : 'New name not specified' } )
 			else:
 				file_entry = ps.get_file_by_name('/fc-raw-data/' + filename)
 				if file_entry is None:
@@ -264,12 +268,33 @@ def file_list_edit(request):
 				if fp_entry is None:
 					res_fragment.update( { 'success' : False, 'error' : 'Permissions entry not found' } )
 				else:
-					fp_entry.starred = (action == 'star')
-					if ps.modify_file_permissions_by_key(fp_entry.key, fp_entry):
+					if ps.modify_file_permissions_by_key(fp_entry.key, new_starred = (action == 'star')):
 						res_fragment.update( { 'success' : True } )
 					else:
 						res_fragment.update( { 'success' : False, 'error' : 'Could not update file' } )
-		
+
+		elif action == 'recolour':
+			if 'newcolour' not in a:
+				res_fragment.update( { 'success' : False, 'error' : 'New colour not specified' } )
+			else:
+				colour = a['newcolour']
+				chk_string = re.compile("^[A-Fa-f0-9]{6}$")
+				if (chk_string.match(colour)):
+					file_entry = ps.get_file_by_name('/fc-raw-data/' + filename)
+					if file_entry is None:
+						res_fragment.update( { 'success' : False, 'error' : 'File does not exist.' } )
+					else:
+						fp_entry = ps.get_user_file_permissions(file_entry.key, user_key)
+						if fp_entry is None:
+							res_fragment.update( { 'success' : False, 'error' : 'Permissions entry not found' } )
+						else:
+							if ps.modify_file_permissions_by_key(fp_entry.key, new_colour = colour):
+								res_fragment.update( { 'success' : True } )
+							else:
+								res_fragment.update( { 'success' : False, 'error' : 'Could not update file' } )
+				else:
+					res_fragment.update( { 'success' : False, 'error' : 'New colour invalid' } )
+
 		else:
 			res_fragment.update( { 'success' : False, 'error' : 'Action not recognised' } )
 		
@@ -278,7 +303,6 @@ def file_list_edit(request):
 	
 	
 	return HttpResponse(json.dumps(res), content_type="application/json")
-
 
 ###########################################################################
 ## \brief Is called when the pagelet containing the main content of the page is requested.
@@ -296,7 +320,6 @@ def file_preview(request, file = None):
 		authed_user_nick = authed_user.nickname()
 	## Graph visualisation.
 	file_name_without_extension = file
-
 	# Replaced by a spinning canvas on the clientside
 	# if not ds.check_exists(GRAPH_BUCKET + '/' + file_name_without_extension + '.png', None):
 	# 	file_name_without_extension = None
@@ -331,7 +354,6 @@ def graph_preview(request, file = None):
 
 	return render(request, 'graph_preview.html',
 		{'current_file' : file_info, 'file_name_without_extension' : file})
-
 
 ###########################################################################
 ## \brief Is called when the pagelet containing the app's main panel is requested.
@@ -384,7 +406,7 @@ def get_info(request, infofile):
 ###########################################################################
 ## \brief Return a response containing the file
 ## \param path - path to the file to be sent to the client
-## \param type - type of the file sent (it's mime type)
+## \param type - type of the file sent (its mime type)
 ## \return an HttpResponse ccontaining the file to be sent
 ###########################################################################
 def fetch_file(path, type):
@@ -410,15 +432,98 @@ def settings(request):
 ###########################################################################
 ## \brief Is called by a tool from the client side
 ## \param request - Django variable defining the request that triggered the generation of this page
-## \param name - name of the tool that triggered this request
-## \param params - Paramesters that comes with the tool's call
 ## \return a JSON object in a httpresponse, containing the status of the gating, a short message and the link to the newly created graph
+## \todo Tidy up validation
 ###########################################################################
-def tool(request, name, params):
-	paramList = params.split(',')
+def tool(request):
+	authed_user = auth.get_current_user()
+	if authed_user is None:
+		return HttpResponse(simplejson.dumps(gt.generate_gating_feedback('fail', 'Unauthenticated request')), content_type="application/json")
 
-	tool = tools.AVAILABLE_TOOLS.get(name, tools.no_such_tool)
-	tool_response = tool(paramList, name)
 
-	jsonResponse = simplejson.dumps(tool_response);
-	return HttpResponse(jsonResponse, content_type="application/json")
+	try:
+		gate_info = json.loads(request.raw_post_data)
+	except ValueError:
+		return HttpResponse(simplejson.dumps(gt.generate_gating_feedback('fail', 'Invalid request payload')), content_type="application/json")
+
+
+	## \todo This should probably iterate over list
+	if (('points' 	not in gate_info) or
+		('tool'		not in gate_info) or
+		('filename' not in gate_info)):
+
+		return HttpResponse(simplejson.dumps(gt.generate_gating_feedback('fail', 'Incomplete gate parameters')), content_type="application/json")
+
+	if (gate_info['points']):
+		if not isinstance(gate_info['points'], list):
+			return HttpResponse(simplejson.dumps(gt.generate_gating_feedback('fail', 'Invalid points list')), content_type="application/json")
+	else:
+		# Normalise false value to None
+		gateInfo.update( { 'points' : None } )
+
+
+	tool = gt.AVAILABLE_TOOLS.get(gate_info['tool'], gt.no_such_tool)
+	## first two arguments passed for compatibility
+	tool_response = tool(gate_info)
+
+	## Load balance instances in the background.
+	background.run(instances.balance)
+
+	json_response = simplejson.dumps(tool_response);
+	return HttpResponse(json_response, content_type="application/json")
+
+###########################################################################
+## \brief	Returns a JSON object representing the analysis status of a
+##			given file.
+## \param	request - Django request which resulted in the call
+## \return	HttpResponse - response to the request as JSON
+## \author	jmccrea@kessaco.com of Keesaco
+## \todo	Consider permissions update after CE/Permissions integration
+## \todo	Refactor return value creation
+###########################################################################
+def analysis_status_json(request):
+	
+	response_part = {
+		'backoff' 	: 0,		#tells the client to back off for a given amount of time (milliseconds) (This is added to the client's constant poll interval)
+		'giveup'	: True,		#True instructs the client to stop polling - useful for situations such as unauthed requests where polling will never result in the user being shown a graph
+		'done'		: False		#True indicates that the analysis has finished and that the user can be redirected to the new image
+	}
+	
+	authed_user = auth.get_current_user()
+	if authed_user is None:
+		response_part.update( { 'error' : 'Unauthenticated request.' } )
+		return HttpResponse(json.dumps(response_part), content_type="application/json")
+		
+	user_key = ps.get_user_key_by_id(authed_user.user_id())
+		
+	try:
+		file_req = json.loads(request.raw_post_data)
+	except ValueError:
+		response_part.update({'error' : 'Invalid request payload.'})
+		return HttpResponse(json.dumps(response_part), content_type="application/json")
+
+	if 'filename' not in file_req:
+		response_part.update({'error' : 'Incomplete request.'})
+		return HttpResponse(json.dumps(response_part), content_type="application/json")
+
+	#	This is roughly what permissions checking should probably look like once all files have permissions entries
+	#		Alternatively, a check_exists call may be sufficient if the permissions entry is created before gating is requested,
+	#		this will depend on the CE/Permissions integration method
+	#file_entry = ps.get_file_by_name('/fc-raw-data/' + filename + '.fcs')
+	#if file_entry is None:
+	#	return HttpResponse( { 'error' : 'File or gate not recognised.', 'done' : False } ), content_type="application/json")
+	#else:
+	#	fp_entry = ps.get_user_file_permissions(file_entry.key, user_key)
+	#	if fp_entry is None:
+	#		return HttpResponse(json.dumps({update( { 'error' : 'Permission denied.', 'done' : False } ), content_type="application/json")
+
+
+	is_done =  ds.check_exists(GRAPH_BUCKET + '/' + file_req['filename'] + '.png', None)
+
+	#Prevent redirecting before the view is ready
+	is_done &= ds.check_exists(DATA_BUCKET  + '/' + file_req['filename'] 		 , None)
+
+	response_part.update( { 'done' : is_done, 'giveup' : False } )
+	return HttpResponse(json.dumps(response_part), content_type="application/json")
+
+

@@ -58,7 +58,6 @@ function ksfData_copyPageletInto(URI, targetID, executeOnLoading)
 }
 ksfData.copyPageletInto = ksfData_copyPageletInto;
 
-
 /**
  * gets location after hashbang and splits by slashes
  * \treturn String[] An array of values on the RHS of the hashbang in the URL, values are split by '/'
@@ -77,7 +76,6 @@ function ksfData_urlValues()
 	}
 }
 ksfData.urlValues = ksfData_urlValues;
-
 
 /**
  * gets the part of the URL sent to the server (app base URL)
