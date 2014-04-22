@@ -147,8 +147,8 @@ def file_list_json(request):
 			if user_permissions is not None:
 				list_entry.update({ 'permissions' 	: 'yes',
 									'friendlyName'	: file_entry.friendly_name,
-								  	'colour'		: user_permissions.colour,
-								  	'starred'		: user_permissions.starred
+									'colour'		: user_permissions.colour,
+									'starred'		: user_permissions.starred
 								} )
 							  
 			
@@ -493,9 +493,9 @@ def analysis_status_json(request):
 	if authed_user is None:
 		response_part.update( { 'error' : 'Unauthenticated request.' } )
 		return HttpResponse(json.dumps(response_part), content_type="application/json")
-		
+
 	user_key = ps.get_user_key_by_id(authed_user.user_id())
-		
+
 	try:
 		file_req = json.loads(request.raw_post_data)
 	except ValueError:
@@ -509,13 +509,15 @@ def analysis_status_json(request):
 	#	This is roughly what permissions checking should probably look like once all files have permissions entries
 	#		Alternatively, a check_exists call may be sufficient if the permissions entry is created before gating is requested,
 	#		this will depend on the CE/Permissions integration method
-	#file_entry = ps.get_file_by_name('/fc-raw-data/' + filename + '.fcs')
-	#if file_entry is None:
-	#	return HttpResponse( { 'error' : 'File or gate not recognised.', 'done' : False } ), content_type="application/json")
-	#else:
-	#	fp_entry = ps.get_user_file_permissions(file_entry.key, user_key)
-	#	if fp_entry is None:
-	#		return HttpResponse(json.dumps({update( { 'error' : 'Permission denied.', 'done' : False } ), content_type="application/json")
+	file_entry = ps.get_file_by_name(DATA_BUCKET + '/' + filename + '.fcs')
+	if file_entry is None:
+		response_part.update( { 'error' : 'File or gate not recognised.' } )
+		return HttpResponse(json.dumps(response_part), content_type="application/json")
+	else:
+		fp_entry = ps.get_user_file_permissions(file_entry.key, user_key)
+		if fp_entry is None:
+			response_part.update( { 'error' : 'Permission denied.' } )
+			return HttpResponse(json.dumps(response_part), content_type="application/json")
 
 
 	is_done =  ds.check_exists(GRAPH_BUCKET + '/' + file_req['filename'] + '.png', None)
