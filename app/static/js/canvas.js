@@ -118,35 +118,24 @@ function ksfCanvas_drawOval(cx, cy, r1, p2x, p2y)
 	var r2, angle, tx, ty;
 	//TODO pass alpha as an atribute
 	var alpha = 1;
-	if (p2x !== null && p2y !== null)
-	{
-		tx=cx-p2x;
-		ty=cy-p2y;
-    	r2 = Math.sqrt(Math.pow(tx,2)+Math.pow(ty,2));
-        angle = ksfGraphTools.mesureAngle(tx, ty);
-	}
-	else
-	{
-		r2 = r1;
-		angle = 0;
-	}
-	
+
+	tx=cx-p2x;
+	ty=cy-p2y;
+	r2 = Math.sqrt(Math.pow(tx,2)+Math.pow(ty,2));
+	angle = ksfGraphTools.mesureAngle(tx, ty);
+
 	context.beginPath();
 	context.fillStyle = "rgba(255, 0, 0, "+(alpha/2)+")";
 	context.arc(cx, cy, 5, 0, Math.PI*2);
-	context.closePath();
 	context.arc(p2x, p2y, 5, 0, Math.PI*2);
 	context.closePath();
-	if (p2x !== null && p2y !== null)
-	{
-		var p1x=cx+Math.cos(angle-Math.PI/2)*r1,
-		p1y=cy+Math.sin(angle-Math.PI/2)*r1;
-		context.arc(p1x, p1y, 5, 0, Math.PI*2);
-		context.closePath();
-	}
+
+	var p1x=cx+Math.cos(angle-Math.PI/2)*r1,
+	p1y=cy+Math.sin(angle-Math.PI/2)*r1;
+	context.arc(p1x, p1y, 5, 0, Math.PI*2);
+	context.closePath();
+
 	context.fill();
-	
-	
 	context.save();
 	
 	context.beginPath();
@@ -160,6 +149,28 @@ function ksfCanvas_drawOval(cx, cy, r1, p2x, p2y)
 }
 
 ksfCanvas.drawOval = ksfCanvas_drawOval;
+
+function ksfCanvas_drawCircle(cx, cy, px, py)
+{
+	this.clear();
+	var r;
+	alpha = 1;
+	context.beginPath();
+	context.fillStyle = "rgba(255, 0, 0, "+(alpha/2)+")";
+	context.arc(cx, cy, 5, 0, Math.PI*2);
+	context.arc(px, py, 5, 0, Math.PI*2);
+	context.closePath();
+	context.fill();
+	context.save();
+	r = Math.sqrt(Math.pow(px-cx,2)+Math.pow(py-cy,2));
+	context.beginPath();
+	context.arc(cx, cy, r, 0, Math.PI*2);
+	context.closePath();
+	context.restore();
+	context.stroke();
+}
+
+ksfCanvas.drawCircle = ksfCanvas_drawCircle;
 
 /**
  * Set the text shown over the graph

@@ -257,7 +257,7 @@ ksfGraphTools.OvalGating = {
 			if (this.r1 === null)
 			{
 				var r = Math.sqrt(Math.pow(this.centerx-posX,2)+Math.pow(this.centery-posY,2));
-				ksfCanvas.drawOval(this.centerx, this.centery, r, null, null);
+				ksfCanvas.drawCircle(this.centerx, this.centery, posX, posY);
 			}
 			else if (this.pointx === null || this.pointy === null)
 			{
