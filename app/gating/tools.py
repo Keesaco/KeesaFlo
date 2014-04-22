@@ -14,6 +14,7 @@ import API.APILogging as logging
 ## \author mrudelle@keesaco.com of Keesaco
 ## \author hdoughty@keesaco.com of Keesaco
 ## \todo Does this not want to be multiple tools?
+## \todo Make quadrant and normal gating data gating not simple gating
 ###########################################################################
 def simple_gating(gate_params):
 	points = gate_params['points']
@@ -85,6 +86,19 @@ def simple_gating(gate_params):
 		else:
 			return generate_gating_feedback("fail", "notcorrect, wrong number of arguments")
 
+	elif (gate_params['tool'] == 'kmeans_gating') :
+		if len(points) == 1 :
+			clusters = ""
+			number_gates = points[0]
+			for i in range(1, number_gates):
+				clusters = clusters + gate_params['filename'] + "-cluster" + str(i) + " "
+			clusters = clusters + gate_params['filename'] + "-cluster" + str(i+1)
+			new_name = clusters[0:clusters.find(" ")]
+			queue.gate_kmeans(gate_params['filename'], clusters, str(number_gates), "FSC-A", "SSC-A");
+			return generate_gating_feedback("success", "the kmeans gate was performed correctly", new_name)
+		else:
+			return generate_gating_feedback("fail", "notcorrect, wrong number of arguments")
+
 	else :
 		return generate_gating_feedback("fail", "The gate " + gate_params['tool'] + " is not known")
 
@@ -124,5 +138,6 @@ AVAILABLE_TOOLS = {
 	'rectangular_gating'	: simple_gating,
 	'polygon_gating'		: simple_gating,
 	'normal_gating'			: simple_gating,
-	'quadrant_gating'		: simple_gating
+	'quadrant_gating'		: simple_gating,
+	'kmeans_gating'			: simple_gating
 }

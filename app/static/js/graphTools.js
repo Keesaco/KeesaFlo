@@ -315,6 +315,32 @@ ksfGraphTools.NormalGating = {
 	}
 }
 
+//Sends a request for kmeans gating
+ksfGraphTools.KmeansGating = {
+	no_clusters : null,
+
+	ELEMENT_ID : "#tool_kmeans_gating",
+
+	onGraphClick : function(event)
+	{
+	},
+
+	onGraphMouseMove : function(event)
+	{
+	},
+
+	resetTool : function()
+	{
+		ksfCanvas.enableBtn(REQUEST_GATING_BTN, true);
+		this.no_clusters = 3;
+	},
+
+	requestGating : function()
+	{
+		ksfGraphTools.sendGatingRequest('kmeans_gating', [this.no_clusters]);
+	}
+}
+
 //Sends request for quadrant gating and draws cross displaying segmentation
 ksfGraphTools.QuadrantGating = {
 	centre_x : null,
