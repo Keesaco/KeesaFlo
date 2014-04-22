@@ -1,5 +1,5 @@
 {% if current_file %}
-	{% if friendly_name %}
+	{% if file_info %}
 	<div  class="well app-well">
 		<div id="flow-graph-container">
 			<img id="graph-img" src="{% url get_graph name %}">
@@ -11,7 +11,7 @@
 		</div>
 	</div>	
 	<div class="well app-well">
-		<h3 id="filename">{{ friendly_name }}<span id="filesize" class="label label-default">{{ current_file.st_size|filesizeformat }}</span></h3>
+		<h3 id="filename">{{ file_info.friendly_name }}<span id="filesize" class="label label-default">{{ current_file.st_size|filesizeformat }}</span></h3>
 		<!--<div id="gating-stats">
 			<span>Loading...</span>
 		</div>-->

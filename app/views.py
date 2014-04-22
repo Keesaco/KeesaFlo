@@ -335,7 +335,7 @@ def file_preview(request, file = None):
 	return render(request, 'file_preview.html', {'current_file' : current_file,
 												 'name' : file,
 												 'authed_user_nick': authed_user_nick,
-												 'friendly_name' : file_info.friendly_name})
+												 'file_info' : file_info})
 
 ###########################################################################
 ## \brief 	view for graph preview pagelet
@@ -364,6 +364,7 @@ def graph_preview(request, file = None):
 ## \note only the main panel is generated here, see app(request) for fetching the page's skeleton
 ## \return the main panel pagelet
 ###########################################################################
+'''
 def file_page(request, file=None):
 	lst = ds.list('/fc-raw-data')
 	file_info = None
@@ -372,6 +373,7 @@ def file_page(request, file=None):
 		if temp_file.filename == file:
 			file_info = temp_file;
 	return render(request, 'file_preview.html', {'current_file' : file_info, 'authed_user_nick': authed_user_nick, 'file_name_without_extension' : file_name_without_extension})
+'''
 
 def pagenav(request):
 	return render(request, 'pagenav.html')
@@ -422,11 +424,9 @@ def fetch_file(path, type, friendly):
 		response = HttpResponse(file, content_type=type)
 		# Get filename.
 		if friendly:
-			name = ps.get_file_by_name(path).friendly_name
-		else:
-			name = path.rpartition('/')[2]
+			path = path.rpartition('/')[0] + '/' + ps.get_file_by_name(path).friendly_name
 		# Construct and send response
-		response['Content-Disposition'] = 'attachment; filename="' + name + '"'
+		response['Content-Disposition'] = 'attachment; filename="' + path + '"'
 		return response
 	else:
 		return HttpResponseNotFound('<h1>404 : ' + path + ' not found</h1>')
