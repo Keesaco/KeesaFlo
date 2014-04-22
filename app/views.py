@@ -319,20 +319,23 @@ def file_preview(request, file = None):
 	else:
 		authed_user_nick = authed_user.nickname()
 	## Graph visualisation.
-	file_name_without_extension = file
 	# Replaced by a spinning canvas on the clientside
 	# if not ds.check_exists(GRAPH_BUCKET + '/' + file_name_without_extension + '.png', None):
 	# 	file_name_without_extension = None
 
 	#TODO: Might need to be simplified or moved to a function in fileinfo
 	# TODO the folowing should be replaced by a method in the APIDatastore
+	file_info = ps.get_file_by_name(DATA_BUCKET + '/' + file)
 	lst = ds.list(DATA_BUCKET)
-	file_info = None
+	current_file = None
 	for temp_file in lst:
 		temp_file.filename = temp_file.filename.rpartition('/')[2]
 		if temp_file.filename == file:
-			file_info = temp_file;
-	return render(request, 'file_preview.html', {'current_file' : file_info, 'authed_user_nick': authed_user_nick, 'file_name_without_extension' : file_name_without_extension})
+			current_file = temp_file;
+	return render(request, 'file_preview.html', {'current_file' : current_file,
+												 'name' : file,
+												 'authed_user_nick': authed_user_nick,
+												 'friendly_name' : file_info.friendly_name})
 
 ###########################################################################
 ## \brief 	view for graph preview pagelet

@@ -1,8 +1,8 @@
 {% if current_file %}
-	{% if file_name_without_extension %}
+	{% if friendly_name %}
 	<div  class="well app-well">
 		<div id="flow-graph-container">
-			<img id="graph-img" src="{% url get_graph file_name_without_extension %}">
+			<img id="graph-img" src="{% url get_graph name %}">
 			<div class="over-graph">
 				<p id="tool-popover-title" class="greybox">Tool</p>
 			</div>
@@ -11,7 +11,7 @@
 		</div>
 	</div>	
 	<div class="well app-well">
-		<h3 id="filename">{{ current_file.filename }}<span id="filesize" class="label label-default">{{ current_file.st_size|filesizeformat }}</span></h3>
+		<h3 id="filename">{{ friendly_name }}<span id="filesize" class="label label-default">{{ current_file.st_size|filesizeformat }}</span></h3>
 		<!--<div id="gating-stats">
 			<span>Loading...</span>
 		</div>-->
