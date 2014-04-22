@@ -39,8 +39,7 @@ def open(	file_name,
 		return None
 	else:
 		return file_handle
-	
-	
+
 ###########################################################################
 ## \brief Deletes a resource
 ## \param file_name - name of resource to delete
@@ -58,8 +57,6 @@ def delete(	file_name,
 	else:
 		return True
 
-		
-		
 ###########################################################################
 ## \brief Transfers the data of a google provided GCSFileStat object into a FileStat object
 ## \param gcs_file_stat - the GCSFileStat object to transfer data from
@@ -75,7 +72,7 @@ def __gcs_file_stat_conversion__( gcs_file_stat ):
 							gcs_file_stat.metadata,
 							gcs_file_stat.is_dir)
 	return file_stat
-	
+
 ###########################################################################
 ## \brief Gets information about a specified resource
 ## \param file_name - name of resource to get information about
@@ -96,7 +93,7 @@ def stat(	file_name,
 	else:
 		file_stat = __gcs_file_stat_conversion__( gcs_stat )
 		return file_stat
-	
+
 ###########################################################################
 ## \brief Lists the contents of a storage bucket
 ## \param path - path of bucket to list (string)

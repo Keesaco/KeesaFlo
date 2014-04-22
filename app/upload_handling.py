@@ -11,8 +11,8 @@ from django.core.files.uploadedfile import UploadedFile
 import API.APIDatastore as ds
 import API.APIQueue as queue
 import API.APIInstance as instances
-from os.path import splitext
 import API.APIBackground as background
+from uuid import uuid1
 
 ## default upload bucket
 DEFAULT_BUCKET = '/fc-raw-data/'
@@ -32,31 +32,26 @@ class fcsUploadHandler(FileUploadHandler):
 	## \author rmurley@keesaco.com of Keesaco
 	###########################################################################
 	def new_file(self, field_name, file_name, content_type, content_length, charset):
-		## clean string for upload.
-		base_name = clean(file_name)
-		self.name = base_name
-		## Generate datastore path.
-		base_path = ds.generate_path(DEFAULT_BUCKET, None, base_name)
-		self.path = base_path
-		## Check for conflicting names, and if so adjust names.
-		i = 1
-		while ds.check_exists(self.path, None):
-			self.path = base_path + '(' + str(i) + ')'
-			self.name = base_name + '(' + str(i) + ')'
-			i += 1
+		## Generate unique datastore path, ensuring uniqueness.
+		while True:
+			self.name = str(uuid1())
+			path = ds.generate_path(DEFAULT_BUCKET, None, self.name)
+			if not ds.check_exists(path, None):
+				break
 		## Setup file handle.
-		self.file_handle = ds.add_file(self.path, 'raw_data', 'w')
+		self.file_handle = ds.add_file(path, 'raw_data', 'w')
 		## Setup uploaded file.
-		self.upload = fcsUploadedFile(self.path, file_name, content_type, charset)
+		self.upload = fcsUploadedFile(path, self.name, content_type, charset)
 		return None
 
 	###########################################################################
-	## \brief Called when the upload handler receives a 'chunk' of data. Writes this chunk to the file opened by new_file.
+	## \brief Called when the upload handler receives a 'chunk' of data. Writes this chunk to the file opened by new_file and updates md5 hash.
 	## \param raw_data - byte string containing the uploaded chunk
 	## \param start - position where the raw_data chunk begins
 	## \author rmurley@keesaco.com of Keesaco
 	###########################################################################
 	def receive_data_chunk(self, raw_data, start):
+		## Write chunk to datastore.
 		self.file_handle.write(raw_data)
 		return None
 
@@ -120,24 +115,3 @@ class fcsUploadedFile(UploadedFile):
 	###########################################################################
 	def close(self):
 		ds.close(self.file_handle)
-
-###########################################################################
-## \brief Cleans a string to be upload safe. Strips extensions and removes leading dashes.
-## \param str - string to be cleaned
-## \author rmurley@keesaco.com of Keesaco
-###########################################################################
-def clean(str):
-	## Strip extension.
-	str = splitext(str)[0]
-	return strip_dash(str)
-
-###########################################################################
-## \brief Strips leading dashes from a string.
-## \param str - string to be stripped
-## \author rmurley@keesaco.com of Keesaco
-###########################################################################
-def strip_dash(str):
-	if str[0] == '-':
-		return clean(str[1:])
-	else:
-		return str
