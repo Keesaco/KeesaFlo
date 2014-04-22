@@ -504,7 +504,7 @@ def get_user_permissions_list(user_key):
 		query = FilePermissions.query(FilePermissions.user_key == user_key)
 		return query.iter()
 	else:
-		return False
+		return None
 
 
 ###########################################################################

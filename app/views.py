@@ -124,7 +124,7 @@ def file_list(request):
 ## \return the list of files pagelet
 ###########################################################################
 def file_list_json(request):
-	lst = ds.list(DATA_BUCKET)
+	
 	
 	authed_user = auth.get_current_user()
 	if authed_user is None:
@@ -137,32 +137,32 @@ def file_list_json(request):
 
 	# 'your files'
 	file_list = []
-	
+
+	lst = ps.get_user_permissions_list(user_key)
 	temp_group = []
-	for temp_file in lst:
-		list_entry = {}
-		file_entry = ps.get_file_by_name(temp_file.filename)
-		if file_entry is not None:
-			user_permissions = ps.get_user_file_permissions(file_entry.key, user_key)
-			if user_permissions is not None:
+	if lst is not None:
+		for perm in lst:
+			list_entry = {}
+			file_entry = ps.get_file_by_key(perm.file_key)
+			if file_entry is not None:
+				
+				temp_file = ds.get_file_info(file_entry.file_name)
+				if temp_file is None:
+					continue
+				
 				list_entry.update({ 'permissions' 	: 'yes',
 									'friendlyName'	: file_entry.friendly_name,
-									'colour'		: user_permissions.colour,
-									'starred'		: user_permissions.starred
+									'colour'		: perm.colour,
+									'starred'		: perm.starred
 								} )
-							  
-			
-		else:
-			list_entry.update({ 'permissions' : 'no'  })
 		
-		
-		temp_file.filename = temp_file.filename.rpartition('/')[2]
-		list_entry.update( {	'filename' 		: temp_file.filename,
-								'size' 			: temp_file.st_size,
-						  		'hash' 			: temp_file.etag,
-						  		'timestamp' 	: temp_file.st_ctime
-						  })
-		temp_group.append(list_entry)
+				temp_file.filename = temp_file.filename.rpartition('/')[2]
+				list_entry.update( {	'filename' 		: temp_file.filename,
+										'size' 			: temp_file.st_size,
+								  		'hash' 			: temp_file.etag,
+								  		'timestamp' 	: temp_file.st_ctime
+								  })
+				temp_group.append(list_entry)
 
 
 	if len(temp_group) > 0:

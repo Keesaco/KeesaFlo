@@ -299,7 +299,7 @@ def get_file_permissions_list(file_key):
 ###########################################################################
 ## \brief gets a list of permissions pertaining to a user
 ## \param user_key - [Key] key of user entries pertain to
-## \return iterator object over FilePermissions object on sucess, or False otherwise
+## \return iterator object over FilePermissions object on sucess, or None otherwise
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
 ###########################################################################

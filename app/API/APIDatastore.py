@@ -68,6 +68,17 @@ def check_exists (	path,
 	else:
 		return False
 
+
+###########################################################################
+## \brief Gets basic information about a file
+## \param String file_name - name of file to get information about
+## \return filestat object or None on failure
+## \author jmccrea@keesaco.com of Keesaco
+###########################################################################
+def get_file_info(file_name):
+	return PALDatastore.stat(file_name)
+
+
 ###########################################################################
 ## \brief Gets the path of the containing directory of the passed file/directory
 ## \param path - [String] path of file/directory to find parent of
