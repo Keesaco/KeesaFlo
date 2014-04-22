@@ -41,6 +41,16 @@ def logout(request):
 
 
 ###########################################################################
+## \brief	Returns a JSON response which instructs the client to redirect
+##			to the landing page
+## \return 	HTTPResponse - JSON encoded NotLoggedIn error
+## \author	jmccrea@keesaco.com of Keesaco
+###########################################################################
+def __unauthed_response():
+	return HttpResponse(json.dumps({'error' : 'NotLoggedIn'}), content_type="application/json")
+
+
+###########################################################################
 ## \brief	Returns a response which instructs the client to redirect to
 ##			the app's landing page if the user is not logged in.
 ## \author 	jmccrea@keesaco.com of Keesaco
@@ -54,7 +64,7 @@ def logout(request):
 ###########################################################################
 def __check_app_access():
 	if auth.get_current_user() is None:
-		return HttpResponse(json.dumps({'error' : 'NotLoggedIn'}), content_type="application/json")
+		return __unauthed_response()
 	else:
 		return None
 
@@ -221,7 +231,7 @@ def file_list_json(request):
 def file_list_edit(request):
 	authed_user = auth.get_current_user()
 	if authed_user is None:
-		return HttpResponse(json.dumps({'error' : 'Unauthenticated request'}), content_type="application/json")
+		return __unauthed_response()
 	
 	user_key = ps.get_user_key_by_id(authed_user.user_id())
 	
@@ -472,7 +482,7 @@ def settings(request):
 def tool(request):
 	authed_user = auth.get_current_user()
 	if authed_user is None:
-		return HttpResponse(simplejson.dumps(gt.generate_gating_feedback('fail', 'Unauthenticated request')), content_type="application/json")
+		return __unauthed_response()
 
 
 	try:
@@ -516,19 +526,18 @@ def tool(request):
 ## \todo	Refactor return value creation
 ###########################################################################
 def analysis_status_json(request):
+	authed_user = auth.get_current_user()
+	if authed_user is None:
+		return __unauthed_response()
+		
+	user_key = ps.get_user_key_by_id(authed_user.user_id())
+
 	response_part = {
 		'backoff' 	: 0,		#tells the client to back off for a given amount of time (milliseconds) (This is added to the client's constant poll interval)
 		'giveup'	: True,		#True instructs the client to stop polling - useful for situations such as unauthed requests where polling will never result in the user being shown a graph
 		'done'		: False		#True indicates that the analysis has finished and that the user can be redirected to the new image
 	}
 	
-	authed_user = auth.get_current_user()
-	if authed_user is None:
-		response_part.update( { 'error' : 'Unauthenticated request.' } )
-		return HttpResponse(json.dumps(response_part), content_type="application/json")
-
-	user_key = ps.get_user_key_by_id(authed_user.user_id())
-
 	try:
 		file_req = json.loads(request.raw_post_data)
 	except ValueError:
