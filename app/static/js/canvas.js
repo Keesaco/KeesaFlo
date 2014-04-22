@@ -16,10 +16,10 @@ function ksfCanvas_drawCross(x, y)
 	this.clear();
 	context.fillStyle = "rgba(255, 0, 0, 0.5)";
 	context.beginPath();
-	context.moveTo(x, 0);
-	context.lineTo(x, 480);
-	context.moveTo(0, y);
-	context.lineTo(480, y);
+	context.moveTo(x, 59);
+	context.lineTo(x, 406);
+	context.moveTo(60, y);
+	context.lineTo(450, y);
 	context.stroke();
 	context.arc(x, y, 5, 0, Math.PI*2);
 	context.fill();
