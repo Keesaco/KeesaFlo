@@ -12,9 +12,9 @@ from google.appengine.ext import deferred
 
 ###########################################################################
 ## \brief Runs a given function in the background.
-## \param foo - function to be ran.
+## \param func - function to be ran.
 ## \param delay - approx delay in seconds before function is run.
 ## \author rmurley@keesaco.com of Keesaco
 ###########################################################################
-def run(foo, delay):
-	deferred.defer(foo, _countdown = delay)
+def run(func, delay):
+	deferred.defer(func, _countdown = delay)
