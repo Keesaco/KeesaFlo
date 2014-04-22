@@ -16,9 +16,9 @@
 			<span>Loading...</span>
 		</div>-->
 		<div class="btn-group btn-group-lg action-btn-group">
-			<button type="button" class="btn btn-download"><a href="{% url get_dataset current_file.filename %}">Download Dataset</a></button>
-		  	<button type="button" class="btn" id="request-gating-btn" disabled>Create gating</button>
-		  	<button type="button" class="btn" id="reset-tool-btn">Reset Tool</button>
+			<button type="button" class="btn btn-download"><a href="{% url get_dataset current_file.filename %}">Download</a></button>
+		  	<button type="button" class="btn" id="request-gating-btn" disabled>Gate</button>
+		  	<button type="button" class="btn" id="reset-tool-btn">Reset</button>
 		</div>
 		<div class="gate-options">
 			<label><input type="checkbox" id="chk_reverse_gate" /> Reverse gate</labeL><br />
