@@ -28,7 +28,7 @@ def count():
 ## \author rmurley@keesaco.com of Keesaco
 ###########################################################################
 def start():
-	## Generate unique identifier, removing hyphens.
+	## Generate unique identifier.
 	id = UNIQUE_NAME + '-' + str(uuid1())
 	## Create persistent disk.
 	print instances.create_disk(id)
