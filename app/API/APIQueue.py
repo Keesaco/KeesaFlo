@@ -94,6 +94,14 @@ def gate_quadrant(	filename, xcoord, ycoord, quadrant1name, quadrant2name,
 		';' + x_axis + ';' + y_axis)
 
 ###########################################################################
+## \brief Adds a task to split data up into clusters based on the kmeans algorithm.
+## \author hdoughty@keesaco.com of Keesaco
+###########################################################################
+def gate_kmeans(	filename, gatenames, number_clusters, x_axis, y_axis):
+	queue.add_task('jobs', 'gate_kmeans;' + filename + ';' + gatenames + ';' + 
+		number_clusters + ';' + x_axis + ';' + y_axis)
+
+###########################################################################
 ## \brief Adds a task to perform a circular gate on fcs data.
 ## \author hdoughty@keesaco.com of Keesaco
 ###########################################################################

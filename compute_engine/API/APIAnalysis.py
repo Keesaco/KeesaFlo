@@ -194,6 +194,20 @@ def quad_gate(name, x_coord, y_coord, quad1_name, quad2_name, quad3_name, quad4_
 		quad3_name, quad4_name, x_axis, y_axis])
 
 ###########################################################################
+## \brief Saves a visualisation of an fcs file gated using a normal distribution
+## \param name - name of fcs file to gate
+## \param cluster_name - name of clusters to be created in one string seperated by spaces
+## \param number_clusters - number of clusters desired
+## \param x_axis - name of x_axis desired
+## \param y_axis - name of y_axis desired
+## \return returns exit code from the subprocess
+## \note all parameters should be strings
+## \author hdoughty@keesaco.com of Keesaco
+###########################################################################
+def kmeans_gate(name, cluster_names, number_clusters, x_axis, y_axis):
+	return subprocess.call(["Rscript", "kmeans.r", name, cluster_names, number_clusters, x_axis, y_axis])
+
+###########################################################################
 ## \brief Saves a visualisation image from local disk to Datastore
 ## \param name - name of image file to save
 ## \param permissions - user attempting to perform access

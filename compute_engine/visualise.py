@@ -172,6 +172,32 @@ while alive:
 				os.remove(current_gate_name + '.txt')
 				os.remove(current_gate_name)
 			os.remove(name)
+	elif (commands[0] == 'gate_kmeans'):
+		name = commands[1]
+		cluster_names = commands[2]
+		number_clusters = commands[3]
+		x_axis = commands[4]
+		y_axis = commands[5]
+		##Loads raw fcs data from cloud storage
+		Ana.load_fcs(name)
+		## Creates visualisation and .fcs file of gate
+		exitcode = Ana.kmeans_gate(name, cluster_names, number_clusters, x_axis, y_axis)
+		number = int(number_clusters)
+		names = cluster_names.split(" ")
+		if(exitcode == 0):
+			for i in range(0, number):
+				current_gate_name = names[i]
+				## Saves visualisation of gate to cloud storage
+				Ana.save_vis(current_gate_name + '.png')
+				## Saves info about gate to cloud storage
+				Ana.save_info(current_gate_name + '.txt')
+				## Saves gate as fcs file
+				Ana.save_fcs(current_gate_name)
+				## Clean up
+				os.remove(current_gate_name + '.png')
+				os.remove(current_gate_name + '.txt')
+				os.remove(current_gate_name)
+			os.remove(name)
 	# Delete any processed tasks from queue.
 	if task_id is not None:
 		Queue.delete('jobs', task_id)
