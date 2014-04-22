@@ -386,7 +386,7 @@ def toolselect(request):
 ## \return the graph's immage
 ###########################################################################
 def get_graph(request, graph):
-	return fetch_file(GRAPH_BUCKET + '/' + graph + ".png", 'image/png')
+	return fetch_file(GRAPH_BUCKET + '/' + graph + ".png", 'image/png', False)
 
 ###########################################################################
 ## \brief Is called when a file is requested.
@@ -395,7 +395,7 @@ def get_graph(request, graph):
 ## \return the file requested
 ###########################################################################
 def get_dataset(request, dataset):
-	return fetch_file(DATA_BUCKET + '/' + dataset, 'application/vnd.isac.fcs')
+	return fetch_file(DATA_BUCKET + '/' + dataset + '.fcs', 'application/vnd.isac.fcs', True)
 
 ###########################################################################
 ## \brief Is called when a info is requested
@@ -404,25 +404,29 @@ def get_dataset(request, dataset):
 ## \return the file requested
 ###########################################################################
 def get_info(request, infofile):
-	return fetch_file(INFO_BUCKET + '/' + infofile, 'text/html')
+	return fetch_file(INFO_BUCKET + '/' + infofile, 'text/html', False)
 
 ###########################################################################
 ## \brief Return a response containing the file
 ## \param path - path to the file to be sent to the client
 ## \param type - type of the file sent (its mime type)
+## \param friendly - boolean indicating if fetch as friendly name.
 ## \return an HttpResponse ccontaining the file to be sent
 ###########################################################################
-def fetch_file(path, type):
+def fetch_file(path, type, friendly):
 	# TODO: Need protection against hack such as ../
 	buffer = ds.open(path)
 	if buffer:
 		file = buffer.read()
 		# TODO: Maybe transform the httpresponse to streaminghttpresponse in case the graph is really large and to improve efficiency
 		response = HttpResponse(file, content_type=type)
-		## Get friendly filename.
-		friendly_name = ps.get_file_by_name(path).friendly_name
+		# Get filename.
+		if friendly:
+			name = ps.get_file_by_name(path).friendly_name
+		else:
+			name = path.rpartition('/')[2]
 		# Construct and send response
-		response['Content-Disposition'] = 'attachment; filename="' + friendly_name + '.fcs"'
+		response['Content-Disposition'] = 'attachment; filename="' + name + '"'
 		return response
 	else:
 		return HttpResponseNotFound('<h1>404 : ' + path + ' not found</h1>')
