@@ -12,6 +12,7 @@ import API.APIDatastore as ds
 import API.APIQueue as queue
 import API.APIInstance as instances
 import API.APIBackground as background
+from os.path import splitext
 from uuid import uuid1
 
 ## default upload bucket
@@ -38,8 +39,10 @@ class fcsUploadHandler(FileUploadHandler):
 			path = ds.generate_path(DEFAULT_BUCKET, None, self.name)
 			if not ds.check_exists(path, None):
 				break
+		## Generate friendly name.
+		friendly_name = splitext(file_name)[0]
 		## Setup file handle.
-		self.file_handle = ds.add_file(path, 'raw_data', 'w')
+		self.file_handle = ds.add_file(path, friendly_name, 'raw_data', 'w')
 		## Setup uploaded file.
 		self.upload = fcsUploadedFile(path, self.name, content_type, charset)
 		return None
