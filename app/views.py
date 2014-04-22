@@ -419,7 +419,10 @@ def fetch_file(path, type):
 		file = buffer.read()
 		# TODO: Maybe transform the httpresponse to streaminghttpresponse in case the graph is really large and to improve efficiency
 		response = HttpResponse(file, content_type=type)
-		response['Content-Disposition'] = 'attachment; filename="' + path + '"'
+		## Get friendly filename.
+		friendly_name = ps.get_file_by_name(path).friendly_name
+		# Construct and send response
+		response['Content-Disposition'] = 'attachment; filename="' + friendly_name + '.fcs"'
 		return response
 	else:
 		return HttpResponseNotFound('<h1>404 : ' + path + ' not found</h1>')
