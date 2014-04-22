@@ -12,6 +12,7 @@ import API.APILogging as logging
 ## \brief Is called when a gating is requested
 ## \param Dictionary gate_params - list of gating parameters
 ## \author mrudelle@keesaco.com of Keesaco
+## \author hdoughty@keesaco.com of Keesaco
 ## \todo Does this not want to be multiple tools?
 ###########################################################################
 def simple_gating(gate_params):

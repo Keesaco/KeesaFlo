@@ -289,6 +289,7 @@ ksfGraphTools.OvalGating = {
 	}
 }
 
+//Sends a request for normal gating
 ksfGraphTools.NormalGating = {
 	scale_factor : null,
 
@@ -314,6 +315,7 @@ ksfGraphTools.NormalGating = {
 	}
 }
 
+//Sends request for quadrant gating and draws cross displaying segmentation
 ksfGraphTools.QuadrantGating = {
 	centre_x : null,
 	centre_y : null,

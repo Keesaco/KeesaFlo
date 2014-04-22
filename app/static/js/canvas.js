@@ -150,6 +150,14 @@ function ksfCanvas_drawOval(cx, cy, r1, p2x, p2y)
 
 ksfCanvas.drawOval = ksfCanvas_drawOval;
 
+/**
+ * Draws a circle on the canvas
+ * \param cx - x coordinate of the center points
+ * \param cy - y coordinate of the center points
+ * \param p2x - x coordinate of the point on the circumference
+ * \param p2y - y coordinate of the point on the circumference
+ * \author hdoughty@keesaco.com of Keesaco
+ */
 function ksfCanvas_drawCircle(cx, cy, px, py)
 {
 	this.clear();
