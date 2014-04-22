@@ -39,6 +39,26 @@ def logout(request):
 	link = auth.create_logout_url('/')
 	return redirect(link)
 
+
+###########################################################################
+## \brief	Returns a response which instructs the client to redirect to
+##			the app's landing page if the user is not logged in.
+## \author 	jmccrea@keesaco.com of Keesaco
+## \note	At this point the client and server sides do no communicate
+##			with JSON consistently. For this reason there is no defined way
+##			to inform the CS of an error. At some point it may be useful to
+##			define the protocol to allow redirection rather than this being
+##			a special case response.
+## \return 	HttpResponse - unauthenticated request error object if user
+##			is not logged in. None otherwise
+###########################################################################
+def __check_app_access():
+	if auth.get_current_user() is None:
+		return HttpResponse(json.dumps({'error' : 'NotLoggedIn'}), content_type="application/json")
+	else:
+		return None
+
+
 ###########################################################################
 ## \brief Is called when index page is requested.
 ## \param request - Django variable defining the request that triggered the generation of this page
@@ -96,8 +116,13 @@ def app(request):
 ## \param request - Django variable defining the request that triggered the generation of this page
 ## \note only the file list is generated here, see app(request) for fetching the page's skeleton
 ## \return the list of files pagelet
+## \todo	Replaced by JSON; remove?
 ###########################################################################
 def file_list(request):
+	app_access = __check_app_access()
+	if app_access is not None:
+		return app_access
+	
 	lst = ds.list(DATA_BUCKET)
 
 	file_list = []
@@ -124,15 +149,13 @@ def file_list(request):
 ## \return the list of files pagelet
 ###########################################################################
 def file_list_json(request):
-	
+	app_access = __check_app_access()
+	if app_access is not None:
+		return app_access
 	
 	authed_user = auth.get_current_user()
-	if authed_user is None:
-		pass
-		#TODO: deal with unauthed users
-	else:
-		user_key = ps.get_user_key_by_id(authed_user.user_id())
-		#TODO: This shouldn't be here - a generic method in APIPermissions would be nice.
+	user_key = ps.get_user_key_by_id(authed_user.user_id())
+	#TODO: This shouldn't be here - a generic method in APIPermissions would be nice.
 
 
 	# 'your files'
@@ -312,6 +335,10 @@ def file_list_edit(request):
 ## \return the app main panel
 ###########################################################################
 def file_preview(request, file = None):
+	app_access = __check_app_access()
+	if app_access is not None:
+		return app_access
+
 	## Authentication.
 	authed_user = auth.get_current_user()
 	if authed_user is None:
@@ -342,10 +369,9 @@ def file_preview(request, file = None):
 ##			fetching the page's skeleton
 ## \return 	the main panel pagelet
 ## \todo	use datastore/permissions API for file list lookup
+## \todo	check permissions, return HTTP error on failure
 ###########################################################################
 def graph_preview(request, file = None):
-	
-	
 	lst = ds.list(DATA_BUCKET)
 	for temp_file in lst:
 		temp_file.filename = temp_file.filename.rpartition('/')[2]
@@ -362,6 +388,10 @@ def graph_preview(request, file = None):
 ## \return the main panel pagelet
 ###########################################################################
 def file_page(request, file=None):
+	app_access = __check_app_access()
+	if app_access is not None:
+		return app_access
+	
 	lst = ds.list('/fc-raw-data')
 	file_info = None
 	for temp_file in lst:
@@ -427,6 +457,10 @@ def fetch_file(path, type):
 ## \return the settings page
 ###########################################################################
 def settings(request):
+	app_access = __check_app_access()
+	if app_access is not None:
+		return app_access
+	
 	return render(request, 'settings.html')
 
 ###########################################################################
@@ -482,7 +516,6 @@ def tool(request):
 ## \todo	Refactor return value creation
 ###########################################################################
 def analysis_status_json(request):
-	
 	response_part = {
 		'backoff' 	: 0,		#tells the client to back off for a given amount of time (milliseconds) (This is added to the client's constant poll interval)
 		'giveup'	: True,		#True instructs the client to stop polling - useful for situations such as unauthed requests where polling will never result in the user being shown a graph
