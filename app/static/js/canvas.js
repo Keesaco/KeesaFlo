@@ -10,20 +10,28 @@ RESET_TOOL_BTN = "#reset-tool-btn";
 var context;
 var canvas;
 var tool_popover;
+var START_X = 60;
+var START_Y = 59;
+var END_X = 450;
+var END_Y = 406;
+
 
 function ksfCanvas_drawCross(x, y)
 {
 	this.clear();
-	context.fillStyle = "rgba(255, 0, 0, 0.5)";
-	context.beginPath();
-	context.moveTo(x, 59);
-	context.lineTo(x, 406);
-	context.moveTo(60, y);
-	context.lineTo(450, y);
-	context.stroke();
-	context.arc(x, y, 5, 0, Math.PI*2);
-	context.fill();
-	context.closePath();
+	if((x > START_X) && (x < END_X) && (y > START_Y) && (y < END_Y))
+	{
+		context.fillStyle = "rgba(255, 0, 0, 0.5)";
+		context.beginPath();
+		context.moveTo(x, START_Y);
+		context.lineTo(x, END_Y);
+		context.moveTo(START_X, y);
+		context.lineTo(END_X, y);
+		context.stroke();
+		context.arc(x, y, 5, 0, Math.PI*2);
+		context.fill();
+		context.closePath();
+	}
 }
 
 ksfCanvas.drawCross = ksfCanvas_drawCross;
