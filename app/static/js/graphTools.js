@@ -353,7 +353,7 @@ ksfGraphTools.sendGatingRequest = ksfGraphTools_sendGatingRequest;
 /**
  * Change properly the graph image
  * \param url - [String] url of the new graph
- * \param String newFilename - file name of new gate
+ * \param String newFilename - file path of new gate
  * \param Int numRetries - the number of times to check the status of the gate before giving up. If undefined defaults to GRAPH_LOAD_MAX_ATTEMPTS.
  * \author jmccrea@keesaco.com of Keesaco
  * \author mrudelle@keesaco.com of Keesaco
@@ -365,6 +365,7 @@ function ksfGraphTools_setGraphUrl(url, newFilename, numRetries)
 	ksfGraphTools.timeoutCounter = typeof numRetries == 'undefined' ? GRAPH_LOAD_MAX_ATTEMPTS : numRetries;
 
 	var gate_req = { filename : newFilename };
+	var gateRedirect = newFilename.split('/')[2];
 	ksfCanvas.setLoading(true);
 	
 	var gate_status = ksfReq.postJSON(ANALYSIS_STATUS_URI, gate_req,
@@ -377,7 +378,7 @@ function ksfGraphTools_setGraphUrl(url, newFilename, numRetries)
 			}
 			else if (response.done)
 			{
-				window.location.href = ksfData.baseUrl() + FILE_VIEW_HASH + newFilename;
+				window.location.href = ksfData.baseUrl() + FILE_VIEW_HASH + gateRedirect;
 			}
 			else
 			{

@@ -575,10 +575,10 @@ def analysis_status_json(request):
 '''
 
 	name = file_req['filename'].rpartition('/')[2]
-	is_done =  ds.check_exists(GRAPH_BUCKET + '/' + file_req['filename'] + '.png', None)
+	is_done =  ds.check_exists(GRAPH_BUCKET + '/' + name + '.png', None)
 
 	#Prevent redirecting before the view is ready
-	is_done &= ds.check_exists(DATA_BUCKET  + '/' + file_req['filename'], None)
+	is_done &= ds.check_exists(DATA_BUCKET  + '/' + name, None)
 
 	response_part.update( { 'done' : is_done, 'giveup' : False } )
 	return HttpResponse(json.dumps(response_part), content_type="application/json")
