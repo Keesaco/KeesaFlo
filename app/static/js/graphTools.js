@@ -301,8 +301,9 @@ function ksfGraphTools_sendGatingRequest(toolName, gatePoints, params)
 {
 	// allows to fetch the name correctly. In the future (final release) this should be replace by a json file fetched from the server containing all the file's data
 	
-	var currentFile = $("#filename").text().trim();
-	
+	var currentFile = $("#scrapename").text().trim();
+	console.log('Current File:' + currentFile);
+
 	var reverseGate = $('#chk_reverse_gate').first().is(':checked');
 	
 	ksfTools.CurrentTool.resetTool();

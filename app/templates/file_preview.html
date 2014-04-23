@@ -15,6 +15,7 @@
 		<!--<div id="gating-stats">
 			<span>Loading...</span>
 		</div>-->
+		<div id="scrapename" style="display: none;"> {{ name }} </div>
 		<div class="btn-group btn-group-lg action-btn-group">
 			<button type="button" class="btn btn-download"><a href="{% url get_dataset current_file.filename %}">Download</a></button>
 		  	<button type="button" class="btn" id="request-gating-btn" disabled>Gate</button>
@@ -28,7 +29,7 @@
 		<div  class="well app-well">
 			<h1>No visualisation data</h1>
 			<p>You may want to refresh if you expect a graph to appear</p>
-		</div>
+		</div>xx
 	{% endif %}
 
 {% else %}

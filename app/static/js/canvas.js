@@ -52,10 +52,10 @@ function ksfCanvas_drawPolygon(xList, yList, lastx, lasty, startRadius)
 {
 	this.clear();
 	
-    if (xList.length < 1)
+	if (xList.length < 1)
 	{
-        return;
-    }
+		return;
+	}
 
 	context.beginPath();
 	context.fillStyle = "rgba(255, 0, 0, 0.5)";
@@ -63,24 +63,24 @@ function ksfCanvas_drawPolygon(xList, yList, lastx, lasty, startRadius)
 	context.fill();
 	context.closePath();
 
-    if (((lastx === null || lasty === null) && xList.length < 2))
+	if (((lastx === null || lasty === null) && xList.length < 2))
 	{
-        return;
-    }
+		return;
+	}
 
 	context.beginPath();
-    context.moveTo(xList[0], yList[0]);
-    for (var i = 1; i < xList.length ; i++)
+	context.moveTo(xList[0], yList[0]);
+	for (var i = 1; i < xList.length ; i++)
 	{
-       context.lineTo(xList[i], yList[i]);
-    }
+	   context.lineTo(xList[i], yList[i]);
+	}
 
-    if (lastx !== null || lasty !== null)
+	if (lastx !== null || lasty !== null)
 	{
-       context.lineTo(lastx, lasty);
-    }
-    context.stroke();
-    context.closePath();
+	   context.lineTo(lastx, lasty);
+	}
+	context.stroke();
+	context.closePath();
 }
 
 ksfCanvas.drawPolygon = ksfCanvas_drawPolygon;
@@ -105,8 +105,8 @@ function ksfCanvas_drawOval(cx, cy, r1, p2x, p2y)
 	{
 		tx=cx-p2x;
 		ty=cy-p2y;
-    	r2 = Math.sqrt(Math.pow(tx,2)+Math.pow(ty,2));
-        angle = ksfGraphTools.mesureAngle(tx, ty);
+		r2 = Math.sqrt(Math.pow(tx,2)+Math.pow(ty,2));
+		angle = ksfGraphTools.mesureAngle(tx, ty);
 	}
 	else
 	{
@@ -152,10 +152,10 @@ ksfCanvas.drawOval = ksfCanvas_drawOval;
  */
 function ksfCanvas_toolText(msg)
 {
-    if (tool_popover !== null)
+	if (tool_popover !== null)
 	{
-        tool_popover.text(msg);
-    }
+		tool_popover.text(msg);
+	}
 }
 
 ksfCanvas.toolText = ksfCanvas_toolText;
@@ -166,10 +166,10 @@ ksfCanvas.toolText = ksfCanvas_toolText;
  */
 function ksfCanvas_clear()
 {
-    if (context !== null && canvas !== undefined)
+	if (context !== null && canvas !== undefined)
 	{
-        context.clearRect(0, 0, canvas.width, canvas.height);
-    }
+		context.clearRect(0, 0, canvas.width, canvas.height);
+	}
 }
 
 ksfCanvas.clear = ksfCanvas_clear;
@@ -194,34 +194,34 @@ ksfCanvas.setCursor = ksfCanvas_setCursor;
 function ksfCanvas_addListener(argument)
 {
 	$(GRAPH_ID).css('cursor', 'crosshair');
-    $(GRAPH_ID).click(
+	$(GRAPH_ID).click(
 		function(event)
 		{
-        	if (ksfTools.CurrentTool && ksfTools.CurrentTool.onGraphClick)
+			if (ksfTools.CurrentTool && ksfTools.CurrentTool.onGraphClick)
 			{
-        	    ksfTools.CurrentTool.onGraphClick(event);
-        	}
+				ksfTools.CurrentTool.onGraphClick(event);
+			}
 			else
 			{
-            	ksfCanvas.toolText("You must choose a tool.");
-        	}
-    	} );
-    $(GRAPH_ID).mousemove(
+				ksfCanvas.toolText("You must choose a tool.");
+			}
+		} );
+	$(GRAPH_ID).mousemove(
 		function(event)
 		{
-        	if (ksfTools.CurrentTool && ksfTools.CurrentTool.onGraphClick)
+			if (ksfTools.CurrentTool && ksfTools.CurrentTool.onGraphClick)
 			{
-        	    ksfTools.CurrentTool.onGraphMouseMove(event);
-        	}
-    	});
+				ksfTools.CurrentTool.onGraphMouseMove(event);
+			}
+		});
 
 	tool_popover = $(TOOL_POPOVER_TITLE);
 
-    canvas = $(GRAPH_ID)[0];
-    if (canvas !== null && canvas !== undefined)
+	canvas = $(GRAPH_ID)[0];
+	if (canvas !== null && canvas !== undefined)
 	{
-        context = canvas.getContext('2d');
-    }
+		context = canvas.getContext('2d');
+	}
 	
 	$(RESET_TOOL_BTN).click(
 		function()
@@ -235,13 +235,13 @@ function ksfCanvas_addListener(argument)
 			ksfTools.CurrentTool.requestGating();
 		} )
 
-    $("#graph-img").off('error');
-    $("#graph-img").on('error',
+	$("#graph-img").off('error');
+	$("#graph-img").on('error',
 		function()
-        {
-            ksfCanvas.setLoading(true);
-            setTimeout(ksfGraphTools.reloadImage, 1000);
-        } );
+		{
+			ksfCanvas.setLoading(true);
+			setTimeout(ksfGraphTools.reloadImage, 1000);
+		} );
 }
 ksfCanvas.addListener = ksfCanvas_addListener;
 
@@ -254,19 +254,19 @@ ksfCanvas.addListener = ksfCanvas_addListener;
  */
 function ksfCanvas_enableBtn(btn, enable)
 {
-    if (enable)
+	if (enable)
 	{
-        $(btn).removeAttr("disabled");
-    }
+		$(btn).removeAttr("disabled");
+	}
 	else
 	{
-        $(btn).attr('disabled','disabled');
-    }
+		$(btn).attr('disabled','disabled');
+	}
 
-    if (btn === REQUEST_GATING_BTN && enable)
+	if (btn === REQUEST_GATING_BTN && enable)
 	{
-        ksfCanvas.blinkButton(btn);
-    }
+		ksfCanvas.blinkButton(btn);
+	}
 }
 ksfCanvas.enableBtn = ksfCanvas_enableBtn;
 
@@ -277,16 +277,16 @@ ksfCanvas.enableBtn = ksfCanvas_enableBtn;
  */
 function ksfCanvas_setLoading(enable)
 {
-    if (enable)
+	if (enable)
 	{
-        $(GRAPH_ID).addClass("loading");
-        $("#graph-img").css("display", "none");
-    }
+		$(GRAPH_ID).addClass("loading");
+		$("#graph-img").css("display", "none");
+	}
 	else
 	{
-        $(GRAPH_ID).removeClass("loading");
-        $("#graph-img").css("display", "");
-    }
+		$(GRAPH_ID).removeClass("loading");
+		$("#graph-img").css("display", "");
+	}
 }
 ksfCanvas.setLoading = ksfCanvas_setLoading;
 
@@ -297,19 +297,19 @@ ksfCanvas.setLoading = ksfCanvas_setLoading;
  */
 function ksfCanvas_blinkButton(btn)
 {
-    var resetBackColor = $(btn).css('background-color');
-    var resetColor = $(btn).css('color');
-    $(btn).animate(
-        {
-            "background-color": "#FF8500",
-            "color": "#fff"
-        }, 200, function()
-        {
-            $(btn).animate(
-            {
-              "background-color": resetBackColor,
-              "color": resetColor
-            }, 800);
-        } );
+	var resetBackColor = $(btn).css('background-color');
+	var resetColor = $(btn).css('color');
+	$(btn).animate(
+		{
+			"background-color": "#FF8500",
+			"color": "#fff"
+		}, 200, function()
+		{
+			$(btn).animate(
+			{
+			  "background-color": resetBackColor,
+			  "color": resetColor
+			}, 800);
+		} );
 }
 ksfCanvas.blinkButton = ksfCanvas_blinkButton;
