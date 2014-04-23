@@ -71,7 +71,7 @@ class fcsUploadHandler(FileUploadHandler):
 		## Start analysis.
 		queue.visualise(self.name)
 		## Load balance instances in the background.
-		background.run(instances.balance)
+		background.run(instances.balance, 0)
 		return self.upload
 
 ## Custom uploaded file class.
@@ -129,6 +129,9 @@ class fcsUploadedFile(UploadedFile):
 def clean(str):
 	## Strip extension.
 	str = splitext(str)[0]
+	## Strip semicolons.
+	str = str.replace(';', '')
+	## Strip leading dash.
 	return strip_dash(str)
 
 ###########################################################################

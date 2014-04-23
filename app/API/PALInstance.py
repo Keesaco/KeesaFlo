@@ -107,6 +107,10 @@ def instance_request_body(pd_name, instance_name):
 			{
 				'key': 'log_url',
 				'value': LOG_URL
+			},
+			{
+				'key': 'balance_hook',
+				'value': BALANCE_HOOK
 			}
 			]
 	}]
