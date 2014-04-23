@@ -60,10 +60,10 @@ def stats():
 def balance():
 	## Calculate ratio of tasks to instances and acceptable limits.
 	(ratio, instance_count, task_count) = stats()
-	upper_ratio_limit = CE_SCALING * (1 - CE_SLACK)
-	lower_ratio_limit = CE_SCALING * (1 + CE_SLACK)
+	lower_ratio_limit = CE_SCALING * (1 - CE_SLACK)
+	upper_ratio_limit = CE_SCALING * (1 + CE_SLACK)
 	## If ratio is outside acceptable limits, kill or start instances.
-	if ratio < upper_ratio_limit and instance_count > MIN_INSTANCES:
+	if (ratio < lower_ratio_limit and instance_count > MIN_INSTANCES) or (instance_count > MAX_INSTANCES):
 		queue.kill()
-	elif ratio > lower_ratio_limit and instance_count < MAX_INSTANCES:
+	elif (ratio > upper_ratio_limit and instance_count < MAX_INSTANCES) or (instance_count < MIN_INSTANCES):
 		start()

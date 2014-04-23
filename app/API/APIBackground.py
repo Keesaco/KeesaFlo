@@ -13,8 +13,9 @@ import PALBackground
 
 ###########################################################################
 ## \brief Runs a given function in the background.
-## \param foo - function to be ran.
+## \param func - function to be ran.
+## \param delay - approx delay in seconds before function is run.
 ## \author rmurley@keesaco.com of Keesaco
 ###########################################################################
-def run(foo):
-	PALBackground.run(foo)
+def run(func, delay):
+	PALBackground.run(func, delay)

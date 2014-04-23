@@ -2,11 +2,20 @@
 ## \file app/tools.py
 ## \brief Stores all the available tools and their actions
 ## \author mrudelle@keesaco.com of Keesaco
+## \todo	Decouple permissions and authentication
 ###########################################################################
 
 import API.APIQueue as queue
 from django.core.urlresolvers import reverse
 import API.APILogging as logging
+import API.APIPermissions as ps
+import API.APIDatastore as ds
+import API.PALUsers as auth
+from Permissions.Types import FileInfo, Permissions
+from uuid import uuid1
+import time
+
+DATA_BUCKET = '/fc-raw-data/'
 
 ###########################################################################
 ## \brief Is called when a gating is requested
@@ -17,10 +26,17 @@ import API.APILogging as logging
 def simple_gating(gate_params):
 	points = gate_params['points']
 	reverse_gate = '0'
-	
+
 	if 'reverse' in gate_params:
 		if (gate_params['reverse']):
 			reverse_gate = '1'
+
+	## Generate unique datastore path, ensuring uniqueness.
+	while True:
+		new_name = str(uuid1())
+		new_path = ds.generate_path(DATA_BUCKET, None, new_name)
+		if not ds.check_exists(new_path, None):
+			break
 
 	if (gate_params['tool'] == "rectangular_gating") :
 		if len(points) == 4 :
@@ -36,9 +52,8 @@ def simple_gating(gate_params):
 
 			gating_request = " ".join(str(p) for p in points)
 
-			new_name = gate_params['filename'] + "-rectGate";
 			queue.gate_rectangle(gate_params['filename'], gating_request, new_name, reverse_gate, "FSC-A", "PE-A");
-			return generate_gating_feedback("success", "the rectangular gating was performed correctly", new_name)
+			return generate_gating_feedback("success", "the rectangular gating was performed correctly", new_path, gate_params['filename'])
 		else:
 			return generate_gating_feedback("fail", "notcorrect " + params + " length:" + str(len(points)) + " is not equal to 4")
 
@@ -46,9 +61,8 @@ def simple_gating(gate_params):
 		if len(points)%2 == 0 :
 			gating_request = " ".join(str(p) for p in points)
 
-			new_name = gate_params['filename'] + "-polyGate";
 			queue.gate_polygon(gate_params['filename'], gating_request, new_name, reverse_gate, "FSC-A", "PE-A");
-			return generate_gating_feedback("success", "the polygonal gating was performed correctly", new_name)
+			return generate_gating_feedback("success", "the polygonal gating was performed correctly", new_path, gate_params['filename'])
 		else:
 			return generate_gating_feedback("fail", "notcorrect " + params + " #pointCoordinates:" + str(len(points))-1 + " is not pair")
 
@@ -56,9 +70,8 @@ def simple_gating(gate_params):
 		if len(points) == 6 :
 			gating_request = " ".join(str(p) for p in points)
 
-			new_name = gate_params['filename'] + "-ovalGate";
 			queue.gate_circle(gate_params['filename'], gating_request, new_name, reverse_gate, "FSC-A", "PE-A");
-			return generate_gating_feedback("success", "the oval gating was performed correctly", new_name)
+			return generate_gating_feedback("success", "the oval gating was performed correctly", new_path, gate_params['filename'])
 		else:
 			return generate_gating_feedback("fail", "notcorrect " + params + " #pointCoordinates:" + str(len(points)) + " is not even")
 		
@@ -87,8 +100,40 @@ def no_such_tool(gate_params):
 ## \param newgraphurl - url of the new graph
 ## \return a dictionary with the status of the tool call
 ## \author mrudelle@keesaco.com of Keesaco
+## \author jmccrea@keesaco.com of Keesaco
+## \note 	This is currently the method used to set permissions on gates
+##			in future this should be refactored. Perhaps providing a base
+##			tool class to inherit from
+## \todo	Move permissions code out of here
 ###########################################################################
-def generate_gating_feedback(status, message, new_graph_name = None):
+def generate_gating_feedback(status, message, new_graph_name = None, existing_name = None):
+	if new_graph_name is not None:
+		## Authenticate and get user 
+		authed_user = auth.get_current_user()
+		user_key = ps.get_user_key_by_id(authed_user.user_id())
+
+		## Get previous file permissions.
+		previous_file = ps.get_file_by_name(DATA_BUCKET + existing_name)
+		previous_permissions = ps.get_user_file_permissions(previous_file.key, user_key)
+
+		## Get timestamp.
+		timestamp = int(time.time())
+
+		## Add permissions to new file.
+		new_file = FileInfo(file_name = new_graph_name,
+							owner_key = user_key,
+							friendly_name = previous_file.friendly_name + '-' + str(timestamp) + '-gate')
+		file_key = ps.add_file(new_file)
+		ps.add_file_permissions(file_key,
+								user_key,
+								Permissions (
+									previous_permissions.read,
+									previous_permissions.write,
+									previous_permissions.full_control
+								),
+								previous_permissions.colour,
+								False)
+
 	return {
 		'status': status,
 		'message': message,
