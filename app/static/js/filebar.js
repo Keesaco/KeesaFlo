@@ -225,8 +225,35 @@ function ksfFilebar_editName(fileDiv, file)
 	
 	$link.attr('contenteditable', 'true');
 	$link.trigger('focus');
+	ksfFilebar.selectText($link);
 }
 ksfFilebar.editName = ksfFilebar_editName;
+
+/**
+ * Selects the text of a given element. Used for selecting the text in the name edit; since an editable text element is used rather than a text input field a simple .select() cannot be used.
+ * \param $element - jQuery elements; the first element will selected
+ * \return None
+ * \author jmccrea@keesaco.com of Keesaco
+ * \note This is not included in .editName() for clarity; at some point it may be useful to move it into a different file
+ */
+function ksfFilebar_selectText($element)
+{
+    if (window.getSelection)
+	{
+        var selection = window.getSelection();
+        selection.removeAllRanges();
+        var newRange = document.createRange();
+        newRange.selectNodeContents($element.get(0));
+        selection.addRange(newRange);
+    }
+	else if (document.selection)
+	{
+        var newRange = document.body.createTextRange();
+        newRange.moveToElementText($element.get(0));
+        newRange.select();
+    }
+}
+ksfFilebar.selectText = ksfFilebar_selectText;
 
 /**
  * Handles key events in editable link - moved out of file selector generation for clarity
