@@ -156,8 +156,7 @@ while alive:
 		##Loads raw fcs data from cloud storage
 		Ana.load_fcs(name)
 		## Creates visualisation and .fcs file of gate
-		exitcode = 0;
-		Ana.quad_gate(name, x_coord, y_coord, commands[4], commands[5], commands[6], commands[7], x_axis, y_axis)
+		exitcode = Ana.quad_gate(name, x_coord, y_coord, commands[4], commands[5], commands[6], commands[7], x_axis, y_axis)
 		if(exitcode == 0):
 			for i in range(4, 8):
 				current_gate_name = commands[i]
