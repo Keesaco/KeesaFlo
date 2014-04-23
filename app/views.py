@@ -8,7 +8,7 @@
 ###########################################################################
 
 from django.http import HttpResponse
-from django.http import HttpResponseNotFound  
+from django.http import HttpResponseNotFound
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.utils import simplejson
@@ -38,6 +38,36 @@ def login(request):
 def logout(request):
 	link = auth.create_logout_url('/')
 	return redirect(link)
+
+
+###########################################################################
+## \brief	Returns a JSON response which instructs the client to redirect
+##			to the landing page
+## \return 	HTTPResponse - JSON encoded NotLoggedIn error
+## \author	jmccrea@keesaco.com of Keesaco
+###########################################################################
+def __unauthed_response():
+	return HttpResponse(json.dumps({'error' : 'NotLoggedIn'}), content_type="application/json")
+
+
+###########################################################################
+## \brief	Returns a response which instructs the client to redirect to
+##			the app's landing page if the user is not logged in.
+## \author 	jmccrea@keesaco.com of Keesaco
+## \note	At this point the client and server sides do no communicate
+##			with JSON consistently. For this reason there is no defined way
+##			to inform the CS of an error. At some point it may be useful to
+##			define the protocol to allow redirection rather than this being
+##			a special case response.
+## \return 	HttpResponse - unauthenticated request error object if user
+##			is not logged in. None otherwise
+###########################################################################
+def __check_app_access():
+	if auth.get_current_user() is None:
+		return __unauthed_response()
+	else:
+		return None
+
 
 ###########################################################################
 ## \brief Is called when index page is requested.
@@ -96,8 +126,13 @@ def app(request):
 ## \param request - Django variable defining the request that triggered the generation of this page
 ## \note only the file list is generated here, see app(request) for fetching the page's skeleton
 ## \return the list of files pagelet
+## \todo	Replaced by JSON; remove?
 ###########################################################################
 def file_list(request):
+	app_access = __check_app_access()
+	if app_access is not None:
+		return app_access
+	
 	lst = ds.list(DATA_BUCKET)
 
 	file_list = []
@@ -124,45 +159,43 @@ def file_list(request):
 ## \return the list of files pagelet
 ###########################################################################
 def file_list_json(request):
-	lst = ds.list(DATA_BUCKET)
+	app_access = __check_app_access()
+	if app_access is not None:
+		return app_access
 	
 	authed_user = auth.get_current_user()
-	if authed_user is None:
-		pass
-		#TODO: deal with unauthed users
-	else:
-		user_key = ps.get_user_key_by_id(authed_user.user_id())
-		#TODO: This shouldn't be here - a generic method in APIPermissions would be nice.
+	user_key = ps.get_user_key_by_id(authed_user.user_id())
+	#TODO: This shouldn't be here - a generic method in APIPermissions would be nice.
 
 
 	# 'your files'
 	file_list = []
-	
+
+	lst = ps.get_user_permissions_list(user_key)
 	temp_group = []
-	for temp_file in lst:
-		list_entry = {}
-		file_entry = ps.get_file_by_name(temp_file.filename)
-		if file_entry is not None:
-			user_permissions = ps.get_user_file_permissions(file_entry.key, user_key)
-			if user_permissions is not None:
+	if lst is not None:
+		for perm in lst:
+			list_entry = {}
+			file_entry = ps.get_file_by_key(perm.file_key)
+			if file_entry is not None:
+				
+				temp_file = ds.get_file_info(file_entry.file_name)
+				if temp_file is None:
+					continue
+				
 				list_entry.update({ 'permissions' 	: 'yes',
 									'friendlyName'	: file_entry.friendly_name,
-								  	'colour'		: user_permissions.colour,
-								  	'starred'		: user_permissions.starred
+									'colour'		: perm.colour,
+									'starred'		: perm.starred
 								} )
-							  
-			
-		else:
-			list_entry.update({ 'permissions' : 'no'  })
 		
-		
-		temp_file.filename = temp_file.filename.rpartition('/')[2]
-		list_entry.update( {	'filename' 		: temp_file.filename,
-								'size' 			: temp_file.st_size,
-						  		'hash' 			: temp_file.etag,
-						  		'timestamp' 	: temp_file.st_ctime
-						  })
-		temp_group.append(list_entry)
+				temp_file.filename = temp_file.filename.rpartition('/')[2]
+				list_entry.update( {	'filename' 		: temp_file.filename,
+										'size' 			: temp_file.st_size,
+								  		'hash' 			: temp_file.etag,
+								  		'timestamp' 	: temp_file.st_ctime
+								  })
+				temp_group.append(list_entry)
 
 
 	if len(temp_group) > 0:
@@ -198,7 +231,7 @@ def file_list_json(request):
 def file_list_edit(request):
 	authed_user = auth.get_current_user()
 	if authed_user is None:
-		return HttpResponse(json.dumps({'error' : 'Unauthenticated request'}), content_type="application/json")
+		return __unauthed_response()
 	
 	user_key = ps.get_user_key_by_id(authed_user.user_id())
 	
@@ -312,6 +345,10 @@ def file_list_edit(request):
 ## \return the app main panel
 ###########################################################################
 def file_preview(request, file = None):
+	app_access = __check_app_access()
+	if app_access is not None:
+		return app_access
+
 	## Authentication.
 	authed_user = auth.get_current_user()
 	if authed_user is None:
@@ -342,10 +379,9 @@ def file_preview(request, file = None):
 ##			fetching the page's skeleton
 ## \return 	the main panel pagelet
 ## \todo	use datastore/permissions API for file list lookup
+## \todo	check permissions, return HTTP error on failure
 ###########################################################################
 def graph_preview(request, file = None):
-	
-	
 	lst = ds.list(DATA_BUCKET)
 	for temp_file in lst:
 		temp_file.filename = temp_file.filename.rpartition('/')[2]
@@ -362,6 +398,10 @@ def graph_preview(request, file = None):
 ## \return the main panel pagelet
 ###########################################################################
 def file_page(request, file=None):
+	app_access = __check_app_access()
+	if app_access is not None:
+		return app_access
+	
 	lst = ds.list('/fc-raw-data')
 	file_info = None
 	for temp_file in lst:
@@ -427,6 +467,10 @@ def fetch_file(path, type):
 ## \return the settings page
 ###########################################################################
 def settings(request):
+	app_access = __check_app_access()
+	if app_access is not None:
+		return app_access
+	
 	return render(request, 'settings.html')
 
 ###########################################################################
@@ -438,7 +482,7 @@ def settings(request):
 def tool(request):
 	authed_user = auth.get_current_user()
 	if authed_user is None:
-		return HttpResponse(simplejson.dumps(gt.generate_gating_feedback('fail', 'Unauthenticated request')), content_type="application/json")
+		return __unauthed_response()
 
 
 	try:
@@ -467,7 +511,7 @@ def tool(request):
 	tool_response = tool(gate_info)
 
 	## Load balance instances in the background.
-	background.run(instances.balance)
+	background.run(instances.balance, 0)
 
 	json_response = simplejson.dumps(tool_response);
 	return HttpResponse(json_response, content_type="application/json")
@@ -482,20 +526,18 @@ def tool(request):
 ## \todo	Refactor return value creation
 ###########################################################################
 def analysis_status_json(request):
-	
+	authed_user = auth.get_current_user()
+	if authed_user is None:
+		return __unauthed_response()
+		
+	user_key = ps.get_user_key_by_id(authed_user.user_id())
+
 	response_part = {
 		'backoff' 	: 0,		#tells the client to back off for a given amount of time (milliseconds) (This is added to the client's constant poll interval)
 		'giveup'	: True,		#True instructs the client to stop polling - useful for situations such as unauthed requests where polling will never result in the user being shown a graph
 		'done'		: False		#True indicates that the analysis has finished and that the user can be redirected to the new image
 	}
 	
-	authed_user = auth.get_current_user()
-	if authed_user is None:
-		response_part.update( { 'error' : 'Unauthenticated request.' } )
-		return HttpResponse(json.dumps(response_part), content_type="application/json")
-		
-	user_key = ps.get_user_key_by_id(authed_user.user_id())
-		
 	try:
 		file_req = json.loads(request.raw_post_data)
 	except ValueError:
@@ -509,13 +551,15 @@ def analysis_status_json(request):
 	#	This is roughly what permissions checking should probably look like once all files have permissions entries
 	#		Alternatively, a check_exists call may be sufficient if the permissions entry is created before gating is requested,
 	#		this will depend on the CE/Permissions integration method
-	#file_entry = ps.get_file_by_name('/fc-raw-data/' + filename + '.fcs')
-	#if file_entry is None:
-	#	return HttpResponse( { 'error' : 'File or gate not recognised.', 'done' : False } ), content_type="application/json")
-	#else:
-	#	fp_entry = ps.get_user_file_permissions(file_entry.key, user_key)
-	#	if fp_entry is None:
-	#		return HttpResponse(json.dumps({update( { 'error' : 'Permission denied.', 'done' : False } ), content_type="application/json")
+	file_entry = ps.get_file_by_name(DATA_BUCKET + '/' + filename + '.fcs')
+	if file_entry is None:
+		response_part.update( { 'error' : 'File or gate not recognised.' } )
+		return HttpResponse(json.dumps(response_part), content_type="application/json")
+	else:
+		fp_entry = ps.get_user_file_permissions(file_entry.key, user_key)
+		if fp_entry is None:
+			response_part.update( { 'error' : 'Permission denied.' } )
+			return HttpResponse(json.dumps(response_part), content_type="application/json")
 
 
 	is_done =  ds.check_exists(GRAPH_BUCKET + '/' + file_req['filename'] + '.png', None)

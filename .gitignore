@@ -42,7 +42,7 @@ tmp-packages/
 app/static/fonts/
 app/static/js/jquery.js
 app/static/js/jquery.color.js
-app/Analysis/ComputeEngine/Assets/private_key.pem
+app/ComputeEngine/private_key.pem
 js2doxy.pl
 app/uneedtest.py
 app/static/css/bootstrap-tour.min.css
@@ -56,3 +56,4 @@ app/static/css/qtip.min.css
 app/static/js/qtip.min.js
 app/static/js/jquery-ui-1.10.4.min.js
 app/static/js/bootbox.min.js
+app/ComputeEngine/private_key.pem

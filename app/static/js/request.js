@@ -49,6 +49,7 @@ function ksfReq_fetchJSON(URI, callback, failCallback)
 	$.getJSON(URI)
 	.done( function(data)
 	{
+		ksfReq.checkResponseError(data)
 		if (callback)
 		{
 			callback(data);
@@ -64,10 +65,11 @@ function ksfReq_fetchJSON(URI, callback, failCallback)
 }
 ksfReq.fetchJSON = ksfReq_fetchJSON;
 
+
 /**
  * Sends JSON in a POST request and gets a response
  * \param String URI - URI to request
- * \payload Object - object to be serialised (JSON) and sent with the request
+ * \param payload Object - object to be serialised (JSON) and sent with the request
  * \param Function callback - called with response data
  * \param Function failCallBack - called if the request fails
  * \return None
@@ -84,6 +86,7 @@ function ksfReq_postJSON(URI, payload, callback, failCallBack)
 	} ).done(
 		function (response)
 		{
+			ksfReq.checkResponseError(response)
 			if (callback)
 			{
 				callback(response);
@@ -100,3 +103,27 @@ function ksfReq_postJSON(URI, payload, callback, failCallBack)
 	);
 }
 ksfReq.postJSON = ksfReq_postJSON;
+
+
+/**
+ * Redirects the client to the landing page if a NotLoggedIn error occurs
+ * \param response - response to original request, will be checked for JSON encoded error string
+ * \return None
+ * \author jmccrea@keesaco.com of Keesaco
+ * \todo This ought to be in a different (higher) layer, but as a lot of the client side calls directly into the request layer this is not entirely trivial. Once the client-side has been refactored this should be moved.
+ */
+function ksfReq_checkResponseError(response)
+{
+	try
+	{
+		if (response.error == 'NotLoggedIn')
+		{
+			document.location.href = '/';
+		}
+	}
+	catch(e)
+	{
+		//ignore error
+	}
+}
+ksfReq.checkResponseError = ksfReq_checkResponseError;

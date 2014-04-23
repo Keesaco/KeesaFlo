@@ -1,1 +1,5 @@
+# NOTE: cron jobs are always run on the default appengine version.
 cron:
+- description: balance instances
+  url: /_ah/balance
+  schedule: every 5 minutes

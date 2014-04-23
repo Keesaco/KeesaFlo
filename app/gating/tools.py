@@ -2,11 +2,17 @@
 ## \file app/tools.py
 ## \brief Stores all the available tools and their actions
 ## \author mrudelle@keesaco.com of Keesaco
+## \todo	Decouple permissions and authentication
 ###########################################################################
 
 import API.APIQueue as queue
 from django.core.urlresolvers import reverse
 import API.APILogging as logging
+import API.APIPermissions as ps
+import API.PALUsers as auth
+from Permissions.Types import FileInfo, Permissions
+
+DATA_BUCKET = '/fc-raw-data/'
 
 ###########################################################################
 ## \brief Is called when a gating is requested
@@ -40,7 +46,7 @@ def simple_gating(gate_params):
 
 			new_name = gate_params['filename'] + "-rectGate";
 			queue.gate_rectangle(gate_params['filename'], gating_request, new_name, reverse_gate, "FSC-A", "SSC-A");
-			return generate_gating_feedback("success", "the rectangular gating was performed correctly", new_name)
+			return generate_gating_feedback("success", "the rectangular gating was performed correctly", new_name, gate_params['filename'])
 		else:
 			return generate_gating_feedback("fail", "notcorrect " + params + " length:" + str(len(points)) + " is not equal to 4")
 
@@ -50,7 +56,7 @@ def simple_gating(gate_params):
 
 			new_name = gate_params['filename'] + "-polyGate";
 			queue.gate_polygon(gate_params['filename'], gating_request, new_name, reverse_gate, "FSC-A", "SSC-A");
-			return generate_gating_feedback("success", "the polygonal gating was performed correctly", new_name)
+			return generate_gating_feedback("success", "the polygonal gating was performed correctly", new_name, gate_params['filename'])
 		else:
 			return generate_gating_feedback("fail", "notcorrect " + params + " #pointCoordinates:" + str(len(points))-1 + " is not pair")
 
@@ -60,7 +66,7 @@ def simple_gating(gate_params):
 
 			new_name = gate_params['filename'] + "-ovalGate";
 			queue.gate_circle(gate_params['filename'], gating_request, new_name, reverse_gate, "FSC-A", "SSC-A");
-			return generate_gating_feedback("success", "the oval gating was performed correctly", new_name)
+			return generate_gating_feedback("success", "the oval gating was performed correctly", new_name, gate_params['filename'])
 		else:
 			return generate_gating_feedback("fail", "notcorrect " + params + " #pointCoordinates:" + str(len(points)) + " is not even")
 
@@ -70,7 +76,7 @@ def simple_gating(gate_params):
 
 			new_name = gate_params['filename'] + "-normGate";
 			queue.gate_normal(gate_params['filename'], new_name, reverse_gate, "FSC-A", "SSC-A", gating_request);
-			return generate_gating_feedback("success", "the normal gating was performed correctly", new_name)
+			return generate_gating_feedback("success", "the normal gating was performed correctly", new_name, gate_params['filename'])
 		else:
 			return generate_gating_feedback("fail", "notcorrect, wrong number of arguments")
 
@@ -82,7 +88,7 @@ def simple_gating(gate_params):
 			x_coord = str(points[0])
 			y_coord = str(points[1])
 			queue.gate_quadrant(gate_params['filename'], x_coord, y_coord, new_name[0], new_name[1], new_name[2], new_name[3], "FSC-A", "SSC-A");
-			return generate_gating_feedback("success", "the quadrant gate was performed correctly", new_name[0])
+			return generate_gating_feedback("success", "the quadrant gate was performed correctly", new_name[0], gate_params['filename'])
 		else:
 			return generate_gating_feedback("fail", "notcorrect, wrong number of arguments")
 
@@ -95,7 +101,7 @@ def simple_gating(gate_params):
 			clusters = clusters + gate_params['filename'] + "-cluster" + str(i+1)
 			new_name = clusters[0:clusters.find(" ")]
 			queue.gate_kmeans(gate_params['filename'], clusters, str(number_gates), "FSC-A", "SSC-A");
-			return generate_gating_feedback("success", "the kmeans gate was performed correctly", new_name)
+			return generate_gating_feedback("success", "the kmeans gate was performed correctly", new_name, gate_params['filename'])
 		else:
 			return generate_gating_feedback("fail", "notcorrect, wrong number of arguments")
 
@@ -124,8 +130,32 @@ def no_such_tool(gate_params):
 ## \param newgraphurl - url of the new graph
 ## \return a dictionary with the status of the tool call
 ## \author mrudelle@keesaco.com of Keesaco
+## \author jmccrea@keesaco.com of Keesaco
+## \note 	This is currently the method used to set permissions on gates
+##			in future this should be refactored. Perhaps providing a base
+##			tool class to inherit from
+## \todo	Move permissions code out of here
 ###########################################################################
-def generate_gating_feedback(status, message, new_graph_name = None):
+def generate_gating_feedback(status, message, new_graph_name = None, existing_name = None):
+	if new_graph_name is not None:
+		authed_user = auth.get_current_user()
+		user_key = ps.get_user_key_by_id(authed_user.user_id())
+		new_file = FileInfo(file_name = DATA_BUCKET + new_graph_name, owner_key = user_key)
+		file_key = ps.add_file(new_file)
+	
+		previous_file = ps.get_file_by_name(DATA_BUCKET + existing_name)
+		previous_permissions = ps.get_user_file_permissions(previous_file.key, user_key)
+		
+		ps.add_file_permissions(file_key,
+								user_key,
+								Permissions (
+									previous_permissions.read,
+									previous_permissions.write,
+									previous_permissions.full_control
+								),
+								previous_permissions.colour,
+								False)
+	
 	return {
 		'status': status,
 		'message': message,
