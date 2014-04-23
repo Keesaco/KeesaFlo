@@ -333,15 +333,12 @@ function ksfGraphTools_sendGatingRequest(toolName, gatePoints, params)
 					case "fail":
 						feedbackType = FEEDBACK_DANGER;
 						break;
-					
 					default:
 						feedbackType = FEEDBACK_INFO;
 				}
-					
 				ksfGraphTools.showFeedback(feedbackType, response.status, response.message);
-					
 				ksfCanvas.toolText("");
-				ksfGraphTools.setGraphUrl(response.url, response.graphName);
+				setTimeout(ksfGraphTools.setGraphUrl(response.url, response.graphName), GRAPH_POLL_INTERVAL);
 			},
 			function(jqxhr, textStatus, error)
 			{
@@ -395,7 +392,7 @@ function ksfGraphTools_setGraphUrl(url, newFilename, numRetries)
 						setTimeout(
 							function()
 							{
-								   ksfGraphTools_setGraphUrl(url, newFilename, ksfGraphTools.timeoutCounter-1);
+								ksfGraphTools_setGraphUrl(url, newFilename, ksfGraphTools.timeoutCounter-1);
 							},
 							//set adjusted timeout if the server has told the client to back off
 							GRAPH_POLL_INTERVAL + (response.backoff ? response.backoff : 0) );
