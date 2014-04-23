@@ -13,7 +13,6 @@ import API.APIDatastore as ds
 import API.PALUsers as auth
 from Permissions.Types import FileInfo, Permissions
 from uuid import uuid1
-import time
 
 DATA_BUCKET = '/fc-raw-data/'
 
@@ -116,13 +115,10 @@ def generate_gating_feedback(status, message, new_graph_name = None, existing_na
 		previous_file = ps.get_file_by_name(DATA_BUCKET + existing_name)
 		previous_permissions = ps.get_user_file_permissions(previous_file.key, user_key)
 
-		## Get timestamp.
-		timestamp = int(time.time())
-
 		## Add permissions to new file.
 		new_file = FileInfo(file_name = new_graph_name,
 							owner_key = user_key,
-							friendly_name = previous_file.friendly_name + '-' + str(timestamp) + '-gate')
+							friendly_name = previous_file.friendly_name + '-gate')
 		file_key = ps.add_file(new_file)
 		ps.add_file_permissions(file_key,
 								user_key,
