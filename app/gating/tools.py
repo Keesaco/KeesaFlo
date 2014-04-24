@@ -51,7 +51,7 @@ def simple_gating(gate_params):
 
 			gating_request = " ".join(str(p) for p in points)
 
-			queue.gate_rectangle(gate_params['filename'], gating_request, new_name, reverse_gate, "FSC-A", "PE-A");
+			queue.gate_rectangle(gate_params['filename'], gating_request, new_name, reverse_gate, "FSC-A", "SSC-A");
 			return generate_gating_feedback("success", "the rectangular gating was performed correctly", new_path, gate_params['filename'])
 		else:
 			return generate_gating_feedback("fail", "notcorrect " + params + " length:" + str(len(points)) + " is not equal to 4")
@@ -60,7 +60,7 @@ def simple_gating(gate_params):
 		if len(points)%2 == 0 :
 			gating_request = " ".join(str(p) for p in points)
 
-			queue.gate_polygon(gate_params['filename'], gating_request, new_name, reverse_gate, "FSC-A", "PE-A");
+			queue.gate_polygon(gate_params['filename'], gating_request, new_name, reverse_gate, "FSC-A", "SSC-A");
 			return generate_gating_feedback("success", "the polygonal gating was performed correctly", new_path, gate_params['filename'])
 		else:
 			return generate_gating_feedback("fail", "notcorrect " + params + " #pointCoordinates:" + str(len(points))-1 + " is not pair")
@@ -69,7 +69,7 @@ def simple_gating(gate_params):
 		if len(points) == 6 :
 			gating_request = " ".join(str(p) for p in points)
 
-			queue.gate_circle(gate_params['filename'], gating_request, new_name, reverse_gate, "FSC-A", "PE-A");
+			queue.gate_circle(gate_params['filename'], gating_request, new_name, reverse_gate, "FSC-A", "SSC-A");
 			return generate_gating_feedback("success", "the oval gating was performed correctly", new_path, gate_params['filename'])
 		else:
 			return generate_gating_feedback("fail", "notcorrect " + params + " #pointCoordinates:" + str(len(points)) + " is not even")

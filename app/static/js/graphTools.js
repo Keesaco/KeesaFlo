@@ -139,6 +139,7 @@ ksfGraphTools.RectangularGating = {
 				this.endy = posY;
 			}
 			ksfCanvas.drawBox(this.startx, this.starty, this.endx - this.startx, this.endy - this.starty, 1);
+			ksfCanvas.setCursor('crosshair');
 		}
 	},
 
@@ -156,6 +157,16 @@ ksfGraphTools.RectangularGating = {
 		else if (this.state === DONE)
 		{
 			ksfCanvas.drawBox(this.startx, this.starty, this.endx - this.startx, this.endy - this.starty, 1);
+			// Change cursor when close to points.
+			if ((this.distance(posX, posY, this.startx, this.starty) < SENSITIVITY)
+				|| (this.distance(posX, posY, this.endx, this.endy) < SENSITIVITY))
+			{
+				ksfCanvas.setCursor("move");
+			}
+			else
+			{
+				ksfCanvas.setCursor("crosshair");
+			}
 		}
 		// If gate is being moved draw rectangle from point to mouse.
 		else if (this.state === MOVE)
@@ -170,6 +181,8 @@ ksfGraphTools.RectangularGating = {
 			{
 				ksfCanvas.drawBox(this.startx, this.starty, posX - this.startx, posY - this.starty, 0.5);
 			}
+			// Set cursor.
+			ksfCanvas.setCursor('move');
 		}
 	},
 
