@@ -46,6 +46,11 @@ WORK2 = 2;
 DONE  = 3;
 MOVE  = 4;
 
+/**
+ *	Sensitivity of moving gate points.
+ */
+SENSITIVITY = 24;
+
 ksfGraphTools.timeoutCounter = GRAPH_LOAD_MAX_ATTEMPTS;
 
 /*
@@ -66,6 +71,10 @@ ksfGraphTools.RectangularGating = {
 	starty : null,
 	endx : null,
 	endy : null,
+
+	move_point : null,
+	START_POINT : 0,
+	END_POINT : 1,
 
 	ELEMENT_ID : "#tool_rectangular_gating",
 
@@ -93,10 +102,44 @@ ksfGraphTools.RectangularGating = {
 			ksfCanvas.enableBtn(REQUEST_GATING_BTN, true);
 			this.state = DONE;
 		}
-		// If gating is finished, reset the tool.
+		// If gating is finished, check for moving points.
 		else if (this.state === DONE)
 		{
-			this.resetTool();
+			// Move start point.
+			if (this.distance(posX, posY, this.startx, this.starty) < SENSITIVITY)
+			{
+				this.move_point = this.START_POINT;
+				this.state = MOVE;
+				ksfCanvas.enableBtn(REQUEST_GATING_BTN, true);
+				ksfCanvas.toolText("Moving gate.");
+			}
+			// Move end point.
+			else if (this.distance(posX, posY, this.endx, this.endy) < SENSITIVITY)
+			{
+				this.move_point = this.END_POINT;
+				this.state = MOVE;
+				ksfCanvas.enableBtn(REQUEST_GATING_BTN, true);
+				ksfCanvas.toolText("Moving gate.");
+			}
+		}
+		// If moving is finished, move gate.
+		else if (this.state === MOVE)
+		{
+			this.state = DONE;
+			// If moving start point.
+			if (this.move_point === this.START_POINT)
+			{
+				this.startx = posX;
+				this.starty = posY;
+			}
+			// If moving end point.
+			else if (this.move_point === this.END_POINT)
+			{
+				this.endx = posX;
+				this.endy = posY;
+				console.log('end point moved');
+			}
+			ksfCanvas.drawBox(this.startx, this.starty, this.endx - this.startx, this.endy - this.starty, 1);
 		}
 	},
 
@@ -115,6 +158,20 @@ ksfGraphTools.RectangularGating = {
 		{
 			ksfCanvas.drawBox(this.startx, this.starty, this.endx - this.startx, this.endy - this.starty, 1);
 		}
+		// If gate is being moved draw rectangle from point to mouse.
+		else if (this.state === MOVE)
+		{
+			// If moving start point.
+			if (this.move_point === this.START_POINT)
+			{
+				ksfCanvas.drawBox(posX, posY, this.endx - posX, this.endy - posY, 0.5);
+			}
+			// If moving end point.
+			else if (this.move_point === this.END_POINT)
+			{
+				ksfCanvas.drawBox(this.startx, this.startx, posX - this.startx, posY - this.starty, 0.5);
+			}
+		}
 	},
 
 	resetTool : function()
@@ -128,7 +185,7 @@ ksfGraphTools.RectangularGating = {
 		ksfCanvas.enableBtn(REQUEST_GATING_BTN, false);
 		ksfCanvas.toolText("The rectangle has been reset.");
 	},
-	
+
 	requestGating : function()
 	{
 		if (this.state !== DONE)
@@ -137,6 +194,13 @@ ksfGraphTools.RectangularGating = {
 			return;
 		}
 		ksfGraphTools.sendGatingRequest('rectangular_gating', [this.startx, this.starty, this.endx, this.endy]);
+	},
+
+	distance : function(x1, y1, x2, y2)
+	{
+		var x_pow = Math.pow(x1 - x2, 2),
+			y_pow = Math.pow(y1 - y2, 2);
+		return Math.sqrt(x_pow + y_pow);
 	}
 }
 
@@ -282,7 +346,7 @@ ksfGraphTools.OvalGating = {
 			ksfCanvas.enableBtn(REQUEST_GATING_BTN, true);
 			this.state = DONE;
 		}
-		// If gatign has finished, reset tool.
+		// If gating has finished, reset tool.
 		else if (this.state === DONE)
 		{
 			this.resetTool();

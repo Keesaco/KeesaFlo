@@ -99,7 +99,6 @@ ksfCanvas.drawPolygon = ksfCanvas_drawPolygon;
 function ksfCanvas_drawOval(cx, cy, r1, p2x, p2y, alpha)
 {
 	this.clear();
-	
 	var r2, angle, tx, ty;
 	if (p2x !== null && p2y !== null)
 	{
