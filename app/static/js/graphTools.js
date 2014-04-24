@@ -165,7 +165,7 @@ ksfGraphTools.PolygonGating = {
 			if (this.distanceToStart(posX, posY) < this.START_RADIUS)
 			{
 				this.state = DONE;
-				ksfCanvas.drawPolygon(this.xList, this.yList, this.xList[0], this.yList[0], this.START_RADIUS);
+				ksfCanvas.drawPolygon(this.xList, this.yList, this.xList[0], this.yList[0], this.START_RADIUS, 1);
 				ksfCanvas.toolText("Selection is finished: "+ (this.xList.length) + " points");
 				ksfCanvas.enableBtn(REQUEST_GATING_BTN, true);
 			}
@@ -174,7 +174,7 @@ ksfGraphTools.PolygonGating = {
 				this.state = WORK;
 				this.xList.push(posX);
 				this.yList.push(posY);
-				ksfCanvas.drawPolygon(this.xList, this.yList, null, null, this.START_RADIUS);
+				ksfCanvas.drawPolygon(this.xList, this.yList, null, null, this.START_RADIUS, 0.5);
 				ksfCanvas.toolText("point #"+ (this.xList.lengt) +": ("+posX+","+posY+")");
 			}
 		}
@@ -277,7 +277,7 @@ ksfGraphTools.OvalGating = {
 		{
 			this.pointx = posX;
 			this.pointy = posY;
-			ksfCanvas.drawOval(this.centerx, this.centery, this.r1, this.pointx, this.pointy);
+			ksfCanvas.drawOval(this.centerx, this.centery, this.r1, this.pointx, this.pointy, 0.5);
 			ksfCanvas.toolText("Oval correctly selected");
 			ksfCanvas.enableBtn(REQUEST_GATING_BTN, true);
 			this.state = DONE;
@@ -300,17 +300,17 @@ ksfGraphTools.OvalGating = {
 		if (this.state === WORK)
 		{
 			var r = Math.sqrt(Math.pow(this.centerx - posX, 2) + Math.pow(this.centery - posY, 2));
-			ksfCanvas.drawOval(this.centerx, this.centery, r, null, null);
+			ksfCanvas.drawOval(this.centerx, this.centery, r, null, null, 0.5);
 		}
 		// If gating stage 2, draw ellipsoid with mouse position.
 		else if (this.state === WORK2)
 		{
-			ksfCanvas.drawOval(this.centerx, this.centery, this.r1, posX, posY);
+			ksfCanvas.drawOval(this.centerx, this.centery, this.r1, posX, posY, 0.5);
 		}
 		// If gating is done, draw final ellipsoid.
 		else if (this.state === DONE)
 		{
-			ksfCanvas.drawOval(this.centerx, this.centery, this.r1, this.pointx, this.pointy);
+			ksfCanvas.drawOval(this.centerx, this.centery, this.r1, this.pointx, this.pointy, 1);
 		}
 	},
 
