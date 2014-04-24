@@ -363,16 +363,25 @@ def file_preview(request, file = None):
 	#TODO: Might need to be simplified or moved to a function in fileinfo
 	# TODO the folowing should be replaced by a method in the APIDatastore
 	file_info = ps.get_file_by_name(DATA_BUCKET + '/' + file)
+
+	undo_uri = None
+	if file_info is not None:
+		prev_file = ps.get_file_by_key(file_info.prev_file_key)
+		if prev_file is not None:
+			undo_uri = prev_file.file_name.rpartition(DATA_BUCKET + '/')[2]
+
 	lst = ds.list(DATA_BUCKET)
 	current_file = None
 	for temp_file in lst:
 		temp_file.filename = temp_file.filename.rpartition('/')[2]
 		if temp_file.filename == file:
 			current_file = temp_file;
+
 	return render(request, 'file_preview.html', {'current_file' : current_file,
 												 'name' : file,
 												 'authed_user_nick': authed_user_nick,
-												 'file_info' : file_info})
+												 'file_info' : file_info,
+				  								 'undo_link' : undo_uri })
 
 ###########################################################################
 ## \brief 	view for graph preview pagelet
