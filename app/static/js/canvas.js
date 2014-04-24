@@ -42,21 +42,21 @@ ksfCanvas.drawCross = ksfCanvas_drawCross;
  * \param ay - y coordinate of the first point
  * \param bx - x coordinate of the second point
  * \param by - y coordinate of the second point
- * \param alpha - from 0 to 1, define the tansparency of the box
+ * \param alpha - circle transparency
  * \author mrudelle@keesaco.com of Keesaco
  */
 function ksfCanvasdrawBox(ax, ay, bx, by, alpha)
 {
 	this.clear();
 	context.save();
-	context.fillStyle = "rgba(255, 0, 0, "+alpha/2+")";
+	context.fillStyle = "rgba(255, 0, 0, " + alpha / 2 + ")";
 	context.beginPath();
 	context.arc(ax, ay, 5, 0, Math.PI*2);
 	context.arc(ax+bx, ay+by, 5, 0, Math.PI*2);
 	context.fill();
 	context.closePath();
 	context.restore();
-	context.strokeStyle = "rgba(0, 0, 0, "+alpha+")";
+	context.strokeStyle = "rgba(0, 0, 0, 1)";
 	context.strokeRect(ax, ay, bx, by);
 	context.restore();
 }
@@ -71,39 +71,51 @@ ksfCanvas.drawBox = ksfCanvasdrawBox;
  * \param lastx - x coordinates of the last points (null if no last point)
  * \param lasty - y coordinates of the last points (null if no last point)
  * \param startRadius - radius of the starting point (red area clickable to close the gate)
+ * \param alpha - circle transparency
  * \author mrudelle@keesaco.com of Keesaco
  */
-function ksfCanvas_drawPolygon(xList, yList, lastx, lasty, startRadius)
+function ksfCanvas_drawPolygon(xList, yList, lastx, lasty, startRadius, alpha)
 {
+	// Clear canvas.
 	this.clear();
-	
+	// Stop drawing if there is only a single point.
 	if (xList.length < 1)
 	{
 		return;
 	}
-
+	// Draw first/final large joint.
 	context.beginPath();
-	context.fillStyle = "rgba(255, 0, 0, 0.5)";
+	context.fillStyle = "rgba(255, 0, 0, " + alpha / 2 + ")";
 	context.arc(xList[0], yList[0], startRadius, 0, Math.PI*2);
 	context.fill();
 	context.closePath();
-
+	// Stop drawing if there are only two points.
 	if (((lastx === null || lasty === null) && xList.length < 2))
 	{
 		return;
 	}
-
+	// Draw joints.
+	context.fillStyle = "rgba(255, 0, 0, 0.2)";
+	for (var i = 1; i < xList.length; i++)
+	{
+		context.beginPath();
+		context.arc(xList[i], yList[i], 4, 0, Math.PI*2);
+		context.fill();
+		context.closePath();
+	}
+	// Draw polygon lines.
 	context.beginPath();
 	context.moveTo(xList[0], yList[0]);
-	for (var i = 1; i < xList.length ; i++)
+	for (var i = 1; i < xList.length; i++)
 	{
-	   context.lineTo(xList[i], yList[i]);
+		context.lineTo(xList[i], yList[i]);
 	}
-
+	// Close polygon.
 	if (lastx !== null || lasty !== null)
 	{
-	   context.lineTo(lastx, lasty);
+		context.lineTo(lastx, lasty);
 	}
+	// End path.
 	context.stroke();
 	context.closePath();
 }
@@ -117,31 +129,41 @@ ksfCanvas.drawPolygon = ksfCanvas_drawPolygon;
  * \param r1 - first radius of the oval
  * \param p2x - x coordinates of the last point (it belongs to the oval)
  * \param p2y - y coordinates of the last point (it belongs to the oval)
+ * \param alpha - circle transparency
  * \author mrudelle@keesaco.com of Keesaco
  */
-function ksfCanvas_drawOval(cx, cy, r1, p2x, p2y)
+function ksfCanvas_drawOval(cx, cy, r1, p2x, p2y, alpha)
 {
 	this.clear();
-	
 	var r2, angle, tx, ty;
-	//TODO pass alpha as an atribute
-	var alpha = 1;
-
-	tx=cx-p2x;
-	ty=cy-p2y;
-	r2 = Math.sqrt(Math.pow(tx,2)+Math.pow(ty,2));
-	angle = ksfGraphTools.mesureAngle(tx, ty);
-
+	
+	if (p2x !== null && p2y !== null)
+	{
+		tx=cx-p2x;
+		ty=cy-p2y;
+		r2 = Math.sqrt(Math.pow(tx,2)+Math.pow(ty,2));
+		angle = ksfGraphTools.mesureAngle(tx, ty);
+	}
+	else
+	{
+		r2 = r1;
+		angle = 0;
+	}
+	
 	context.beginPath();
-	context.fillStyle = "rgba(255, 0, 0, "+(alpha/2)+")";
+	context.fillStyle = "rgba(255, 0, 0, " + alpha / 2 + ")";
 	context.arc(cx, cy, 5, 0, Math.PI*2);
-	context.arc(p2x, p2y, 5, 0, Math.PI*2);
-	context.closePath();
 
-	var p1x=cx+Math.cos(angle-Math.PI/2)*r1,
-	p1y=cy+Math.sin(angle-Math.PI/2)*r1;
-	context.arc(p1x, p1y, 5, 0, Math.PI*2);
 	context.closePath();
+	if (p2x !== null && p2y !== null)
+	{
+		context.arc(p2x, p2y, 5, 0, Math.PI*2);
+		context.closePath();
+		var p1x=cx+Math.cos(angle-Math.PI/2)*r1,
+			p1y=cy+Math.sin(angle-Math.PI/2)*r1;
+		context.arc(p1x, p1y, 5, 0, Math.PI*2);
+		context.closePath();
+	}
 
 	context.fill();
 	context.save();
