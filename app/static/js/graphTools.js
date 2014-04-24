@@ -137,7 +137,6 @@ ksfGraphTools.RectangularGating = {
 			{
 				this.endx = posX;
 				this.endy = posY;
-				console.log('end point moved');
 			}
 			ksfCanvas.drawBox(this.startx, this.starty, this.endx - this.startx, this.endy - this.starty, 1);
 		}
@@ -169,7 +168,7 @@ ksfGraphTools.RectangularGating = {
 			// If moving end point.
 			else if (this.move_point === this.END_POINT)
 			{
-				ksfCanvas.drawBox(this.startx, this.startx, posX - this.startx, posY - this.starty, 0.5);
+				ksfCanvas.drawBox(this.startx, this.starty, posX - this.startx, posY - this.starty, 0.5);
 			}
 		}
 	},
