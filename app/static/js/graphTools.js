@@ -56,7 +56,7 @@ ksfGraphTools.timeoutCounter = GRAPH_LOAD_MAX_ATTEMPTS;
 /*
 	Each of the folowing elements represent a graph related tool
 	they contains - an ELEMENT_ID that allows one to access the tool's button
-				  - a function onGraphClick, trigered by a click on the graph when this tool is selected
+				  - a function onGraphClick, triggered by a click on the graph when this tool is selected
 				  - a function resetTool, called when the tool is unselected
 				  - a function onGraphMouseMove, called to redraw the canvas when the mouse is moving over it
 				  - a function requestGating which ask the server to perform a gating on the dataset.
@@ -220,6 +220,8 @@ ksfGraphTools.PolygonGating = {
 	ELEMENT_ID : "#tool_polygon_gating",
 	START_RADIUS : 10,
 
+	move_point: null,
+
 	onGraphClick : function(event)
 	{
 		// Calculate mouse relative position.
@@ -247,10 +249,25 @@ ksfGraphTools.PolygonGating = {
 				ksfCanvas.toolText("Point #"+ (this.xList.length) +": (" + posX + "," + posY + ")");
 			}
 		}
-		// If gating has finished, reset tool.
+		// If gating has finished, check for moving.
 		else if (this.state === DONE)
 		{
-			this.resetTool();
+			// Iterate over points, checking for moves.
+			for (var i = 0; i < this.xList.length; i++)
+			{
+				if (ksfGraphTools.distance(posX, posY, this.xList[i], this.yList[i]) < SENSITIVITY)
+				{
+					this.state = MOVE;
+					this.move_point = i;
+					ksfCanvas.toolText("Moving gate.");
+				}
+			}
+		}
+		// If gate has been moved.
+		else if (this.state === MOVE)
+		{
+			this.state = DONE;
+			ksfCanvas.toolText("Gate moved.");
 		}
 	},
 
@@ -265,25 +282,47 @@ ksfGraphTools.PolygonGating = {
 
 	onGraphMouseMove : function(event)
 	{
+		// Calculate relative mouse position.
+		var posX = event.pageX - $(GRAPH_ID).offset().left,
+			posY = event.pageY - $(GRAPH_ID).offset().top;
+		// Reset cursor.
 		ksfCanvas.setCursor('crosshair');
 		// If gating has finished.
 		if (this.state === DONE)
 		{
+			// Draw polygon.
 			ksfCanvas.drawPolygon(this.xList, this.yList, this.xList[0], this.yList[0], this.START_RADIUS);
-			ksfCanvas.toolText("selection is finished: "+ (this.xList.length) + "points");
+			// Iterate over points, checking for moves.
+			for (var i = 0; i < this.xList.length; i++)
+			{
+				//console.log(posX + ',' + posY + ',' + this.xList[i] + ',' + this.yList[i]);
+				if (ksfGraphTools.distance(posX, posY, this.xList[i], this.yList[i]) < SENSITIVITY)
+				{
+					ksfCanvas.setCursor('move');
+				}
+			}
 		}
 		// If gating is in progress.
-		else
+		else if (this.state === WORK)
 		{
 			// Calculate relative mouse position.
 			var posX = event.pageX - $(GRAPH_ID).offset().left,
 				posY = event.pageY - $(GRAPH_ID).offset().top;
-			// Draw
+			// Draw.
 			ksfCanvas.drawPolygon(this.xList, this.yList, posX, posY, this.START_RADIUS);
 			if (this.distanceToStart(posX, posY) < this.START_RADIUS)
 			{
 				ksfCanvas.setCursor('pointer');
 			}
+		}
+		// If gate is being moved.
+		else if (this.state === MOVE)
+		{
+			// Set moved point's position..
+			this.xList[this.move_point] = posX;
+			this.yList[this.move_point] = posY;
+			// Draw polygon.
+			ksfCanvas.drawPolygon(this.xList, this.yList, this.xList[0], this.yList[0], this.START_RADIUS);
 		}
 	},
 

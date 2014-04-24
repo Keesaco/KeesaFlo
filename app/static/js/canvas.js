@@ -51,35 +51,46 @@ ksfCanvas.drawBox = ksfCanvasdrawBox;
  */
 function ksfCanvas_drawPolygon(xList, yList, lastx, lasty, startRadius, alpha)
 {
+	// Clear canvas.
 	this.clear();
-
+	// Stop drawing if there is only a single point.
 	if (xList.length < 1)
 	{
 		return;
 	}
-
+	// Draw first/final large joint.
 	context.beginPath();
 	context.fillStyle = "rgba(255, 0, 0, " + alpha / 2 + ")";
 	context.arc(xList[0], yList[0], startRadius, 0, Math.PI*2);
 	context.fill();
 	context.closePath();
-
+	// Stop drawing if there are only two points.
 	if (((lastx === null || lasty === null) && xList.length < 2))
 	{
 		return;
 	}
-
+	// Draw joints.
+	context.fillStyle = "rgba(255, 0, 0, 0.2)";
+	for (var i = 1; i < xList.length; i++)
+	{
+		context.beginPath();
+		context.arc(xList[i], yList[i], 4, 0, Math.PI*2);
+		context.fill();
+		context.closePath();
+	}
+	// Draw polygon lines.
 	context.beginPath();
 	context.moveTo(xList[0], yList[0]);
-	for (var i = 1; i < xList.length ; i++)
+	for (var i = 1; i < xList.length; i++)
 	{
 		context.lineTo(xList[i], yList[i]);
 	}
-
+	// Close polygon.
 	if (lastx !== null || lasty !== null)
 	{
 		context.lineTo(lastx, lasty);
 	}
+	// End path.
 	context.stroke();
 	context.closePath();
 }
