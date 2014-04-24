@@ -53,9 +53,8 @@ def simple_gating(gate_params):
 
 			gating_request = " ".join(str(p) for p in points)
 
-			new_name = gate_params['filename'] + "-rectGate";
 			queue.gate_rectangle(gate_params['filename'], gating_request, new_name, reverse_gate, "FSC-A", "SSC-A");
-			return generate_gating_feedback("success", "the rectangular gating was performed correctly", new_name, gate_params['filename'])
+			return generate_gating_feedback("success", "the rectangular gating was performed correctly", new_path, gate_params['filename'])
 		else:
 			return generate_gating_feedback("fail", "notcorrect " + params + " length:" + str(len(points)) + " is not equal to 4")
 
@@ -63,9 +62,8 @@ def simple_gating(gate_params):
 		if len(points)%2 == 0 :
 			gating_request = " ".join(str(p) for p in points)
 
-			new_name = gate_params['filename'] + "-polyGate";
 			queue.gate_polygon(gate_params['filename'], gating_request, new_name, reverse_gate, "FSC-A", "SSC-A");
-			return generate_gating_feedback("success", "the polygonal gating was performed correctly", new_name, gate_params['filename'])
+			return generate_gating_feedback("success", "the polygonal gating was performed correctly", new_path, gate_params['filename'])
 		else:
 			return generate_gating_feedback("fail", "notcorrect " + params + " #pointCoordinates:" + str(len(points))-1 + " is not pair")
 
@@ -73,9 +71,8 @@ def simple_gating(gate_params):
 		if len(points) == 6 :
 			gating_request = " ".join(str(p) for p in points)
 
-			new_name = gate_params['filename'] + "-ovalGate";
 			queue.gate_circle(gate_params['filename'], gating_request, new_name, reverse_gate, "FSC-A", "SSC-A");
-			return generate_gating_feedback("success", "the oval gating was performed correctly", new_name, gate_params['filename'])
+			return generate_gating_feedback("success", "the oval gating was performed correctly", new_path, gate_params['filename'])
 		else:
 			return generate_gating_feedback("fail", "notcorrect " + params + " #pointCoordinates:" + str(len(points)) + " is not even")
 
@@ -83,34 +80,41 @@ def simple_gating(gate_params):
 		if len(points) == 1 :
 			gating_request = str(points[0])
 
-			new_name = gate_params['filename'] + "-normGate";
 			queue.gate_normal(gate_params['filename'], new_name, reverse_gate, "FSC-A", "SSC-A", gating_request);
-			return generate_gating_feedback("success", "the normal gating was performed correctly", new_name, gate_params['filename'])
+			return generate_gating_feedback("success", "the normal gating was performed correctly", new_path, gate_params['filename'])
 		else:
 			return generate_gating_feedback("fail", "notcorrect, wrong number of arguments")
 
 	elif (gate_params['tool'] == 'quadrant_gating') :
 		if len(points) == 2 :
-			new_name = []
-			for i in range(0, 4):
-				new_name.append(gate_params['filename'] + "-quad" + str(i) + "Gate")
+			other_new_names = []
+			for i in range(0, 3):
+				while True:
+					next_new_name = str(uuid1())
+					path = ds.generate_path(DATA_BUCKET, None, new_name)
+					if not ds.check_exists(new_path, None):
+						other_new_names.append(next_new_name)
+						break
 			x_coord = str(points[0])
 			y_coord = str(points[1])
-			queue.gate_quadrant(gate_params['filename'], x_coord, y_coord, new_name[0], new_name[1], new_name[2], new_name[3], "FSC-A", "SSC-A");
-			return generate_gating_feedback("success", "the quadrant gate was performed correctly", new_name[0], gate_params['filename'])
+			queue.gate_quadrant(gate_params['filename'], x_coord, y_coord, new_name, other_new_names[0], other_new_names[1], other_new_names[2], "FSC-A", "SSC-A");
+			return generate_gating_feedback("success", "the quadrant gate was performed correctly", new_path, gate_params['filename'])
 		else:
 			return generate_gating_feedback("fail", "notcorrect, wrong number of arguments")
 
 	elif (gate_params['tool'] == 'kmeans_gating') :
 		if len(points) == 1 :
-			clusters = ""
+			clusters = new_name
 			number_gates = points[0]
-			for i in range(1, number_gates):
-				clusters = clusters + gate_params['filename'] + "-cluster" + str(i) + " "
-			clusters = clusters + gate_params['filename'] + "-cluster" + str(i+1)
-			new_name = clusters[0:clusters.find(" ")]
+			for i in range(0, number_gates):
+				while True:
+					next_new_name = str(uuid1())
+					path = ds.generate_path(DATA_BUCKET, None, new_name)
+					if not ds.check_exists(new_path, None):
+						clusters = clusters + " " + next_new_name
+						break
 			queue.gate_kmeans(gate_params['filename'], clusters, str(number_gates), "FSC-A", "SSC-A");
-			return generate_gating_feedback("success", "the kmeans gate was performed correctly", new_name, gate_params['filename'])
+			return generate_gating_feedback("success", "the kmeans gate was performed correctly", new_path, gate_params['filename'])
 		else:
 			return generate_gating_feedback("fail", "notcorrect, wrong number of arguments")
 
