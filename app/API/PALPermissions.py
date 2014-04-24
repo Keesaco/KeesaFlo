@@ -262,7 +262,6 @@ def get_file_by_key(file_key):
 								key				= file.key)
 	else:
 		return None
-		
 
 ###########################################################################
 ## \brief gets a file object from its internal file name
@@ -279,10 +278,10 @@ def get_file_by_name(file_name):
 		return None
 	else:
 		return FileInfo(	file_name 		= file.file_name,
-					   		owner_key 		= file.owner_key,
-					   		friendly_name 	= file.friendly_name,
-					   		key				= file.key)
-	
+							owner_key 		= file.owner_key,
+							friendly_name 	= file.friendly_name,
+							key				= file.key)
+
 ###########################################################################
 ## \brief gets list of files by owner key
 ## \param owner_key - [Key] owner key of file

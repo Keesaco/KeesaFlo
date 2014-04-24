@@ -39,14 +39,15 @@ def __check_authentication (	path,
 ## \author cwike@keesaco.com of Keesaco
 ## \author jmccrea@keesaco.com of Keesaco
 ###########################################################################
-def __add_authentication( path, user, permissions):
+def __add_authentication( path, name, user, permissions):
 	user_key = ps.get_user_key_by_id(user.user_id())
 	if (user_key is None):
 		user_key = ps.add_user(user)
 	file_key = ps.add_file( FileInfo(
-						   		file_name 		= path,
+								file_name 		= path,
+								friendly_name	= name,
 								owner_key 		= user_key
-						   	) )
+							) )
 
 	ps.add_file_permissions(file_key,user_key,permissions)
 
@@ -105,6 +106,7 @@ def get_container(	path	):
 ## \author cwike@keesaco.com of Keesaco
 ###########################################################################
 def add_file(	path,
+				name = None,
 				blob = None,
 				mode = None,
 				permissions = None ):
@@ -119,7 +121,7 @@ def add_file(	path,
 		file_handle.close()
 		userobj = users.get_current_user()
 		permis = Permissions(True,True,True)
-		__add_authentication(path,userobj,permis)
+		__add_authentication(path, name, userobj, permis)
 		if mode is None:
 			return False
 		else:

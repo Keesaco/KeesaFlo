@@ -356,20 +356,23 @@ def file_preview(request, file = None):
 	else:
 		authed_user_nick = authed_user.nickname()
 	## Graph visualisation.
-	file_name_without_extension = file
 	# Replaced by a spinning canvas on the clientside
 	# if not ds.check_exists(GRAPH_BUCKET + '/' + file_name_without_extension + '.png', None):
 	# 	file_name_without_extension = None
 
 	#TODO: Might need to be simplified or moved to a function in fileinfo
 	# TODO the folowing should be replaced by a method in the APIDatastore
+	file_info = ps.get_file_by_name(DATA_BUCKET + '/' + file)
 	lst = ds.list(DATA_BUCKET)
-	file_info = None
+	current_file = None
 	for temp_file in lst:
 		temp_file.filename = temp_file.filename.rpartition('/')[2]
 		if temp_file.filename == file:
-			file_info = temp_file;
-	return render(request, 'file_preview.html', {'current_file' : file_info, 'authed_user_nick': authed_user_nick, 'file_name_without_extension' : file_name_without_extension})
+			current_file = temp_file;
+	return render(request, 'file_preview.html', {'current_file' : current_file,
+												 'name' : file,
+												 'authed_user_nick': authed_user_nick,
+												 'file_info' : file_info})
 
 ###########################################################################
 ## \brief 	view for graph preview pagelet
@@ -397,6 +400,7 @@ def graph_preview(request, file = None):
 ## \note only the main panel is generated here, see app(request) for fetching the page's skeleton
 ## \return the main panel pagelet
 ###########################################################################
+'''
 def file_page(request, file=None):
 	app_access = __check_app_access()
 	if app_access is not None:
@@ -409,6 +413,7 @@ def file_page(request, file=None):
 		if temp_file.filename == file:
 			file_info = temp_file;
 	return render(request, 'file_preview.html', {'current_file' : file_info, 'authed_user_nick': authed_user_nick, 'file_name_without_extension' : file_name_without_extension})
+'''
 
 def pagenav(request):
 	return render(request, 'pagenav.html')
@@ -423,7 +428,7 @@ def toolselect(request):
 ## \return the graph's immage
 ###########################################################################
 def get_graph(request, graph):
-	return fetch_file(GRAPH_BUCKET + '/' + graph + ".png", 'image/png')
+	return fetch_file(GRAPH_BUCKET + '/' + graph + ".png", 'image/png', False)
 
 ###########################################################################
 ## \brief Is called when a file is requested.
@@ -432,7 +437,7 @@ def get_graph(request, graph):
 ## \return the file requested
 ###########################################################################
 def get_dataset(request, dataset):
-	return fetch_file(DATA_BUCKET + '/' + dataset, 'application/vnd.isac.fcs')
+	return fetch_file(DATA_BUCKET + '/' + dataset + '.fcs', 'application/vnd.isac.fcs', True)
 
 ###########################################################################
 ## \brief Is called when a info is requested
@@ -441,21 +446,26 @@ def get_dataset(request, dataset):
 ## \return the file requested
 ###########################################################################
 def get_info(request, infofile):
-	return fetch_file(INFO_BUCKET + '/' + infofile, 'text/html')
+	return fetch_file(INFO_BUCKET + '/' + infofile, 'text/html', False)
 
 ###########################################################################
 ## \brief Return a response containing the file
 ## \param path - path to the file to be sent to the client
 ## \param type - type of the file sent (its mime type)
+## \param friendly - boolean indicating if fetch as friendly name.
 ## \return an HttpResponse ccontaining the file to be sent
 ###########################################################################
-def fetch_file(path, type):
+def fetch_file(path, type, friendly):
 	# TODO: Need protection against hack such as ../
 	buffer = ds.open(path)
 	if buffer:
 		file = buffer.read()
 		# TODO: Maybe transform the httpresponse to streaminghttpresponse in case the graph is really large and to improve efficiency
 		response = HttpResponse(file, content_type=type)
+		# Get filename.
+		if friendly:
+			path = path.rpartition('/')[0] + '/' + ps.get_file_by_name(path).friendly_name
+		# Construct and send response
 		response['Content-Disposition'] = 'attachment; filename="' + path + '"'
 		return response
 	else:
@@ -487,6 +497,7 @@ def tool(request):
 
 	try:
 		gate_info = json.loads(request.raw_post_data)
+		print gate_info
 	except ValueError:
 		return HttpResponse(simplejson.dumps(gt.generate_gating_feedback('fail', 'Invalid request payload')), content_type="application/json")
 
@@ -529,7 +540,7 @@ def analysis_status_json(request):
 	authed_user = auth.get_current_user()
 	if authed_user is None:
 		return __unauthed_response()
-		
+
 	user_key = ps.get_user_key_by_id(authed_user.user_id())
 
 	response_part = {
@@ -551,7 +562,7 @@ def analysis_status_json(request):
 	#	This is roughly what permissions checking should probably look like once all files have permissions entries
 	#		Alternatively, a check_exists call may be sufficient if the permissions entry is created before gating is requested,
 	#		this will depend on the CE/Permissions integration method
-	file_entry = ps.get_file_by_name(DATA_BUCKET + '/' + filename + '.fcs')
+	file_entry = ps.get_file_by_name(file_req['filename'])
 	if file_entry is None:
 		response_part.update( { 'error' : 'File or gate not recognised.' } )
 		return HttpResponse(json.dumps(response_part), content_type="application/json")
@@ -561,11 +572,11 @@ def analysis_status_json(request):
 			response_part.update( { 'error' : 'Permission denied.' } )
 			return HttpResponse(json.dumps(response_part), content_type="application/json")
 
-
-	is_done =  ds.check_exists(GRAPH_BUCKET + '/' + file_req['filename'] + '.png', None)
+	name = file_req['filename'].rpartition('/')[2]
+	is_done =  ds.check_exists(GRAPH_BUCKET + '/' + name + '.png', None)
 
 	#Prevent redirecting before the view is ready
-	is_done &= ds.check_exists(DATA_BUCKET  + '/' + file_req['filename'] 		 , None)
+	is_done &= ds.check_exists(DATA_BUCKET  + '/' + name, None)
 
 	response_part.update( { 'done' : is_done, 'giveup' : False } )
 	return HttpResponse(json.dumps(response_part), content_type="application/json")

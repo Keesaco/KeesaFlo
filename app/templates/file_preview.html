@@ -1,8 +1,8 @@
 {% if current_file %}
-	{% if file_name_without_extension %}
+	{% if file_info %}
 	<div  class="well app-well">
 		<div id="flow-graph-container">
-			<img id="graph-img" src="{% url get_graph file_name_without_extension %}">
+			<img id="graph-img" src="{% url get_graph name %}">
 			<div class="over-graph">
 				<p id="tool-popover-title" class="greybox">Tool</p>
 			</div>
@@ -11,14 +11,15 @@
 		</div>
 	</div>	
 	<div class="well app-well">
-		<h3 id="filename"><span id="file-name-label">{{ current_file.filename }}</span> <span id="filesize" class="label label-default">{{ current_file.st_size|filesizeformat }}</span></h3>
+		<h3 id="filename"><span id="file-name-label">{{ file_info.friendly_name }}</span> <span id="filesize" class="label label-default">{{ current_file.st_size|filesizeformat }}</span></h3>
 		<!--<div id="gating-stats">
 			<span>Loading...</span>
 		</div>-->
+		<div id="scrapename" style="display: none;"> {{ name }} </div>
 		<div class="btn-group btn-group-lg action-btn-group">
-			<button type="button" class="btn btn-download"><a href="{% url get_dataset current_file.filename %}">Download Dataset</a></button>
-		  	<button type="button" class="btn" id="request-gating-btn" disabled>Create gating</button>
-		  	<button type="button" class="btn" id="reset-tool-btn">Reset Tool</button>
+			<button type="button" class="btn btn-download"><a href="{% url get_dataset current_file.filename %}">Download</a></button>
+		  	<button type="button" class="btn" id="request-gating-btn" disabled>Gate</button>
+		  	<button type="button" class="btn" id="reset-tool-btn">Reset</button>
 		</div>
 		<div class="gate-options">
 			<label><input type="checkbox" id="chk_reverse_gate" /> Reverse gate</labeL><br />

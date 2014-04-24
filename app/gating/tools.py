@@ -9,8 +9,10 @@ import API.APIQueue as queue
 from django.core.urlresolvers import reverse
 import API.APILogging as logging
 import API.APIPermissions as ps
+import API.APIDatastore as ds
 import API.PALUsers as auth
 from Permissions.Types import FileInfo, Permissions
+from uuid import uuid1
 
 DATA_BUCKET = '/fc-raw-data/'
 
@@ -25,10 +27,17 @@ DATA_BUCKET = '/fc-raw-data/'
 def simple_gating(gate_params):
 	points = gate_params['points']
 	reverse_gate = '0'
-	
+
 	if 'reverse' in gate_params:
 		if (gate_params['reverse']):
 			reverse_gate = '1'
+
+	## Generate unique datastore path, ensuring uniqueness.
+	while True:
+		new_name = str(uuid1())
+		new_path = ds.generate_path(DATA_BUCKET, None, new_name)
+		if not ds.check_exists(new_path, None):
+			break
 
 	if (gate_params['tool'] == "rectangular_gating") :
 		if len(points) == 4 :
@@ -138,14 +147,19 @@ def no_such_tool(gate_params):
 ###########################################################################
 def generate_gating_feedback(status, message, new_graph_name = None, existing_name = None):
 	if new_graph_name is not None:
+		## Authenticate and get user 
 		authed_user = auth.get_current_user()
 		user_key = ps.get_user_key_by_id(authed_user.user_id())
-		new_file = FileInfo(file_name = DATA_BUCKET + new_graph_name, owner_key = user_key)
-		file_key = ps.add_file(new_file)
-	
+
+		## Get previous file permissions.
 		previous_file = ps.get_file_by_name(DATA_BUCKET + existing_name)
 		previous_permissions = ps.get_user_file_permissions(previous_file.key, user_key)
-		
+
+		## Add permissions to new file.
+		new_file = FileInfo(file_name = new_graph_name,
+							owner_key = user_key,
+							friendly_name = previous_file.friendly_name + '-gate')
+		file_key = ps.add_file(new_file)
 		ps.add_file_permissions(file_key,
 								user_key,
 								Permissions (
@@ -155,7 +169,7 @@ def generate_gating_feedback(status, message, new_graph_name = None, existing_na
 								),
 								previous_permissions.colour,
 								False)
-	
+
 	return {
 		'status': status,
 		'message': message,
