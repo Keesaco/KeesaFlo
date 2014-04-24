@@ -319,11 +319,18 @@ ksfGraphTools.OvalGating = {
 
 	state : WAIT,
 	params : null,
-	centerx : null, 
-	centery : null, 
-	r1 : null, 
-	pointx : null, 
-	pointy : null, 
+	centerx : null,
+	centery : null,
+	r1 : null,
+	rx : null,
+	ry : null,
+	pointx : null,
+	pointy : null,
+
+	move_point : null,
+	CENTER_POINT : 0,
+	RADIAL_POINT : 1,
+	END_POINT : 2,
 
 	ELEMENT_ID : "#tool_oval_gating",
 
@@ -345,6 +352,8 @@ ksfGraphTools.OvalGating = {
 		else if (this.state === WORK)
 		{
 			this.r1 = Math.sqrt(Math.pow(this.centerx - posX, 2) + Math.pow(this.centery - posY, 2));
+			this.rx = posX;
+			this.ry = posY;
 			ksfCanvas.toolText("Select the oval\'s last point");
 			this.state = WORK2;
 		}
@@ -358,10 +367,61 @@ ksfGraphTools.OvalGating = {
 			ksfCanvas.enableBtn(REQUEST_GATING_BTN, true);
 			this.state = DONE;
 		}
-		// If gating has finished, reset tool.
+		// If gating has finished, check for moving.
 		else if (this.state === DONE)
 		{
-			this.resetTool();
+			// Move center point.
+			if (this.distance(posX, posY, this.centerx, this.centery) < SENSITIVITY)
+			{
+				this.move_point = this.CENTER_POINT;
+				this.state = MOVE;
+				ksfCanvas.enableBtn(REQUEST_GATING_BTN, true);
+				ksfCanvas.toolText("Moving gate.");
+			}
+			// Move radial point.
+			else if (this.distance(posX, posY, this.rx, this.ry) < SENSITIVITY)
+			{
+				this.move_point = this.RADIAL_POINT;
+				this.state = MOVE;
+				ksfCanvas.enableBtn(REQUEST_GATING_BTN, true);
+				ksfCanvas.toolText("Moving gate.");
+			}
+			// Move end point.
+			else if (this.distance(posX, posY, this.pointx, this.pointy) < SENSITIVITY)
+			{
+				this.move_point = this.END_POINT;
+				this.state = MOVE;
+				ksfCanvas.enableBtn(REQUEST_GATING_BTN, true);
+				ksfCanvas.toolText("Moving gate.");
+			}
+		}
+		// Moving.
+		else if (this.state === MOVE)
+		{
+			// If center point is being moved.
+			if (this.move_point === this.CENTER_POINT)
+			{
+				this.centerx = posX;
+				this.centery = posY;
+				this.state = DONE;
+			}
+			// If radial point is being moved.
+			else if (this.move_point === this.RADIAL_POINT)
+			{
+				this.r1 = Math.sqrt(Math.pow(this.centerx - posX, 2) + Math.pow(this.centery - posY, 2));
+				this.rx = posX;
+				this.ry = posY;
+				this.state = DONE;
+			}
+			// If end point is being moved.
+			else if (this.move_point === this.END_POINT)
+			{
+				this.pointx = posX;
+				this.pointy = posY;
+				this.state = DONE;
+			}
+			// Set cursor.
+			ksfCanvas.setCursor('move');
 		}
 
 	},
@@ -383,10 +443,42 @@ ksfGraphTools.OvalGating = {
 		{
 			ksfCanvas.drawOval(this.centerx, this.centery, this.r1, posX, posY, 0.5);
 		}
-		// If gating is done, draw final ellipsoid.
+		// If gating is done, draw final ellipsoid and set cursor for moving.
 		else if (this.state === DONE)
 		{
+			// Draw ellipsoid.
 			ksfCanvas.drawOval(this.centerx, this.centery, this.r1, this.pointx, this.pointy, 1);
+			// Set cursor for moving.
+			if  ((this.distance(posX, posY, this.centerx, this.centery) < SENSITIVITY)
+				|| (this.distance(posX, posY, this.pointx, this.pointy) < SENSITIVITY)
+				|| (this.distance(posX, posY, this.rx, this.ry) < SENSITIVITY))
+			{
+				ksfCanvas.setCursor('move');
+			}
+			else
+			{
+				ksfCanvas.setCursor('crosshair');
+			}
+		}
+		// If moving, draw moving ellipsoid.
+		else if (this.state === MOVE)
+		{
+			// Center point.
+			if (this.move_point === this.CENTER_POINT)
+			{
+				ksfCanvas.drawOval(posX, posY, this.r1, this.pointx, this.pointy, 0.5);
+			}
+			// Radial point.
+			else if (this.move_point === this.RADIAL_POINT)
+			{
+				var r = Math.sqrt(Math.pow(this.centerx - posX, 2) + Math.pow(this.centery - posY, 2));
+				ksfCanvas.drawOval(this.centerx, this.centery, r, this.pointx, this.pointy, 0.5);
+			}
+			// End point.
+			else if (this.move_point === this.END_POINT)
+			{
+				ksfCanvas.drawOval(this.centerx, this.centery, this.r1, posX, posY, 0.5);
+			}
 		}
 	},
 
@@ -412,6 +504,13 @@ ksfGraphTools.OvalGating = {
 		p1y=this.centery+Math.sin(angle-Math.PI/2)*this.r1;
 		ksfGraphTools.sendGatingRequest('oval_gating',
 										[this.centerx, this.centery, p1x, p1y, this.pointx, this.pointy] );
+	},
+
+	distance : function(x1, y1, x2, y2)
+	{
+		var x_pow = Math.pow(x1 - x2, 2),
+			y_pow = Math.pow(y1 - y2, 2);
+		return Math.sqrt(x_pow + y_pow);
 	}
 }
 
