@@ -231,7 +231,7 @@ ksfGraphTools.PolygonGating = {
 		if ((this.state === WAIT) || (this.state == WORK))
 		{
 			// Triggered when the path is closed
-			if (ksfGraphTools.distanceToStart(posX, posY) < this.START_RADIUS)
+			if (this.distanceToStart(posX, posY) < this.START_RADIUS)
 			{
 				this.state = DONE;
 				ksfCanvas.drawPolygon(this.xList, this.yList, this.xList[0], this.yList[0], this.START_RADIUS, 1);
@@ -244,7 +244,7 @@ ksfGraphTools.PolygonGating = {
 				this.xList.push(posX);
 				this.yList.push(posY);
 				ksfCanvas.drawPolygon(this.xList, this.yList, null, null, this.START_RADIUS, 0.5);
-				ksfCanvas.toolText("point #"+ (this.xList.lengt) +": ("+posX+","+posY+")");
+				ksfCanvas.toolText("Point #"+ (this.xList.length) +": (" + posX + "," + posY + ")");
 			}
 		}
 		// If gating has finished, reset tool.
@@ -280,7 +280,7 @@ ksfGraphTools.PolygonGating = {
 				posY = event.pageY - $(GRAPH_ID).offset().top;
 			// Draw
 			ksfCanvas.drawPolygon(this.xList, this.yList, posX, posY, this.START_RADIUS);
-			if (ksfGraphTools.distanceToStart(posX, posY) < this.START_RADIUS)
+			if (this.distanceToStart(posX, posY) < this.START_RADIUS)
 			{
 				ksfCanvas.setCursor('pointer');
 			}
@@ -290,14 +290,14 @@ ksfGraphTools.PolygonGating = {
 	//return the distance to the starting point
 	distanceToStart : function(posx, posy)
 	{
-		var x, y;
-		if (this.xList.length >= 1)
+		if (this.xList.length > 0)
 		{
-			x = this.xList[0]-posx;
-			y = this.yList[0]-posy;
-			return Math.sqrt(Math.pow(x,2)+Math.pow(y,2));
+			return ksfGraphTools.distance(posx, posy, this.xList[0], this.yList[0]);
 		}
-		return Math.MAX;
+		else
+		{
+			return Math.MAX;
+		}
 	},
 
 	requestGating : function()
@@ -355,9 +355,7 @@ ksfGraphTools.OvalGating = {
 			this.pointx = posX;
 			this.pointy = posY;
 			// Calculate new radial point position.
-			var angle = ksfGraphTools.mesureAngle(this.centerx - this.pointx, this.centery - this.pointy);
-			this.rx = this.centerx + (this.r1 * Math.cos(angle - Math.PI / 2));
-			this.ry = this.centery + (this.r1 * Math.sin(angle - Math.PI / 2));
+			this.setRadialCoords();
 			// Draw points
 			ksfCanvas.drawOval(this.centerx, this.centery, this.r1, this.pointx, this.pointy, 0.5);
 			ksfCanvas.toolText("Oval correctly selected");
@@ -400,17 +398,14 @@ ksfGraphTools.OvalGating = {
 			{
 				this.centerx = posX;
 				this.centery = posY;
+				this.setRadialCoords();
 				this.state = DONE;
 			}
 			// If radial point is being moved.
 			else if (this.move_point === this.RADIAL_POINT)
 			{
 				this.r1 = ksfGraphTools.distance(this.centerx, this.centery, posX, posY);
-				// Calculate new radial point position.
-				var angle = ksfGraphTools.mesureAngle(this.centerx - this.pointx, this.centery - this.pointy);
-				this.rx = this.centerx + (this.r1 * Math.cos(angle - Math.PI / 2));
-				this.ry = this.centery + (this.r1 * Math.sin(angle - Math.PI / 2));
-				// Set state.
+				this.setRadialCoords();
 				this.state = DONE;
 			}
 			// If end point is being moved.
@@ -418,11 +413,7 @@ ksfGraphTools.OvalGating = {
 			{
 				this.pointx = posX;
 				this.pointy = posY;
-				// Calculate new radial point position.
-				var angle = ksfGraphTools.mesureAngle(this.centerx - this.pointx, this.centery - this.pointy);
-				this.rx = this.centerx + (this.r1 * Math.cos(angle - Math.PI / 2));
-				this.ry = this.centery + (this.r1 * Math.sin(angle - Math.PI / 2));
-				// Set state.
+				this.setRadialCoords();
 				this.state = DONE;
 			}
 			// Set cursor.
@@ -509,6 +500,14 @@ ksfGraphTools.OvalGating = {
 		p1y = this.centery + Math.sin(angle - Math.PI / 2) * this.r1;
 		ksfGraphTools.sendGatingRequest('oval_gating',
 										[this.centerx, this.centery, p1x, p1y, this.pointx, this.pointy] );
+	},
+
+	// Sets radial point co-ords rx and ry.
+	setRadialCoords : function()
+	{
+		var angle = ksfGraphTools.mesureAngle(this.centerx - this.pointx, this.centery - this.pointy);
+		this.rx = this.centerx + (this.r1 * Math.cos(angle - Math.PI / 2));
+		this.ry = this.centery + (this.r1 * Math.sin(angle - Math.PI / 2));
 	}
 }
 
