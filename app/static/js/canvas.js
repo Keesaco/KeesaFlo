@@ -122,7 +122,9 @@ function ksfCanvas_drawOval(cx, cy, r1, p2x, p2y, alpha)
 	if (p2x !== null && p2y !== null)
 	{
 		var p1x=cx+Math.cos(angle-Math.PI/2)*r1,
-		p1y=cy+Math.sin(angle-Math.PI/2)*r1;
+			p1y=cy+Math.sin(angle-Math.PI/2)*r1;
+		//console.log('canvas: ' + p1x + ',' + p1y);
+		console.log('canvas: ' + r1);
 		context.arc(p1x, p1y, 5, 0, Math.PI*2);
 		context.closePath();
 	}

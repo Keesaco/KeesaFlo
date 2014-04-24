@@ -106,7 +106,7 @@ ksfGraphTools.RectangularGating = {
 		else if (this.state === DONE)
 		{
 			// Move start point.
-			if (this.distance(posX, posY, this.startx, this.starty) < SENSITIVITY)
+			if (ksfGraphTools.distance(posX, posY, this.startx, this.starty) < SENSITIVITY)
 			{
 				this.move_point = this.START_POINT;
 				this.state = MOVE;
@@ -114,7 +114,7 @@ ksfGraphTools.RectangularGating = {
 				ksfCanvas.toolText("Moving gate.");
 			}
 			// Move end point.
-			else if (this.distance(posX, posY, this.endx, this.endy) < SENSITIVITY)
+			else if (ksfGraphTools.distance(posX, posY, this.endx, this.endy) < SENSITIVITY)
 			{
 				this.move_point = this.END_POINT;
 				this.state = MOVE;
@@ -158,8 +158,8 @@ ksfGraphTools.RectangularGating = {
 		{
 			ksfCanvas.drawBox(this.startx, this.starty, this.endx - this.startx, this.endy - this.starty, 1);
 			// Change cursor when close to points.
-			if ((this.distance(posX, posY, this.startx, this.starty) < SENSITIVITY)
-				|| (this.distance(posX, posY, this.endx, this.endy) < SENSITIVITY))
+			if ((ksfGraphTools.distance(posX, posY, this.startx, this.starty) < SENSITIVITY)
+				|| (ksfGraphTools.distance(posX, posY, this.endx, this.endy) < SENSITIVITY))
 			{
 				ksfCanvas.setCursor("move");
 			}
@@ -206,13 +206,6 @@ ksfGraphTools.RectangularGating = {
 			return;
 		}
 		ksfGraphTools.sendGatingRequest('rectangular_gating', [this.startx, this.starty, this.endx, this.endy]);
-	},
-
-	distance : function(x1, y1, x2, y2)
-	{
-		var x_pow = Math.pow(x1 - x2, 2),
-			y_pow = Math.pow(y1 - y2, 2);
-		return Math.sqrt(x_pow + y_pow);
 	}
 }
 
@@ -238,7 +231,7 @@ ksfGraphTools.PolygonGating = {
 		if ((this.state === WAIT) || (this.state == WORK))
 		{
 			// Triggered when the path is closed
-			if (this.distanceToStart(posX, posY) < this.START_RADIUS)
+			if (ksfGraphTools.distanceToStart(posX, posY) < this.START_RADIUS)
 			{
 				this.state = DONE;
 				ksfCanvas.drawPolygon(this.xList, this.yList, this.xList[0], this.yList[0], this.START_RADIUS, 1);
@@ -287,7 +280,7 @@ ksfGraphTools.PolygonGating = {
 				posY = event.pageY - $(GRAPH_ID).offset().top;
 			// Draw
 			ksfCanvas.drawPolygon(this.xList, this.yList, posX, posY, this.START_RADIUS);
-			if (this.distanceToStart(posX, posY) < this.START_RADIUS)
+			if (ksfGraphTools.distanceToStart(posX, posY) < this.START_RADIUS)
 			{
 				ksfCanvas.setCursor('pointer');
 			}
@@ -351,17 +344,21 @@ ksfGraphTools.OvalGating = {
 		// If gating stage 1, add radius.
 		else if (this.state === WORK)
 		{
-			this.r1 = Math.sqrt(Math.pow(this.centerx - posX, 2) + Math.pow(this.centery - posY, 2));
-			this.rx = posX;
-			this.ry = posY;
+			this.r1 = ksfGraphTools.distance(this.centerx, this.centery, posX, posY);
 			ksfCanvas.toolText("Select the oval\'s last point");
 			this.state = WORK2;
 		}
 		// If gating stage 2, add last point.
 		else if (this.state === WORK2)
 		{
+			// Set last point.
 			this.pointx = posX;
 			this.pointy = posY;
+			// Calculate new radial point position.
+			var angle = ksfGraphTools.mesureAngle(this.centerx - this.pointx, this.centery - this.pointy);
+			this.rx = this.centerx + (this.r1 * Math.cos(angle - Math.PI / 2));
+			this.ry = this.centery + (this.r1 * Math.sin(angle - Math.PI / 2));
+			// Draw points
 			ksfCanvas.drawOval(this.centerx, this.centery, this.r1, this.pointx, this.pointy, 0.5);
 			ksfCanvas.toolText("Oval correctly selected");
 			ksfCanvas.enableBtn(REQUEST_GATING_BTN, true);
@@ -371,7 +368,7 @@ ksfGraphTools.OvalGating = {
 		else if (this.state === DONE)
 		{
 			// Move center point.
-			if (this.distance(posX, posY, this.centerx, this.centery) < SENSITIVITY)
+			if (ksfGraphTools.distance(posX, posY, this.centerx, this.centery) < SENSITIVITY)
 			{
 				this.move_point = this.CENTER_POINT;
 				this.state = MOVE;
@@ -379,7 +376,7 @@ ksfGraphTools.OvalGating = {
 				ksfCanvas.toolText("Moving gate.");
 			}
 			// Move radial point.
-			else if (this.distance(posX, posY, this.rx, this.ry) < SENSITIVITY)
+			else if (ksfGraphTools.distance(posX, posY, this.rx, this.ry) < SENSITIVITY)
 			{
 				this.move_point = this.RADIAL_POINT;
 				this.state = MOVE;
@@ -387,7 +384,7 @@ ksfGraphTools.OvalGating = {
 				ksfCanvas.toolText("Moving gate.");
 			}
 			// Move end point.
-			else if (this.distance(posX, posY, this.pointx, this.pointy) < SENSITIVITY)
+			else if (ksfGraphTools.distance(posX, posY, this.pointx, this.pointy) < SENSITIVITY)
 			{
 				this.move_point = this.END_POINT;
 				this.state = MOVE;
@@ -408,9 +405,12 @@ ksfGraphTools.OvalGating = {
 			// If radial point is being moved.
 			else if (this.move_point === this.RADIAL_POINT)
 			{
-				this.r1 = Math.sqrt(Math.pow(this.centerx - posX, 2) + Math.pow(this.centery - posY, 2));
-				this.rx = posX;
-				this.ry = posY;
+				this.r1 = ksfGraphTools.distance(this.centerx, this.centery, posX, posY);
+				// Calculate new radial point position.
+				var angle = ksfGraphTools.mesureAngle(this.centerx - this.pointx, this.centery - this.pointy);
+				this.rx = this.centerx + (this.r1 * Math.cos(angle - Math.PI / 2));
+				this.ry = this.centery + (this.r1 * Math.sin(angle - Math.PI / 2));
+				// Set state.
 				this.state = DONE;
 			}
 			// If end point is being moved.
@@ -418,6 +418,11 @@ ksfGraphTools.OvalGating = {
 			{
 				this.pointx = posX;
 				this.pointy = posY;
+				// Calculate new radial point position.
+				var angle = ksfGraphTools.mesureAngle(this.centerx - this.pointx, this.centery - this.pointy);
+				this.rx = this.centerx + (this.r1 * Math.cos(angle - Math.PI / 2));
+				this.ry = this.centery + (this.r1 * Math.sin(angle - Math.PI / 2));
+				// Set state.
 				this.state = DONE;
 			}
 			// Set cursor.
@@ -449,9 +454,9 @@ ksfGraphTools.OvalGating = {
 			// Draw ellipsoid.
 			ksfCanvas.drawOval(this.centerx, this.centery, this.r1, this.pointx, this.pointy, 1);
 			// Set cursor for moving.
-			if  ((this.distance(posX, posY, this.centerx, this.centery) < SENSITIVITY)
-				|| (this.distance(posX, posY, this.pointx, this.pointy) < SENSITIVITY)
-				|| (this.distance(posX, posY, this.rx, this.ry) < SENSITIVITY))
+			if  ((ksfGraphTools.distance(posX, posY, this.centerx, this.centery) < SENSITIVITY)
+				|| (ksfGraphTools.distance(posX, posY, this.pointx, this.pointy) < SENSITIVITY)
+				|| (ksfGraphTools.distance(posX, posY, this.rx, this.ry) < SENSITIVITY))
 			{
 				ksfCanvas.setCursor('move');
 			}
@@ -471,7 +476,7 @@ ksfGraphTools.OvalGating = {
 			// Radial point.
 			else if (this.move_point === this.RADIAL_POINT)
 			{
-				var r = Math.sqrt(Math.pow(this.centerx - posX, 2) + Math.pow(this.centery - posY, 2));
+				var r = ksfGraphTools.distance(this.centerx, this.centery, posX, posY);
 				ksfCanvas.drawOval(this.centerx, this.centery, r, this.pointx, this.pointy, 0.5);
 			}
 			// End point.
@@ -497,20 +502,13 @@ ksfGraphTools.OvalGating = {
 
 	requestGating : function()
 	{
-		var tx = this.centerx-this.pointx,
-			ty = this.centery-this.pointy;
+		var tx = this.centerx - this.pointx,
+			ty = this.centery - this.pointy;
 		var angle = ksfGraphTools.mesureAngle(tx, ty);
-		var p1x=this.centerx+Math.cos(angle-Math.PI/2)*this.r1,
-		p1y=this.centery+Math.sin(angle-Math.PI/2)*this.r1;
+		var p1x = this.centerx + Math.cos(angle - Math.PI / 2) * this.r1,
+		p1y = this.centery + Math.sin(angle - Math.PI / 2) * this.r1;
 		ksfGraphTools.sendGatingRequest('oval_gating',
 										[this.centerx, this.centery, p1x, p1y, this.pointx, this.pointy] );
-	},
-
-	distance : function(x1, y1, x2, y2)
-	{
-		var x_pow = Math.pow(x1 - x2, 2),
-			y_pow = Math.pow(y1 - y2, 2);
-		return Math.sqrt(x_pow + y_pow);
 	}
 }
 
@@ -702,3 +700,19 @@ function ksfGraphTools_showFeedback(type, title, message)
 	$(CONTENT_AREA).prepend(alert);
 }
 ksfGraphTools.showFeedback = ksfGraphTools_showFeedback;
+
+/**
+ * Calculate the distance between two points.
+ * \param x1 - first point's x co-ord
+ * \param y1 - first point's y co-ord
+ * \param x2 - second point's x co-ord
+ * \param y2 - second point's y co-ord
+ * \author rmurley@keesaco.com of Keesaco
+ */
+function ksfGraphTools_distance(x1, y1, x2, y2)
+	{
+		var x_pow = Math.pow(x1 - x2, 2),
+			y_pow = Math.pow(y1 - y2, 2);
+		return Math.sqrt(x_pow + y_pow);
+	}
+ksfGraphTools.distance = ksfGraphTools_distance;
