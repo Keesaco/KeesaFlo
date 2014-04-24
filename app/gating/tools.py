@@ -118,7 +118,8 @@ def generate_gating_feedback(status, message, new_graph_name = None, existing_na
 		## Add permissions to new file.
 		new_file = FileInfo(file_name = new_graph_name,
 							owner_key = user_key,
-							friendly_name = previous_file.friendly_name + '-gate')
+							friendly_name = previous_file.friendly_name + '-gate',
+							prev_file_key = previous_file.key)
 		file_key = ps.add_file(new_file)
 		ps.add_file_permissions(file_key,
 								user_key,

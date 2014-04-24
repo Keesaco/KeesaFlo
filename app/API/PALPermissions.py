@@ -178,7 +178,8 @@ def add_file(new_file, return_updated = False):
 	new_file = Files(	parent = ndb.Key("FileTable", "*notitle*"),
 					 	file_name = new_file.file_name,
 					 	owner_key = new_file.owner_key,
-					 	friendly_name = new_file.friendly_name);
+					 	friendly_name = new_file.friendly_name,
+					 	prev_file_key = new_file.prev_file_key)
 	new_key = new_file.put();
 
 	if return_updated:
