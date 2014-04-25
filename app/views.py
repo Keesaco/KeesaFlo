@@ -23,6 +23,7 @@ import API.APIQueue as queue
 import API.APIInstance as instances
 import API.APIBackground as background
 import API.APIPermissions as ps
+import API.APILogging as logging
 import json
 import re
 import gating.tools as gt
@@ -562,9 +563,9 @@ def analysis_status_json(request):
 	#	This is roughly what permissions checking should probably look like once all files have permissions entries
 	#		Alternatively, a check_exists call may be sufficient if the permissions entry is created before gating is requested,
 	#		this will depend on the CE/Permissions integration method
-	file_entry = ps.get_file_by_name(file_req['filename'])
+	file_entry = ps.get_file_by_name(DATA_BUCKET + '/' + file_req['filename'])
 	if file_entry is None:
-		response_part.update( { 'error' : 'File or gate not recognised.' } )
+		response_part.update( { 'error' : 'File or gate not recognised.', 'giveup' : False } )
 		return HttpResponse(json.dumps(response_part), content_type="application/json")
 	else:
 		fp_entry = ps.get_user_file_permissions(file_entry.key, user_key)
