@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'vector-glyph-';
-  src: url('../vector-glyph/vector-glyph-.eot?16887489');
-  src: url('../vector-glyph/vector-glyph-.eot?16887489#iefix') format('embedded-opentype'),
-       url('../vector-glyph/vector-glyph-.woff?16887489') format('woff'),
-       url('../vector-glyph/vector-glyph-.ttf?16887489') format('truetype'),
-       url('../vector-glyph/vector-glyph-.svg?16887489#vector-glyph-') format('svg');
+  src: url('../font/vector-glyph-.eot?65707059');
+  src: url('../font/vector-glyph-.eot?65707059#iefix') format('embedded-opentype'),
+       url('../font/vector-glyph-.woff?65707059') format('woff'),
+       url('../font/vector-glyph-.ttf?65707059') format('truetype'),
+       url('../font/vector-glyph-.svg?65707059#vector-glyph-') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -14,12 +14,12 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'vector-glyph-';
-    src: url('../vector-glyph/vector-glyph-.svg?16887489#vector-glyph-') format('svg');
+    src: url('../font/vector-glyph-.svg?65707059#vector-glyph-') format('svg');
   }
 }
 */
  
- [class^="vector-glyph"]:before, [class*=" vector-glyph"]:before {
+ [class^="vector-glyph-"]:before, [class*=" vector-glyph-"]:before {
   font-family: "vector-glyph-";
   font-style: normal;
   font-weight: normal;
@@ -50,6 +50,10 @@
   /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
 }
  
-.vector-glyphcircle:before { content: '\e800'; } /* '' */
-.vector-glyphrectangle:before { content: '\e801'; } /* '' */
-.vector-glyphpolygon:before { content: '\e802'; } /* '' */
+.vector-glyph-circle:before { content: '\e800'; } /* '' */
+.vector-glyph-rectangle:before { content: '\e801'; } /* '' */
+.vector-glyph-polygon:before { content: '\e802'; } /* '' */
+.vector-glyph-centerline:before { content: '\e803'; } /* '' */
+.vector-glyph-sigma.lowercase:before { content: '\e804'; } /* '' */
+.vector-glyph-kilometer:before { content: '\e805'; } /* '' */
+.vector-glyph- vector.group.removed:before { content: '\e806'; } /* '' */
