@@ -637,7 +637,7 @@ ksfGraphTools.QuadrantGating = {
 		{
 			this.centre_x = posX;
 			this.centre_y = posY;
-			ksfCanvas.toolText("Gate moved.");
+			ksfCanvas.toolText("Gate moved to: " + (posX) + ' , ' + (posY));
 			ksfCanvas.enableBtn(REQUEST_GATING_BTN, true);
 			this.state = DONE;
 		}
