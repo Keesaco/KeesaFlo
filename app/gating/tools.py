@@ -85,6 +85,32 @@ def simple_gating(gate_params):
 		else:
 			return generate_gating_feedback("fail", "notcorrect, wrong number of arguments")
 
+	else :
+		return generate_gating_feedback("fail", "The gate " + gate_params['tool'] + " is not known")
+
+def multiple_gating(gate_params):
+	points = gate_params['points']
+	while True:
+		new_name = str(uuid1())
+		new_path = ds.generate_path(DATA_BUCKET, None, new_name)
+		if not ds.check_exists(new_path, None):
+			break
+	if (gate_params['tool'] == 'kmeans_gating') :
+		if len(points) == 1 :
+			clusters = new_name
+			number_gates = points[0]
+			for i in range(0, number_gates):
+				while True:
+					next_new_name = str(uuid1())
+					path = ds.generate_path(DATA_BUCKET, None, new_name)
+					if not ds.check_exists(new_path, None):
+						clusters = clusters + " " + next_new_name
+						break
+			queue.gate_kmeans(gate_params['filename'], clusters, str(number_gates), "FSC-A", "SSC-A");
+			return generate_gating_feedback("success", "the kmeans gate was performed correctly", new_path, gate_params['filename'])
+		else:
+			return generate_gating_feedback("fail", "notcorrect, wrong number of arguments")
+
 	elif (gate_params['tool'] == 'quadrant_gating') :
 		if len(points) == 2 :
 			other_new_names = []
@@ -101,25 +127,6 @@ def simple_gating(gate_params):
 			return generate_gating_feedback("success", "the quadrant gate was performed correctly", new_path, gate_params['filename'])
 		else:
 			return generate_gating_feedback("fail", "notcorrect, wrong number of arguments")
-
-	elif (gate_params['tool'] == 'kmeans_gating') :
-		if len(points) == 1 :
-			clusters = new_name
-			number_gates = points[0]
-			for i in range(0, number_gates):
-				while True:
-					next_new_name = str(uuid1())
-					path = ds.generate_path(DATA_BUCKET, None, new_name)
-					if not ds.check_exists(new_path, None):
-						clusters = clusters + " " + next_new_name
-						break
-			queue.gate_kmeans(gate_params['filename'], clusters, str(number_gates), "FSC-A", "SSC-A");
-			return generate_gating_feedback("success", "the kmeans gate was performed correctly", new_path, gate_params['filename'])
-		else:
-			return generate_gating_feedback("fail", "notcorrect, wrong number of arguments")
-
-	else :
-		return generate_gating_feedback("fail", "The gate " + gate_params['tool'] + " is not known")
 
 ###########################################################################
 ## \brief Is called when the requested tool is not in the dictionary of known tools
@@ -186,6 +193,6 @@ AVAILABLE_TOOLS = {
 	'rectangular_gating'	: simple_gating,
 	'polygon_gating'		: simple_gating,
 	'normal_gating'			: simple_gating,
-	'quadrant_gating'		: simple_gating,
-	'kmeans_gating'			: simple_gating
+	'quadrant_gating'		: multiple_gating,
+	'kmeans_gating'			: multiple_gating
 }
