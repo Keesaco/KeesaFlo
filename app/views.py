@@ -370,10 +370,15 @@ def file_preview(request, file = None):
 		temp_file.filename = temp_file.filename.rpartition('/')[2]
 		if temp_file.filename == file:
 			current_file = temp_file;
+
+	graph_exists = ds.check_exists(GRAPH_BUCKET + '/' + file.partition('.')[0] + '.png', None)
+	logging.info(GRAPH_BUCKET + '/' + file.partition('.')[0] + '.png')
+	logging.info(graph_exists)
 	return render(request, 'file_preview.html', {'current_file' : current_file,
 												 'name' : file,
 												 'authed_user_nick': authed_user_nick,
-												 'file_info' : file_info})
+												 'file_info' : file_info,
+				 								 'graph_ready' : graph_exists })
 
 ###########################################################################
 ## \brief 	view for graph preview pagelet
@@ -563,7 +568,7 @@ def analysis_status_json(request):
 	#	This is roughly what permissions checking should probably look like once all files have permissions entries
 	#		Alternatively, a check_exists call may be sufficient if the permissions entry is created before gating is requested,
 	#		this will depend on the CE/Permissions integration method
-	file_entry = ps.get_file_by_name(DATA_BUCKET + '/' + file_req['filename'])
+	file_entry = ps.get_file_by_name(file_req['filename'])
 	if file_entry is None:
 		response_part.update( { 'error' : 'File or gate not recognised.', 'giveup' : False } )
 		return HttpResponse(json.dumps(response_part), content_type="application/json")

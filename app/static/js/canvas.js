@@ -300,14 +300,22 @@ function ksfCanvas_addListener(argument)
 		{
 			ksfTools.CurrentTool.requestGating();
 		} )
-
-	$("#graph-img").off('error');
-	$("#graph-img").on('error',
-		function()
+	
+		/**
+		 * This essentially polls the gate status datasource until the file is ready then refreshes the main panel.
+		 * \todo This is basically copied from graphTools.js as a quick fix for a bug. When the gating client-side code is refactored (which should be done since it's cross-coupled all over the place) this should be a call into a generic function which also starts polling for gates.
+		 */
+		//crude check to see if there's an image.
+		//if not, poll until there is then redirect to a page which shows it.
+		if ($("#graph-img").length == 0)
 		{
-			ksfCanvas.setLoading(true);
-			setTimeout(ksfGraphTools.reloadImage, 1000);
-		} );
+			var currentFile = $("#scrapename").text().trim();
+			if (currentFile)
+			{
+				//Really hacky way of making setGraphUrl poll for a file without knowing its full path
+				setTimeout(ksfGraphTools.setGraphUrl(window.location.href, '/fc-raw-data/'+currentFile), GRAPH_POLL_INTERVAL);
+			}
+		}
 }
 ksfCanvas.addListener = ksfCanvas_addListener;
 
