@@ -587,4 +587,51 @@ def analysis_status_json(request):
 	response_part.update( { 'done' : is_done, 'giveup' : False } )
 	return HttpResponse(json.dumps(response_part), content_type="application/json")
 
+###########################################################################
+## \brief	Gives the user canLogIn and returns a JSON success/error object
+## \param	request - Django request which resulted in the call
+## \return	HttpResponse - response to the request as JSON
+## \author	jmccrea@kessaco.com of Keesaco
+## \note	Currently signup gives a user permissions and nothing else for
+##			the purpose of demonstration. Ultimately the validation,
+##			storage and response will need a number of additions.
+###########################################################################
+def signup_handler(request):
+	authed_user = auth.get_current_user()
+	if authed_user is None:
+		return __unauthed_response()
+		
+	user_key = ps.get_user_key_by_id(authed_user.user_id())
+	if user_key is None:
+		user_key = ps.add_user(authed_user)
+	
+	response_part = {
+		'success'		: False
+	}
+	
+	try:
+		file_req = json.loads(request.raw_post_data)
+	except ValueError:
+		response_part.update({'error' : 'Invalid request payload.'})
+		return HttpResponse(json.dumps(response_part), content_type="application/json")
+		
+	if 'action' not in file_req:
+		response_part.update({'error' : 'Incomplete request.'})
+		return HttpResponse(json.dumps(response_part), content_type="application/json")
+
+	elem_key = ps.get_element_key_by_ref('canLogIn')
+	if elem_key is None:
+		elem_key = ps.add_element('canLogIn')
+
+	user_elem = ps.get_user_element_permissions(user_key, elem_key)
+	if user_elem is not None:
+		response_part.update({'error' : 'Already signed up.'})
+		return HttpResponse(json.dumps(response_part), content_type="application/json")
+	else:
+		ps.add_element_permissions(user_key, elem_key, True)
+
+		response_part.update({'success' : True})
+		return HttpResponse(json.dumps(response_part), content_type="application/json")
+
+
 
