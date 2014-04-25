@@ -76,8 +76,6 @@ ksfCanvas.drawBox = ksfCanvasdrawBox;
  */
 function ksfCanvas_drawPolygon(xList, yList, lastx, lasty, startRadius, alpha)
 {
-	// Clear canvas.
-	this.clear();
 	// Stop drawing if there is only a single point.
 	if (xList.length < 1)
 	{
@@ -121,6 +119,15 @@ function ksfCanvas_drawPolygon(xList, yList, lastx, lasty, startRadius, alpha)
 }
 
 ksfCanvas.drawPolygon = ksfCanvas_drawPolygon;
+
+function ksfCanvas_drawTwoPolygons(xList1, yList1, last1x, last1y, xList2, yList2, last2x, last2y, startRadius, alpha)
+{
+	this.clear();
+	ksfCanvas.drawPolygon(xList1, yList1, last1x, last1y, startRadius, alpha);
+	ksfCanvas.drawPolygon(xList2, yList2, last2x, last2y, startRadius, alpha);
+}
+
+ksfCanvas.drawTwoPolygons = ksfCanvas_drawTwoPolygons;
 
 /**
  * Draws an oval on the canvas
