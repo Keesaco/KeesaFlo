@@ -11,11 +11,20 @@ import os, time, sys
 import API.APIAnalysis as Ana
 import API.APIQueue as Queue
 
+
+###########################################################################
+## \brief Removes fcs file, image and text file relevant to a gate
+## \param gate_name - name of gate for which corresponding files need to be removed
+###########################################################################
 def gate_clean_up(gate_name):
 	os.remove(gate_name + '.png')
 	os.remove(gate_name + '.txt')
 	os.remove(gate_name)
 
+###########################################################################
+## \brief Saves fcs file, image and text file relevant to a gate
+## \param gate_name - name of gate for which corresponding files need to be saved
+###########################################################################
 def save_gate(gate_name):
 	## Saves visualisation of gate to cloud storage
 	Ana.save_vis(gate_name + '.png')
@@ -24,6 +33,11 @@ def save_gate(gate_name):
 	## Saves gate as fcs file
 	Ana.save_fcs(gate_name)
 
+###########################################################################
+## \brief Creates the relevant shape based gate and saves relevant files
+## \param commands - commands relevant to creating a gate
+## \return returns True
+###########################################################################
 def shape_gating(commands):
 	name = commands[1]
 	points = commands[2]
@@ -69,6 +83,11 @@ def shape_gating(commands):
 		os.remove(name)
 	return True
 
+###########################################################################
+## \brief Creates and saves files for changing the axes of the graph
+## \param commands - commands relevant to creating a gate
+## \return returns True
+###########################################################################
 def axis_change(commands):
 	name = commands[1]
 	x_axis = commands[2]
@@ -85,6 +104,11 @@ def axis_change(commands):
 		os.remove(name + x_axis + y_axis + '.png')
 	return True
 
+###########################################################################
+## \brief visualises a graph after a new file is uploaded
+## \param commands - commands relevant to creating a gate
+## \return returns True
+###########################################################################
 def visualise(commands):
 	# Get name.
 	name = commands[1]
@@ -103,6 +127,11 @@ def visualise(commands):
 		os.remove(name + 'info.txt')
 	return True
 
+###########################################################################
+## \brief Creates an image of the file with the specified graph type
+## \param commands - commands relevant to creating a gate
+## \return returns True
+###########################################################################
 def change_plot(commands):
 	name = commands[1]
 	plot_name = commands[4]
@@ -121,6 +150,11 @@ def change_plot(commands):
 		os.remove(plot_name)
 	return True
 
+###########################################################################
+## \brief Creates the relevant data based gate and saves relevant files
+## \param commands - commands relevant to creating a gate
+## \return returns True
+###########################################################################
 def data_gate(commands):
 	if(commands[0] == 'gate_norm'):
 		name = commands[1]
@@ -156,6 +190,11 @@ def data_gate(commands):
 			os.remove(name)
 	return True
 
+###########################################################################
+## \brief Creates a quadrant_gate and saves relevant files
+## \param commands - commands relevant to creating a gate
+## \return returns True
+###########################################################################
 def quadrant_gate(commands):
 	name = commands[1]
 	##Loads raw fcs data from cloud storage
@@ -171,6 +210,11 @@ def quadrant_gate(commands):
 		os.remove(name)
 	return True
 
+###########################################################################
+## \brief Causes visualise.py to stop running
+## \param commands - commands relevant to creating a gate
+## \return returns False
+###########################################################################
 def kill(commands):
 	return False
 

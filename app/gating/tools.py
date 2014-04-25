@@ -22,7 +22,6 @@ DATA_BUCKET = '/fc-raw-data/'
 ## \author mrudelle@keesaco.com of Keesaco
 ## \author hdoughty@keesaco.com of Keesaco
 ## \todo Does this not want to be multiple tools?
-## \todo Make quadrant and normal gating data gating not simple gating
 ###########################################################################
 def simple_gating(gate_params):
 	points = gate_params['points']
@@ -88,6 +87,11 @@ def simple_gating(gate_params):
 	else :
 		return generate_gating_feedback("fail", "The gate " + gate_params['tool'] + " is not known")
 
+###########################################################################
+## \brief Requests a kmeans or quadrant gate
+## \param Dictionary gate_params - list of gating parameters
+## \author hdoughty@keesaco.com of Keesaco
+###########################################################################
 def multiple_gating(gate_params):
 	points = gate_params['points']
 	while True:
