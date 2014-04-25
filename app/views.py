@@ -40,6 +40,16 @@ def logout(request):
 	link = auth.create_logout_url('/')
 	return redirect(link)
 
+###########################################################################
+## \brief	Redirects the user to a login page if required, if not
+##			redirects to the signup page
+## \param	request - Django request which resulted in the call
+## \return	HttpResponse - response to the request as JSON
+## \author	jmccrea@kessaco.com of Keesaco
+###########################################################################
+def signup(request):
+	link = auth.create_login_url('/#!/signup')
+	return redirect(link)
 
 ###########################################################################
 ## \brief	Returns a JSON response which instructs the client to redirect

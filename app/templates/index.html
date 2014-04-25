@@ -15,11 +15,17 @@
         <h1>KeesaFlo</h1>
         <p class="lead"><i>A cloud based flow cytometry analysis application</i></p>
             <div class="btn-toolbar">
-                <a class="btn btn-primary btn-lg" href="#">Sign Up</a>
+                <a class="btn btn-primary btn-lg" href="{% url signup %}">Sign Up</a>
                 <a class="btn btn-success btn-lg" href="{% url login %}">Login »</a>
             </div>
         <p class="privacy"><i><span class="privacy-small">By using this website you consent to our use of coookies.</span></i></p>
         </div>
     </div> <!-- /container -->
+	
+	<script src="{% static "js/jquery.js" %}"></script>
+    <script src="{% static "js/bootstrap.js" %}"></script>
+	<script src="{% static "js/landing.js" %}"></script>
+	<script src="{% static "js/bootbox.min.js" %}"></script>
+	<script src="{% static "js/request.js" %}"></script>
 {% endblock content %}
 {% block footer %}<!-- no need of a top padding here -->{% endblock footer %}
