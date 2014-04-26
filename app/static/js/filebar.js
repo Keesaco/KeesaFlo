@@ -231,25 +231,25 @@ ksfFilebar.editName = ksfFilebar_editName;
 
 /**
  * Selects the text of a given element. Used for selecting the text in the name edit; since an editable text element is used rather than a text input field a simple .select() cannot be used.
- * \param $element - jQuery elements; the first element will selected
+ * \param jqElement - jQuery elements; the first element will selected
  * \return None
  * \author jmccrea@keesaco.com of Keesaco
  * \note This is not included in .editName() for clarity; at some point it may be useful to move it into a different file
  */
-function ksfFilebar_selectText($element)
+function ksfFilebar_selectText(jqElement)
 {
     if (window.getSelection)
 	{
         var selection = window.getSelection();
         selection.removeAllRanges();
         var newRange = document.createRange();
-        newRange.selectNodeContents($element.get(0));
+        newRange.selectNodeContents(jqElement.get(0));
         selection.addRange(newRange);
     }
 	else if (document.selection)
 	{
         var newRange = document.body.createTextRange();
-        newRange.moveToElementText($element.get(0));
+        newRange.moveToElementText(jqElement.get(0));
         newRange.select();
     }
 }
@@ -264,7 +264,7 @@ ksfFilebar.selectText = ksfFilebar_selectText;
  * \author jmccrea@keesaco.com of Keesaco
  * \return None
  */
-function ksfFilebar_renameKeyHandle(event, $confirmButton, $cancelButton, $linkElem)
+function ksfFilebar_renameKeyHandle(event, jqConfirmButton, jqCancelButton, jqLinkElem)
 {
 	//Since the tick and cross buttons have all the information in their click methods, it's easiest to trigger their events
 	//Return key
@@ -272,17 +272,17 @@ function ksfFilebar_renameKeyHandle(event, $confirmButton, $cancelButton, $linkE
 	{
 		//prevent inserting a line break
 		event.preventDefault();
-		$confirmButton.trigger('click');
+		jqConfirmButton.trigger('click');
 	}
 	//Escape key
 	else if (event.which == 27)
 	{
-		$cancelButton.trigger('click');
+		jqCancelButton.trigger('click');
 	}
 	else
 	{
 		//Remove line breaks
-		$linkElem.attr('innerHTML', $(this).text().replace(/(\r\n|\n|\r)/gm,""));
+		jqCinkElem.attr('innerHTML', $(this).text().replace(/(\r\n|\n|\r)/gm,""));
 	}
 }
 ksfFilebar.renameKeyHandle = ksfFilebar_renameKeyHandle;
@@ -348,7 +348,7 @@ function ksfFilebar_recolourClickHandler(file, fileDiv)
 		})).find('.bootbox-body').first();
 	$boxBody.append(colourInput);
 }
-ksfFilebar.recolourClickHandler = ksfFilebar_recolourClickHandler
+ksfFilebar.recolourClickHandler = ksfFilebar_recolourClickHandler;
 
 
 
