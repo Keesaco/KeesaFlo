@@ -106,7 +106,7 @@ def boolean_gating(gate_params):
 
 	if (gate_params['tool'] == "boolean_gating"):
 		if (len(points)%2 == 0) and (len(points2)%2 == 0):
-			if (reverse == '1'):
+			if (reverse_gate == '1'):
 				if (boolean_op == 'or'):
 					boolean_op = 'and'
 				elif (boolean_op == 'and'):
