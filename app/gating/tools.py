@@ -117,7 +117,7 @@ def boolean_gating(gate_params):
 			gate2_points = " ".join(str(p) for p in points2)
 			queue.gate_boolean(gate_params['filename'], new_name, boolean_op, 'poly', gate1_points, reverse_gate, 'poly', gate2_points, reverse_gate, 'FSC-A', 'SSC-A', 'FSC-A', 
 				'SSC-A');
-			return generate_gating_feedback("success", "the normal gating was performed correctly", new_path, gate_params['filename'])
+			return generate_gating_feedback("success", "the boolean gating was performed correctly", new_path, gate_params['filename'])
 		else:
 			return generate_gating_feedback("fail", "notcorrect, wrong number of arguments")
 ###########################################################################
