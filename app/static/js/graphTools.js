@@ -710,7 +710,11 @@ ksfGraphTools.OrGating = {
 				ksfCanvas.drawTwoPolygons(this.xList, this.yList, posX, posY, this.xList2, this.yList2, null, null, this.START_RADIUS);
 			else
 				ksfCanvas.drawTwoPolygons(this.xList, this.yList, this.xList[0], this.yList[0], this.xList2, this.yList2, posX, posY, this.START_RADIUS);
-			if (this.distanceToStart(posX, posY, 1) < this.START_RADIUS)
+			if ((this.distanceToStart(posX, posY, 1) < this.START_RADIUS) && (this.firstDone == false))
+			{
+				ksfCanvas.setCursor('pointer');
+			}
+			else if ((this.distanceToStart(posX, posY, 2) < this.START_RADIUS) && (this.firstDone == true))
 			{
 				ksfCanvas.setCursor('pointer');
 			}
@@ -754,7 +758,7 @@ ksfGraphTools.OrGating = {
 
 	requestGating : function()
 	{
-		ksfGraphTools.sendGatingRequest('boolean_gating', this.xList.concat(this.yList), this.boolean_op, this.xList2.concat(this.yList2));
+		ksfGraphTools.sendGatingRequest('boolean_gating', this.xList.concat(this.yList), [this.boolean_op, this.xList2.concat(this.yList2)]);
 	}
 }
 
@@ -869,7 +873,7 @@ ksfGraphTools.QuadrantGating = {
  * \note This might be moved to views.js in the future //JPM - might it?
  * \note deep-extend is not used for params
  */
-function ksfGraphTools_sendGatingRequest(toolName, gatePoints, params, gate2Points)
+function ksfGraphTools_sendGatingRequest(toolName, gatePoints, params)
 {
 	// allows to fetch the name correctly. In the future (final release) this should be replace by a json file fetched from the server containing all the file's data
 

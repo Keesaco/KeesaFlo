@@ -87,6 +87,39 @@ def simple_gating(gate_params):
 	else :
 		return generate_gating_feedback("fail", "The gate " + gate_params['tool'] + " is not known")
 
+def boolean_gating(gate_params):
+	points = gate_params['points']
+	points2 = gate_params['1']
+	boolean_op = gate_params['0']
+	reverse_gate = '0'
+
+	if 'reverse' in gate_params:
+		if (gate_params['reverse']):
+			reverse_gate = '1'
+
+	## Generate unique datastore path, ensuring uniqueness.
+	while True:
+		new_name = str(uuid1())
+		new_path = ds.generate_path(DATA_BUCKET, None, new_name)
+		if not ds.check_exists(new_path, None):
+			break
+
+	if (gate_params['tool'] == "boolean_gating"):
+		if (len(points)%2 == 0) and (len(points2)%2 == 0):
+			if (reverse == '1'):
+				if (boolean_op == 'or'):
+					boolean_op = 'and'
+				elif (boolean_op == 'and'):
+					boolean_op = 'or'
+				else:
+					return generate_gating_feedback("fail", "The boolean operator must be either 'and' or 'or'")
+			gate1_points = " ".join(str(p) for p in points)
+			gate2_points = " ".join(str(p) for p in points2)
+			queue.gate_boolean(gate_params['filename'], new_name, boolean_op, 'poly', gate1_points, reverse_gate, 'poly', gate2_points, reverse_gate, 'FSC-A', 'SSC-A', 'FSC-A', 
+				'SSC-A');
+			return generate_gating_feedback("success", "the normal gating was performed correctly", new_path, gate_params['filename'])
+		else:
+			return generate_gating_feedback("fail", "notcorrect, wrong number of arguments")
 ###########################################################################
 ## \brief Requests a kmeans or quadrant gate
 ## \param Dictionary gate_params - list of gating parameters
@@ -198,5 +231,6 @@ AVAILABLE_TOOLS = {
 	'polygon_gating'		: simple_gating,
 	'normal_gating'			: simple_gating,
 	'quadrant_gating'		: multiple_gating,
-	'kmeans_gating'			: multiple_gating
+	'kmeans_gating'			: multiple_gating,
+	'boolean_gating'		: boolean_gating
 }
