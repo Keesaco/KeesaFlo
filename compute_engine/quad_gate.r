@@ -24,8 +24,8 @@ if(file.exists(fcs_name) == FALSE)
 x <- read.FCS(fcs_name, transformation = FALSE)
 
 ## Convert image coordinates to graph coordinates
-r1 <- range(x[,1])
-r2 <- range(x[,2])
+r1 <- range(x[,x_axis])
+r2 <- range(x[,y_axis])
 x_coord <- imageToGraphCoordx(x_coord, r1[1,1], r1[2,1])
 y_coord <- imageToGraphCoordy(y_coord, r2[1,1], r2[2,1])
 
