@@ -1,5 +1,5 @@
 {
-  "name": "vector-glyph-",
+  "name": "vector-glyph",
   "css_prefix_text": "vector-glyph-",
   "css_use_suffix": false,
   "hinting": true,
@@ -64,7 +64,7 @@
     },
     {
       "uid": "09d2e34f90b73d44e1afe9f255e99b10",
-      "css": "sigma.lowercase",
+      "css": "sigma-lowercase",
       "code": 59396,
       "src": "custom_icons",
       "selected": true,
@@ -92,7 +92,7 @@
     },
     {
       "uid": "7d0d4f9554b4982f5773e50628a150a0",
-      "css": " vector.group.removed",
+      "css": " vector-group-removed",
       "code": 59398,
       "src": "custom_icons",
       "selected": true,
