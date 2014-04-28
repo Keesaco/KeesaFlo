@@ -2,7 +2,11 @@
 	{% if file_info %}
 	<div  class="well app-well">
 		<div id="flow-graph-container">
-			<img id="graph-img" src="{% url get_graph name %}">
+			{% if graph_ready %}
+				<img id="graph-img" src="{% url get_graph name %}">
+			{% else %}
+				<div class="spinner"></div>
+			{% endif %}
 			<div class="over-graph">
 				<p id="tool-popover-title" class="greybox">Tool</p>
 			</div>

@@ -984,7 +984,15 @@ function ksfGraphTools_setGraphUrl(url, newFilename, numRetries)
 			}
 			else if (response.done)
 			{
-				window.location.href = ksfData.baseUrl() + FILE_VIEW_HASH + gateRedirect;
+				if (window.location.hash == FILE_VIEW_HASH + gateRedirect)
+				{
+					//special case force redirect for new files
+					location.reload();
+				}
+				else
+				{
+					window.location.href = ksfData.baseUrl() + FILE_VIEW_HASH + gateRedirect;
+				}
 			}
 			else
 			{
