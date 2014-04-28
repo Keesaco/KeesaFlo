@@ -816,6 +816,7 @@ ksfGraphTools.KmeansGating = {
 
 //Sends request for quadrant gating and draws cross displaying segmentation
 ksfGraphTools.QuadrantGating = {
+	state : WAIT,
 	centre_x : null,
 	centre_y : null,
 
@@ -823,35 +824,67 @@ ksfGraphTools.QuadrantGating = {
 
 	onGraphClick : function(event)
 	{
+		// Get realtive mouse position.
 		var posX = event.pageX - $(GRAPH_ID).offset().left,
-		posY = event.pageY - $(GRAPH_ID).offset().top;
+			posY = event.pageY - $(GRAPH_ID).offset().top;
 
-		if ((this.centre_x === null) || (this.centre_y === null))
+		// If waiting for gating.
+		if (this.state === WAIT)
 		{
 			this.centre_x = posX;
 			this.centre_y = posY;
 			ksfCanvas.toolText("You just selected a centre for the quadrant tool: " + (posX) + ' , ' + (posY));
 			ksfCanvas.enableBtn(REQUEST_GATING_BTN, true);
+			this.state = DONE;
 		}
-		else
+		// If gating is finished, check for moving.
+		else if (this.state === DONE)
 		{
-			this.resetTool();
-			ksfCanvas.toolText("The quandrant tool has been reset.");
+			this.state = MOVE;
+			ksfCanvas.toolText("Moving gate.");
+		}
+		// If gate is being moved.
+		else if (this.state === MOVE)
+		{
+			this.centre_x = posX;
+			this.centre_y = posY;
+			ksfCanvas.toolText("Gate moved to: " + (posX) + ' , ' + (posY));
+			ksfCanvas.enableBtn(REQUEST_GATING_BTN, true);
+			this.state = DONE;
 		}
 	},
 
 	onGraphMouseMove : function(event)
 	{
+		// Get relative mouse position.
 		var posX = event.pageX - $(GRAPH_ID).offset().left,
-		posY = event.pageY - $(GRAPH_ID).offset().top;
-		if((this.centre_x === null) || (this.centre_y === null))
+			posY = event.pageY - $(GRAPH_ID).offset().top;
+		// Reset cursor.
+		ksfCanvas.setCursor('crosshair');
+		// If waiting to gate update canvas.
+		if (this.state === WAIT)
 		{
+			ksfCanvas.drawCross(posX, posY);
+		}
+		// If gate has finished, check for moving and change cursor..
+		else if (this.state === DONE)
+		{
+			if (ksfGraphTools.distance(posX, posY, this.centre_x, this.centre_y) < SENSITIVITY)
+			{
+				ksfCanvas.setCursor('move');
+			}
+		}
+		// If gate is being moved.
+		else if (this.state === MOVE)
+		{
+			ksfCanvas.setCursor('move');
 			ksfCanvas.drawCross(posX, posY);
 		}
 	},
 
 	resetTool : function()
 	{
+		this.state = WAIT;
 		this.centre_x = null; 
 		this.centre_y = null; 
 		ksfCanvas.clear();
