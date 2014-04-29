@@ -676,6 +676,9 @@ function ksfGraphTools_sendGatingRequest(toolName, gatePoints, params)
 	ksfTools.CurrentTool.resetTool();
 	ksfCanvas.toolText("Loading graph...");
 
+	$(GATING_STATS_ID).addClass('loading');
+	$(GATING_STATS_ID).text('');
+
 	var gateReq = {
 		tool 		: toolName,
 		points 		: gatePoints,
@@ -793,15 +796,16 @@ function ksfGraphTools_setGatingStats(filename)
 
 	if (filename === "" || filename === undefined)
 		return;
-	
+
 	var info_req = { filename : filename };
-	
+
 	var get_status = ksfReq.postJSON(GATING_STATS_URI, info_req,
 		function(response)
 		{
 			if (response.error)
 			{
-				$(GATING_STATS_ID).remove();
+				$(GATING_STATS_ID).removeClass('loading');
+				$(GATING_STATS_ID).text('');
 				ksfGraphTools.showFeedback(FEEDBACK_DANGER, "Error", response.error);
 			}
 			else if (response.done)
