@@ -79,29 +79,29 @@
 
 <!-- Modal popup that shows when someone try to upload a file -->
 <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-       	<h4 class="modal-title" id="uploadModalLabel"> Upload a file </h4>
-	      </div>
-		    <form action="" id="frm-new-file-upload" method="post" enctype="multipart/form-data" target="_self">
-	      <div class="modal-body">
-		    {% csrf_token %}
-		    {% for field in form %}
-		        <div class="fieldWrapper">
-		            {{ field.label_tag }} {{ field }}
-		            {{ field.errors }}
-		        </div>
-		    {% endfor %}
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-default" data-dismiss="modal">Dismiss</button>
-	        <button type="submit" value="upload" class="btn btn-primary" id="btn-new-file-upload-submit">Upload</button>
-	      </div>
-	    </form>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="uploadModalLabel"> Upload a file </h4>
+				</div>
+				<form action="" id="frm-new-file-upload" method="post" enctype="multipart/form-data" target="_self">
+				<div class="modal-body">
+				{% csrf_token %}
+				{% for field in form %}
+						<div class="fieldWrapper">
+								{{ field.label_tag }} {{ field }}
+								{{ field.errors }}
+						</div>
+				{% endfor %}
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Dismiss</button>
+					<button type="submit" value="upload" class="btn btn-primary" id="btn-new-file-upload-submit">Upload</button>
+				</div>
+			</form>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
 <!-- Modal popup that shows settings -->
@@ -136,7 +136,7 @@
 	{% load staticfiles %}
 	<!-- 3rd party libraries -->
 	<script src="{% static "js/jquery.js" %}"></script>
-    <script src="{% static "js/bootstrap.js" %}"></script>
+	<script src="{% static "js/bootstrap.js" %}"></script>
 	<script src="{% static "js/jquery.color.js" %}"></script>
 	<script src="{% static "js/jquery-ui-1.10.4.min.js" %}"></script>
 	<script src="{% static "js/bootstrap-tour.min.js" %}"></script>
