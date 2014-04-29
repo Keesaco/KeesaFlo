@@ -799,17 +799,18 @@ function ksfGraphTools_setGatingStats(filename)
 			if (response.error)
 			{
 				$(GATING_STATS_ID).remove();
-				ksfGraphTools.showFeedback(FEEDBACK_DANGER, "Error", response.error)
+				ksfGraphTools.showFeedback(FEEDBACK_DANGER, "Error", response.error);
 			}
 			else if (response.done)
 			{
+				$(GATING_STATS_ID).removeClass('loading');
 				$(GATING_STATS_ID).text("Cell count (Selection/Total): " + response.selection + "/" + response.total + " (" + response.percent + "%)");
 			}
 		},
 		//on error getting gating status
 		function(jqxhr, textStatus, error)
 		{
-			ksfGraphTools.showFeedback(FEEDBACK_DANGER, textStatus, error)
+			ksfGraphTools.showFeedback(FEEDBACK_DANGER, textStatus, error);
 		}
 	);
 }

@@ -484,7 +484,7 @@ def get_info(request):
 		buffer = ds.open(path)
 		if buffer:
 			file = buffer.read()
-			stats = file.rpartition(' ')
+			stats = file.split(' ')
 			if len(stats)<3:
 				response_part.update( { 'error' : 'Internal stat file corrupted' } )
 			else:

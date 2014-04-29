@@ -12,7 +12,7 @@
 	</div>	
 	<div class="well app-well">
 		<h3 id="filename"><span id="file-name-label">{{ file_info.friendly_name }}</span> <span id="filesize" class="label label-default">{{ current_file.st_size|filesizeformat }}</span></h3>
-		<div id="gating-stats" class="loading">Loading...</div>
+		<div id="gating-stats" class="loading"></div>
 		<div id="scrapename" style="display: none;"> {{ name }} </div>
 		<div class="btn-group btn-group-lg action-btn-group">
 			<button type="button" class="btn btn-download"><a href="{% url get_dataset current_file.filename %}">Download</a></button>
