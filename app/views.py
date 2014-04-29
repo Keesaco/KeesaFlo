@@ -406,7 +406,7 @@ def file_preview(request, file = None):
 			if len(stats)>=3:
 				template_dict.update( { 'gating_stats' : { 'selection' : stats[0],
 										'total' : stats[1],
-										'percent' : stats[2] } } )
+										'percent' : float(stats[2])*100 } } )
 
 	return render(request, 'file_preview.html', template_dict)
 
