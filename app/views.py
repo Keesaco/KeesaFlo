@@ -393,7 +393,7 @@ def file_preview(request, file = None):
 												 'name' : file,
 												 'authed_user_nick': authed_user_nick,
 												 'file_info' : file_info,
-				 								 'graph_ready' : graph_exists })
+				 								 'graph_ready' : graph_exists,
 				  								 'undo_link' : undo_uri })
 
 ###########################################################################
