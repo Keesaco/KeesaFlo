@@ -227,10 +227,3 @@ ksfHelp_mainTour = new Tour
 				]
 });
 
-
-/*
- * Hooks the help tour 'mode' to the window being resized, and hooks the tour being ended if it goes out of focus.
- */
-$(window).resize(ksfHelp.mainTourResize);
-$(document).mouseup(ksfHelp.mainTourRefocus);
-
