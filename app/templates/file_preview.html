@@ -27,7 +27,9 @@
 		<div class="btn-group btn-group-lg action-btn-group">
 			<button type="button" class="btn" id="request-gating-btn" disabled>Gate</button>
 			<button type="button" class="btn" id="reset-tool-btn">Reset</button>
-			<button type="button" class="btn" id="share-btn" data-toggle="modal" data-target="#shareModal" disabled>Share</button>
+			{% if permissions.full_control %}
+				<button type="button" class="btn" id="share-btn" data-toggle="modal" data-target="#shareModal">Share</button>
+			{% endif %}
 			<button type="button" class="btn" id="btn-download"><a href="{% url get_dataset current_file.filename %}">Download</a></button>
 		</div>
 		<div class="gate-options">
@@ -42,7 +44,6 @@
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					<h4 class="modal-title" id="shareModalLabel"> Share </h4>
-					</div>
 					<div class="modal-body">
 					</div>
 					<div class="modal-footer">

@@ -468,13 +468,20 @@ def file_preview(request, file = None):
 		if temp_file.filename == file:
 			current_file = temp_file;
 
+	# Check whether graph exists yet.
 	graph_exists = ds.check_exists(GRAPH_BUCKET + '/' + file.partition('.')[0] + '.png', None)
+
+	# Get permissions for file.
+	user_key = ps.get_user_key_by_id(authed_user.user_id())
+	permissions = ps.get_user_file_permissions(file_info.key, user_key)
+
 	return render(request, 'file_preview.html', {'current_file' : current_file,
 												 'name' : file,
 												 'authed_user_nick': authed_user_nick,
 												 'file_info' : file_info,
 				 								 'graph_ready' : graph_exists,
-				  								 'undo_link' : undo_uri })
+				  								 'undo_link' : undo_uri,
+				  								 'permissions' : permissions })
 
 ###########################################################################
 ## \brief 	view for graph preview pagelet
@@ -696,15 +703,15 @@ def signup_handler(request):
 	authed_user = auth.get_current_user()
 	if authed_user is None:
 		return __unauthed_response()
-		
+
 	user_key = ps.get_user_key_by_id(authed_user.user_id())
 	if user_key is None:
 		user_key = ps.add_user(authed_user)
-	
+
 	response_part = {
 		'success'		: False
 	}
-	
+
 	try:
 		file_req = json.loads(request.raw_post_data)
 	except ValueError:
@@ -728,6 +735,3 @@ def signup_handler(request):
 
 		response_part.update({'success' : True})
 		return HttpResponse(json.dumps(response_part), content_type="application/json")
-
-
-

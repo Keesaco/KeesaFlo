@@ -29,7 +29,7 @@ PERMISSIONS_SOURCE = '/app/data/json/file_permissions_json';
 FEEDBACK_DANGER = "alert-danger";
 
 /**
- * Gets permissions for a file, enabling share button is active user has correct permission.
+ * Gets permissions for a file, enabling share button is active user has full control.
  * \param file - actual (not friendly) name of file.
  * \author rmurley@keesaco.com of Keesaco
  */
@@ -45,7 +45,7 @@ function ksfShare_getPermissions(file)
 					console.log(response);
 					// Iterate through users.
 					for (var i = 0; i < response.users.length; i++) {
-						// If active user has permission, enable share button.
+						// If active user has full control, enable share button.
 						if (response.users[i].isMe && response.users[i].permissions.fullControl)
 						{
 							ksfCanvas.enableBtn(SHARE_BTN, true);
