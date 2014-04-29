@@ -137,7 +137,7 @@ def get_user_key_by_id(user_id):
 ## \return User object or None if not found
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
-## \todo Stub - This shares logic with get_user_by_id - consider reviewing/abstracting this, also see todo on get_user_by_id
+## \todo This shares logic with get_user_by_id - consider reviewing/abstracting this, also see todo on get_user_by_id
 ###########################################################################
 def get_user_by_key(user_key):
 	if isinstance(user_key, ndb.Key):
@@ -159,6 +159,49 @@ def get_user_by_key(user_key):
 				return user_obj
 	else:
 		return False
+
+
+###########################################################################
+## \brief gets user key from the permissions DB by email address
+## \param String user_email - email address of user to find ID for
+## \return	None if not found or User key
+## \author jmccrea@keesaco.com of Keesaco
+###########################################################################
+def get_user_key_by_email(user_email):
+	users = Users.query(Users.email_address == user_email)
+	user = users.get()
+	
+	if user is None:
+		## user not found
+		return None
+	else:
+		return user.key
+
+###########################################################################
+## \brief gets a user's details using their email address
+## \param String user_email - email address to use for query
+## \return User object or None if not found
+## \author jmccrea@keesaco.com of Keesaco
+## \todo This shares logic with get_user_by_id - consider reviewing/abstracting this
+###########################################################################
+def get_user_by_email(user_email):
+	users = Users.query(Users.email_address == user_email)
+	user = users.get()
+	
+	if user is None:
+		## user not found
+		return None
+	else:
+		user_obj = User(user.email_address)
+		
+		## return user object if details were retrieved from Google
+		if user_obj.found:
+			return user_obj
+		else:
+			## set unknown details from records
+			user_obj.set_user_id(user.user_id)
+			user_obj.set_nickname(user.nickname)
+			return user_obj
 
 ###########################################################################
 ## \brief 	Add a file to the file table with a given name and owner

@@ -89,6 +89,24 @@ def get_user_by_key(user_key):
 	return PAL.get_user_by_key(user_key)
 
 ###########################################################################
+## \brief gets user key from the permissions DB by email address
+## \param String user_email - email address of user to find ID for
+## \return	None if not found or User key
+## \author jmccrea@keesaco.com of Keesaco
+###########################################################################
+def get_user_key_by_email(user_email):
+	return PAL.get_user_key_by_email(user_email)
+
+###########################################################################
+## \brief gets a user's details using their email address
+## \param String user_email - email address to use for query
+## \return User object or None if not found
+## \author jmccrea@keesaco.com of Keesaco
+###########################################################################
+def get_user_by_email(user_email):
+	return PAL.get_user_by_email(user_email)
+
+###########################################################################
 ## \brief 	Add a file to the file table with a given name and owner
 ## \param	FileInfo new_file - the file to be added to the datastore
 ## \param	Bool return_updated -  (= False) if true the return value the
