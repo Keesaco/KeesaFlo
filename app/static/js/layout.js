@@ -170,6 +170,9 @@ function ksfLayout_filePreviewStart()
 {
 	ksfCanvas.addListener();
 	$("#togglefiles").click(ksfLayout.fileSelectorToggle);
+
+	//show the gating informations
+	ksfGraphTools.setGatingStats(ksfViews.currentFileName);
 }
 ksfLayout.filePreviewStart = ksfLayout_filePreviewStart;
 

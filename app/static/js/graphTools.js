@@ -25,6 +25,9 @@ FEEDBACK_WARING = "alert-warning";
 FEEDBACK_DANGER = "alert-danger";
 
 ANALYSIS_STATUS_URI = '/app/data/json/analysis_status/';
+GATING_STATS_URI	= '/app/data/json/gating_info/';
+GATING_STATS_ID		= '#gating-stats'
+
 FILE_VIEW_HASH		= '#!/preview/';
 GATING_URI		= "/app/gating/tools/";
 
@@ -741,6 +744,7 @@ function ksfGraphTools_setGraphUrl(url, newFilename, numRetries)
 			else if (response.done)
 			{
 				window.location.href = ksfData.baseUrl() + FILE_VIEW_HASH + gateRedirect;
+				ksfGraphTools.setGatingStats(gateRedirect);
 			}
 			else
 			{
@@ -778,6 +782,38 @@ function ksfGraphTools_setGraphUrl(url, newFilename, numRetries)
 	);
 }
 ksfGraphTools.setGraphUrl = ksfGraphTools_setGraphUrl;
+
+/**
+ * Set properly the Gating Statistics
+ * \param String filename - file path of new gate
+ * \author mrudelle@keesaco.com of Keesaco
+ */
+function ksfGraphTools_setGatingStats(filename)
+{
+
+	var info_req = { filename : filename };
+	
+	var get_status = ksfReq.postJSON(GATING_STATS_URI, info_req,
+		function(response)
+		{
+			if (response.error)
+			{
+				$(GATING_STATS_ID).remove();
+				ksfGraphTools.showFeedback(FEEDBACK_DANGER, "Error", response.error)
+			}
+			else if (response.done)
+			{
+				$(GATING_STATS_ID).text("Cell count (Selection/Total): " + response.selection + "/" + response.total + " (" + response.percent + "%)");
+			}
+		},
+		//on error getting gating status
+		function(jqxhr, textStatus, error)
+		{
+			ksfGraphTools.showFeedback(FEEDBACK_DANGER, textStatus, error)
+		}
+	);
+}
+ksfGraphTools.setGatingStats = ksfGraphTools_setGatingStats;
 
 /**
  * Allows one to reload properly the image of the graph
