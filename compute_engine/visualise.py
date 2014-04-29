@@ -82,9 +82,11 @@ def visualise(commands):
 		Ana.save_vis(name + '.png')
 		## Saves info about fcs file to cloud storage
 		Ana.save_info(name + 'info.txt')
+		Ana.save_info(name + '.txt')
 		## Clean up.
 		os.remove(name)
 		os.remove(name + '.png')
+		os.remove(name + '.txt')
 		os.remove(name + 'info.txt')
 	return True
 
