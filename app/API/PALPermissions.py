@@ -178,7 +178,8 @@ def add_file(new_file, return_updated = False):
 	new_file = Files(	parent = ndb.Key("FileTable", "*notitle*"),
 					 	file_name = new_file.file_name,
 					 	owner_key = new_file.owner_key,
-					 	friendly_name = new_file.friendly_name);
+					 	friendly_name = new_file.friendly_name,
+					 	prev_file_key = new_file.prev_file_key)
 	new_key = new_file.put();
 
 	if return_updated:
@@ -239,6 +240,7 @@ def update_file(new_file):
 		file.file_name 		= new_file.file_name
 		file.owner_key		= new_file.owner_key
 		file.friendly_name 	= new_file.friendly_name
+		file.prev_file_key	= new_file.prev_file_key
 		file.put()
 		return True
 
@@ -259,7 +261,8 @@ def get_file_by_key(file_key):
 			return FileInfo(	file_name 		= file.file_name,
 								owner_key 		= file.owner_key,
 								friendly_name 	= file.friendly_name,
-								key				= file.key)
+								key				= file.key,
+								prev_file_key	= file.prev_file_key )
 	else:
 		return None
 
@@ -280,7 +283,8 @@ def get_file_by_name(file_name):
 		return FileInfo(	file_name 		= file.file_name,
 							owner_key 		= file.owner_key,
 							friendly_name 	= file.friendly_name,
-							key				= file.key)
+							key				= file.key,
+							prev_file_key 	= file.prev_file_key )
 
 ###########################################################################
 ## \brief gets list of files by owner key

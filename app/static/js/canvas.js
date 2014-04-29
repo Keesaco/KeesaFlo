@@ -1,3 +1,16 @@
+/**
+ * \file app/static/js/canvas.js
+ * \brief Provides methods for drawing to the graph canvas
+ * \author mrudelle@keesaco.com of Keesaco
+ * \author rmurley@keesaco.com of Keesaco
+ * \author jmccrea@keesaco.com of Keesaco
+ */
+
+/** \package app.static.js.canvas
+ * \brief Provides methods for drawing to the graph canvas
+ */
+
+
 function ksfCanvas(){
 }
 
@@ -76,8 +89,6 @@ ksfCanvas.drawBox = ksfCanvasdrawBox;
  */
 function ksfCanvas_drawPolygon(xList, yList, lastx, lasty, startRadius, alpha)
 {
-	// Clear canvas.
-	this.clear();
 	// Stop drawing if there is only a single point.
 	if (xList.length < 1)
 	{
@@ -121,6 +132,15 @@ function ksfCanvas_drawPolygon(xList, yList, lastx, lasty, startRadius, alpha)
 }
 
 ksfCanvas.drawPolygon = ksfCanvas_drawPolygon;
+
+function ksfCanvas_drawTwoPolygons(xList1, yList1, last1x, last1y, xList2, yList2, last2x, last2y, startRadius, alpha)
+{
+	this.clear();
+	ksfCanvas.drawPolygon(xList1, yList1, last1x, last1y, startRadius, alpha);
+	ksfCanvas.drawPolygon(xList2, yList2, last2x, last2y, startRadius, alpha);
+}
+
+ksfCanvas.drawTwoPolygons = ksfCanvas_drawTwoPolygons;
 
 /**
  * Draws an oval on the canvas
@@ -300,14 +320,22 @@ function ksfCanvas_addListener(argument)
 		{
 			ksfTools.CurrentTool.requestGating();
 		} )
-
-	$("#graph-img").off('error');
-	$("#graph-img").on('error',
-		function()
+	
+		/**
+		 * This essentially polls the gate status datasource until the file is ready then refreshes the main panel.
+		 * \todo This is basically copied from graphTools.js as a quick fix for a bug. When the gating client-side code is refactored (which should be done since it's cross-coupled all over the place) this should be a call into a generic function which also starts polling for gates.
+		 */
+		//crude check to see if there's an image.
+		//if not, poll until there is then redirect to a page which shows it.
+		if ($("#graph-img").length == 0)
 		{
-			ksfCanvas.setLoading(true);
-			setTimeout(ksfGraphTools.reloadImage, 1000);
-		} );
+			var currentFile = $("#scrapename").text().trim();
+			if (currentFile)
+			{
+				//Really hacky way of making setGraphUrl poll for a file without knowing its full path
+				setTimeout(ksfGraphTools.setGraphUrl(window.location.href, '/fc-raw-data/'+currentFile), GRAPH_POLL_INTERVAL);
+			}
+		}
 }
 ksfCanvas.addListener = ksfCanvas_addListener;
 
