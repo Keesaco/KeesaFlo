@@ -1,3 +1,16 @@
+/**
+ * \file app/static/js/canvas.js
+ * \brief Provides methods for drawing to the graph canvas
+ * \author mrudelle@keesaco.com of Keesaco
+ * \author rmurley@keesaco.com of Keesaco
+ * \author jmccrea@keesaco.com of Keesaco
+ */
+
+/** \package app.static.js.canvas
+ * \brief Provides methods for drawing to the graph canvas
+ */
+
+
 function ksfCanvas(){
 }
 

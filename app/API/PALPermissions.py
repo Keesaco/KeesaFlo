@@ -484,7 +484,7 @@ def get_permissions_by_key(permissions_key):
 ###########################################################################
 ## \brief gets a list of permissions pertaining to a file
 ## \param file_key - [Key] key of file entries pertain to
-## \return iterator object over FilePermissions object on sucess, or False otherwise
+## \return iterator object over FilePermissions object on sucess, None otherwise
 ## \author jmccrea@keesaco.com of Keesaco
 ## \author cwike@keesaco.com of Keesaco
 ###########################################################################
@@ -493,7 +493,7 @@ def get_file_permissions_list(file_key):
 		query = FilePermissions.query(FilePermissions.file_key == file_key)
 		return query.iter()
 	else:
-		return False
+		return None
 
 ###########################################################################
 ## \brief gets a list of permissions pertaining to a user
