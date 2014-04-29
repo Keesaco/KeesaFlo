@@ -369,10 +369,24 @@ def file_preview(request, file = None):
 		temp_file.filename = temp_file.filename.rpartition('/')[2]
 		if temp_file.filename == file:
 			current_file = temp_file;
-	return render(request, 'file_preview.html', {'current_file' : current_file,
-												 'name' : file,
-												 'authed_user_nick': authed_user_nick,
-												 'file_info' : file_info})
+	template_dict = {'current_file' : current_file,
+					 'name' : file,
+					 'authed_user_nick': authed_user_nick,
+					 'file_info' : file_info}
+
+	## Get gating informations
+	info_path = INFO_BUCKET + '/' + file + '.txt'
+	if ds.check_exists(info_path, None):
+		buffer = ds.open(info_path)
+		if buffer:
+			file = buffer.read()
+			stats = file.split(' ')
+			if len(stats)>=3:
+				template_dict.update( { 'gating_stats' : { 'selection' : stats[0],
+										'total' : stats[1],
+										'percent' : stats[2] } } )
+
+	return render(request, 'file_preview.html', template_dict)
 
 ###########################################################################
 ## \brief 	view for graph preview pagelet
@@ -438,64 +452,6 @@ def get_graph(request, graph):
 ###########################################################################
 def get_dataset(request, dataset):
 	return fetch_file(DATA_BUCKET + '/' + dataset + '.fcs', 'application/vnd.isac.fcs', True)
-
-###########################################################################
-## \brief Is called when a info is requested
-## \param request - Django variable defining the request that triggered the generation of this page
-## \param dataset - the name of the file to be downloaded
-## \return the file requested
-###########################################################################
-def get_info(request):
-	authed_user = auth.get_current_user()
-	if authed_user is None:
-		return __unauthed_response()
-
-	user_key = ps.get_user_key_by_id(authed_user.user_id())
-
-	response_part = {}
-	
-	try:
-		info_req = json.loads(request.raw_post_data)
-	except ValueError:
-		response_part.update({'error' : 'Invalid request payload.'})
-		return HttpResponse(json.dumps(response_part), content_type="application/json")
-
-	if 'filename' not in info_req:
-		response_part.update({'error' : 'Incomplete request.'})
-		return HttpResponse(json.dumps(response_part), content_type="application/json")
-
-	#	This is roughly what permissions checking should probably look like once all files have permissions entries
-	#		Alternatively, a check_exists call may be sufficient if the permissions entry is created before gating is requested,
-	#		this will depend on the CE/Permissions integration method
-	file_entry = ps.get_file_by_name(DATA_BUCKET + '/' + info_req['filename'])
-	if file_entry is None:
-		response_part.update( { 'error' : 'File or gate not recognised'} )
-		return HttpResponse(json.dumps(response_part), content_type="application/json")
-	else:
-		fp_entry = ps.get_user_file_permissions(file_entry.key, user_key)
-		if fp_entry is None:
-			response_part.update( { 'error' : 'Permission denied.' } )
-			return HttpResponse(json.dumps(response_part), content_type="application/json")
-
-	## read the stat file
-	name = info_req['filename']
-	path = INFO_BUCKET + '/' + name + '.txt'
-	if ds.check_exists(path, None):
-		buffer = ds.open(path)
-		if buffer:
-			file = buffer.read()
-			stats = file.split(' ')
-			if len(stats)<3:
-				response_part.update( { 'error' : 'Internal stat file corrupted' } )
-			else:
-				response_part.update( { 'done' : 1,
-										'selection' : stats[0],
-										'total' : stats[1],
-										'percent' : stats[2] } )
-	else:
-		response_part.update( {'error' : 'No gating information available for this gate. :' + path} )
-		
-	return HttpResponse(json.dumps(response_part), content_type="application/json")
 
 ###########################################################################
 ## \brief Return a response containing the file

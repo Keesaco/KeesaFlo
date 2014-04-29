@@ -676,9 +676,6 @@ function ksfGraphTools_sendGatingRequest(toolName, gatePoints, params)
 	ksfTools.CurrentTool.resetTool();
 	ksfCanvas.toolText("Loading graph...");
 
-	$(GATING_STATS_ID).addClass('loading');
-	$(GATING_STATS_ID).text('');
-
 	var gateReq = {
 		tool 		: toolName,
 		points 		: gatePoints,
@@ -747,7 +744,6 @@ function ksfGraphTools_setGraphUrl(url, newFilename, numRetries)
 			else if (response.done)
 			{
 				window.location.href = ksfData.baseUrl() + FILE_VIEW_HASH + gateRedirect;
-				ksfGraphTools.setGatingStats(gateRedirect);
 			}
 			else
 			{
@@ -785,43 +781,6 @@ function ksfGraphTools_setGraphUrl(url, newFilename, numRetries)
 	);
 }
 ksfGraphTools.setGraphUrl = ksfGraphTools_setGraphUrl;
-
-/**
- * Set properly the Gating Statistics
- * \param String filename - file path of new gate
- * \author mrudelle@keesaco.com of Keesaco
- */
-function ksfGraphTools_setGatingStats(filename)
-{
-
-	if (filename === "" || filename === undefined)
-		return;
-
-	var info_req = { filename : filename };
-
-	var get_status = ksfReq.postJSON(GATING_STATS_URI, info_req,
-		function(response)
-		{
-			if (response.error)
-			{
-				$(GATING_STATS_ID).removeClass('loading');
-				$(GATING_STATS_ID).text('');
-				ksfGraphTools.showFeedback(FEEDBACK_DANGER, "Error", response.error);
-			}
-			else if (response.done)
-			{
-				$(GATING_STATS_ID).removeClass('loading');
-				$(GATING_STATS_ID).text("Cell count (Selection/Total): " + response.selection + "/" + response.total + " (" + response.percent + "%)");
-			}
-		},
-		//on error getting gating status
-		function(jqxhr, textStatus, error)
-		{
-			ksfGraphTools.showFeedback(FEEDBACK_DANGER, textStatus, error);
-		}
-	);
-}
-ksfGraphTools.setGatingStats = ksfGraphTools_setGatingStats;
 
 /**
  * Allows one to reload properly the image of the graph
