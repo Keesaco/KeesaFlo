@@ -25,9 +25,6 @@ FEEDBACK_WARING = "alert-warning";
 FEEDBACK_DANGER = "alert-danger";
 
 ANALYSIS_STATUS_URI = '/app/data/json/analysis_status/';
-GATING_STATS_URI	= '/app/data/json/gating_info/';
-GATING_STATS_ID		= '#gating-stats'
-
 FILE_VIEW_HASH		= '#!/preview/';
 GATING_URI		= "/app/gating/tools/";
 
