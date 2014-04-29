@@ -30,6 +30,7 @@ In addition to these dependencies, the application requires [pyopenssl](https://
 Image:
 ------
 The provided Google Compute Engine image ‘keesaflo-worker’ contains the dependencies and directory structure of a worker instance. This is based on the [‘debian-7-wheezy-v20140415’](https://developers.google.com/compute/docs/operating-systems#debianimages) image, changes to which are listed below:
+
 1. Installed the R software environment.
 2. Installed the Bioconductor R packages ‘flowViz’ and ‘flowCore’.
 3. Made new directory ‘Analysis’ in the home directory.
