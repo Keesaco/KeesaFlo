@@ -7,17 +7,15 @@
 $(document).ready(function()
 {
 	ksfViews.loadFromLocation(true);
-				  
+
 	ksfLayout.initTips();
-				  
+
 	$("#ksf-help-begin").click(function() { ksfHelp.mainTourBegin(true); } );
 	ksfHelp.mainTourInit();
 	$('.togglefiles').click(ksfLayout.fileSelectorToggle);
-				  
-	//upload button
-	//prevents clicking 'upload' twice
+
+	// Upload button, clicking twice prevented.
 	$('#frm-new-file-upload').on('submit', function() { ksfLayout.setUploadButtonDisabled(true); return true; } );
-	//re-enable the button when the modal closes
+	// Re-enable the button when the modal closes
 	$('#uploadModal').on('hidden.bs.modal', function () { ksfLayout.setUploadButtonDisabled(false); });
 } );
-

@@ -168,8 +168,12 @@ $(window).resize(ksfLayout.fileSelectorResize);
  */
 function ksfLayout_filePreviewStart()
 {
+	// Scrape filename.
+	var name = $("#scrapename").text().trim();
+	// Add listeners.
 	ksfCanvas.addListener();
 	$("#togglefiles").click(ksfLayout.fileSelectorToggle);
+	$('#shareModal').on('shown.bs.modal', function () { ksfShare.getPermissions(name) });
 }
 ksfLayout.filePreviewStart = ksfLayout_filePreviewStart;
 

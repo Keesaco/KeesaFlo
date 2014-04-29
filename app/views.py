@@ -472,8 +472,10 @@ def file_preview(request, file = None):
 	graph_exists = ds.check_exists(GRAPH_BUCKET + '/' + file.partition('.')[0] + '.png', None)
 
 	# Get permissions for file.
-	user_key = ps.get_user_key_by_id(authed_user.user_id())
-	permissions = ps.get_user_file_permissions(file_info.key, user_key)
+	permissions = None
+	if file_info is not None:
+		user_key = ps.get_user_key_by_id(authed_user.user_id())
+		permissions = ps.get_user_file_permissions(file_info.key, user_key)
 
 	return render(request, 'file_preview.html', {'current_file' : current_file,
 												 'name' : file,
