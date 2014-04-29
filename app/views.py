@@ -488,7 +488,7 @@ def get_info(request):
 			if len(stats)<3:
 				response_part.update( { 'error' : 'Internal stat file corrupted' } )
 			else:
-				response_part.update( { 'done' : true,
+				response_part.update( { 'done' : 1,
 										'selection' : stats[0],
 										'total' : stats[1],
 										'percent' : stats[2] } )
