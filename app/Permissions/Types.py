@@ -170,6 +170,8 @@ class FileInfo:
 	##			to the file; usually used for identifying files to users
 	## \param	Key key - (= None) The key of the file as stored in the
 	##			permissions store
+	## \param	Key prev_file_key - [None]key of file which this file was based
+	##			on. This is used as an undo step.
 	## \return 	None
 	## \author jmccrea@keesaco.com of Keesaco
 	###########################################################################
@@ -177,9 +179,11 @@ class FileInfo:
 				 file_name 			= None,
 				 owner_key 			= None,
 				 friendly_name 		= "",
-				 key				= None ):
+				 key				= None,
+				 prev_file_key		= None	):
 		self.file_name 		= file_name
 		self.owner_key 		= owner_key
+		self.prev_file_key	= prev_file_key
 		##Force friendly_name to be a string
 		if friendly_name is None:
 			self.friendly_name = ""
