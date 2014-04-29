@@ -791,6 +791,9 @@ ksfGraphTools.setGraphUrl = ksfGraphTools_setGraphUrl;
 function ksfGraphTools_setGatingStats(filename)
 {
 
+	if (filename === "" || filename === undefined)
+		return;
+	
 	var info_req = { filename : filename };
 	
 	var get_status = ksfReq.postJSON(GATING_STATS_URI, info_req,
