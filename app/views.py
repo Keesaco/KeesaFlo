@@ -425,7 +425,6 @@ def file_permissions_json(request):
 		json_response['users'].append(new_perm)
 
 	json_response.update({ 'success' : True })
-
 	return HttpResponse(json.dumps(json_response), content_type="application/json")
 
 
