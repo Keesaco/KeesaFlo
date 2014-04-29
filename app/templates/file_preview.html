@@ -25,9 +25,10 @@
 		</div>-->
 		<div id="scrapename" style="display: none;"> {{ name }} </div>
 		<div class="btn-group btn-group-lg action-btn-group">
-			<button type="button" class="btn btn-download"><a href="{% url get_dataset current_file.filename %}">Download</a></button>
-		  	<button type="button" class="btn" id="request-gating-btn" disabled>Gate</button>
-		  	<button type="button" class="btn" id="reset-tool-btn">Reset</button>
+			<button type="button" class="btn" id="request-gating-btn" disabled>Gate</button>
+			<button type="button" class="btn" id="reset-tool-btn">Reset</button>
+			<button type="button" class="btn" id="share-btn">Share</button>
+			<button type="button" class="btn" id="btn-download"><a href="{% url get_dataset current_file.filename %}">Download</a></button>
 		</div>
 		<div class="gate-options">
 			<label><input type="checkbox" id="chk_reverse_gate" /> Reverse gate</labeL><br />
