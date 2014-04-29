@@ -109,7 +109,7 @@ convertPolyCoords <- function(points, len, xmin, xmax, ymin, ymax)
 		point[i] <- imageToGraphCoordx(point[i], xmin, xmax)
 	}
 	s <- r+1
-	for(i in s:l)
+	for(i in s:len)
 	{
 		point[i] <- imageToGraphCoordy(point[i], ymin, ymax)
 	}
@@ -220,10 +220,9 @@ createBasicGate <- function(gate_type, coords, range_x, range_y, x_axis, y_axis)
 	} else if(gate_type == 'poly')
 	{
 		points <- strsplit(coords, " ")
-		l <- length(points[[1]])
-		newPoints <- convertPolyCoords(points, l, range_x[1,1], range_x[2,1], 
-			range_y[1,1], range_y[2,1])
-		gate <- createPolyGate(newPoints, l/2, x_axis, y_axis)
+		len <- length(points[[1]])
+		newPoints <- convertPolyCoords(points, len, range_x[1,1], range_x[2,1], range_y[1,1], range_y[2,1])
+		gate <- createPolyGate(newPoints, len/2, x_axis, y_axis)
 	}
 	return(gate)
 }

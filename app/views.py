@@ -23,6 +23,7 @@ import API.APIQueue as queue
 import API.APIInstance as instances
 import API.APIBackground as background
 import API.APIPermissions as ps
+import API.APILogging as logging
 import json
 import re
 import gating.tools as gt
@@ -39,6 +40,16 @@ def logout(request):
 	link = auth.create_logout_url('/')
 	return redirect(link)
 
+###########################################################################
+## \brief	Redirects the user to a login page if required, if not
+##			redirects to the signup page
+## \param	request - Django request which resulted in the call
+## \return	HttpResponse - response to the request as JSON
+## \author	jmccrea@kessaco.com of Keesaco
+###########################################################################
+def signup(request):
+	link = auth.create_login_url('/#!/signup')
+	return redirect(link)
 
 ###########################################################################
 ## \brief	Returns a JSON response which instructs the client to redirect
@@ -363,19 +374,30 @@ def file_preview(request, file = None):
 	#TODO: Might need to be simplified or moved to a function in fileinfo
 	# TODO the folowing should be replaced by a method in the APIDatastore
 	file_info = ps.get_file_by_name(DATA_BUCKET + '/' + file)
+
+	undo_uri = None
+	if file_info is not None:
+		prev_file = ps.get_file_by_key(file_info.prev_file_key)
+		if prev_file is not None:
+			undo_uri = prev_file.file_name.rpartition(DATA_BUCKET + '/')[2]
+
 	lst = ds.list(DATA_BUCKET)
 	current_file = None
 	for temp_file in lst:
 		temp_file.filename = temp_file.filename.rpartition('/')[2]
 		if temp_file.filename == file:
 			current_file = temp_file;
+
+	graph_exists = ds.check_exists(GRAPH_BUCKET + '/' + file.partition('.')[0] + '.png', None)
 	template_dict = {'current_file' : current_file,
 					 'name' : file,
 					 'authed_user_nick': authed_user_nick,
-					 'file_info' : file_info}
+					 'file_info' : file_info,
+					 'graph_ready' : graph_exists,
+					 'undo_link' : undo_uri }
 
 	## Get gating informations
-	info_path = INFO_BUCKET + '/' + file + '.txt'
+	info_path = INFO_BUCKET + '/' + file.partition('.')[0] + '.txt'
 	if ds.check_exists(info_path, None):
 		buffer = ds.open(info_path)
 		if buffer:
@@ -569,7 +591,7 @@ def analysis_status_json(request):
 	#		this will depend on the CE/Permissions integration method
 	file_entry = ps.get_file_by_name(file_req['filename'])
 	if file_entry is None:
-		response_part.update( { 'error' : 'File or gate not recognised.' } )
+		response_part.update( { 'error' : 'File or gate not recognised.', 'giveup' : False } )
 		return HttpResponse(json.dumps(response_part), content_type="application/json")
 	else:
 		fp_entry = ps.get_user_file_permissions(file_entry.key, user_key)
@@ -585,5 +607,52 @@ def analysis_status_json(request):
 
 	response_part.update( { 'done' : is_done, 'giveup' : False } )
 	return HttpResponse(json.dumps(response_part), content_type="application/json")
+
+###########################################################################
+## \brief	Gives the user canLogIn and returns a JSON success/error object
+## \param	request - Django request which resulted in the call
+## \return	HttpResponse - response to the request as JSON
+## \author	jmccrea@kessaco.com of Keesaco
+## \note	Currently signup gives a user permissions and nothing else for
+##			the purpose of demonstration. Ultimately the validation,
+##			storage and response will need a number of additions.
+###########################################################################
+def signup_handler(request):
+	authed_user = auth.get_current_user()
+	if authed_user is None:
+		return __unauthed_response()
+		
+	user_key = ps.get_user_key_by_id(authed_user.user_id())
+	if user_key is None:
+		user_key = ps.add_user(authed_user)
+	
+	response_part = {
+		'success'		: False
+	}
+	
+	try:
+		file_req = json.loads(request.raw_post_data)
+	except ValueError:
+		response_part.update({'error' : 'Invalid request payload.'})
+		return HttpResponse(json.dumps(response_part), content_type="application/json")
+		
+	if 'action' not in file_req:
+		response_part.update({'error' : 'Incomplete request.'})
+		return HttpResponse(json.dumps(response_part), content_type="application/json")
+
+	elem_key = ps.get_element_key_by_ref('canLogIn')
+	if elem_key is None:
+		elem_key = ps.add_element('canLogIn')
+
+	user_elem = ps.get_user_element_permissions(user_key, elem_key)
+	if user_elem is not None:
+		response_part.update({'error' : 'Already signed up.'})
+		return HttpResponse(json.dumps(response_part), content_type="application/json")
+	else:
+		ps.add_element_permissions(user_key, elem_key, True)
+
+		response_part.update({'success' : True})
+		return HttpResponse(json.dumps(response_part), content_type="application/json")
+
 
 

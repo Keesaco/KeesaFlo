@@ -199,6 +199,7 @@ function ksfLayout_initTips()
 	{
 		style: 		{ classes: 'qtip-dark qtip-shadow qtip-rounded' },
 		show:		{ delay: 800 },
+		hide:		'click',
 		overwrite: 	false,
 	};
 	var tipSelector = $('[title!=""]').not('.notip');
@@ -267,7 +268,5 @@ function ksfLayout_initTips()
 			};
 			$(this).qtip($.extend(true, {}, qTipOptions, eventExt), event);
 		} )
-	
-	
 }
 ksfLayout.initTips = ksfLayout_initTips;

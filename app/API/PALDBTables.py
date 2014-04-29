@@ -14,6 +14,7 @@ class Files(ndb.Model):
 	file_name 		= ndb.StringProperty()
 	owner_key		= ndb.KeyProperty()
 
+	prev_file_key	= ndb.KeyProperty()
 
 	###	User-set information
 	### Allows a (potentially non-unique) name which does not relate to the actual file name

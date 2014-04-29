@@ -43,8 +43,8 @@ if(file.exists(fcs_name) == FALSE)
 x <- read.FCS(fcs_name, transformation = FALSE)
 
 ## Find range of relevant observables
-r1 <- range(x[,1])
-r2 <- range(x[,2])
+r1 <- range(x[,x_axis])
+r2 <- range(x[,y_axis])
 
 ## Creates a gate object based on the specified parameters
 if(gate_type == 'rect')

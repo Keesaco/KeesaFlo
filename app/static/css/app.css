@@ -65,6 +65,11 @@
 	overflow: auto;
 }
 
+.db-footnav-pad
+{
+	margin-bottom: 82px;
+}
+
 .navpanel, .filepanel
 {
 	bottom: 0px;
@@ -209,6 +214,11 @@ html, body, .row
 	right: 0;
 	height: 100%;
 	z-index: 2;
+}
+
+ul.tools-foot
+{
+	width: 50px;
 }
 
 .toolselector

@@ -27,6 +27,17 @@ Running `python AppBuild.py` will download and unzip all dependencies into their
 
 In addition to these dependencies, the application requires [pyopenssl](https://github.com/pyca/pyopenssl) to run locally. As this is not installed into the application's files it is not downloaded by AppBuild.
 
+Image:
+------
+The provided Google Compute Engine image ‘keesaflo-worker’ contains the dependencies and directory structure of a worker instance. This is based on the [‘debian-7-wheezy-v20140415’](https://developers.google.com/compute/docs/operating-systems#debianimages) image, changes to which are listed below:
+
+1. Installed the R software environment.
+2. Installed the Bioconductor R packages ‘flowViz’ and ‘flowCore’.
+3. Made new directory ‘Analysis’ in the home directory.
+4. Copied the contents of the repository’s ‘compute-engine’ directory into ‘Analysis’.
+
+To create a new image please follow [Google’s documentation](https://developers.google.com/compute/docs/images#creatingimage). To use this new image upload it to Google Cloud Storage and change the IMAGE_URL in the project configuration file.
+
 Testing:
 --------
 Automated unit testing is included in this project. Given that functionality largely relies on the Google Cloud Platform, these tests must be run using the dev_appserver. When the app is being served by the dev server, navigate to http://localhost:8080/\_ah/unittest/ (changing the port if necessary).
