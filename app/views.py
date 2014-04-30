@@ -605,6 +605,9 @@ def analysis_status_json(request):
 	#Prevent redirecting before the view is ready
 	is_done &= ds.check_exists(DATA_BUCKET  + '/' + name, None)
 
+	#Prevent redirecting before gating info is ready
+	is_done &= ds.check_exists(INFO_BUCKET + '/' + name + '.txt', None)
+
 	response_part.update( { 'done' : is_done, 'giveup' : False } )
 	return HttpResponse(json.dumps(response_part), content_type="application/json")
 
