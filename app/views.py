@@ -389,12 +389,26 @@ def file_preview(request, file = None):
 			current_file = temp_file;
 
 	graph_exists = ds.check_exists(GRAPH_BUCKET + '/' + file.partition('.')[0] + '.png', None)
-	return render(request, 'file_preview.html', {'current_file' : current_file,
-												 'name' : file,
-												 'authed_user_nick': authed_user_nick,
-												 'file_info' : file_info,
-				 								 'graph_ready' : graph_exists,
-				  								 'undo_link' : undo_uri })
+	template_dict = {'current_file' : current_file,
+					 'name' : file,
+					 'authed_user_nick': authed_user_nick,
+					 'file_info' : file_info,
+					 'graph_ready' : graph_exists,
+					 'undo_link' : undo_uri }
+
+	## Get gating informations
+	info_path = INFO_BUCKET + '/' + file.partition('.')[0] + '.txt'
+	if ds.check_exists(info_path, None):
+		buffer = ds.open(info_path)
+		if buffer:
+			file = buffer.read()
+			stats = file.split(' ')
+			if len(stats)>=3:
+				template_dict.update( { 'gating_stats' : { 'selection' : stats[0],
+										'total' : stats[1],
+										'percent' : float(stats[2])*100 } } )
+
+	return render(request, 'file_preview.html', template_dict)
 
 ###########################################################################
 ## \brief 	view for graph preview pagelet
@@ -460,15 +474,6 @@ def get_graph(request, graph):
 ###########################################################################
 def get_dataset(request, dataset):
 	return fetch_file(DATA_BUCKET + '/' + dataset + '.fcs', 'application/vnd.isac.fcs', True)
-
-###########################################################################
-## \brief Is called when a info is requested
-## \param request - Django variable defining the request that triggered the generation of this page
-## \param dataset - the name of the file to be downloaded
-## \return the file requested
-###########################################################################
-def get_info(request, infofile):
-	return fetch_file(INFO_BUCKET + '/' + infofile, 'text/html', False)
 
 ###########################################################################
 ## \brief Return a response containing the file
