@@ -52,3 +52,4 @@ ksfTools.addToolsListener = function()
 		$(TOOLS_LIST[i].ELEMENT_ID).click(ksfTools.switchTool);
 	}
 }
+
