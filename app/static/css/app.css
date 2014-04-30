@@ -359,6 +359,11 @@ a.edit-dropdown-button:hover
 
 /* end of filebar classes */
 
+.icon-pad-left
+{
+	margin-left: 3px;
+}
+
 @media screen and (max-width: 767px)
 {
 	.apppanel, .navpanel, .filepanel
