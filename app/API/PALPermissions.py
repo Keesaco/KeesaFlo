@@ -203,6 +203,7 @@ def get_user_by_email(user_email):
 			user_obj.set_nickname(user.nickname)
 			return user_obj
 
+
 ###########################################################################
 ## \brief 	Add a file to the file table with a given name and owner
 ## \param	FileInfo new_file - the file to be added to the datastore
