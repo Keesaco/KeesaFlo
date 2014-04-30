@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'vector-glyph';
-  src: url('../vector-glyph/vector-glyph.eot?93146261');
-  src: url('../vector-glyph/vector-glyph.eot?93146261#iefix') format('embedded-opentype'),
-       url('../vector-glyph/vector-glyph.woff?93146261') format('woff'),
-       url('../vector-glyph/vector-glyph.ttf?93146261') format('truetype'),
-       url('../vector-glyph/vector-glyph.svg?93146261#vector-glyph') format('svg');
+  src: url('../vector-glyph/vector-glyph.eot?80221354');
+  src: url('../vector-glyph/vector-glyph.eot?80221354#iefix') format('embedded-opentype'),
+       url('../vector-glyph/vector-glyph.woff?80221354') format('woff'),
+       url('../vector-glyph/vector-glyph.ttf?80221354') format('truetype'),
+       url('../vector-glyph/vector-glyph.svg?80221354#vector-glyph') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -14,7 +14,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'vector-glyph';
-    src: url('../vector-glyph/vector-glyph.svg?93146261#vector-glyph') format('svg');
+    src: url('../vector-glyph/vector-glyph.svg?80221354#vector-glyph') format('svg');
   }
 }
 */
@@ -57,3 +57,5 @@
 .vector-glyph-sigma-lowercase:before { content: '\e804'; } /* '' */
 .vector-glyph-kilometer:before { content: '\e805'; } /* '' */
 .vector-glyph-vector-group-removed:before { content: '\e806'; } /* '' */
+.vector-glyph-axes:before { content: '\e807'; } /* '' */
+.vector-glyph-undo:before { content: '\e808'; } /* '' */
