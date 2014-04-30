@@ -52,6 +52,7 @@ def visualise(	name):
 ## \param name - name of fcs file to visualise
 ## \param x_axis - name of x_axis desired
 ## \param y_axis - name of y_axis desired
+## \param newname - name of new file
 ## \return returns exit code from the subprocess
 ## \author hdoughty@keesaco.com of Keesaco
 ###########################################################################

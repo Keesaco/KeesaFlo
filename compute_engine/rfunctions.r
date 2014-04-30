@@ -251,6 +251,7 @@ createSubset <- function(data, gate, reverse)
 ## \param data - orginal flowFrame being gated
 ## \param gate - gate being applied to data
 ## \param reverse - whether the gate being create is a reverse gate
+## \param gate_name - name of gate for which info file is being created
 ###########################################################################
 writeInfo <- function(data, gate, reverse, gate_name)
 {
