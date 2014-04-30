@@ -552,7 +552,7 @@ def tool(request):
 			return HttpResponse(simplejson.dumps(gt.generate_gating_feedback('fail', 'Invalid points list')), content_type="application/json")
 	else:
 		# Normalise false value to None
-		gateInfo.update( { 'points' : None } )
+		gate_info.update( { 'points' : None } )
 
 
 	tool = gt.AVAILABLE_TOOLS.get(gate_info['tool'], gt.no_such_tool)
