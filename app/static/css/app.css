@@ -445,6 +445,7 @@ a.edit-dropdown-button:hover
 	background-image: url('../images/spinner.gif');
 	background-repeat: no-repeat;
 	background-position: center;
+	min-height: 32px; /* the height of the spinner */
 }
 
 .large-name
@@ -456,4 +457,10 @@ a.edit-dropdown-button:hover
 .gate-options
 {
 	padding: 0px 20px 20px 20px;
+}
+
+#gating-stats {
+	font-weight: bold;
+	padding-top: 10px;
+	color: gray;
 }

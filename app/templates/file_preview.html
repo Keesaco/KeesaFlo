@@ -20,9 +20,9 @@
 				&nbsp;<a href="#!/preview/{{ undo_link }}" title="Undo" class="tip-right"><span class="glyphicon glyphicon-arrow-left"></span></a>
 			{% endif %}
 		</h3>
-		<!--<div id="gating-stats">
-			<span>Loading...</span>
-		</div>-->
+		{% if gating_stats %}
+			<div id="gating-stats">Cell count (selection/total): {{gating_stats.selection}}/{{gating_stats.total}} ({{gating_stats.percent}}%)</div>
+		{% endif %}
 		<div id="scrapename" style="display: none;"> {{ name }} </div>
 		<div class="btn-group btn-group-lg action-btn-group">
 			<button type="button" class="btn" id="request-gating-btn" disabled>Gate</button>

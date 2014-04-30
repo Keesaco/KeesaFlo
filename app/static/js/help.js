@@ -76,6 +76,23 @@ ksfHelp.mainTourBegin = ksfHelp_mainTourBegin;
 
 
 /**
+ * Checks whether the help tour is still in focus, and if not ends it.
+ * \author swhitehouse@keesaco.com of Keesaco
+ */
+function ksfHelp_mainTourRefocus(event)
+{
+	if(!ksfHelp_mainTour.ended())
+	{
+		if($(event.target).parents('.tour-ksfHelp_mainTour').length == 0)
+		{
+			ksfHelp.mainTourEnd();
+		}
+	}
+}
+ksfHelp.mainTourRefocus = ksfHelp_mainTourRefocus;
+
+
+/**
  * Ends the help tour.
  * \author swhitehouse@keesaco.com of Keesaco
  */
@@ -209,10 +226,4 @@ ksfHelp_mainTour = new Tour
 					}
 				]
 });
-
-
-/*
- * Hooks the help tour 'mode' to the window being resized.
- */
-$(window).resize(ksfHelp.mainTourResize);
 
