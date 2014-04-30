@@ -42,9 +42,12 @@ for(i in 1:no_clusters)
 }
 ## Saves gate info in .txt file
 	info_names <- 0 ## Initialises info names
-	for(i in 1:4)
+	for(i in 1:no_clusters)
 	{
 		info_names[i] <- paste(cluster_names[[1]][i], '.txt', sep="")
+		axes_info <- paste(cluster_names[[1]][i], "info.txt", sep="")
+		c <- colnames(clusters[[i]])
+		write(c, file = axes_info)
 	}
 	writeInfoMultipleFilters(x, fres, info_names)
 quit("no", 0)

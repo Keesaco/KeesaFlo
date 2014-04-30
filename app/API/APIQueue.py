@@ -105,8 +105,8 @@ def gate_kmeans(	filename, gatenames, number_clusters, x_axis, y_axis):
 ## \brief Adds a task to perform a circular gate on fcs data.
 ## \author hdoughty@keesaco.com of Keesaco
 ###########################################################################
-def change_axis(	filename, x_axis, y_axis):
-	queue.add_task('jobs', 'change_axis;' + filename + ';' + x_axis + ';' + y_axis)
+def change_axis(	filename, x_axis, y_axis, newname):
+	queue.add_task('jobs', 'change_axis;' + filename + ';' + x_axis + ';' + y_axis + ';' + newname)
 
 ###########################################################################
 ## \brief Adds a task to create a dot plot of fcs data.

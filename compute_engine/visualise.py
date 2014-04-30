@@ -19,6 +19,7 @@ import API.APIQueue as Queue
 def gate_clean_up(gate_name):
 	os.remove(gate_name + '.png')
 	os.remove(gate_name + '.txt')
+	os.remove(gate_name + 'info.txt')
 	os.remove(gate_name)
 
 ###########################################################################
@@ -30,6 +31,7 @@ def save_gate(gate_name):
 	Ana.save_vis(gate_name + '.png')
 	## Saves info about gate to cloud storage
 	Ana.save_info(gate_name + '.txt')
+	Ana.save_info(gate_name + 'info.txt')
 	## Saves gate as fcs file
 	Ana.save_fcs(gate_name)
 
@@ -77,16 +79,25 @@ def axis_change(commands):
 	name = commands[1]
 	x_axis = commands[2]
 	y_axis = commands[3]
+	new_name = commands[4]
 	##Loads raw fcs data from cloud storage
 	Ana.load_fcs(name)
 	##Creates a visualisation of the graph with different axis
-	exitcode = Ana.change_axis(name, x_axis, y_axis)
+	exitcode = Ana.change_axis(name, x_axis, y_axis, new_name)
 	if(exitcode == 0):
 		##Saves visualisation to cloud storage
-		Ana.save_vis(name + x_axis + y_axis + '.png')
+		Ana.save_vis(new_name + '.png')
+		##Saves info file to cloud storage
+		Ana.save_info(new_name + 'info.txt')
+		Ana.save_info(new_name + '.txt')
+		##Saves .fcs file
+		Ana.save_fcs(new_name)
 		## Clean up
 		os.remove(name)
-		os.remove(name + x_axis + y_axis + '.png')
+		os.remove(new_name)
+		os.remove(new_name + '.txt')
+		os.remove(new_name + 'info.txt')
+		os.remove(new_name + '.png')
 	return True
 
 ###########################################################################

@@ -52,11 +52,12 @@ def visualise(	name):
 ## \param name - name of fcs file to visualise
 ## \param x_axis - name of x_axis desired
 ## \param y_axis - name of y_axis desired
+## \param newname - name of new file
 ## \return returns exit code from the subprocess
 ## \author hdoughty@keesaco.com of Keesaco
 ###########################################################################
-def change_axis(name, x_axis, y_axis):
-	return subprocess.call(["Rscript", "axis.r", name, name + x_axis + y_axis + '.png', x_axis, y_axis])
+def change_axis(name, x_axis, y_axis, newname):
+	return subprocess.call(["Rscript", "axis.r", name, newname, x_axis, y_axis])
 
 ###########################################################################
 ## \brief Saves a visualisation of an fcs file
