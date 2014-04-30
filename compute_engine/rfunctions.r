@@ -252,7 +252,7 @@ createSubset <- function(data, gate, reverse)
 ## \param gate - gate being applied to data
 ## \param reverse - whether the gate being create is a reverse gate
 ###########################################################################
-writeInfo <- function(data, gate, reverse)
+writeInfo <- function(data, gate, reverse, gate_name)
 {
 	if(reverse)
 	{

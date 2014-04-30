@@ -50,6 +50,9 @@ for(i in 1:4)
 	for(i in 1:4)
 	{
 		info_names[i] <- paste(quadrant_names[i], '.txt', sep="")
+		axes_info <- paste(quadrant_names[i], "info.txt", sep="")
+		c <- colnames(quadrants[[i]])
+		write(c, file = axes_info)
 	}
 	writeInfoMultipleFilters(x, fres, info_names)
 quit("no", 0)
