@@ -63,3 +63,47 @@
 		</p>
 	</div>
 {% endif %}
+
+<!-- popup form for the axis choice -->
+{% if available_axis %}
+	<div class="modal fade" id="axisModal" tabindex="-1" role="dialog" aria-labelledby="axisModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="settingsModalLabel"> Change the graph axis </h4>
+				</div>
+				<form class="form-horizontal" action="" method="GET">
+					<div class="modal-body">
+						<div class="form-group">
+						  <label class="col-md-4 control-label" for="x-axis-choice">X Axis: </label>
+						  <div class="col-md-4">
+						    <select id="x-axis-choice" name="x-axis-choice" class="form-control">
+						    	{% for axis in available_axis %}
+						    		<option value="{{axis}}">{{axis}}</option>
+								{% endfor %}
+						    </select>
+						  </div>
+						</div>
+
+						<!-- Select Basic -->
+						<div class="form-group">
+						  <label class="col-md-4 control-label" for="y-axis-choice">Y Axis: </label>
+						  <div class="col-md-4">
+						    <select id="y-axis-choice" name="y-axis-choice" class="form-control">
+						      	{% for axis in available_axis %}
+						    		<option value="{{axis}}">{{axis}}</option>
+								{% endfor %}
+						    </select>
+						  </div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+						<button type="button" value="Apply Changes" class="btn btn-primary" onclick="ksfGraphTools.changeAxis()">OK</button>
+					</div>
+				</form>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+{% endif %}

@@ -165,6 +165,23 @@ def multiple_gating(gate_params):
 		else:
 			return generate_gating_feedback("fail", "notcorrect, wrong number of arguments")
 
+def change_axis(tool_params):
+	## Generate unique datastore path, ensuring uniqueness.
+	while True:
+		new_name = str(uuid1())
+		new_path = ds.generate_path(DATA_BUCKET, None, new_name)
+		if not ds.check_exists(new_path, None):
+			break
+
+	if tool_params['axis']['x'] == tool_params['axis']['y']:
+		return generate_gating_feedback("fail", "Please choose two different axis")
+
+	# todo: check if the axis exist.
+
+	queue.change_axis(tool_params['filename'], tool_params['axis']['x'], tool_params['axis']['y'], new_name)
+
+	return generate_gating_feedback("success","the axis change was performed", new_path, tool_params['filename'])
+
 ###########################################################################
 ## \brief Is called when the requested tool is not in the dictionary of known tools
 ## \param Dictionary gate_params - list of gating parameters
@@ -233,5 +250,6 @@ AVAILABLE_TOOLS = {
 	'normal_gating'			: simple_gating,
 	'quadrant_gating'		: multiple_gating,
 	'kmeans_gating'			: multiple_gating,
-	'boolean_gating'		: boolean_gating
+	'boolean_gating'		: boolean_gating,
+	'change_axis'			: change_axis
 }

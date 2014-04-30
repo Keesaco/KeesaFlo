@@ -28,6 +28,11 @@ ANALYSIS_STATUS_URI = '/app/data/json/analysis_status/';
 FILE_VIEW_HASH		= '#!/preview/';
 GATING_URI		= "/app/gating/tools/";
 
+X_AXIS_OPTION = '#x-axis-choice';
+Y_AXIS_OPTION = '#y-axis-choice';
+
+AXIS_MODAL = '#axisModal'
+
 /**
  *	Milliseconds between requests for new graphs
  */
@@ -912,7 +917,10 @@ function ksfGraphTools_sendGatingRequest(toolName, gatePoints, params)
 
 	var reverseGate = $('#chk_reverse_gate').first().is(':checked');
 	
-	ksfTools.CurrentTool.resetTool();
+	if (ksfTools.CurrentTool !== null) {
+		ksfTools.CurrentTool.resetTool();
+	}
+
 	ksfCanvas.toolText("Loading graph...");
 
 	var gateReq = {
@@ -1107,3 +1115,17 @@ function ksfGraphTools_distance(x1, y1, x2, y2)
 		return Math.sqrt(x_pow + y_pow);
 	}
 ksfGraphTools.distance = ksfGraphTools_distance;
+
+/**
+ * Submit the changes in axis
+ * \author mrudelle@keesaco.com of Keesaco
+ */
+function ksfGraphTools_changeAxis()
+{
+	xAxis = $(X_AXIS_OPTION).val();
+	yAxis = $(Y_AXIS_OPTION).val();
+	ksfGraphTools.sendGatingRequest('change_axis', [], { axis : {	x : xAxis,
+																	y : yAxis }});
+	$(AXIS_MODAL).modal('hide');
+}
+ksfGraphTools.changeAxis = ksfGraphTools_changeAxis;

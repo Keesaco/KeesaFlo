@@ -660,6 +660,17 @@ def file_preview(request, file = None):
 										'total' : stats[1],
 										'percent' : float(stats[2])*100 } } )
 
+	## Get different axis
+	axis_path = INFO_BUCKET + '/' + file.partition('.')[0] + 'info.txt'
+	if ds.check_exists(axis_path, None):
+		buffer = ds.open(axis_path)
+		if buffer:
+			file = buffer.read()
+			axis = file.split('\n')
+			if len(axis)>0:
+				while '' in axis: axis.remove('')
+				template_dict.update( { 'available_axis' : axis } )
+
 	return render(request, 'file_preview.html', template_dict)
 
 ###########################################################################
@@ -793,7 +804,7 @@ def tool(request):
 			return HttpResponse(simplejson.dumps(gt.generate_gating_feedback('fail', 'Invalid points list')), content_type="application/json")
 	else:
 		# Normalise false value to None
-		gateInfo.update( { 'points' : None } )
+		gate_info.update( { 'points' : None } )
 
 
 	tool = gt.AVAILABLE_TOOLS.get(gate_info['tool'], gt.no_such_tool)
