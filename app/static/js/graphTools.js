@@ -90,7 +90,7 @@ ksfGraphTools.RectangularGating = {
 		{
 			this.startx = posX;
 			this.starty = posY;
-			ksfCanvas.toolText("You just started with the rectangle tool " + (posX) + ' , ' + (posY));
+			ksfHelpTools.rectangleHelpShow(1);
 			this.state = WORK;
 		}
 		// If currently gating, add end point.
@@ -99,7 +99,7 @@ ksfGraphTools.RectangularGating = {
 			this.endx = posX;
 			this.endy = posY;
 			ksfCanvas.drawBox(this.startx, this.starty, this.endx - this.startx, this.endy - this.starty, 1);
-			ksfCanvas.toolText("You just finished with the rectangle tool [" + "(" + this.startx + "," + this.starty + ")"  + ' , ' + "(" + this.endx + "," + this.endy + ")" + ']');
+			ksfHelpTools.rectangleHelpShow(2);
 			ksfCanvas.enableBtn(REQUEST_GATING_BTN, true);
 			this.state = DONE;
 		}
@@ -112,7 +112,6 @@ ksfGraphTools.RectangularGating = {
 				this.move_point = this.START_POINT;
 				this.state = MOVE;
 				ksfCanvas.enableBtn(REQUEST_GATING_BTN, true);
-				ksfCanvas.toolText("Moving gate.");
 			}
 			// Move end point.
 			else if (ksfGraphTools.distance(posX, posY, this.endx, this.endy) < SENSITIVITY)
@@ -120,7 +119,6 @@ ksfGraphTools.RectangularGating = {
 				this.move_point = this.END_POINT;
 				this.state = MOVE;
 				ksfCanvas.enableBtn(REQUEST_GATING_BTN, true);
-				ksfCanvas.toolText("Moving gate.");
 			}
 		}
 		// If moving is finished, move gate.
@@ -196,17 +194,16 @@ ksfGraphTools.RectangularGating = {
 		this.endx = null;
 		ksfCanvas.clear();
 		ksfCanvas.enableBtn(REQUEST_GATING_BTN, false);
-		ksfCanvas.toolText("The rectangle has been reset.");
+		ksfHelpTools.rectangleHelpShow(0);
 	},
 
 	requestGating : function()
 	{
-		if (this.state !== DONE)
+		if (this.state == DONE)
 		{
-			ksfCanvas.toolText("Gate is not ready to send.");
-			return;
+			ksfGraphTools.sendGatingRequest('rectangular_gating', [this.startx, this.starty, this.endx, this.endy]);
+			ksfHelpTools.rectangleHelpShow(3);
 		}
-		ksfGraphTools.sendGatingRequest('rectangular_gating', [this.startx, this.starty, this.endx, this.endy]);
 	}
 }
 
@@ -239,7 +236,7 @@ ksfGraphTools.PolygonGating = {
 				this.state = DONE;
 				ksfCanvas.clear();
 				ksfCanvas.drawPolygon(this.xList, this.yList, this.xList[0], this.yList[0], this.START_RADIUS, 1);
-				ksfCanvas.toolText("Selection is finished: "+ (this.xList.length) + " points");
+				ksfHelpTools.polygonHelpShow(1);
 				ksfCanvas.enableBtn(REQUEST_GATING_BTN, true);
 			}
 			else
@@ -262,7 +259,6 @@ ksfGraphTools.PolygonGating = {
 				{
 					this.state = MOVE;
 					this.move_point = i;
-					ksfCanvas.toolText("Moving gate.");
 				}
 			}
 		}
@@ -270,7 +266,6 @@ ksfGraphTools.PolygonGating = {
 		else if (this.state === MOVE)
 		{
 			this.state = DONE;
-			ksfCanvas.toolText("Gate moved.");
 		}
 	},
 
@@ -280,6 +275,7 @@ ksfGraphTools.PolygonGating = {
 		this.xList = [];
 		this.yList = [];
 		ksfCanvas.clear();
+		ksfHelpTools.polygonHelpShow(0);
 		ksfCanvas.enableBtn(REQUEST_GATING_BTN, false);
 	},
 
@@ -348,6 +344,7 @@ ksfGraphTools.PolygonGating = {
 	requestGating : function()
 	{
 		ksfGraphTools.sendGatingRequest('polygon_gating', this.xList.concat(this.yList));
+		ksfHelpTools.polygonHelpShow(2);
 	}
 }
 
@@ -383,14 +380,14 @@ ksfGraphTools.OvalGating = {
 		{
 			this.centerx = posX;
 			this.centery = posY;
-			ksfCanvas.toolText("Select the smaller radius");
+			ksfHelpTools.ellipseHelpShow(1);
 			this.state = WORK;
 		}
 		// If gating stage 1, add radius.
 		else if (this.state === WORK)
 		{
 			this.r1 = ksfGraphTools.distance(this.centerx, this.centery, posX, posY);
-			ksfCanvas.toolText("Select the oval\'s last point");
+			ksfHelpTools.ellipseHelpShow(2);
 			this.state = WORK2;
 		}
 		// If gating stage 2, add last point.
@@ -403,7 +400,7 @@ ksfGraphTools.OvalGating = {
 			this.setRadialCoords();
 			// Draw points
 			ksfCanvas.drawOval(this.centerx, this.centery, this.r1, this.pointx, this.pointy, 0.5);
-			ksfCanvas.toolText("Oval correctly selected");
+			ksfHelpTools.ellipseHelpShow(3);
 			ksfCanvas.enableBtn(REQUEST_GATING_BTN, true);
 			this.state = DONE;
 		}
@@ -416,7 +413,6 @@ ksfGraphTools.OvalGating = {
 				this.move_point = this.CENTER_POINT;
 				this.state = MOVE;
 				ksfCanvas.enableBtn(REQUEST_GATING_BTN, true);
-				ksfCanvas.toolText("Moving gate.");
 			}
 			// Move radial point.
 			else if (ksfGraphTools.distance(posX, posY, this.rx, this.ry) < SENSITIVITY)
@@ -424,7 +420,6 @@ ksfGraphTools.OvalGating = {
 				this.move_point = this.RADIAL_POINT;
 				this.state = MOVE;
 				ksfCanvas.enableBtn(REQUEST_GATING_BTN, true);
-				ksfCanvas.toolText("Moving gate.");
 			}
 			// Move end point.
 			else if (ksfGraphTools.distance(posX, posY, this.pointx, this.pointy) < SENSITIVITY)
@@ -432,7 +427,6 @@ ksfGraphTools.OvalGating = {
 				this.move_point = this.END_POINT;
 				this.state = MOVE;
 				ksfCanvas.enableBtn(REQUEST_GATING_BTN, true);
-				ksfCanvas.toolText("Moving gate.");
 			}
 		}
 		// Moving.
@@ -533,7 +527,7 @@ ksfGraphTools.OvalGating = {
 		this.pointy = null; 
 		ksfCanvas.clear();
 		ksfCanvas.enableBtn(REQUEST_GATING_BTN, false);
-		ksfCanvas.toolText("Select oval\'s center");
+		ksfHelpTools.ellipseHelpShow(0);
 	},
 
 	requestGating : function()
@@ -545,6 +539,7 @@ ksfGraphTools.OvalGating = {
 		p1y = this.centery + Math.sin(angle - Math.PI / 2) * this.r1;
 		ksfGraphTools.sendGatingRequest('oval_gating',
 										[this.centerx, this.centery, p1x, p1y, this.pointx, this.pointy] );
+		ksfHelpTools.ellipseHelpShow(4);
 	},
 
 	// Sets radial point co-ords rx and ry.
@@ -587,7 +582,7 @@ ksfGraphTools.OrGating = {
 				{
 					ksfCanvas.clear();
 					ksfCanvas.drawTwoPolygons(this.xList, this.yList, this.xList[0], this.yList[0], this.xList2, this.yList2, null, null, this.START_RADIUS, 1);
-					ksfCanvas.toolText("First polygon is finished: "+ (this.xList.length) + " points");
+					ksfHelpTools.boolorHelpShow(1);
 					this.firstDone = true;
 				}
 				else
@@ -608,7 +603,7 @@ ksfGraphTools.OrGating = {
 					this.state = DONE;
 					ksfCanvas.clear();
 					ksfCanvas.drawTwoPolygons(this.xList, this.yList, this.xList[0], this.yList[0], this.xList2, this.yList2, this.xList2[0], this.yList2[0], this.START_RADIUS, 1);
-					ksfCanvas.toolText("Second polygon is finished: "+ (this.xList2.length) + " points");
+					ksfHelpTools.boolorHelpShow(2);
 					ksfCanvas.enableBtn(REQUEST_GATING_BTN, true);
 				}
 				else
@@ -633,7 +628,6 @@ ksfGraphTools.OrGating = {
 					this.state = MOVE;
 					this.move_point = i;
 					this.move_poly = 1;
-					ksfCanvas.toolText("Moving gate.");
 				}
 			}
 			for (var i = 0; i < this.xList2.length; i++)
@@ -643,7 +637,6 @@ ksfGraphTools.OrGating = {
 					this.state = MOVE;
 					this.move_point = i;
 					this.move_poly = 2;
-					ksfCanvas.toolText("Moving gate.");
 				}
 			}
 		}
@@ -651,7 +644,6 @@ ksfGraphTools.OrGating = {
 		else if (this.state === MOVE)
 		{
 			this.state = DONE;
-			ksfCanvas.toolText("Gate moved.");
 		}
 	},
 
@@ -664,6 +656,7 @@ ksfGraphTools.OrGating = {
 		this.yList2 = [];
 		this.firstDone = false;
 		ksfCanvas.clear();
+		ksfHelpTools.boolorHelpShow(0);
 		ksfCanvas.enableBtn(REQUEST_GATING_BTN, false);
 	},
 
@@ -759,6 +752,7 @@ ksfGraphTools.OrGating = {
 	requestGating : function()
 	{
 		ksfGraphTools.sendGatingRequest('boolean_gating', this.xList.concat(this.yList), [this.boolean_op, this.xList2.concat(this.yList2)]);
+		ksfHelpTools.boolorHelpShow(3);
 	}
 }
 
@@ -779,12 +773,14 @@ ksfGraphTools.NormalGating = {
 	resetTool : function()
 	{
 		ksfCanvas.enableBtn(REQUEST_GATING_BTN, true);
+		ksfHelpTools.normdistHelpShow(0);
 		this.scale_factor = 1;
 	},
 
 	requestGating : function()
 	{
 		ksfGraphTools.sendGatingRequest('normal_gating', [this.scale_factor]);
+		ksfHelpTools.normdistHelpShow(1);
 	}
 }
 
@@ -806,11 +802,13 @@ ksfGraphTools.KmeansGating = {
 	{
 		ksfCanvas.enableBtn(REQUEST_GATING_BTN, true);
 		this.no_clusters = 3;
+		ksfHelpTools.kmeansHelpShow(0);
 	},
 
 	requestGating : function()
 	{
 		ksfGraphTools.sendGatingRequest('kmeans_gating', [this.no_clusters]);
+		ksfHelpTools.kmeansHelpShow(1);
 	}
 }
 
@@ -824,7 +822,7 @@ ksfGraphTools.QuadrantGating = {
 
 	onGraphClick : function(event)
 	{
-		// Get realtive mouse position.
+		// Get relative mouse position.
 		var posX = event.pageX - $(GRAPH_ID).offset().left,
 			posY = event.pageY - $(GRAPH_ID).offset().top;
 
@@ -833,7 +831,7 @@ ksfGraphTools.QuadrantGating = {
 		{
 			this.centre_x = posX;
 			this.centre_y = posY;
-			ksfCanvas.toolText("You just selected a centre for the quadrant tool: " + (posX) + ' , ' + (posY));
+			ksfHelpTools.quadrantHelpShow(1);
 			ksfCanvas.enableBtn(REQUEST_GATING_BTN, true);
 			this.state = DONE;
 		}
@@ -841,14 +839,12 @@ ksfGraphTools.QuadrantGating = {
 		else if (this.state === DONE)
 		{
 			this.state = MOVE;
-			ksfCanvas.toolText("Moving gate.");
 		}
 		// If gate is being moved.
 		else if (this.state === MOVE)
 		{
 			this.centre_x = posX;
 			this.centre_y = posY;
-			ksfCanvas.toolText("Gate moved to: " + (posX) + ' , ' + (posY));
 			ksfCanvas.enableBtn(REQUEST_GATING_BTN, true);
 			this.state = DONE;
 		}
@@ -889,11 +885,13 @@ ksfGraphTools.QuadrantGating = {
 		this.centre_y = null; 
 		ksfCanvas.clear();
 		ksfCanvas.enableBtn(REQUEST_GATING_BTN, false);
+		ksfHelpTools.quadrantHelpShow(0);
 	},
 
 	requestGating : function()
 	{
 		ksfGraphTools.sendGatingRequest('quadrant_gating', [this.centre_x, this.centre_y]);
+		ksfHelpTools.quadrantHelpShow(2);
 	}
 }
 

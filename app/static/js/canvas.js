@@ -19,6 +19,7 @@ GRAPH_ID = "#flow-canvas";
 TOOL_POPOVER_TITLE = "#tool-popover-title";
 REQUEST_GATING_BTN = "#request-gating-btn";
 RESET_TOOL_BTN = "#reset-tool-btn";
+TOOL_DESCRIPTION = "#tool-description";
 
 var context;
 var canvas;
@@ -243,8 +244,23 @@ function ksfCanvas_toolText(msg)
 		tool_popover.text(msg);
 	}
 }
-
 ksfCanvas.toolText = ksfCanvas_toolText;
+
+/**
+ * Set the text shown in the tool description area
+ * \param msg - [string] text to be shown
+ * \note This area is used to explain the current tool type to the user
+ * \author swhitehouse@keesaco.com of Keesaco
+ */
+function ksfCanvas_toolDescription(msg)
+{
+	var tool_description = $(TOOL_DESCRIPTION);
+	if(tool_description !== null)
+	{
+		tool_description.text(msg);
+	}
+}
+ksfCanvas.toolDescription = ksfCanvas_toolDescription;
 
 /**
  * Clear the canvas (erase its content to make it transparent)
