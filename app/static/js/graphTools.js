@@ -31,7 +31,7 @@ GATING_URI		= "/app/gating/tools/";
 X_AXIS_OPTION = '#x-axis-choice';
 Y_AXIS_OPTION = '#y-axis-choice';
 
-AXIS_MODAL = '#axisModal'
+AXES_MODAL = '#axesModal'
 
 /**
  *	Milliseconds between requests for new graphs
@@ -1122,10 +1122,10 @@ ksfGraphTools.distance = ksfGraphTools_distance;
  */
 function ksfGraphTools_changeAxes()
 {
-	xAxis = $(X_AXIS_OPTION).val();
-	yAxis = $(Y_AXIS_OPTION).val();
+	var xAxis = $(X_AXIS_OPTION).val();
+	var yAxis = $(Y_AXIS_OPTION).val();
 	ksfGraphTools.sendGatingRequest('change_axes', [], { newAxes : {	x : xAxis,
 																		y : yAxis }});
-	$(AXIS_MODAL).modal('hide');
+	$(AXES_MODAL).modal('hide');
 }
 ksfGraphTools.changeAxes = ksfGraphTools_changeAxes;
