@@ -1,4 +1,4 @@
-# License
+# ModernUIIcons License
 
 Please carefully understand the license and download the latest icons at ModernUIIcons.com.
 

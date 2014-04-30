@@ -820,6 +820,7 @@ RECURSIVE              = YES
 # run.
 
 EXCLUDE                = AppBuild.py \
+						 licenses/ \
 						 app/apiclient/ \
 						 app/autoload/ \
 						 app/cloudstorage/ \
