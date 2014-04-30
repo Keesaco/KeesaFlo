@@ -1117,15 +1117,15 @@ function ksfGraphTools_distance(x1, y1, x2, y2)
 ksfGraphTools.distance = ksfGraphTools_distance;
 
 /**
- * Submit the changes in axis
+ * Submit the changes in axes
  * \author mrudelle@keesaco.com of Keesaco
  */
-function ksfGraphTools_changeAxis()
+function ksfGraphTools_changeAxes()
 {
 	xAxis = $(X_AXIS_OPTION).val();
 	yAxis = $(Y_AXIS_OPTION).val();
-	ksfGraphTools.sendGatingRequest('change_axis', [], { axis : {	x : xAxis,
-																	y : yAxis }});
+	ksfGraphTools.sendGatingRequest('change_axes', [], { newAxes : {	x : xAxis,
+																		y : yAxis }});
 	$(AXIS_MODAL).modal('hide');
 }
-ksfGraphTools.changeAxis = ksfGraphTools_changeAxis;
+ksfGraphTools.changeAxes = ksfGraphTools_changeAxes;

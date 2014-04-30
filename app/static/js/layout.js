@@ -170,6 +170,7 @@ function ksfLayout_filePreviewStart()
 {
 	ksfCanvas.addListener();
 	$("#togglefiles").click(ksfLayout.fileSelectorToggle);
+	$("#btn-change-axes-confirm").click(function () { ksfGraphTools.changeAxes(); } )
 }
 ksfLayout.filePreviewStart = ksfLayout_filePreviewStart;
 
