@@ -67,7 +67,7 @@ function ksfFilebar_update(data)
 						editDiv.style.display = 'none';
 								
 						//star
-						var starSpan = ksfFilebar.newEditButton( e.starred ? 'glyphicon-star' : 'glyphicon-star-empty', null, 'left-button-container');
+						var starSpan = ksfFilebar.newEditButton( e.starred ? 'glyphicon-star' : 'glyphicon-star-empty', null, 'left-button-container tip-right', ' Star/Unstar');
 						$(starSpan.inner).click( function () { ksfFilebar.starFile(e, starSpan.inner); } );
 						editDiv.appendChild(starSpan.outer);
 							   
@@ -92,7 +92,7 @@ function ksfFilebar_update(data)
 						//button to drop down/hide file edit buttons
 						var editCog = ksfFilebar.newEditElem('a', 'edit-dropdown-button');
 						editCog.appendChild( ksfFilebar.newEditElem(
-							'span', 'glyphicon glyphicon-cog',
+							'span', 'glyphicon glyphicon-cog tip-left',
 							function()
 							{
 								var $div = $(editDiv);
@@ -104,17 +104,18 @@ function ksfFilebar_update(data)
 								{
 									$div.switchClass( "fopts-closed", "fopts-open", 150 );
 								}
-							} ) );
+							},
+							null, 'File options') );
 						newElem.appendChild(editCog);
 						editDiv.style.display = editDiv.style.display == 'none' ? 'block' : 'none';
 								
 						var confirmSpan = ksfFilebar.newEditElem('span', 'nameedit-confirm left-button-container');
 						confirmSpan.style.display = 'none';
 						//confirm rename - tick
-						var confirmTick = ksfFilebar.newEditElem('span', 'glyphicon glyphicon-ok nameedit-tick');
+						var confirmTick = ksfFilebar.newEditElem('span', 'glyphicon glyphicon-ok nameedit-tick tip-right', null, null, 'Confirm rename');
 						confirmSpan.appendChild(confirmTick);
 						//cancel rename - cross
-						var confirmCross = ksfFilebar.newEditElem('span', 'glyphicon glyphicon-remove nameedit-cross');
+						var confirmCross = ksfFilebar.newEditElem('span', 'glyphicon glyphicon-remove nameedit-cross tip-right', null, null, 'Cancel rename');
 						confirmSpan.appendChild(confirmCross);
 
 						$(nameSpan).on('keypress keyup',
@@ -125,11 +126,11 @@ function ksfFilebar_update(data)
 							
 						//colour button
 						editDiv.appendChild( ksfFilebar.newEditButton('glyphicon-tint',
-							function () { ksfFilebar.recolourClickHandler(e, newElem); }, 'left-button-container').outer );
+							function () { ksfFilebar.recolourClickHandler(e, newElem); }, 'left-button-container tip-right', 'Change colour').outer );
 							   
 						//rename buttom
 						editDiv.appendChild( ksfFilebar.newEditButton( 'glyphicon-pencil',
-							function () { ksfFilebar.editName(newElem, e); }, 'left-button-container' ).outer );
+							function () { ksfFilebar.editName(newElem, e); }, 'left-button-container tip-right', 'Rename').outer );
 							   
 						//delete button
 						editDiv.appendChild(ksfFilebar.newEditButton('glyphicon-trash',
@@ -143,7 +144,7 @@ function ksfFilebar_update(data)
 											ksfFilebar.deleteFile(e, newElem);
 										}
 							} ); },
-							'delete-button-container' ).outer);
+							'delete-button-container tip-left', 'Delete' ).outer);
 	
 							   
 						editDiv.appendChild(confirmSpan);
@@ -164,17 +165,23 @@ ksfFilebar.update = ksfFilebar_update;
  * \param String elemType - the type of element to create
  * \param String className - the class name for the new element
  * \param Function click - this is hooked to handle click events on the element
- * \param inner
+ * \param String inner - sets the contents of the new element
+ * \param String title - title applied to the outer element, can be used for tooltips
  * \author jmccrea@keesaco.com of Keesaco
  * \return New element
  */
-function ksfFilebar_newEditElem(elemType, className, click, inner)
+function ksfFilebar_newEditElem(elemType, className, click, inner, title)
 {
 	var newElem = document.createElement(elemType);
 	newElem.className = className;
 	if (inner)
 	{
 		newElem.innerHTML = inner;
+	}
+	
+	if (title)
+	{
+		newElem.title = title;
 	}
 	
 	if (click)
@@ -189,12 +196,13 @@ ksfFilebar.newEditElem = ksfFilebar_newEditElem;
  * Makes a new element of a give type, class and hooks a click handler (used to simplify filebar generation)
  * \param String glyphClass - this classname is given to the inner section of the button which contains the icon. 'glyphicon' is added automatically so only the second class (e.g. glyphicon-ok') is required
  * \param Function click - this is hooked to handle click events on the element
+ * \param String title - title applied to the outer element, can be used for tooltips
  * \author jmccrea@keesaco.com of Keesaco
  * \return New button element
  */
-function ksfFilebar_newEditButton(glyphClass, click, outerClass)
+function ksfFilebar_newEditButton(glyphClass, click, outerClass, title)
 {
-	var outer = ksfFilebar.newEditElem( 'span', 'file-option-button fbtn-off' + (outerClass ? ' ' + outerClass : '') );
+	var outer = ksfFilebar.newEditElem( 'span', 'file-option-button fbtn-off' + (outerClass ? ' ' + outerClass : ''), null, null, title );
 	var inner = ksfFilebar.newEditElem( 'span', 'glyphicon ' + glyphClass, click);
 	outer.appendChild(inner)
 	$(inner).mouseover(function() { $(outer).switchClass( "fbtn-off", "fbtn-on", 150 ); } )
