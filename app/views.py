@@ -55,17 +55,34 @@ def signup(request):
 ###########################################################################
 ## \brief	Returns a JSON response which instructs the client to redirect
 ##			to the landing page
+## \param	Bool redir - if true uses an HTTP redirect instead of JSON
 ## \return 	HTTPResponse - JSON encoded NotLoggedIn error
 ## \author	jmccrea@keesaco.com of Keesaco
 ###########################################################################
-def __unauthed_response():
-	return HttpResponse(json.dumps({'error' : 'NotLoggedIn'}), content_type="application/json")
+def __unauthed_response(redir):
+	if redir:
+		return redirect('/')
+	else:
+		return HttpResponse(json.dumps({'error' : 'NotLoggedIn'}), content_type="application/json")
 
+###########################################################################
+## \brief	Returns a JSON response which instructs the client to redirect
+##			to the landing page and show a 'sign up' prompt
+## \param	Bool redir - if true uses an HTTP redirect instead of JSON
+## \return 	HTTPResponse - JSON encoded NotSignedUp error
+## \author	jmccrea@keesaco.com of Keesaco
+###########################################################################
+def __not_signed_up_response(redir):
+	if redir:
+		return redirect('/#!/NotSignedUp')
+	else:
+		return HttpResponse(json.dumps({'error' : 'NotSignedUp'}), content_type="application/json")
 
 ###########################################################################
 ## \brief	Returns a response which instructs the client to redirect to
 ##			the app's landing page if the user is not logged in.
 ## \author 	jmccrea@keesaco.com of Keesaco
+## \param	Bool redir - if true uses an HTTP redirect instead of JSON
 ## \note	At this point the client and server sides do no communicate
 ##			with JSON consistently. For this reason there is no defined way
 ##			to inform the CS of an error. At some point it may be useful to
@@ -74,11 +91,21 @@ def __unauthed_response():
 ## \return 	HttpResponse - unauthenticated request error object if user
 ##			is not logged in. None otherwise
 ###########################################################################
-def __check_app_access():
-	if auth.get_current_user() is None:
-		return __unauthed_response()
+def __check_app_access(redir = False):
+	authed_user = auth.get_current_user()
+	if authed_user is None:
+		return __unauthed_response(redir)
 	else:
-		return None
+		elem = ps.get_element_key_by_ref('canLogIn')
+		if elem is not None:
+			user_key = ps.get_user_key_by_id(authed_user.user_id())
+			if user_key is not None:
+				perm = ps.get_user_element_permissions(user_key, elem)
+				if perm is not None:
+					if perm.access:
+						return None
+		return __not_signed_up_response(redir)
+
 
 
 ###########################################################################
@@ -114,12 +141,13 @@ def faq(request):
 def app(request):
 	lst = ds.list(DATA_BUCKET)
 	file_info = None
+	
+	app_access = __check_app_access(True)
+	if app_access is not None:
+		return app_access
+	
 	authed_user = auth.get_current_user()
-
-	if authed_user is None:
-		return redirect('/')
-	else:
-		authed_user_nick = authed_user.nickname()
+	authed_user_nick = authed_user.nickname()
 
 	request.upload_handlers = [upload_handling.fcsUploadHandler()]
 	if request.method == 'POST':
