@@ -309,7 +309,7 @@ def file_list_edit(request):
 			
 			ds.delete('/fc-raw-data/' + filename)
 			ds.delete('/fc-info-data/' + filename + 'info.txt')
-			ds.delete('/fc-info-data/' + filename + '.html')
+			ds.delete('/fc-info-data/' + filename + '.txt')
 			ds.delete('/fc-vis-data/' + filename + '.png')
 			
 			res_fragment.update( { 'success' : True } )
