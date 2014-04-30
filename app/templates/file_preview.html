@@ -68,7 +68,7 @@
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					<h4 class="modal-title" id="settingsModalLabel"> Change the graph axis </h4>
 				</div>
-				<form class="form-horizontal" action="" method="post" enctype="multipart/form-data" target="_self">
+				<form class="form-horizontal" action="" method="GET">
 					<div class="modal-body">
 						<div class="form-group">
 						  <label class="col-md-4 control-label" for="x-axis-choice">X Axis: </label>
@@ -95,7 +95,7 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-						<button type="submit" value="Upload" class="btn btn-primary">OK</button>
+						<button type="button" value="Apply Changes" class="btn btn-primary" onclick="ksfGraphTools.changeAxis()">OK</button>
 					</div>
 				</form>
 			</div><!-- /.modal-content -->
