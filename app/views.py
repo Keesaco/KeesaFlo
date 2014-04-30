@@ -408,6 +408,17 @@ def file_preview(request, file = None):
 										'total' : stats[1],
 										'percent' : float(stats[2])*100 } } )
 
+	## Get different axis
+	axis_path = INFO_BUCKET + '/' + file.partition('.')[0] + 'info.txt'
+	if ds.check_exists(axis_path, None):
+		buffer = ds.open(axis_path)
+		if buffer:
+			file = buffer.read()
+			axis = file.split('\n')
+			if len(axis)>0:
+				while '' in axis: axis.remove('')
+				template_dict.update( { 'available_axis' : axis } )
+
 	return render(request, 'file_preview.html', template_dict)
 
 ###########################################################################
