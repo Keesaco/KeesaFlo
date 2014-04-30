@@ -18,6 +18,8 @@ $(document).ready(function()
 			case 'signup':
 				landingSignup();
 				break;
+			case 'NotSignedUp':
+				notSignedUp();
 		}
 				  
 	}
@@ -66,4 +68,14 @@ function landingSignup()
 			}
 		}
 	);
+}
+
+/**
+ * Displays an alert to inform the user that they must sign up to log in
+ * \return None
+ * \author jmccrea@keesaco.com of Keesaco
+ */
+function notSignedUp()
+{
+	bootbox.alert('You must sign up to use KeesaFlo. Please Sign up then try again.');
 }

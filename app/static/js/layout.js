@@ -199,7 +199,7 @@ function ksfLayout_initTips()
 	{
 		style: 		{ classes: 'qtip-dark qtip-shadow qtip-rounded' },
 		show:		{ delay: 800 },
-		hide:		'click',
+		hide:		{ event: 'mouseleave click' },
 		overwrite: 	false,
 	};
 	var tipSelector = $('[title!=""]').not('.notip');

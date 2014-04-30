@@ -27,6 +27,7 @@ import API.APILogging as logging
 import json
 import re
 import gating.tools as gt
+from Permissions.Types import Permissions
 
 DATA_BUCKET = '/fc-raw-data'
 GRAPH_BUCKET = '/fc-vis-data'
@@ -54,17 +55,34 @@ def signup(request):
 ###########################################################################
 ## \brief	Returns a JSON response which instructs the client to redirect
 ##			to the landing page
+## \param	Bool redir - if true uses an HTTP redirect instead of JSON
 ## \return 	HTTPResponse - JSON encoded NotLoggedIn error
 ## \author	jmccrea@keesaco.com of Keesaco
 ###########################################################################
-def __unauthed_response():
-	return HttpResponse(json.dumps({'error' : 'NotLoggedIn'}), content_type="application/json")
+def __unauthed_response(redir):
+	if redir:
+		return redirect('/')
+	else:
+		return HttpResponse(json.dumps({'error' : 'NotLoggedIn'}), content_type="application/json")
 
+###########################################################################
+## \brief	Returns a JSON response which instructs the client to redirect
+##			to the landing page and show a 'sign up' prompt
+## \param	Bool redir - if true uses an HTTP redirect instead of JSON
+## \return 	HTTPResponse - JSON encoded NotSignedUp error
+## \author	jmccrea@keesaco.com of Keesaco
+###########################################################################
+def __not_signed_up_response(redir):
+	if redir:
+		return redirect('/#!/NotSignedUp')
+	else:
+		return HttpResponse(json.dumps({'error' : 'NotSignedUp'}), content_type="application/json")
 
 ###########################################################################
 ## \brief	Returns a response which instructs the client to redirect to
 ##			the app's landing page if the user is not logged in.
 ## \author 	jmccrea@keesaco.com of Keesaco
+## \param	Bool redir - if true uses an HTTP redirect instead of JSON
 ## \note	At this point the client and server sides do no communicate
 ##			with JSON consistently. For this reason there is no defined way
 ##			to inform the CS of an error. At some point it may be useful to
@@ -73,11 +91,21 @@ def __unauthed_response():
 ## \return 	HttpResponse - unauthenticated request error object if user
 ##			is not logged in. None otherwise
 ###########################################################################
-def __check_app_access():
-	if auth.get_current_user() is None:
-		return __unauthed_response()
+def __check_app_access(redir = False):
+	authed_user = auth.get_current_user()
+	if authed_user is None:
+		return __unauthed_response(redir)
 	else:
-		return None
+		elem = ps.get_element_key_by_ref('canLogIn')
+		if elem is not None:
+			user_key = ps.get_user_key_by_id(authed_user.user_id())
+			if user_key is not None:
+				perm = ps.get_user_element_permissions(user_key, elem)
+				if perm is not None:
+					if perm.access:
+						return None
+		return __not_signed_up_response(redir)
+
 
 
 ###########################################################################
@@ -113,12 +141,13 @@ def faq(request):
 def app(request):
 	lst = ds.list(DATA_BUCKET)
 	file_info = None
+	
+	app_access = __check_app_access(True)
+	if app_access is not None:
+		return app_access
+	
 	authed_user = auth.get_current_user()
-
-	if authed_user is None:
-		return redirect('/')
-	else:
-		authed_user_nick = authed_user.nickname()
+	authed_user_nick = authed_user.nickname()
 
 	request.upload_handlers = [upload_handling.fcsUploadHandler()]
 	if request.method == 'POST':
@@ -344,9 +373,232 @@ def file_list_edit(request):
 		
 		res.append(res_fragment)
 	
-	
-	
 	return HttpResponse(json.dumps(res), content_type="application/json")
+
+
+###########################################################################
+## \brief 	Takes a JSON object with a filename and returns a JSON object
+##			listing permissions for that file.
+## \param 	request - Django variable defining the request that triggered
+##			the generation of this data
+## \return 	JSON response which indicates whether the requested was
+##			successful and if so a lists permissions for the given file.
+## \todo	Massive refactor planned - move error checking etc. into lib
+## \todo	Enfore full_control as a requirement to use this. Depends on
+##			review of permissions use.
+## \author	jmccrea@keesaco.com of Keesaco
+###########################################################################
+def file_permissions_json(request):
+	authed_user = auth.get_current_user()
+	if authed_user is None:
+		return __unauthed_response()
+	
+	user_key = ps.get_user_key_by_id(authed_user.user_id())
+
+	json_response = {
+		'success' 		: False,
+		'users'			: []
+	}
+
+	try:
+		list_req = json.loads(request.raw_post_data)
+	except ValueError:
+		json_response.update({'error' : 'Invalid request payload.'})
+		return HttpResponse(json.dumps(json_response), content_type="application/json")
+
+	if 'filename' not in list_req:
+		json_response.update({'error' : 'Incomplete request.'})
+		return HttpResponse(json.dumps(json_response), content_type="application/json")
+
+	filename = list_req['filename']
+
+	file_entry = ps.get_file_by_name('/fc-raw-data/' + filename)
+	if file_entry is None:
+		json_response.update( { 'error' : 'File does not exist.' } )
+		return HttpResponse(json.dumps(json_response), content_type="application/json")
+		
+	fp_entry = ps.get_user_file_permissions(file_entry.key, user_key)
+	if fp_entry is None:
+		json_response.update( { 'error' : 'Permission denied.' } )
+		return HttpResponse(json.dumps(json_response), content_type="application/json")
+
+	permissions_list = ps.get_file_permissions_list(file_entry.key)
+	if permissions_list is None:
+		json_response.update( { 'error' : 'Permission could not be retrieved.' } )
+		return HttpResponse(json.dumps(json_response), content_type="application/json")
+
+	for perm in permissions_list:
+		new_perm = {}
+		user = ps.get_user_by_key(perm.user_key)
+		if user is not None:
+			nickname = user.nickname()
+			email = user.email()
+			user_found = True
+		else:
+			nickname = 'Unknown'
+			email = 'unknown'
+			user_found = False
+
+		new_perm.update( {
+			'nickname' 		: nickname,
+			'userFound'		: user_found,
+			'email'			: email,
+			'isMe'			: (perm.user_key == user_key),
+			'permissions'	: {
+				'read'			: perm.read,
+				'write'			: perm.write,
+				'fullControl'	: perm.full_control
+			}
+		} )
+
+		json_response['users'].append(new_perm)
+
+	json_response.update({ 'success' : True })
+
+	return HttpResponse(json.dumps(json_response), content_type="application/json")
+
+
+###########################################################################
+## \brief 	Takes a JSON permissions list edit object and performs the
+##			requested actions on the specified file. Returns JSON status.
+## \param 	request - Django variable defining the request that triggered
+##			the generation of this page
+## \todo 	Enforce full-control permission requirement.
+## \todo	Massive refactor is planned
+## \return 	JSON response which indicates whether the requested action(s)
+##			were performed successfully.
+## \note	Initially this took a filename alongside each action. It was
+##			decided that this would not be useful and thus this can only
+##			change permissions for one file at a time. It may become useful
+##			at some point to allow changing many files at once.
+## \author	jmccrea@keesaco.com of Keesaco
+###########################################################################
+def file_permissions_edit(request):
+	authed_user = auth.get_current_user()
+	if authed_user is None:
+		return __unauthed_response()
+	
+	user_key = ps.get_user_key_by_id(authed_user.user_id())
+
+	json_response = {
+		'success' 	: False
+	}
+
+	action_responses = []
+
+	try:
+		permissions_request = json.loads(request.raw_post_data)
+	except ValueError:
+		json_response.update( {'error' : 'Invalid request payload.'} )
+		return HttpResponse(json.dumps(json_response), content_type="application/json")
+
+	if 	(	('actions'   not in permissions_request)
+		or	('filename'	 not in permissions_request)):
+
+		json_response.update( {'error' : 'Incomplete request.'} )
+		return HttpResponse(json.dumps(json_response), content_type="application/json")
+
+	filename 	= permissions_request['filename']
+	actions		= permissions_request['actions']
+
+	if not isinstance(actions, list):
+		json_response.update( {'error' : 'Actions list is not a list.'} )
+		return HttpResponse(json.dumps(json_response), content_type="application/json")
+
+	file_entry = ps.get_file_by_name('/fc-raw-data/' + filename)
+	if file_entry is None:
+		json_response.update( { 'error' : 'File does not exist.' } )
+		return HttpResponse(json.dumps(json_response), content_type="application/json")
+
+	fp_entry = ps.get_user_file_permissions(file_entry.key, user_key)
+	if fp_entry is None:
+		json_response.update( { 'error' : 'Permission denied.' } )
+		return HttpResponse(json.dumps(json_response), content_type="application/json")
+
+	res = []
+	for action in actions:
+		if 	(	('action' 		in action)	# Can't do anything without an action name
+			and ('userEmail'	in action)):	# Or a user for that matter
+
+			user_email 	= action['userEmail']
+			action_name = action['action']
+		
+			response_part = {
+				'success'	: False,
+				'action'	: action,
+				'userEmail'	: user_email
+ 			}
+
+			share_user_key = ps.get_user_key_by_email(user_email)
+			if share_user_key is None:
+				response_part.update( { 'error' : 'User not found.' } )
+				action_responses.append(response_part)
+				continue
+		else:
+			continue
+
+		edit_permissions = ps.get_user_file_permissions(file_entry.key, share_user_key)
+
+		if action_name == 'dropUser':
+			if edit_permissions is None:
+				response_part.update( { 'error' : 'User does not have permissions for this file.' } )
+			else:
+				remove_action = ps.revoke_permissions_by_key(edit_permissions.key)
+				if remove_action:
+					response_part.update( { 'success' : True } )
+				else:
+					response_part.update( { 'error' : 'Could not revoke permissions.' } )
+
+		elif action_name == 'addUser':
+			if edit_permissions is None:
+				if 	(	('read'     	not in action)
+					or	('write'		not in action)
+					or	('fullControl'	not in action)):
+	
+					response_part.update( { 'error' : 'Incomplete action - permissions not specified.'} )
+				else:
+					add_action = ps.add_file_permissions(file_entry.key, share_user_key,
+						Permissions(
+							action['read'],
+							action['write'],
+							action['fullControl']
+						) )
+					if add_action:
+						response_part.update( { 'success' : True } )
+					else:
+						response_part.update( { 'error' : 'Could not add user to file.' } )
+
+			else:
+				response_part.update( { 'error' : 'User already has permissions for this file.' } )
+
+		elif action_name == 'editUser':
+			if edit_permissions is not None:
+				if 	(	('read'			not in action)
+					or	('write'		not in action)
+					or	('fullControl'	not in action)):
+						
+						response_part.update( { 'error' : 'Incomplete action - permissions not specified.'} )
+				else:
+					edit_action = ps.modify_file_permissions_by_key(edit_permissions.key,
+						Permissions(
+							action['read'],
+							action['write'],
+							action['fullControl']
+						) )
+					if edit_action:
+						response_part.update( { 'success' : True } )
+					else:
+						response_part.update( { 'error' : 'Could not update user permissions.' } )
+			else:
+				response_part.update( { 'error' : 'User does not have a permissions entry for this file.' } )
+	
+		else:
+			response_part.update( { 'error' : "Action '%s' not recognised."%action_name } )
+
+		action_responses.append(response_part)
+	json_response.update( { 'success' : True, 'actions' : action_responses } )
+
+	return HttpResponse(json.dumps(json_response), content_type="application/json")
 
 ###########################################################################
 ## \brief Is called when the pagelet containing the main content of the page is requested.

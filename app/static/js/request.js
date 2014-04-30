@@ -116,9 +116,15 @@ function ksfReq_checkResponseError(response)
 {
 	try
 	{
-		if (response.error == 'NotLoggedIn')
+		switch (response.error)
 		{
-			document.location.href = '/';
+			case 'NotLoggedIn':
+				document.location.href = '/';
+				break;
+			
+			case 'NotSignedUp':
+				document.location.href = '/#!/NotSignedUp/';
+				break;
 		}
 	}
 	catch(e)
