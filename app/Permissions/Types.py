@@ -180,7 +180,9 @@ class FileInfo:
 				 owner_key 			= None,
 				 friendly_name 		= "",
 				 key				= None,
-				 prev_file_key		= None	):
+				 prev_file_key		= None,
+				 axis_a				= "",
+				 axis_b 			= "" ):
 		self.file_name 		= file_name
 		self.owner_key 		= owner_key
 		self.prev_file_key	= prev_file_key
@@ -190,3 +192,5 @@ class FileInfo:
 		else:
 			self.friendly_name	= friendly_name
 		self.key 			= key
+		self.axis_a			= axis_a
+		self.axis_b			= axis_b

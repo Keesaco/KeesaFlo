@@ -20,6 +20,10 @@ class Files(ndb.Model):
 	### Allows a (potentially non-unique) name which does not relate to the actual file name
 	friendly_name	= ndb.StringProperty()
 
+	### Gate metadata
+	axis_a			= ndb.StringProperty()
+	axis_b			= ndb.StringProperty()
+
 class Users(ndb.Model):
 	### unique ID of user (does not change)
 	unique_id 		= ndb.StringProperty()

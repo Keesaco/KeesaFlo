@@ -8,18 +8,20 @@
 				<div class="spinner"></div>
 			{% endif %}
 			<div class="over-graph">
-				<p id="tool-popover-title" class="greybox">Tool</p>
+				<p id="tool-popover-title" class="greybox"></p>
 			</div>
 			<canvas id="flow-canvas" class="over-graph" width="480px" height="480px">
 			</canvas> 
 		</div>
 	</div>	
 	<div class="well app-well">
-		<h3 id="filename"><span id="file-name-label">{{ file_info.friendly_name }}</span> <span id="filesize" class="label label-default">{{ current_file.st_size|filesizeformat }}</span>
-			{% if undo_link %}
-				&nbsp;<a href="#!/preview/{{ undo_link }}" title="Undo" class="tip-right"><span class="vector-glyph-undo"></span></a>
-			{% endif %}
-		</h3>
+		<div class="gating-heading">
+			<h3 id="filename"><span id="file-name-label">{{ file_info.friendly_name }}</span> <span id="filesize" class="label label-default">{{ current_file.st_size|filesizeformat }}</span>
+				{% if undo_link %}
+					&nbsp;<a href="#!/preview/{{ undo_link }}" title="Undo" class="tip-right"><span class="vector-glyph-undo"></span></a>
+				{% endif %}
+			</h3>
+		</div>
 		{% if gating_stats %}
 			<div id="gating-stats">Cell count (selection/total): {{gating_stats.selection}}/{{gating_stats.total}} ({{gating_stats.percent}}%)</div>
 		{% endif %}
@@ -31,6 +33,9 @@
 		</div>
 		<div class="gate-options">
 			<label><input type="checkbox" id="chk_reverse_gate" /> Reverse gate</labeL><br />
+		</div>
+		<div class="gating-description">
+			<p id="tool-description">Please select a tool.</p>
 		</div>
 	</div>
 	{% else %}
