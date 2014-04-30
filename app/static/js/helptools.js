@@ -48,7 +48,7 @@ function ksfHelpTools_rectangleHelpShow(step)
 			break;
 		case 2:
 			ksfHelpTools.stepShow(
-				"Click to drag highlighted corners. When you're happy, click \"Gate\"."
+				"Click highlighted corners to move them. Click \"Gate\" to finish."
 			);
 			break;
 		default:
@@ -80,7 +80,7 @@ function ksfHelpTools_polygonHelpShow(step)
 			break;
 		case 1:
 			ksfHelpTools.stepShow(
-				"Click to drag highlighted vertices. When you're happy, click \"Gate\"."
+				"Click highlighted vertices to move them. Click \"Gate\" to finish."
 			);
 			break;
 		default:
@@ -122,7 +122,7 @@ function ksfHelpTools_ellipseHelpShow(step)
 			break;
 		case 3:
 			ksfHelpTools.stepShow(
-				"Click to drag highlighted points. When you're happy, click \"Gate\"."
+				"Click highlighted points to move them. Click \"Gate\" to finish."
 			);
 			break;
 		default:
@@ -159,7 +159,7 @@ function ksfHelpTools_boolorHelpShow(step)
 			break;
 		case 2:
 			ksfHelpTools.stepShow(
-				"Click to drag highlighted vertices. When you're happy, click \"Gate\"."
+				"Click highlighted vertices to move them. Click \"Gate\" to finish."
 			);
 			break;
 		default:
@@ -191,7 +191,7 @@ function ksfHelpTools_quadrantHelpShow(step)
 			break;
 		case 1:
 			ksfHelpTools.stepShow(
-				"Click to drag the origin. When you're happy, click \"Gate\"."
+				"Click the origin to move it. Click \"Gate\" to finish."
 			);
 			break;
 		default:
