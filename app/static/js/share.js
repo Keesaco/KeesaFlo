@@ -23,7 +23,7 @@ function ksfShare(){
 SHARE_BTN = "#share-btn";
 
 // Data sources.
-PERMISSIONS_SOURCE = '/app/data/json/file_permissions_json';
+PERMISSIONS_SOURCE = '/app/data/json/file_permissions/';
 
 // Feedback types.
 FEEDBACK_DANGER = "alert-danger";
