@@ -27,6 +27,13 @@ b <- colnames(x[,2])
 c <- colnames(x)
 write(c, file = info_name)
 
+## Creates file cell info
+total <- nrow(x)
+proportion <- 1
+info <- c(total, total, proportion)
+info_name <- paste(fcs_name, ".txt", sep="")
+write(info, file = info_name)
+
 ## Plot data.
 png(vis_name)
 plot(x, c(a, b))
