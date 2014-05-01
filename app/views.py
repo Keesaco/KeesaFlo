@@ -309,7 +309,7 @@ def file_list_edit(request):
 			
 			ds.delete('/fc-raw-data/' + filename)
 			ds.delete('/fc-info-data/' + filename + 'info.txt')
-			ds.delete('/fc-info-data/' + filename + '.html')
+			ds.delete('/fc-info-data/' + filename + '.txt')
 			ds.delete('/fc-vis-data/' + filename + '.png')
 			
 			res_fragment.update( { 'success' : True } )
@@ -640,6 +640,8 @@ def file_preview(request, file = None):
 		if temp_file.filename == file:
 			current_file = temp_file;
 
+	logging.info(file.partition('.')[0])
+
 	graph_exists = ds.check_exists(GRAPH_BUCKET + '/' + file.partition('.')[0] + '.png', None)
 	template_dict = {'current_file' : current_file,
 					 'name' : file,
@@ -653,8 +655,8 @@ def file_preview(request, file = None):
 	if ds.check_exists(info_path, None):
 		buffer = ds.open(info_path)
 		if buffer:
-			file = buffer.read()
-			stats = file.split(' ')
+			file_text = buffer.read()
+			stats = file_text.split(' ')
 			if len(stats)>=3:
 				template_dict.update( { 'gating_stats' : { 'selection' : stats[0],
 										'total' : stats[1],
@@ -665,11 +667,12 @@ def file_preview(request, file = None):
 	if ds.check_exists(axis_path, None):
 		buffer = ds.open(axis_path)
 		if buffer:
-			file = buffer.read()
-			axis = file.split('\n')
+			file_text = buffer.read()
+			axis = file_text.split('\n')
 			if len(axis)>0:
-				while '' in axis: axis.remove('')
-				template_dict.update( { 'available_axis' : axis } )
+				while '' in axis:
+					axis.remove('')
+				template_dict.update( { 'available_axes' : axis } )
 
 	return render(request, 'file_preview.html', template_dict)
 
@@ -791,7 +794,6 @@ def tool(request):
 	except ValueError:
 		return HttpResponse(simplejson.dumps(gt.generate_gating_feedback('fail', 'Invalid request payload')), content_type="application/json")
 
-
 	## \todo This should probably iterate over list
 	if (('points' 	not in gate_info) or
 		('tool'		not in gate_info) or
@@ -806,6 +808,11 @@ def tool(request):
 		# Normalise false value to None
 		gate_info.update( { 'points' : None } )
 
+	file_entry = ps.get_file_by_name(DATA_BUCKET + '/' + gate_info['filename'])
+	if file_entry is None:
+		return HttpResponse(simplejson.dumps(gt.generate_gating_feedback('fail', 'File not found')), content_type="application/json")
+
+	gate_info.update( { 'axes' : { 'x' : file_entry.axis_a, 'y' : file_entry.axis_b } } )
 
 	tool = gt.AVAILABLE_TOOLS.get(gate_info['tool'], gt.no_such_tool)
 	## first two arguments passed for compatibility

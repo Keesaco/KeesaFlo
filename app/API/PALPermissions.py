@@ -311,8 +311,8 @@ def get_file_by_key(file_key):
 								friendly_name 	= file.friendly_name,
 								key				= file.key,
 								prev_file_key	= file.prev_file_key,
-								axis_a 			= new_file.axis_a,
-								axis_b 			= new_file.axis_b)
+								axis_a 			= file.axis_a,
+								axis_b 			= file.axis_b)
 	else:
 		return None
 
@@ -335,8 +335,8 @@ def get_file_by_name(file_name):
 							friendly_name 	= file.friendly_name,
 							key				= file.key,
 							prev_file_key 	= file.prev_file_key,
-							axis_a 			= new_file.axis_a,
-					 		axis_b 			= new_file.axis_b)
+							axis_a 			= file.axis_a,
+					 		axis_b 			= file.axis_b)
 
 ###########################################################################
 ## \brief gets list of files by owner key

@@ -172,8 +172,11 @@ class FileInfo:
 	##			permissions store
 	## \param	Key prev_file_key - [None]key of file which this file was based
 	##			on. This is used as an undo step.
+	## \param	String axis_a - (= "FSC-A") x axis of file
+	## \param	String axis_b - (= "SSC-A") y axis of file
 	## \return 	None
 	## \author jmccrea@keesaco.com of Keesaco
+	## \todo	Move default axes out
 	###########################################################################
 	def __init__(self,
 				 file_name 			= None,
@@ -181,8 +184,8 @@ class FileInfo:
 				 friendly_name 		= "",
 				 key				= None,
 				 prev_file_key		= None,
-				 axis_a				= "",
-				 axis_b 			= "" ):
+				 axis_a				= "FSC-A",
+				 axis_b 			= "SSC-A" ):
 		self.file_name 		= file_name
 		self.owner_key 		= owner_key
 		self.prev_file_key	= prev_file_key
