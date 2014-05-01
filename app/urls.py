@@ -7,6 +7,7 @@
 
 from django.conf.urls.defaults import *
 from django.contrib import admin
+from django.views.generic.base import TemplateView
 import views
 import hooks
 import dbindexer
@@ -51,6 +52,11 @@ urlpatterns = patterns('',
 	url(r'^logout/$', 'views.logout', name='logout'),
 	url(r'^signup/$', 'views.signup', name='signup'),
 	url(r'^settings/$', 'views.settings', name='settings'),
+	
+	#static pages
+	#pre-authentication pages
+	url(r'^about/$', TemplateView.as_view(template_name='preauth_about.html'), name='pre_about'),
+	url(r'^faq/$', TemplateView.as_view(template_name='preauth_faq.html'), name='pre_faq'),
 
 	# Used for administration purpose5
 	('^admin/', include(admin.site.urls))

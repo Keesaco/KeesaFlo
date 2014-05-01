@@ -1,0 +1,25 @@
+{% extends "baselayout.html" %}
+
+{% block title %}{% endblock title %}
+
+{% block cssimport %}
+	{% load staticfiles %}
+	<link href="{% static "css/style.css" %}" rel="stylesheet">
+    <link href="{% static "css/base.css" %}" rel="stylesheet">
+{% endblock cssimport %}
+		
+{% block content %}
+<!-- centred box -->
+<div class="content-container">
+	<div class="panel panel-default">
+		<div class="panel-body">
+			{% block innercontent %}{% endblock innercontent %}
+		</div>
+	</div>
+</div> <!-- /container -->
+
+<script src="{% static "js/jquery.js" %}"></script>
+<script src="{% static "js/bootstrap.js" %}"></script>
+{% endblock content %}
+
+{% block footer %}<!-- no need of a top padding here -->{% endblock footer %}
