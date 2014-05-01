@@ -750,7 +750,7 @@ def get_graph(request, graph):
 ## \return the file requested
 ###########################################################################
 def get_dataset(request, dataset):
-	return fetch_file(DATA_BUCKET + '/' + dataset + '.fcs', 'application/vnd.isac.fcs', True)
+	return fetch_file(DATA_BUCKET + '/' + dataset, 'application/vnd.isac.fcs', True)
 
 ###########################################################################
 ## \brief Return a response containing the file
