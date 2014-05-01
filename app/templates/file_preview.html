@@ -43,12 +43,27 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title" id="shareModalLabel"> Share </h4>
+					<h4 class="modal-title" id="shareModalLabel"> Sharing </h4>
 					<div class="modal-body">
+						<div class="modal-user-list">
+							Loading...
+						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-						<button type="button" class="btn btn-default" data-dismiss="modal">Share</button>
+						<div class="col-lg-6">
+							<div class="input-group">
+							<input id="newUserInput" type="text" class="form-control">
+								<div class="input-group-btn">
+									<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"> Give <span class="caret"></span></button>
+									<ul class="dropdown-menu pull-right">
+										<li><a id="giveView" href="#">View</a></li>
+										<li><a id="giveEdit" href="#">Edit</a></li>
+										<li><a id="giveAll" href="#">All</a></li>
+									</ul>
+								</div><!-- /btn-group -->
+							</div><!-- /input-group -->
+						</div><!-- /.col-lg-6 -->
+						<button type="button" class="btn btn-default" data-dismiss="modal">Done</button>
 					</div>
 				</form>
 			</div><!-- /.modal-content -->

@@ -521,19 +521,23 @@ def file_permissions_edit(request):
 
 			user_email 	= action['userEmail']
 			action_name = action['action']
-		
+
 			response_part = {
 				'success'	: False,
 				'action'	: action,
 				'userEmail'	: user_email
- 			}
+			}
 
 			share_user_key = ps.get_user_key_by_email(user_email)
 			if share_user_key is None:
 				response_part.update( { 'error' : 'User not found.' } )
-				action_responses.append(response_part)
+				action_responses.append(response_part) 
 				continue
 		else:
+			response_part = {
+				'success'	: False,
+				'error'		: 'Incomplete request.'
+			}
 			continue
 
 		edit_permissions = ps.get_user_file_permissions(file_entry.key, share_user_key)
@@ -594,7 +598,7 @@ def file_permissions_edit(request):
 		else:
 			response_part.update( { 'error' : "Action '%s' not recognised."%action_name } )
 
-		action_responses.append(response_part)
+	action_responses.append(response_part)
 	json_response.update( { 'success' : True, 'actions' : action_responses } )
 
 	return HttpResponse(json.dumps(json_response), content_type="application/json")

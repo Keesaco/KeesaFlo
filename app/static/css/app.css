@@ -464,3 +464,9 @@ a.edit-dropdown-button:hover
 	padding-top: 10px;
 	color: gray;
 }
+
+.user-row
+{
+	font-weight: bold;
+	font-size: 120%;
+}
