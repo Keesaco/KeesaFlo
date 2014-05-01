@@ -127,10 +127,15 @@ def boolean_gating(gate_params):
 			return generate_gating_feedback("success", "the boolean gating was performed correctly", new_path, gate_params['filename'])
 		else:
 			return generate_gating_feedback("fail", "notcorrect, wrong number of arguments")
+
+
 ###########################################################################
 ## \brief Requests a kmeans or quadrant gate
 ## \param Dictionary gate_params - list of gating parameters
 ## \author hdoughty@keesaco.com of Keesaco
+## \todo 	this currently passes 'k' as a point, this should be added to
+##			the additional parameters so that it gets its own entry in the
+##			gate_paramsdictionary.
 ###########################################################################
 def multiple_gating(gate_params):
 	points = gate_params['points']
@@ -143,15 +148,17 @@ def multiple_gating(gate_params):
 		if len(points) == 1 :
 			clusters = new_name
 			number_gates = points[0]
-			for i in range(0, number_gates):
+			new_paths= [new_path]
+			for i in range(0, number_gates-1):
 				while True:
 					next_new_name = str(uuid1())
-					path = ds.generate_path(DATA_BUCKET, None, new_name)
-					if not ds.check_exists(new_path, None):
+					path = ds.generate_path(DATA_BUCKET, None, next_new_name)
+					if not ds.check_exists(path, None):
+						new_paths.append(path)
 						clusters = clusters + " " + next_new_name
 						break
 			queue.gate_kmeans(gate_params['filename'], clusters, str(number_gates), "FSC-A", "SSC-A");
-			return generate_gating_feedback("success", "the kmeans gate was performed correctly", new_path, gate_params['filename'])
+			return generate_gating_feedback("success", "the kmeans gate was performed correctly", new_paths, gate_params['filename'])
 		else:
 			return generate_gating_feedback("fail", "notcorrect, wrong number of arguments")
 
@@ -161,8 +168,8 @@ def multiple_gating(gate_params):
 			for i in range(0, 3):
 				while True:
 					next_new_name = str(uuid1())
-					path = ds.generate_path(DATA_BUCKET, None, new_name)
-					if not ds.check_exists(new_path, None):
+					path = ds.generate_path(DATA_BUCKET, None, next_new_name)
+					if not ds.check_exists(path, None):
 						other_new_names.append(next_new_name)
 						break
 			x_coord = str(points[0])
