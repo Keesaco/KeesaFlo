@@ -977,7 +977,6 @@ function ksfGraphTools_setGraphUrl(url, newFilename, numRetries)
 	ksfGraphTools.timeoutCounter = typeof numRetries == 'undefined' ? GRAPH_LOAD_MAX_ATTEMPTS : numRetries;
 
 	var gate_req = { filename : newFilename };
-	var gateRedirect = newFilename.split('/')[2];
 	ksfCanvas.setLoading(true);
 	
 	var gate_status = ksfReq.postJSON(ANALYSIS_STATUS_URI, gate_req,
@@ -990,14 +989,14 @@ function ksfGraphTools_setGraphUrl(url, newFilename, numRetries)
 			}
 			else if (response.done)
 			{
-				if (window.location.hash == FILE_VIEW_HASH + gateRedirect)
+				if (window.location.hash == FILE_VIEW_HASH + newFilename)
 				{
 					//special case force redirect for new files
 					location.reload();
 				}
 				else
 				{
-					window.location.href = ksfData.baseUrl() + FILE_VIEW_HASH + gateRedirect;
+					window.location.href = ksfData.baseUrl() + FILE_VIEW_HASH + newFilename;
 				}
 			}
 			else

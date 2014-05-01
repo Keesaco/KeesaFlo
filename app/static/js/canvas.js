@@ -348,8 +348,7 @@ function ksfCanvas_addListener(argument)
 			var currentFile = $("#scrapename").text().trim();
 			if (currentFile)
 			{
-				//Really hacky way of making setGraphUrl poll for a file without knowing its full path
-				setTimeout(ksfGraphTools.setGraphUrl(window.location.href, '/fc-raw-data/'+currentFile), GRAPH_POLL_INTERVAL);
+				setTimeout(ksfGraphTools.setGraphUrl(window.location.href, currentFile), GRAPH_POLL_INTERVAL);
 			}
 		}
 }

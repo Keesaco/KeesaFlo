@@ -847,10 +847,9 @@ def analysis_status_json(request):
 		response_part.update({'error' : 'Incomplete request.'})
 		return HttpResponse(json.dumps(response_part), content_type="application/json")
 
-	#	This is roughly what permissions checking should probably look like once all files have permissions entries
-	#		Alternatively, a check_exists call may be sufficient if the permissions entry is created before gating is requested,
-	#		this will depend on the CE/Permissions integration method
-	file_entry = ps.get_file_by_name(file_req['filename'])
+	chk_file_name = DATA_BUCKET + '/' + file_req['filename']
+	file_entry = ps.get_file_by_name(chk_file_name)
+	logging.info(file_entry)
 	if file_entry is None:
 		response_part.update( { 'error' : 'File or gate not recognised.', 'giveup' : False } )
 		return HttpResponse(json.dumps(response_part), content_type="application/json")
@@ -860,7 +859,7 @@ def analysis_status_json(request):
 			response_part.update( { 'error' : 'Permission denied.' } )
 			return HttpResponse(json.dumps(response_part), content_type="application/json")
 
-	name = file_req['filename'].rpartition('/')[2]
+	name = file_req['filename']
 	is_done =  ds.check_exists(GRAPH_BUCKET + '/' + name + '.png', None)
 
 	#Prevent redirecting before the view is ready
