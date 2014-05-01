@@ -32,8 +32,13 @@
 			{% if permissions.full_control %}
 				<button type="button" class="btn" id="share-btn" data-toggle="modal" data-target="#shareModal">Share</button>
 			{% endif %}
-			<button type="button" class="btn" id="btn-download"><a href="{% url get_dataset current_file.filename %}">Dl. Dataset</a></button>
-			<button type="button" class="btn" id="btn-download"><a href="{% url get_graph name %}">Dl. Graph</a></button>
+			<div class="btn-group btn-group-lg">
+				<button type="button" class="btn dropdown-toggle" id="btn-download" data-toggle="dropdown">Download<span class="caret"></span></button>
+				<ul class="dropdown-menu" role="menu">
+					<li><a href="{% url get_dataset current_file.filename %}">Download Dataset</a></li>
+					<li><a href="{% url get_graph name %}">Download Graph</a></li>
+				</ul>
+			</div>
 		</div>
 		<div class="gate-options">
 			<label><input type="checkbox" id="chk_reverse_gate" /> Reverse gate</labeL><br />
