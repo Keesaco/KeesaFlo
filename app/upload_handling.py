@@ -34,7 +34,7 @@ class fcsUploadHandler(FileUploadHandler):
 		## Generate unique datastore path, ensuring uniqueness.
 		while True:
 			self.name = str(uuid1())
-			path = ds.generate_path(bucket.DATA + '/', None, self.name)
+			path = ds.generate_path(buckets.DATA + '/', None, self.name)
 			if not ds.check_exists(path, None):
 				break
 		## Generate friendly name.
