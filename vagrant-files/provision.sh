@@ -1,4 +1,4 @@
-wget -O devserver.zip https://commondatastorage.googleapis.com/appengine-sdks/featured/google_appengine_1.9.2.zip
+wget -O devserver.zip https://commondatastorage.googleapis.com/appengine-sdks/featured/google_appengine_1.9.4.zip
 apt-get update
 apt-get install -y zip
 apt-get install -y unzip
