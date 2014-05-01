@@ -21,7 +21,7 @@ DATA_BUCKET = '/fc-raw-data/'
 ## \param Dictionary gate_params - list of gating parameters
 ## \author mrudelle@keesaco.com of Keesaco
 ## \author hdoughty@keesaco.com of Keesaco
-## \todo Does this not want to be multiple tools?
+## \todo Does this not want to be multiple tools? //JPM - possibly not
 ###########################################################################
 def simple_gating(gate_params):
 	points = gate_params['points']
@@ -87,6 +87,13 @@ def simple_gating(gate_params):
 	else :
 		return generate_gating_feedback("fail", "The gate " + gate_params['tool'] + " is not known")
 
+
+###########################################################################
+## \brief Requests a boolean gate and returns feedback
+## \param Dictionary gate_params - list of gating parameters
+## \return	JSON feedback object for user feedback
+## \author hdoughty@keesaco.com of Keesaco
+###########################################################################
 def boolean_gating(gate_params):
 	points = gate_params['points']
 	points2 = gate_params['1']
@@ -161,7 +168,14 @@ def multiple_gating(gate_params):
 			x_coord = str(points[0])
 			y_coord = str(points[1])
 			queue.gate_quadrant(gate_params['filename'], x_coord, y_coord, new_name, other_new_names[0], other_new_names[1], other_new_names[2], "FSC-A", "SSC-A");
-			return generate_gating_feedback("success", "the quadrant gate was performed correctly", new_path, gate_params['filename'])
+
+			new_paths = [ds.generate_path(DATA_BUCKET, None, pn) for pn in other_new_names]
+			new_paths.append(ds.generate_path(DATA_BUCKET, None, new_name))
+
+			logging.info(new_paths)
+							
+			return generate_gating_feedback("success", "the quadrant gate was performed correctly", new_paths, gate_params['filename'])
+
 		else:
 			return generate_gating_feedback("fail", "notcorrect, wrong number of arguments")
 
@@ -203,21 +217,33 @@ def generate_gating_feedback(status, message, new_graph_name = None, existing_na
 		previous_file = ps.get_file_by_name(DATA_BUCKET + existing_name)
 		previous_permissions = ps.get_user_file_permissions(previous_file.key, user_key)
 
-		## Add permissions to new file.
-		new_file = FileInfo(file_name = new_graph_name,
-							owner_key = user_key,
-							friendly_name = previous_file.friendly_name + '-gate',
-							prev_file_key = previous_file.key)
-		file_key = ps.add_file(new_file)
-		ps.add_file_permissions(file_key,
-								user_key,
-								Permissions (
-									previous_permissions.read,
-									previous_permissions.write,
-									previous_permissions.full_control
-								),
-								previous_permissions.colour,
-								False)
+		if isinstance(new_graph_name, list):
+			new_graph_names = new_graph_name
+		else:
+			new_graph_names = [new_graph_name]
+		
+		# Overwrite new_graph_name for return dictionary
+		new_graph_name = new_graph_names[0]
+		logging.info(new_graph_name)
+		logging.info(new_graph_names)
+							
+		for new_name in new_graph_names:
+			logging.info("New permissions: " + new_name)
+			## Add permissions to new file(s).
+			new_file = FileInfo(file_name = new_name,
+								owner_key = user_key,
+								friendly_name = previous_file.friendly_name + '-gate',
+								prev_file_key = previous_file.key)
+			file_key = ps.add_file(new_file)
+			ps.add_file_permissions(file_key,
+									user_key,
+									Permissions (
+										previous_permissions.read,
+										previous_permissions.write,
+										previous_permissions.full_control
+									),
+									previous_permissions.colour,
+									False)
 
 	return {
 		'status': status,
