@@ -155,7 +155,7 @@ def multiple_gating(gate_params):
 					path = ds.generate_path(DATA_BUCKET, None, next_new_name)
 					if not ds.check_exists(path, None):
 						new_paths.append(path)
-						clusters = clusters + " " + next_new_name
+						clusters = next_new_name + " " + clusters
 						break
 			queue.gate_kmeans(gate_params['filename'], clusters, str(number_gates), "FSC-A", "SSC-A");
 			return generate_gating_feedback("success", "the kmeans gate was performed correctly", new_paths, gate_params['filename'])
@@ -176,8 +176,8 @@ def multiple_gating(gate_params):
 			y_coord = str(points[1])
 			queue.gate_quadrant(gate_params['filename'], x_coord, y_coord, new_name, other_new_names[0], other_new_names[1], other_new_names[2], "FSC-A", "SSC-A");
 
-			new_paths = [ds.generate_path(DATA_BUCKET, None, pn) for pn in other_new_names]
-			new_paths.append(ds.generate_path(DATA_BUCKET, None, new_name))
+			new_paths = [ds.generate_path(DATA_BUCKET, None, new_name)] + [ds.generate_path(DATA_BUCKET, None, pn) for pn in other_new_names]
+			new_paths.reverse() #Make sure the user polls for the last graph to be created
 
 			logging.info(new_paths)
 							
