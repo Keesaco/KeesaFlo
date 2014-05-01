@@ -88,12 +88,20 @@ function ksfShare_editPermissions(actionObj)
 		{
 			if (response.success)
 			{
-				console.log(response);
+				response.actions.forEach( function(i)
+				{
+					if (!i.success)
+					{
+						ksfGraphTools.showFeedback(FEEDBACK_DANGER, 'Permissions editing error:', response.error);
+						$("#shareModal").modal('hide');
+					}
+				})
 				setTimeout(function() {ksfShare.getPermissions(actionObj.filename)}, 500);
 			}
 			else
 			{
 				ksfGraphTools.showFeedback(FEEDBACK_DANGER, 'Permissions editing error:', response.error);
+				$("#shareModal").modal('hide');
 			};
 		},
 		function(jqxhr, textStatus, error)
@@ -184,27 +192,13 @@ function ksfShare_newUserRow(userInfo, file)
 						read 		: true,
 						write 		: true,
 						fullControl : true
-					}]
-				};
+					}
+]				};
 				ksfShare.editPermissions(action);
 			}]
 	]
 	// Add dropdown choice.
 	$(rowParent).prepend(ksfShare.buildDropdown(activeStr, choiceMapping));
-
-	/* Add listener.
-	$(noneId).click(function ()
-		{
-			var action = {
-				filename : file,
-				actions : [{
-					action 		: 'dropUser',
-					userEmail 	: userInfo.email
-				}]
-			};
-			ksfShare.editPermissions(action);
-		});
-	*/
 
 	return rowParent;
 }
