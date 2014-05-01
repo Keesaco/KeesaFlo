@@ -168,9 +168,65 @@ $(window).resize(ksfLayout.fileSelectorResize);
  */
 function ksfLayout_filePreviewStart()
 {
+	// Scrape filename.
+	var name = $("#scrapename").text().trim();
+	// Add listeners.
 	ksfCanvas.addListener();
 	$("#togglefiles").click(ksfLayout.fileSelectorToggle);
 	$("#btn-change-axes-confirm").click(function () { ksfGraphTools.changeAxes(); } )
+	$('#shareModal').on('shown.bs.modal', function () { ksfShare.getPermissions(name) });
+
+	// Adds new view user listener.
+	$('#giveView').click(function ()
+		{
+			var action = {
+				filename : name,
+				actions : [{
+					action 		: 'addUser',
+					userEmail 	: $("#newUserInput").val(),
+					read 		: true,
+					write 		: false,
+					fullControl : false
+				}]
+			};
+		ksfShare.editPermissions(action);
+		$("#newUserInput").val('');
+		});
+
+	// Adds new edit user listener.
+	$('#giveEdit').click(function ()
+		{
+			var action = {
+				filename : name,
+				actions : [{
+					action 		: 'addUser',
+					userEmail 	: $("#newUserInput").val(),
+					read 		: true,
+					write 		: true,
+					fullControl : false
+				}]
+			};
+		ksfShare.editPermissions(action);
+		$("#newUserInput").val('');
+		});
+
+	// Adds new full user listener.
+	$('#giveAll').click(function ()
+		{
+			var action = {
+				filename : name,
+				actions : [{
+					action 		: 'addUser',
+					userEmail 	: $("#newUserInput").val(),
+					read 		: true,
+					write 		: true,
+					fullControl : true
+				}]
+			};
+		ksfShare.editPermissions(action);
+		$("#newUserInput").val('');
+		});
+
 }
 ksfLayout.filePreviewStart = ksfLayout_filePreviewStart;
 
@@ -262,7 +318,7 @@ function ksfLayout_initTips()
 							function(xhr, status, error) {
 								api.set('content.text', status + ': ' + error);
 							});
-					  	//TODO: refactor
+						//TODO: refactor
 						return '<div class="loading" style="width: 200px; height:200px">&nbsp</div>';
 					}
 				},

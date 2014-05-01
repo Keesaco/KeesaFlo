@@ -480,3 +480,9 @@ a.edit-dropdown-button:hover
 	padding: 0px 20px 0px 20px;
 	color: gray;
 }
+
+.user-row
+{
+	font-weight: bold;
+	font-size: 120%;
+}

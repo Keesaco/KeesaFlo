@@ -27,9 +27,12 @@
 		{% endif %}
 		<div id="scrapename" style="display: none;"> {{ name }} </div>
 		<div class="btn-group btn-group-lg action-btn-group">
-			<button type="button" class="btn btn-download"><a href="{% url get_dataset current_file.filename %}">Download</a></button>
-		  	<button type="button" class="btn" id="request-gating-btn" disabled>Gate</button>
-		  	<button type="button" class="btn" id="reset-tool-btn">Reset</button>
+			<button type="button" class="btn" id="request-gating-btn" disabled>Gate</button>
+			<button type="button" class="btn" id="reset-tool-btn">Reset</button>
+			{% if permissions.full_control %}
+				<button type="button" class="btn" id="share-btn" data-toggle="modal" data-target="#shareModal">Share</button>
+			{% endif %}
+			<button type="button" class="btn" id="btn-download"><a href="{% url get_dataset current_file.filename %}">Download</a></button>
 		</div>
 		<div class="gate-options">
 			<label><input type="checkbox" id="chk_reverse_gate" /> Reverse gate</labeL><br />
@@ -38,6 +41,40 @@
 			<p id="tool-description">Please select a tool.</p>
 		</div>
 	</div>
+
+	<!-- Modal popup that allows sharing -->
+	<div class="modal fade" id="shareModal" tabindex="-1" role="dialog" aria-labelledby="shareModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="shareModalLabel"> Sharing </h4>
+					<div class="modal-body">
+						<div class="modal-user-list">
+							Loading...
+						</div>
+					</div>
+					<div class="modal-footer">
+						<div class="col-lg-6">
+							<div class="input-group">
+							<input id="newUserInput" type="text" class="form-control">
+								<div class="input-group-btn">
+									<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"> Give <span class="caret"></span></button>
+									<ul class="dropdown-menu pull-right">
+										<li><a id="giveView" href="#">View</a></li>
+										<li><a id="giveEdit" href="#">Edit</a></li>
+										<li><a id="giveAll" href="#">All</a></li>
+									</ul>
+								</div><!-- /btn-group -->
+							</div><!-- /input-group -->
+						</div><!-- /.col-lg-6 -->
+						<button type="button" class="btn btn-default" data-dismiss="modal">Done</button>
+					</div>
+				</form>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+
 	{% else %}
 		<div  class="well app-well">
 			<h1>No visualisation data</h1>

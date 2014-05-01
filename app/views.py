@@ -454,7 +454,6 @@ def file_permissions_json(request):
 		json_response['users'].append(new_perm)
 
 	json_response.update({ 'success' : True })
-
 	return HttpResponse(json.dumps(json_response), content_type="application/json")
 
 
@@ -522,19 +521,23 @@ def file_permissions_edit(request):
 
 			user_email 	= action['userEmail']
 			action_name = action['action']
-		
+
 			response_part = {
 				'success'	: False,
 				'action'	: action,
 				'userEmail'	: user_email
- 			}
+			}
 
 			share_user_key = ps.get_user_key_by_email(user_email)
 			if share_user_key is None:
 				response_part.update( { 'error' : 'User not found.' } )
-				action_responses.append(response_part)
+				action_responses.append(response_part) 
 				continue
 		else:
+			response_part = {
+				'success'	: False,
+				'error'		: 'Incomplete request.'
+			}
 			continue
 
 		edit_permissions = ps.get_user_file_permissions(file_entry.key, share_user_key)
@@ -595,7 +598,7 @@ def file_permissions_edit(request):
 		else:
 			response_part.update( { 'error' : "Action '%s' not recognised."%action_name } )
 
-		action_responses.append(response_part)
+	action_responses.append(response_part)
 	json_response.update( { 'success' : True, 'actions' : action_responses } )
 
 	return HttpResponse(json.dumps(json_response), content_type="application/json")
@@ -640,17 +643,25 @@ def file_preview(request, file = None):
 		if temp_file.filename == file:
 			current_file = temp_file;
 
-	logging.info(file.partition('.')[0])
 
+	# Check whether graph exists yet.
 	graph_exists = ds.check_exists(GRAPH_BUCKET + '/' + file.partition('.')[0] + '.png', None)
-	template_dict = {'current_file' : current_file,
-					 'name' : file,
-					 'authed_user_nick': authed_user_nick,
-					 'file_info' : file_info,
-					 'graph_ready' : graph_exists,
-					 'undo_link' : undo_uri }
 
-	## Get gating informations
+	# Get permissions for file.
+	permissions = None
+	if file_info is not None:
+		user_key = ps.get_user_key_by_id(authed_user.user_id())
+		permissions = ps.get_user_file_permissions(file_info.key, user_key)
+
+	template_dict = {'current_file' : current_file,
+									 'name' : file,
+									 'authed_user_nick': authed_user_nick,
+									 'file_info' : file_info,
+									 'graph_ready' : graph_exists,
+									 'undo_link' : undo_uri,
+									 'permissions' : permissions }
+
+	## Get gating information.
 	info_path = INFO_BUCKET + '/' + file.partition('.')[0] + '.txt'
 	if ds.check_exists(info_path, None):
 		buffer = ds.open(info_path)
@@ -891,15 +902,15 @@ def signup_handler(request):
 	authed_user = auth.get_current_user()
 	if authed_user is None:
 		return __unauthed_response()
-		
+
 	user_key = ps.get_user_key_by_id(authed_user.user_id())
 	if user_key is None:
 		user_key = ps.add_user(authed_user)
-	
+
 	response_part = {
 		'success'		: False
 	}
-	
+
 	try:
 		file_req = json.loads(request.raw_post_data)
 	except ValueError:
@@ -923,6 +934,3 @@ def signup_handler(request):
 
 		response_part.update({'success' : True})
 		return HttpResponse(json.dumps(response_part), content_type="application/json")
-
-
-
