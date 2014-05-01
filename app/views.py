@@ -28,10 +28,11 @@ import json
 import re
 import gating.tools as gt
 from Permissions.Types import Permissions
+import buckets
 
-DATA_BUCKET = '/fc-raw-data'
-GRAPH_BUCKET = '/fc-vis-data'
-INFO_BUCKET = '/fc-info-data'
+DATA_BUCKET = buckets.DATA
+GRAPH_BUCKET = buckets.VIS
+INFO_BUCKET = buckets.INFO
 
 def login(request):
 	link = auth.create_login_url('app/')
@@ -303,14 +304,14 @@ def file_list_edit(request):
 		}
 		
 		if action == 'delete':
-			file_entry = ps.get_file_by_name('/fc-raw-data/' + filename)
+			file_entry = ps.get_file_by_name(DATA_BUCKET + '/' + filename)
 			if file_entry is not None:
 				ps.remove_file_by_key(file_entry.key)
 			
-			ds.delete('/fc-raw-data/' + filename)
-			ds.delete('/fc-info-data/' + filename + 'info.txt')
-			ds.delete('/fc-info-data/' + filename + '.txt')
-			ds.delete('/fc-vis-data/' + filename + '.png')
+			ds.delete(DATA_BUCKET + '/' + filename)
+			ds.delete(INFO_BUCKET + '/' + filename + 'info.txt')
+			ds.delete(INFO_BUCKET + '/' + filename + '.txt')
+			ds.delete(GRAPH_BUCKET + '/' + filename + '.png')
 			
 			res_fragment.update( { 'success' : True } )
 		
@@ -322,7 +323,7 @@ def file_list_edit(request):
 			if 'newname' not in a:
 				res_fragment.update( { 'success' : False, 'error' : 'New name not specified' } )
 			else:
-				file_entry = ps.get_file_by_name('/fc-raw-data/' + filename)
+				file_entry = ps.get_file_by_name(DATA_BUCKET + '/' + filename)
 				if file_entry is None:
 					res_fragment.update( { 'success' : False, 'error' : 'File does not exist.' } )
 				else:
@@ -333,7 +334,7 @@ def file_list_edit(request):
 						res_fragment.update( { 'success' : False, 'error' : 'Could not rename file' } )
 		
 		elif action == 'star' or action == 'unstar':
-			file_entry = ps.get_file_by_name('/fc-raw-data/' + filename)
+			file_entry = ps.get_file_by_name(DATA_BUCKET + '/' + filename)
 			if file_entry is None:
 				res_fragment.update( { 'success' : False, 'error' : 'File does not exist.' } )
 			else:
@@ -353,7 +354,7 @@ def file_list_edit(request):
 				colour = a['newcolour']
 				chk_string = re.compile("^[A-Fa-f0-9]{6}$")
 				if (chk_string.match(colour)):
-					file_entry = ps.get_file_by_name('/fc-raw-data/' + filename)
+					file_entry = ps.get_file_by_name(DATA_BUCKET + '/' + filename)
 					if file_entry is None:
 						res_fragment.update( { 'success' : False, 'error' : 'File does not exist.' } )
 					else:
@@ -412,7 +413,7 @@ def file_permissions_json(request):
 
 	filename = list_req['filename']
 
-	file_entry = ps.get_file_by_name('/fc-raw-data/' + filename)
+	file_entry = ps.get_file_by_name(DATA_BUCKET + '/' + filename)
 	if file_entry is None:
 		json_response.update( { 'error' : 'File does not exist.' } )
 		return HttpResponse(json.dumps(json_response), content_type="application/json")
@@ -504,7 +505,7 @@ def file_permissions_edit(request):
 		json_response.update( {'error' : 'Actions list is not a list.'} )
 		return HttpResponse(json.dumps(json_response), content_type="application/json")
 
-	file_entry = ps.get_file_by_name('/fc-raw-data/' + filename)
+	file_entry = ps.get_file_by_name(DATA_BUCKET + '/' + filename)
 	if file_entry is None:
 		json_response.update( { 'error' : 'File does not exist.' } )
 		return HttpResponse(json.dumps(json_response), content_type="application/json")
@@ -706,27 +707,6 @@ def graph_preview(request, file = None):
 
 	return render(request, 'graph_preview.html',
 		{'current_file' : file_info, 'file_name_without_extension' : file})
-
-###########################################################################
-## \brief Is called when the pagelet containing the app's main panel is requested.
-## \param request - Django variable defining the request that triggered the generation of this page
-## \note only the main panel is generated here, see app(request) for fetching the page's skeleton
-## \return the main panel pagelet
-###########################################################################
-'''
-def file_page(request, file=None):
-	app_access = __check_app_access()
-	if app_access is not None:
-		return app_access
-	
-	lst = ds.list('/fc-raw-data')
-	file_info = None
-	for temp_file in lst:
-		temp_file.filename = temp_file.filename.rpartition('/')[2]
-		if temp_file.filename == file:
-			file_info = temp_file;
-	return render(request, 'file_preview.html', {'current_file' : file_info, 'authed_user_nick': authed_user_nick, 'file_name_without_extension' : file_name_without_extension})
-'''
 
 def pagenav(request):
 	return render(request, 'pagenav.html')

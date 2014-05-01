@@ -13,8 +13,9 @@ import API.APIDatastore as ds
 import API.PALUsers as auth
 from Permissions.Types import FileInfo, Permissions
 from uuid import uuid1
+import buckets
 
-DATA_BUCKET = '/fc-raw-data/'
+DATA_BUCKET = buckets.DATA + '/'
 
 ###########################################################################
 ## \brief Is called when a gating is requested

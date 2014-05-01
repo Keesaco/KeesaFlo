@@ -14,9 +14,7 @@ import API.APIInstance as instances
 import API.APIBackground as background
 from os.path import splitext
 from uuid import uuid1
-
-## default upload bucket
-DEFAULT_BUCKET = '/fc-raw-data/'
+import buckets
 
 ## Custom upload handler class.
 class fcsUploadHandler(FileUploadHandler):
@@ -36,7 +34,7 @@ class fcsUploadHandler(FileUploadHandler):
 		## Generate unique datastore path, ensuring uniqueness.
 		while True:
 			self.name = str(uuid1())
-			path = ds.generate_path(DEFAULT_BUCKET, None, self.name)
+			path = ds.generate_path(bucket.DATA + '/', None, self.name)
 			if not ds.check_exists(path, None):
 				break
 		## Generate friendly name.
