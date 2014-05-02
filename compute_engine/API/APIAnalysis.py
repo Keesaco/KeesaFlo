@@ -7,10 +7,11 @@
 ## \brief Provides methods for flow cytometry data analysis and visualisation.
 ###########################################################################
 import subprocess
+import buckets
 
-RAW_BUCKET = 'gs://fc-raw-data/'
-VIS_BUCKET = 'gs://fc-vis-data/'
-INFO_BUCKET = 'gs://fc-info-data/'
+RAW_BUCKET = 'gs:/' + buckets.DATA + '/'
+VIS_BUCKET = 'gs:/' + buckets.VIS + '/'
+INFO_BUCKET = 'gs:/' + buckets.INFO + '/'
 
 ###########################################################################
 ## \brief Loads an fcs file from the Datastore to local disk
@@ -22,7 +23,7 @@ INFO_BUCKET = 'gs://fc-info-data/'
 ###########################################################################
 def load_fcs(	name,
 				permissions = None):
-	subprocess.call(['gsutil', 'cp', 'gs://fc-raw-data/' + name, name])
+	subprocess.call(['gsutil', 'cp', RAW_BUCKET + name, name])
 	return True
 
 ###########################################################################
