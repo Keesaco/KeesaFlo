@@ -12,20 +12,20 @@ Documentation:
 This project is prepared for [Doxygen](http://www.doxygen.org/) automatic documentation generation.
 Running Doxygen on Doxyfile.doxyfile (in the root directory of the repository) will generate documentation
 for the project into the Doxygen directory in HTML and LaTeX.  
-JavaScript documentation is performed automatically using js2doxy (acquired by AppBuild - see dependencies), therefore perl is required to generate documentation for JavaScript.
+JavaScript documentation is performed automatically using js2doxy (acquired by Dependable - see dependencies), therefore perl is required to generate documentation for JavaScript.
 
 For convenience, an HTML copy of the documentation is accessible from keesaco.com using the following link:  
-[Doxygen output](http://keesaco.com/1c314fc722274b40e8600aec4610edf1/Doxygen/html/) (Last updated 25 Mar 14)  
+[Doxygen output](http://keesaco.com/1c314fc722274b40e8600aec4610edf1/Doxygen/html/) (Last updated 2 May 14)  
 Please note that this may not reflect all of the latest changes to the project and only shows documentation for
 code on the development branch.
 
 Dependencies:
 -------------
-This project has a number of dependencies which are not committed to this repository. For convenience, the project has been prepared for automatic dependency acquisition using AppBuild.
+This project has a number of dependencies which are not committed to this repository. For convenience, the project has been prepared for automatic dependency acquisition using Dependable.
 To build the application download [AppBuild.py](http://jpm.im/AppBuild-0-0-1) and place it in the root directory of the project.
 Running `python AppBuild.py` will download and unzip all dependencies into their correct directories for the app to be run/deployed.
 
-In addition to these dependencies, the application requires [pyopenssl](https://github.com/pyca/pyopenssl) to run locally. As this is not installed into the application's files it is not downloaded by AppBuild.
+In addition to these dependencies, the application requires [pyopenssl](https://github.com/pyca/pyopenssl) to run locally. As this is not installed into the application's files it is not downloaded by Dependable.
 
 Image:
 ------
@@ -47,7 +47,7 @@ Running with Local Dev Server:
 ------------------------------
 1. Download the [Google App Engine Python SDK](https://developers.google.com/appengine/downloads).
 2. Ensure Python 2.7 and pyOpenSSL are installed.
-3. Acquire dependencies using AppBuild as described above.
+3. Acquire dependencies using Dependable as described above.
 4. Add an (existing) application to the dev_appserver using the 'app' directory as the path.
 
 Running with Vagrant:
