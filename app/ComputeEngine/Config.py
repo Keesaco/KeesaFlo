@@ -80,4 +80,4 @@ SCRIPT_URL = 'keesaco_gce'
 LOG_URL = 'keesaco_log'
 
 ## The URL of the instance balancing hook.
-BALANCE_HOOK = "http://www.keesaco-spe.appspot.com/_ah/balance"
+BALANCE_HOOK = "http://www.%s.appspot.com/_ah/balance" % PROJECT_ID
