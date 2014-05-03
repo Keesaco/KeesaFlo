@@ -148,18 +148,18 @@ def multiple_gating(gate_params):
 		if len(points) == 1 :
 			clusters = new_name
 			number_gates = points[0]
-			new_paths= [new_path]
+			new_names = [new_name]
 			for i in range(0, number_gates-1):
 				while True:
 					next_new_name = str(uuid1())
 					path = ds.generate_path(DATA_BUCKET, None, next_new_name)
 					if not ds.check_exists(path, None):
-						new_paths.append(next_new_name)
+						new_names.append(next_new_name)
 						clusters = next_new_name + " " + clusters
 						break
 			
 			queue.gate_kmeans(gate_params['filename'], clusters, str(number_gates), "FSC-A", "SSC-A");
-			return generate_gating_feedback("success", "the kmeans gate was performed correctly", new_paths, gate_params['filename'], gate_params['axes']['x'], gate_params['axes']['y'])
+			return generate_gating_feedback("success", "the kmeans gate was performed correctly", new_names, gate_params['filename'], gate_params['axes']['x'], gate_params['axes']['y'])
 		else:
 			return generate_gating_feedback("fail", "notcorrect, wrong number of arguments")
 
