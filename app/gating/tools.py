@@ -158,7 +158,7 @@ def multiple_gating(gate_params):
 						clusters = next_new_name + " " + clusters
 						break
 			
-			queue.gate_kmeans(gate_params['filename'], clusters, str(number_gates), "FSC-A", "SSC-A");
+			queue.gate_kmeans(gate_params['filename'], clusters, str(number_gates), gate_params['axes']['x'], gate_params['axes']['y']);
 			return generate_gating_feedback("success", "the kmeans gate was performed correctly", new_names, gate_params['filename'], gate_params['axes']['x'], gate_params['axes']['y'])
 		else:
 			return generate_gating_feedback("fail", "notcorrect, wrong number of arguments")
