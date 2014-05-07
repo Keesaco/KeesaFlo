@@ -1,4 +1,12 @@
-
+###########################################################################
+## \file app/API/APIPermissions.py
+## \brief Containts the APIDatastore package: API layer for permission data access
+## \author jmccrea@keesaco.com of Keesaco
+## \author cwike@keesaco.com of Keesaco
+###########################################################################
+## \package app.API.APIPermissions
+## \brief Provides a platform independent API for accessing and modifying entries in the permissions store
+###########################################################################
 import PALPermissions as PAL
 from API.PALDBTables import Users, Files, FilePermissions
 from API.User import User
