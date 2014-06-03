@@ -42,7 +42,7 @@ DEFAULT_PD_NAME = '%s-root-pd-' % UNIQUE_NAME
 DEFAULT_INSTANCE_NAME = '%s-analysis-' % UNIQUE_NAME
 
 ## The default machine type to run instances on.
-DEFAULT_MACHINE_TYPE = 'n1-standard-1'
+DEFAULT_MACHINE_TYPE = 'f1-micro'
 ## The default network for instances to communicate over.
 DEFAULT_NETWORK = 'default'
 ## The default service email.
