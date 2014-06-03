@@ -2,7 +2,7 @@ KeesaFlo
 ===
 KeesaFlo cloud flow cytometry project
   
-Latest Release: 1.0.0
+Latest Release: [v1.0.0](https://github.com/Keesaco/KeesaFlo/releases/latest)
 
 Licence: Apache 2.0
 
