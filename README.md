@@ -2,9 +2,9 @@ KeesaFlo
 ===
 KeesaFlo cloud flow cytometry project
   
-  | Latest Release  | 1.00 or suchlike |
-  | --------------- | ---------------- |
-  | Licence: Apache | 2.0              |
+Latest Release: 1.00 or suchlike
+
+Licence: Apache 2.0
 
 Discussion:
 -----------
