@@ -37,12 +37,12 @@ def add_user(user):
 ###########################################################################
 def remove_user_by_id(user_id):
 	users = Users.query(Users.unique_id == user_id)
-	user = users.get()
+	user_key = users.get(keys_only=True)
 	
-	if user is None:
+	if user_key is None:
 		return False
 	else:
-		user.key.delete()
+		user_key.delete()
 		return True
 
 ###########################################################################
@@ -122,13 +122,13 @@ def get_user_by_id(user_id):
 ###########################################################################
 def get_user_key_by_id(user_id):
 	users = Users.query(Users.unique_id == user_id)
-	user = users.get()
+	user = users.get(keys_only=True)
 	
 	if user is None:
 		## user not found
 		return None
 	else:
-		return user.key
+		return user
 
 
 ###########################################################################
@@ -169,13 +169,13 @@ def get_user_by_key(user_key):
 ###########################################################################
 def get_user_key_by_email(user_email):
 	users = Users.query(Users.email_address == user_email)
-	user = users.get()
+	user = users.get(keys_only=True)
 	
 	if user is None:
 		## user not found
 		return None
 	else:
-		return user.key
+		return user
 
 ###########################################################################
 ## \brief gets a user's details using their email address
@@ -642,11 +642,11 @@ def get_element_by_key(element_key):
 ###########################################################################
 def get_element_key_by_ref(element_ref):
 	query = Elements.query(Elements.element_ref == element_ref)
-	elem = query.get()
+	elem = query.get(keys_only=True)
 	if elem is None:
 		return None
 	else:
-		return elem.key
+		return elem
 
 ###########################################################################
 ## \brief adds an element permissions entry
@@ -833,6 +833,6 @@ def get_user_element_permissions_key(user_key, element_key):
 	if (isinstance(user_key,ndb.Key)) and (isinstance(element_key,ndb.Key)):
 		query = ElementPermissions.query(ndb.AND(ElementPermissions.user_key == user_key,
 											 ElementPermissions.element_key == element_key))
-		return query.get().key
+		return query.get(keys_only=True)
 	else:
 		return None
